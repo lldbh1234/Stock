@@ -22,11 +22,19 @@
 use think\Route;
 // 注册路由到index模块的News控制器的read操作
 Route::group(["domain" => "stock.lc"], function() {
-    Route::any('/','index/Index/index');
+    // Index
+    Route::any('/$','index/Index/index');
     Route::group("index", function () {
+        Route::any('/$','index/Index/index');
         Route::any('index', 'index/Index/index');
     });
     Route::group("cron", function () {
         Route::any('stock', 'index/Stock/grabStockLists');
+    });
+
+    // Admin
+    Route::group("admin", function () {
+        Route::any('/$','admin/Index/index');
+        Route::any('login', 'admin/Home/login');
     });
 });
