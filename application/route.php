@@ -35,6 +35,8 @@ Route::group(["domain" => "stock.lc"], function() {
     // Admin
     Route::group("admin", function () {
         Route::any('/$','admin/Index/index');
+        Route::any('index','admin/Index/index');
         Route::any('login', 'admin/Home/login');
+        Route::any('demo', 'admin/Home/demo');
     });
 });

@@ -131,6 +131,55 @@ trait Jump
     }
 
     /**
+     * 自定义失败返回封装后的 API 数据到客户端
+     * @author LiangJian
+     * @access protected
+     * @param mixed  $data   要返回的数据
+     * @param mixed  $msg    提示信息
+     * @param string $type   返回数据格式
+     * @param array  $header 发送的 Header 信息
+     * @return void
+     * @throws HttpResponseException
+     */
+    protected function fail($msg = '', $data = null, $type = '', array $header = [])
+    {
+        $result = [
+            'state' => 0,
+            'info'  => $msg,
+            'time' => Request::instance()->server('REQUEST_TIME'),
+            'data' => $data,
+        ];
+        $type     = $type ?: $this->getResponseType();
+        $response = Response::create($result, $type)->header($header);
+
+        throw new HttpResponseException($response);
+    }
+
+    /**
+     * 自定义失败返回封装后的 API 数据到客户端
+     * @access protected
+     * @param mixed  $data   要返回的数据
+     * @param mixed  $msg    提示信息
+     * @param string $type   返回数据格式
+     * @param array  $header 发送的 Header 信息
+     * @return void
+     * @throws HttpResponseException
+     */
+    protected function ok($data = null, $msg = '', $type = '', array $header = [])
+    {
+        $result = [
+            'state' => 1,
+            'info'  => $msg ? : "success",
+            'time' => Request::instance()->server('REQUEST_TIME'),
+            'data' => $data,
+        ];
+        $type     = $type ?: $this->getResponseType();
+        $response = Response::create($result, $type)->header($header);
+
+        throw new HttpResponseException($response);
+    }
+
+    /**
      * URL 重定向
      * @access protected
      * @param string    $url    跳转的 URL 表达式

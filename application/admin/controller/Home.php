@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+use think\captcha\Captcha;
 use think\Controller;
 use think\Request;
 
@@ -13,10 +14,26 @@ class Home extends Controller
 
     public function login()
     {
-        return "admin login";
-        /*if(request()->isPost()){
+        if(isLogin()){
+            return $this->redirect(url("admin/Index/index"));
+            exit;
+        }else{
+            if(request()->isPost()){
+                $validate = \think\Loader::validate('Login');
+                if(!$validate->scene('login')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
 
+                }
+            }
+            return view("login");
         }
-        return view("login");*/
+    }
+
+    public function demo()
+    {
+        $captcha = new Captcha();
+        $result = $captcha->check("dhwnd");
+        dump($result);
     }
 }
