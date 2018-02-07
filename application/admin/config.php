@@ -1,5 +1,8 @@
 <?php
 return [
+    'pwd_auth_key' => "yFjXp2Qxkf",
+    'admin_auth_key' =>  'M_ADMIN_ID',	// 管理员认证SESSION标记
+
     'captcha'  => [
         // 验证码字符集合
         'codeSet'  => '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY',

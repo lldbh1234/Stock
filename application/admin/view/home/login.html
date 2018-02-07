@@ -70,6 +70,7 @@ $(function () {
             _func = function (_resp) {
                 if (!_resp.state) {
                     alert(_resp.info);
+                    $("img").trigger("click");
                 } else {
                     window.location.href = _resp.data.url;
                 }
