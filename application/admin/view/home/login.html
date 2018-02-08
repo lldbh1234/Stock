@@ -60,6 +60,7 @@
 <script type="text/javascript" src="__RESOURCE__/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="__RESOURCE__/static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="__STATIC__/js/common.js"></script>
+<script type="text/javascript" src="__STATIC__/layui/layui.all.js"></script>
 </body>
 </html>
 <script>
@@ -69,8 +70,8 @@ $(function () {
             _url = '{:url("admin/Home/login")}',
             _func = function (_resp) {
                 if (!_resp.state) {
-                    alert(_resp.info);
-                    $("img").trigger("click");
+                    layer.msg(_resp.info);
+                    //$("img").trigger("click");
                 } else {
                     window.location.href = _resp.data.url;
                 }
