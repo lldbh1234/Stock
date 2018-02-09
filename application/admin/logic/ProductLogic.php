@@ -14,6 +14,6 @@ class ProductLogic
     public function pageProductLists()
     {
         $lists = Product::paginate(1);
-        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+        return ["lists" => $lists->toArray()['data'], "pages" => $lists->render()];
     }
 }
