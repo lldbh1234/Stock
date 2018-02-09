@@ -1,0 +1,58 @@
+﻿{extend name="layouts/layout_iframe" /}
+
+{block name="title"}产品列表{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+	<span class="c-gray en">&gt;</span> 产品管理
+	<span class="c-gray en">&gt;</span> 产品列表
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+	</a>
+</nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
+			</a>
+			<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','admin-role-add.html','800')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加插件
+			</a> </span>
+		<span class="r">共有数据：<strong>{:count($data)}</strong> 条</span>
+	</div>
+	{$pages}
+	<table class="table table-border table-bordered table-hover table-bg">
+		<thead>
+		<tr>
+			<th scope="col" colspan="6">插件列表</th>
+		</tr>
+		<tr class="text-c">
+			<th width="25"><input type="checkbox" value="" name=""></th>
+			<th>插件名称</th>
+			<th>插件代码</th>
+			<th>插件类型</th>
+			<th>状态</th>
+			<th width="70">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+{/block}
+
+{block name="footer"}
+<!--<footer class="footer mt-20">
+	<div class="container">
+		<p>感谢jQuery、layer、laypage、Validform、UEditor、My97DatePicker、iconfont、Datatables、WebUploaded、icheck、highcharts、bootstrap-Switch<br>
+			Copyright &copy;2015-2017 H-ui.admin v3.1 All Rights Reserved.<br>
+			本后台系统由<a href="http://www.h-ui.net/" target="_blank" title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持</p>
+	</div>
+</footer>-->
+{/block}
+
+{block name="script"}
+
+{/block}
