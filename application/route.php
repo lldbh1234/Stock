@@ -40,5 +40,18 @@ Route::group(["domain" => "stock.lc"], function() {
         Route::any('login', 'admin/Home/login');
         Route::any('logout', 'admin/Home/logout');
         Route::any('demo', 'admin/Home/demo');
+
+        // 组织架构
+        Route::group("team", function () {
+            Route::any('settle', 'admin/Team/settle');  // 结算中心
+            Route::any('operate', 'admin/Team/operate'); // 运营中心
+            Route::any('member', 'admin/Team/member'); // 微会员
+            Route::any('ring', 'admin/Team/ring'); // 微圈
+        });
+
+        // 插件管理
+        Route::group("plugins", function(){
+            Route::any('lists', 'admin/Plugins/lists');  // 插件列表
+        });
     });
 });

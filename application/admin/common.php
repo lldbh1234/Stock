@@ -43,6 +43,17 @@ if(!function_exists("isLogin")){
     }
 }
 
+if(!function_exists("manager")){
+    function manager()
+    {
+        $manager = session("admin_info");
+        if(!$manager){
+            $manager = model("Admin")->find(isLogin());
+        }
+        return $manager;
+    }
+}
+
 /**
  * 数据签名认证
  * @param  array  $data 被认证的数据

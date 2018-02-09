@@ -77,6 +77,7 @@ class Admin extends \app\common\model\Admin
             'last_time'	=> $admin['last_time'],
         ];
         session(config("admin_auth_key"), $admin['admin_id']);
+        session('admin_info', $admin);
         session('admin_auth', $auth);
         session('admin_auth_sign', dataAuthSign($auth));
     }
