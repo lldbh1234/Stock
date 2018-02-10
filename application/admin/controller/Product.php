@@ -16,7 +16,6 @@ class Product extends Base
     public function index()
     {
         $lists = $this->_logic->pageProductLists();
-        dump($lists);
         $this->assign("data", $lists['lists']);
         $this->assign("pages", $lists['pages']);
         return view();

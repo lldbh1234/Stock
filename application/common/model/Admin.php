@@ -30,4 +30,9 @@ class Admin extends BaseModel
         }
         return $where;
     }
+
+    public function hasOneRole()
+    {
+        return $this->hasOne("\\app\\common\\model\\Role", "id", "role");
+    }
 }

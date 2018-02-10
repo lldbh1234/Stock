@@ -11,9 +11,10 @@ class ProductLogic
         return $lists ? collection($lists)->toArray() : [];
     }
 
-    public function pageProductLists()
+    public function pageProductLists($pageSize = null)
     {
-        $lists = Product::paginate(1);
+        $pageSize = $pageSize ? : config("page_size");
+        $lists = Product::paginate($pageSize);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 }

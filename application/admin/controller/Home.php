@@ -1,9 +1,9 @@
 <?php
 namespace app\admin\controller;
 
-use think\captcha\Captcha;
-use think\Controller;
 use think\Request;
+use think\Controller;
+use app\admin\logic\LoginLogic;
 
 class Home extends Controller
 {
@@ -23,7 +23,8 @@ class Home extends Controller
                 if(!$validate->scene('login')->check(input("post."))){
                     return $this->fail($validate->getError());
                 }else{
-                    $adminId = model("Admin")->login(input("post.username"), input("post.password"));
+                    $logic = new LoginLogic();
+                    $adminId = $logic->login(input("post.username"), input("post.password"));
                     if(0 < $adminId){ // 登录成功，$uid 为登录的 UID
                         //跳转到登录前页面
                         return $this->ok(['url' => url("admin/Index/index")]);
@@ -43,16 +44,14 @@ class Home extends Controller
 
     public function logout(){
         if(isLogin()){
-            model('Admin')->logout();
+            session(config("admin_auth_key"), null);
+            session('admin_info', null);
+            session('admin_auth', null);
+            session('admin_auth_sign', null);
             session('[destroy]');
             return $this->redirect(url('admin/Home/login'));
         } else {
             return $this->redirect(url('admin/Home/login'));
         }
-    }
-
-    public function demo()
-    {
-        dump(spPassword("123456"));
     }
 }
