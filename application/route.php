@@ -20,7 +20,7 @@
 
 ];*/
 use think\Route;
-// 注册路由到index模块的News控制器的read操作
+
 Route::group(["domain" => "stock.lc"], function() {
     // Index
     Route::any('/$','index/Index/index');
@@ -39,7 +39,6 @@ Route::group(["domain" => "stock.lc"], function() {
         Route::any('welcome','admin/Index/welcome');
         Route::any('login', 'admin/Home/login');
         Route::any('logout', 'admin/Home/logout');
-        Route::any('demo', 'admin/Home/demo');
 
         // 组织架构
         Route::group("team", function () {
