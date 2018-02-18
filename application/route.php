@@ -56,6 +56,7 @@ Route::group(["domain" => "stock.lc"], function() {
         // 产品管理
         Route::group("product", function(){
             Route::any('index', 'admin/Product/index');  // 产品列表
+            Route::any('create', 'admin/Product/add');
         });
     });
 });

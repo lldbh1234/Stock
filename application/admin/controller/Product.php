@@ -20,4 +20,12 @@ class Product extends Base
         $this->assign("pages", $lists['pages']);
         return view();
     }
+
+    public function add()
+    {
+        if(request()->isPost()){
+            return "add action";
+        }
+        return view();
+    }
 }

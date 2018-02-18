@@ -14,7 +14,7 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
-			<a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','admin-role-add.html','800')">
+			<a class="btn btn-primary radius" href="javascript:;" onclick="product_add('添加角色','{:url("admin/Product/add")}','', '510')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加产品
 			</a> </span>
 		<span class="r">共有数据：<strong>{$data.total}</strong> 条</span>
@@ -87,5 +87,10 @@
 {/block}
 
 {block name="script"}
-
+<script>
+/*用户-添加*/
+function product_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+</script>
 {/block}
