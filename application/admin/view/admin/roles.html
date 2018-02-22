@@ -80,6 +80,7 @@
             var _oData = {id:_id},
                 _url = '{:url("admin/Admin/roleRemove")}',
                 _func = function (_resp) {
+                    parent.layer.close(index);
                     if (!_resp.state) {
                         layer.msg(_resp.info);
                     } else {

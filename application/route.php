@@ -65,13 +65,16 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('create', 'admin/Admin/roleCreate'); //添加角色
             Route::post('remove', 'admin/Admin/roleRemove'); //删除角色
             Route::post('delete', 'admin/Admin/rolePatchRemove'); //批量删除
-            Route::any('modify', 'admin/Admin/roleEdit'); //添加角色
+            Route::any('modify', 'admin/Admin/roleEdit'); //修改角色
         });
 
         // 管理员管理
         Route::group("admin", function(){
             Route::any('lists', 'admin/Admin/lists');  // 管理员列表
-            Route::any('add', 'admin/Admin/create');
+            Route::any('add', 'admin/Admin/create'); // 添加管理员
+            Route::any('edit', 'admin/Admin/modify'); // 修改管理员
+            Route::post('del', 'admin/Admin/remove'); // 删除管理员
+            Route::post('delete', 'admin/Admin/patchRemove'); //批量删除
         });
     });
 });

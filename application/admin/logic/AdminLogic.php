@@ -19,6 +19,12 @@ class AdminLogic
         return $lists ? collection($lists)->toArray() : [];
     }
 
+    public function allRoles()
+    {
+        $lists = Role::select();
+        return $lists ? collection($lists)->toArray() : [];
+    }
+
     public function roleCreate($data)
     {
         $res = Role::create($data);
@@ -105,5 +111,22 @@ class AdminLogic
         $res = Admin::create($data);
         $pk = model("Admin")->getPk();
         return $res ? $res->$pk : 0;
+    }
+
+    public function adminById($id)
+    {
+        $admin = Admin::find($id);
+        return $admin ? $admin->toArray() : [];
+    }
+
+    public function adminUpdate($data)
+    {
+        return Admin::update($data);
+    }
+
+    public function adminDelete($id)
+    {
+        $ids = is_array($id) ? implode(",", $id) : $id;
+        return Admin::destroy($ids);
     }
 }

@@ -82,8 +82,8 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="编辑" href="javascript:;" onclick="role_edit('角色编辑','{:url("admin/Admin/roleEdit", ['id' => $item.admin_id])}','','350')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-                <a title="删除" href="javascript:;" onclick="role_del(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+                <a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','{:url("admin/Admin/modify", ['id' => $item.admin_id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                <a title="删除" href="javascript:;" onclick="admin_del(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
             </td>
         </tr>
         {/volist}
@@ -104,15 +104,16 @@
         layer_show(title,url,w,h);
     }
 
-    /*function role_edit(title,url,w,h){
+    function admin_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
 
-    function role_del(_obj, _id) {
-        parent.layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+    function admin_del(_obj, _id) {
+        parent.layer.confirm('管理员删除不可逆，确认要删除吗？',function(index){
             var _oData = {id:_id},
-                _url = '{:url("admin/Admin/roleRemove")}',
+                _url = '{:url("admin/Admin/remove")}',
                 _func = function (_resp) {
+                    parent.layer.close(index);
                     if (!_resp.state) {
                         layer.msg(_resp.info);
                     } else {
@@ -132,7 +133,7 @@
     function datadel()
     {
         var _ids = new Array();
-        $(".role-lists").find("input[type*=checkbox]").each(function(index, el) {
+        $(".admin-lists").find("input[type*=checkbox]").each(function(index, el) {
             if( $(this).is(":checked") ){
                 var _id = $(this).val();
                 _ids.push(_id);
@@ -142,9 +143,9 @@
             layer.msg("请选择要删除的数据！");
             return false;
         }else{
-            parent.layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+            parent.layer.confirm('管理员删除不可逆，确认要删除吗？',function(index){
                 var _oData = {ids: _ids},
-                    _url = '{:url("admin/Admin/rolePatchRemove")}',
+                    _url = '{:url("admin/Admin/patchRemove")}',
                     _func = function (_resp) {
                         parent.layer.close(index);
                         if (!_resp.state) {
@@ -158,6 +159,6 @@
                 _ajaxPost(_url, _oData, _func);
             });
         }
-    }*/
+    }
 </script>
 {/block}

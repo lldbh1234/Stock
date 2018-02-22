@@ -3,7 +3,7 @@ namespace app\admin\model;
 
 class Admin extends \app\common\model\Admin
 {
-    protected $insert = ['password', 'create_at'];
+    protected $insert = ['create_at'];
 
     protected function setPasswordAttr($value)
     {

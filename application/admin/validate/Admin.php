@@ -6,6 +6,9 @@ use think\Validate;
 class Admin extends Validate
 {
     protected $rule = [
+        'id'        => 'require|min:1',
+        'ids'       => 'require|array|checkIds',
+        'admin_id'  => 'require|min:1',
         'username'  => 'require|unique:admin|length:4,32',
         'password'	=> 'require|length:6,16',
         'password2' => 'confirm:password',
@@ -16,6 +19,13 @@ class Admin extends Validate
     ];
 
     protected $message = [
+        'id.require'        => '系统提示：非法操作！',
+        'id.min'            => '系统提示：非法操作！',
+        'ids.require'       => '请选择要操作的数据！',
+        'ids.array'         => '请选择要操作的数据！',
+        'ids.checkIds'      => '请选择要操作的数据！',
+        'admin_id.require'  => '系统提示：非法操作！',
+        'admin_id.min'      => '系统提示：非法操作！',
         'username.require'  => '登录名不能为空！',
         'username.unique'   => '登录名已经存在！',
         'username.length'   => '登录名为4-32位字符！',
@@ -33,12 +43,27 @@ class Admin extends Validate
     ];
 
     protected $scene = [
-        'create'  =>  ['username', 'password', 'password2', 'nickname', 'mobile', 'role', 'status'],
+        'create'  => ['username', 'password', 'password2', 'nickname', 'mobile', 'role', 'status'],
+        'modify'  => [
+            'admin_id',
+            'password' => "length:6,16",
+            'nickname',
+            'mobile' => 'require|unique:admin,mobile^admin_id|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
+            'role',
+            'status'
+        ],
+        'remove' => ['id'],
+        'patch'  => ['ids'],
     ];
 
     public function checkRole($value)
     {
         $role = \app\admin\model\Role::find($value);
         return $role ? true : false;
+    }
+
+    protected function checkIds($value)
+    {
+        return count($value) > 0;
     }
 }

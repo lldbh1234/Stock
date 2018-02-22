@@ -135,4 +135,73 @@ class Admin extends Base
         $this->assign("roles", $roles);
         return view('create');
     }
+
+    public function modify($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Admin');
+            if(!$validate->scene('modify')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                unset($data['username']);
+                if(empty($data['password'])){
+                    unset($data['password']);
+                }
+                $res = $this->_logic->adminUpdate($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("编辑失败！");
+                }
+            }
+        }
+        $admin = $this->_logic->adminById($id);
+        if($admin){
+            $roles = $this->_logic->allRoles();
+            $this->assign("admin", $admin);
+            $this->assign("roles", $roles);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function remove()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Admin');
+            if(!$validate->scene('remove')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $res = $this->_logic->adminDelete(input("post.id"));
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("删除失败！");
+                }
+            }
+        }else{
+            return $this->fail("非法操作！");
+        }
+    }
+
+    public function patchRemove()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Admin');
+            if(!$validate->scene('patch')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $res = $this->_logic->adminDelete(input("post.ids/a"));
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("删除失败！");
+                }
+            }
+        }else{
+            return $this->fail("非法操作！");
+        }
+    }
 }
