@@ -58,5 +58,11 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('index', 'admin/Product/index');  // 产品列表
             Route::any('create', 'admin/Product/add');
         });
+
+        // 角色管理
+        Route::group("role", function(){
+            Route::any('lists', 'admin/Admin/roles');  // 角色列表
+            Route::any('create', 'admin/Admin/roleCreate'); //添加角色
+        });
     });
 });

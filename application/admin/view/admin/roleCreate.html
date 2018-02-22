@@ -1,0 +1,76 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}添加角色{/block}
+
+{block name="body"}
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-product-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="name" name="name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">角色备注：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea name="remark" cols="" rows="" class="textarea"  placeholder=""></textarea>
+                <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>状态：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <input name="show" type="radio" value="1" id="sex-1" checked>
+                    <label for="sex-1">开启</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" name="show" id="sex-2" value="0">
+                    <label for="sex-2">关闭</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" id="bth-submit" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+$(function(){
+    $('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox-blue',
+        radioClass: 'iradio-blue',
+        increaseArea: '20%'
+    });
+
+    $("#bth-submit").click(function(){
+        var _oData = $("form").serialize(),
+            _url = '{:url("admin/Admin/roleCreate")}',
+            _func = function (_resp) {
+                if (!_resp.state) {
+                    layer.msg(_resp.info);
+                } else {
+                    layer.msg('添加成功！', {time: 1500}, function(){
+                        if(_resp.data && _resp.data.url){
+                            parent.window.location.href = _resp.data.url;
+                        }else{
+                            parent.window.location.reload();
+                        }
+                    });
+                }
+            };
+        _ajaxPost(_url, _oData, _func);
+    });
+});
+</script>
+{/block}
