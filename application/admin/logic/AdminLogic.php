@@ -17,4 +17,10 @@ class AdminLogic
         $res = Role::create($data);
         return $res ? $res->id : 0;
     }
+
+    public function roleDelete($id)
+    {
+        $ids = is_array($id) ? implode(",", $id) : $id;
+        return Role::destroy($ids);
+    }
 }

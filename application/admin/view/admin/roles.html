@@ -36,7 +36,7 @@
         </thead>
         <tbody>
         {volist name="datas.data" id="item"}
-        <tr class="text-c">
+        <tr class="text-c role-lists">
             <td width="25"><input type="checkbox" value="{$item.id}" name=""></td>
             <td width="25">{$item.id}</td>
             <td>{$item.name}</td>
@@ -49,8 +49,8 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-                <a title="删除" href="javascript:;" onclick="admin_role_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                <a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                <a title="删除" href="javascript:;" onclick="admin_role_del(this,{$item.id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
             </td>
         </tr>
         {/volist}
@@ -69,6 +69,58 @@
     /*用户-添加*/
     function role_add(title,url,w,h){
         layer_show(title,url,w,h);
+    }
+
+    function admin_role_del(_obj, _id) {
+        parent.layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+            var _oData = {id:_id},
+                _url = '{:url("admin/Admin/roleRemove")}',
+                _func = function (_resp) {
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('删除成功！', {time: 1500}, function(){
+                            if(_resp.data && _resp.data.url){
+                                parent.window.location.href = _resp.data.url;
+                            }else{
+                                $(_obj).parents("tr").remove();
+                            }
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+    function datadel()
+    {
+        var _ids = new Array();
+        $(".role-lists").find("input[type*=checkbox]").each(function(index, el) {
+            if( $(this).is(":checked") ){
+                var _id = $(this).val();
+                _ids.push(_id);
+            }
+        });
+        if(_ids.length == 0){
+            layer.msg("请选择要删除的数据！");
+            return false;
+        }else{
+            parent.layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+                var _oData = {ids: _ids},
+                    _url = '{:url("admin/Admin/rolePatchRemove")}',
+                    _func = function (_resp) {
+                        parent.layer.close(index);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('删除成功！', {time: 1500}, function(){
+                                window.location.reload();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
+        }
     }
 </script>
 {/block}

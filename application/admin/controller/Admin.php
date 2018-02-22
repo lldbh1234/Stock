@@ -38,4 +38,42 @@ class Admin extends Base
         }
         return view();
     }
+
+    public function roleRemove()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Role');
+            if(!$validate->scene('remove')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $res = $this->_logic->roleDelete(input("post.id"));
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("删除失败！");
+                }
+            }
+        }else{
+            return $this->fail("非法操作！");
+        }
+    }
+
+    public function rolePatchRemove()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Role');
+            if(!$validate->scene('patch')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $res = $this->_logic->roleDelete(input("post.ids/a"));
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("删除失败！");
+                }
+            }
+        }else{
+            return $this->fail("非法操作！");
+        }
+    }
 }
