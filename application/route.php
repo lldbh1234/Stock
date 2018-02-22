@@ -70,7 +70,8 @@ Route::group(["domain" => "stock.lc"], function() {
 
         // 管理员管理
         Route::group("admin", function(){
-            Route::any('lists', 'admin/Admin/lists');  // 角色列表
+            Route::any('lists', 'admin/Admin/lists');  // 管理员列表
+            Route::any('add', 'admin/Admin/create');
         });
     });
 });

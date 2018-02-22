@@ -1,8 +1,8 @@
 <?php
 namespace app\admin\controller;
 
-use app\admin\logic\AdminLogic;
 use think\Request;
+use app\admin\logic\AdminLogic;
 
 class Admin extends Base
 {
@@ -103,9 +103,36 @@ class Admin extends Base
 
     public function lists()
     {
-        $_res = $this->_logic->pageAdminLists();
+        $_res = $this->_logic->pageAdminLists(input(""));
+        $roles = $this->_logic->allEnableRoles();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("roles", $roles);
+        $this->assign("search", input(""));
         return view();
+    }
+
+    public function create()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Admin');
+            if(!$validate->scene('create')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                unset($data['password2']);
+                $data['pid'] = $this->_logic->getAdminPid();
+                $data['code'] = $this->_logic->getAdminCode($data['role']);
+                $adminId = $this->_logic->adminCreate($data);
+                if(0 < $adminId){
+                    return $this->ok();
+                } else {
+                    return $this->fail("添加失败！");
+                }
+            }
+        }
+        $roles = $this->_logic->allEnableRoles();
+        $this->assign("roles", $roles);
+        return view('create');
     }
 }

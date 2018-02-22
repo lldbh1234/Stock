@@ -14,8 +14,12 @@ class Admin extends BaseModel
                 // 微圈
                 $where['admin_id'] = manager()['admin_id'];
             }else{
-                if(!in_array(manager()['role'], [self::SERVICE_ROLE_ID, self::FINANCE_ROLE_ID])){
-                    $idArr = $arr =[manager()['admin_id']];
+                if(manager()['role'] == self::ADMIN_ROLE_ID){
+                    // 超级超级管理员
+                    $where['admin_id'] = ["NEQ", self::ADMINISTRATOR_ID];
+                }elseif(!in_array(manager()['role'], [self::SERVICE_ROLE_ID, self::FINANCE_ROLE_ID])){
+                    // 组织架构
+                    $idArr = $arr = [manager()['admin_id']];
                     do {
                         $idArr = self::where(["pid" => ["IN", $idArr]])->column("admin_id");
                         if (empty($idArr)) {
@@ -26,7 +30,9 @@ class Admin extends BaseModel
                     } while (true);
                     $where['admin_id'] = ["IN", $arr];
                 }else{
+                    // 财务、客服
                     $where['admin_id'] = ["NEQ", self::ADMINISTRATOR_ID];
+                    $where['role'] = ["NEQ", self::ADMIN_ROLE_ID];
                 }
             }
         }

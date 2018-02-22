@@ -12,12 +12,35 @@
     </a>
 </nav>
 <div class="page-container">
-    <div class="cl pd-5 bg-1 bk-gray">
+    <form action="" method="get">
+    <div class="text-c">
+        <input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+        <span class="select-box" style="width:130px;height: 31px;">
+            <select class="select" name="role" size="1">
+                <option value="">所属角色</option>
+                {volist name="roles" id="item"}
+                <option value="{$item.id}" {if condition="isset($search.role) AND $search.role eq $item.id"}selected{/if}>{$item.name}</option>
+                {/volist}
+            </select>
+        </span>
+        <span class="select-box" style="width:70px;height: 31px;">
+            <select class="select" name="status" size="1">
+                <option value="">状态</option>
+                <option value="0" {if condition="isset($search.status) AND $search.status heq '0'"}selected{/if}>正常</option>
+                <option value="1" {if condition="isset($search.status) AND $search.status heq '1'"}selected{/if}>禁用</option>
+            </select>
+        </span>
+        <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+    </div>
+    </form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
             <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont  Hui-iconfont-del3"></i> 批量删除
             </a>
-			<a class="btn btn-primary radius" href="javascript:;" onclick="role_add('添加管理员','{:url("admin/Admin/roleCreate")}','', '350')">
+			<a class="btn btn-primary radius" href="javascript:;" onclick="admin_add('添加管理员','{:url("admin/Admin/create")}','', '500')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加管理员
             </a>
         </span>
@@ -77,11 +100,11 @@
 {block name="script"}
 <script>
     /*用户-添加*/
-    function role_add(title,url,w,h){
+    function admin_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
 
-    function role_edit(title,url,w,h){
+    /*function role_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
 
@@ -135,6 +158,6 @@
                 _ajaxPost(_url, _oData, _func);
             });
         }
-    }
+    }*/
 </script>
 {/block}

@@ -28,6 +28,7 @@ if(!function_exists("spComparePassword")) {
         return spPassword($password) == $password_in_db;
     }
 }
+
 /**
  * 是否登录
  */
@@ -70,5 +71,37 @@ if(!function_exists("dataAuthSign")){
         $code = http_build_query($data); //url编码并生成query字符串
         $sign = sha1($code); //生成签名
         return $sign;
+    }
+}
+
+/**
+ * 产生随机字符串
+ * @param $length 字符串长度
+ * @param $num 是否纯数字
+ * @return string
+ */
+if(!function_exists("randomString")) {
+    function randomString($length, $num = false)
+    {
+        if ($num) {
+            $code_array = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        } else {
+            //"0","1","l","i","o","L","I","O",
+            $code_array = array(
+                "2", "3", "4", "5", "6", "7", "8", "9",
+                "a", "b", "c", "d", "e", "f", "g", "h",
+                "j", "k", "m", "n", "p", "q", "r", "s",
+                "t", "u", "v", "w", "x", "y", "z",
+                "A", "B", "C", "D", "E", "F", "G", "H",
+                "J", "K", "M", "N", "P", "Q", "R", "S",
+                "T", "U", "V", "W", "X", "Y", "Z"
+            );
+        }
+        $code_length = count($code_array) - 1;
+        $code = "";
+        for ($i = 0; $i < $length; $i++) {
+            $code .= $code_array[mt_rand(0, $code_length)];
+        }
+        return $code;
     }
 }
