@@ -43,4 +43,9 @@ class Admin extends BaseModel
     {
         return $this->hasOne("\\app\\common\\model\\Role", "id", "role");
     }
+
+    public function hasOneParent()
+    {
+        return $this->hasOne("\\app\\common\\model\\Admin", "admin_id", "pid");
+    }
 }

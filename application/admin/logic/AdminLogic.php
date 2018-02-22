@@ -129,4 +129,34 @@ class AdminLogic
         $ids = is_array($id) ? implode(",", $id) : $id;
         return Admin::destroy($ids);
     }
+
+    public function pageTeamLists($role = "settle", $pageSize = null)
+    {
+        $where = Admin::manager();
+        switch ($role){
+            case "settle": //结算中心
+                $where['role'] = Admin::SETTLE_ROLE_ID;
+                break;
+            case "operate": //运营中心
+                $where['role'] = Admin::OPERATE_ROLE_ID;
+                break;
+            case "member": //微会员
+                $where['role'] = Admin::MEMBER_ROLE_ID;
+                break;
+            case "ring": //微圈
+                $where['role'] = Admin::RING_ROLE_ID;
+                break;
+        }
+        $pageSize = $pageSize ? : config("page_size");
+        $lists = Admin::with(
+                    [
+                        "hasOneParent" => function($query){
+                            $query->field("password", true);
+                        }
+                    ])
+                    ->field("password", true)
+                    ->where($where)
+                    ->paginate($pageSize, false, ['query'=>request()->param()]);
+        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+    }
 }
