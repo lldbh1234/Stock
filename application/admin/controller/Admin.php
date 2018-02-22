@@ -76,4 +76,28 @@ class Admin extends Base
             return $this->fail("非法操作！");
         }
     }
+
+    public function roleEdit($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Role');
+            if(!$validate->scene('modify')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $res = $this->_logic->roleUpdate(input("post."));
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("编辑失败！");
+                }
+            }
+        }
+        $role = $this->_logic->roleById($id);
+        if($role){
+            $this->assign("role", $role);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
 }

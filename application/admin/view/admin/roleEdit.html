@@ -1,20 +1,21 @@
 {extend name="layouts/layout_iframe" /}
 
-{block name="title"}添加角色{/block}
+{block name="title"}编辑角色{/block}
 
 {block name="body"}
 <article class="page-container">
     <form action="" method="post" class="form form-horizontal" id="form-product-add">
+        <input type="hidden" value="{$role.id}" name="id">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="" placeholder="" id="name" name="name">
+                <input type="text" class="input-text" value="{$role.name|default=''}" placeholder="" id="name" name="name">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">角色备注：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <textarea name="remark" cols="" rows="" class="textarea"  placeholder=""></textarea>
+                <textarea name="remark" cols="" rows="" class="textarea"  placeholder="">{$role.remark|default=''}</textarea>
                 <!--<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>-->
             </div>
         </div>
@@ -22,11 +23,11 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>状态：</label>
             <div class="formControls col-xs-8 col-sm-7 skin-minimal">
                 <div class="radio-box">
-                    <input name="show" type="radio" value="1" id="sex-1" checked>
+                    <input name="show" type="radio" value="1" id="sex-1" {if condition="$role.show.value eq 1"}checked{/if}>
                     <label for="sex-1">开启</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" name="show" id="sex-2" value="0">
+                    <input type="radio" name="show" id="sex-2" value="0" {if condition="$role.show.value eq 0"}checked{/if}>
                     <label for="sex-2">关闭</label>
                 </div>
             </div>
@@ -55,12 +56,12 @@ $(function(){
 
     $("#bth-submit").click(function(){
         var _oData = $("form").serialize(),
-            _url = '{:url("admin/Admin/roleCreate")}',
+            _url = '{:url("admin/Admin/roleEdit")}',
             _func = function (_resp) {
                 if (!_resp.state) {
                     layer.msg(_resp.info);
                 } else {
-                    layer.msg('添加成功！', {time: 500}, function(){
+                    layer.msg('修改成功！', {time: 500}, function(){
                         if(_resp.data && _resp.data.url){
                             parent.window.location.href = _resp.data.url;
                         }else{

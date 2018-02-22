@@ -23,4 +23,15 @@ class AdminLogic
         $ids = is_array($id) ? implode(",", $id) : $id;
         return Role::destroy($ids);
     }
+
+    public function roleById($id)
+    {
+        $role = Role::find($id);
+        return $role ? $role->toArray() : [];
+    }
+
+    public function roleUpdate($data)
+    {
+        return Role::update($data);
+    }
 }

@@ -49,8 +49,8 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-                <a title="删除" href="javascript:;" onclick="admin_role_del(this,{$item.id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+                <a title="编辑" href="javascript:;" onclick="role_edit('角色编辑','{:url("admin/Admin/roleEdit", ['id' => $item.id])}','','350')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                <a title="删除" href="javascript:;" onclick="role_del(this,{$item.id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
             </td>
         </tr>
         {/volist}
@@ -71,7 +71,11 @@
         layer_show(title,url,w,h);
     }
 
-    function admin_role_del(_obj, _id) {
+    function role_edit(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function role_del(_obj, _id) {
         parent.layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
             var _oData = {id:_id},
                 _url = '{:url("admin/Admin/roleRemove")}',
@@ -79,7 +83,7 @@
                     if (!_resp.state) {
                         layer.msg(_resp.info);
                     } else {
-                        layer.msg('删除成功！', {time: 1500}, function(){
+                        layer.msg('删除成功！', {time: 500}, function(){
                             if(_resp.data && _resp.data.url){
                                 parent.window.location.href = _resp.data.url;
                             }else{
@@ -113,7 +117,7 @@
                         if (!_resp.state) {
                             layer.msg(_resp.info);
                         } else {
-                            layer.msg('删除成功！', {time: 1500}, function(){
+                            layer.msg('删除成功！', {time: 500}, function(){
                                 window.location.reload();
                             });
                         }

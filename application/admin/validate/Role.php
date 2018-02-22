@@ -31,6 +31,7 @@ class Role extends Validate
         'create' => ['name', 'remark', 'show'],
         'remove' => ['id'],
         'patch'  => ['ids'],
+        'modify' => ['id', 'name' => 'require|unique:role,name^id|length:1,64', 'remark', 'show'],
     ];
 
     protected function checkIds($value)
