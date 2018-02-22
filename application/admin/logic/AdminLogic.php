@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\logic;
 
+use app\admin\model\Admin;
 use app\admin\model\Role;
 
 class AdminLogic
@@ -33,5 +34,13 @@ class AdminLogic
     public function roleUpdate($data)
     {
         return Role::update($data);
+    }
+
+    public function pageAdminLists($pageSize = null)
+    {
+        $where = Admin::manager();
+        $pageSize = $pageSize ? : config("page_size");
+        $lists = Admin::with("hasOneRole")->where($where)->paginate($pageSize);
+        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 }

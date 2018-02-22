@@ -1,0 +1,140 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}角色管理{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 管理员管理
+    <span class="c-gray en">&gt;</span> 管理员列表
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+    <div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+                <i class="Hui-iconfont  Hui-iconfont-del3"></i> 批量删除
+            </a>
+			<a class="btn btn-primary radius" href="javascript:;" onclick="role_add('添加管理员','{:url("admin/Admin/roleCreate")}','', '350')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加管理员
+            </a>
+        </span>
+        <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+    </div>
+    <table class="table table-border table-bordered table-hover table-bg">
+        <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" value="" name=""></th>
+            <th width="40">ID</th>
+            <th>登录名</th>
+            <th>昵称</th>
+            <th>手机号</th>
+            <th>所属角色</th>
+            <th>最后登录IP</th>
+            <th>最后登录时间</th>
+            <th>状态</th>
+            <th width="70">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="datas.data" id="item"}
+        <tr class="text-c admin-lists">
+            <td width="25"><input type="checkbox" value="{$item.admin_id}" name=""></td>
+            <td width="40">{$item.admin_id}</td>
+            <td>{$item.username}</td>
+            <td>{$item.nickname}</td>
+            <td>{$item.mobile}</td>
+            <td>{$item.has_one_role.name|default='系统管理员'}</td>
+            <td>{$item.last_ip}</td>
+            <td>
+                {if condition="$item.last_time"}{$item.last_time|date='Y-m-d H:i:s', ###}{/if}
+            </td>
+            <td>
+                {if condition="$item.status.value eq 0"}
+                <span class="label label-success radius">{$item.status.text}</span>
+                {else /}
+                <span class="label label-danger radius">{$item.status.text}</span>
+                {/if}
+            </td>
+            <td class="f-14">
+                <a title="编辑" href="javascript:;" onclick="role_edit('角色编辑','{:url("admin/Admin/roleEdit", ['id' => $item.admin_id])}','','350')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                <a title="删除" href="javascript:;" onclick="role_del(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+    /*用户-添加*/
+    function role_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function role_edit(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function role_del(_obj, _id) {
+        parent.layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+            var _oData = {id:_id},
+                _url = '{:url("admin/Admin/roleRemove")}',
+                _func = function (_resp) {
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('删除成功！', {time: 500}, function(){
+                            if(_resp.data && _resp.data.url){
+                                parent.window.location.href = _resp.data.url;
+                            }else{
+                                $(_obj).parents("tr").remove();
+                            }
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+    function datadel()
+    {
+        var _ids = new Array();
+        $(".role-lists").find("input[type*=checkbox]").each(function(index, el) {
+            if( $(this).is(":checked") ){
+                var _id = $(this).val();
+                _ids.push(_id);
+            }
+        });
+        if(_ids.length == 0){
+            layer.msg("请选择要删除的数据！");
+            return false;
+        }else{
+            parent.layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+                var _oData = {ids: _ids},
+                    _url = '{:url("admin/Admin/rolePatchRemove")}',
+                    _func = function (_resp) {
+                        parent.layer.close(index);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('删除成功！', {time: 500}, function(){
+                                window.location.reload();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
+        }
+    }
+</script>
+{/block}

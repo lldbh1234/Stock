@@ -100,4 +100,12 @@ class Admin extends Base
             return "非法操作！";
         }
     }
+
+    public function lists()
+    {
+        $_res = $this->_logic->pageAdminLists();
+        $this->assign("datas", $_res['lists']);
+        $this->assign("pages", $_res['pages']);
+        return view();
+    }
 }

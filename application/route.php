@@ -67,5 +67,10 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::post('delete', 'admin/Admin/rolePatchRemove'); //批量删除
             Route::any('modify', 'admin/Admin/roleEdit'); //添加角色
         });
+
+        // 管理员管理
+        Route::group("admin", function(){
+            Route::any('lists', 'admin/Admin/lists');  // 角色列表
+        });
     });
 });
