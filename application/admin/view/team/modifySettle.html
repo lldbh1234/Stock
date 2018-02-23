@@ -5,6 +5,7 @@
 {block name="body"}
 <article class="page-container">
     <form class="form form-horizontal" id="form-team-user-add">
+        <input type="hidden" name="admin_id" value="{$admin.admin_id}" />
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登录名：</label>
             <div class="formControls col-xs-8 col-sm-7">
@@ -12,7 +13,7 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登录密码：</label>
+            <label class="form-label col-xs-4 col-sm-3">登录密码：</label>
             <div class="formControls col-xs-8 col-sm-7">
                 <input type="password" class="input-text" autocomplete="off" value="" placeholder="填写则为修改密码" name="password">
             </div>
@@ -71,7 +72,7 @@ $(function(){
                 if (!_resp.state) {
                     layer.msg(_resp.info);
                 } else {
-                    layer.msg('添加成功！', {time: 500}, function(){
+                    layer.msg('修改成功！', {time: 500}, function(){
                         if(_resp.data && _resp.data.url){
                             parent.window.location.href = _resp.data.url;
                         }else{

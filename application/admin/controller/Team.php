@@ -66,7 +66,22 @@ class Team extends Base
     public function modifySettle($id = null)
     {
         if(request()->isPost()){
-
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('modify')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                unset($data['username']);
+                if(empty($data['password'])){
+                    unset($data['password']);
+                }
+                $res = $this->_logic->adminUpdate($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("编辑失败！");
+                }
+            }
         }
         $admin = $this->_logic->teamAdminById($id, "settle");
         if($admin){

@@ -45,7 +45,6 @@ class Team extends Validate
             'password' => "length:6,16",
             'nickname',
             'mobile' => 'require|unique:admin,mobile^admin_id|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
-            'role',
             'status'
         ],
     ];
