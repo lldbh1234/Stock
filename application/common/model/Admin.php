@@ -6,6 +6,18 @@ class Admin extends BaseModel
     protected $pk = "admin_id";
     protected $table = 'stock_admin';
 
+    protected $insert = ['create_at'];
+
+    protected function setPasswordAttr($value)
+    {
+        return spPassword($value);
+    }
+
+    protected function setCreateAtAttr()
+    {
+        return request()->time();
+    }
+
     public static function manager()
     {
         $where = [];
@@ -47,5 +59,10 @@ class Admin extends BaseModel
     public function hasOneParent()
     {
         return $this->hasOne("\\app\\common\\model\\Admin", "admin_id", "pid");
+    }
+
+    public function hasOneWechat()
+    {
+        return $this->hasOne("\\app\\common\\model\\AdminWechat", "admin_id", "admin_id");
     }
 }

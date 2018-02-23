@@ -276,6 +276,22 @@ class AdminLogic
         return $admin ? $admin->toArray() : [];
     }
 
+    public function ringWechat($id)
+    {
+        $wechat = Admin::with("hasOneWechat")->field("password", true)->find($id);
+        return $wechat ? $wechat->toArray() : [];
+    }
+
+    public function saveRingWechat($adminId, $data)
+    {
+        $admin = Admin::get($adminId);
+        if($admin->hasOneWechat){
+            return $admin->hasOneWechat->save($data);
+        }else{
+            return $admin->hasOneWechat()->save($data);
+        }
+    }
+
     public function depositRecharge($admin_id, $money)
     {
         return Admin::where(['admin_id' => $admin_id])->setInc('deposit', $money);
