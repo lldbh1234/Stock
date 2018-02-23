@@ -215,6 +215,11 @@ class AdminLogic
         if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
             $where["status"] = $filter['status'];
         }
+        // 上级结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $parents = Admin::where(["username" => ["LIKE", "%{$filter['settle']}%"]])->column("admin_id");
+            $where["pid"] = ["IN", $parents];
+        }
         $pageSize = $pageSize ? : config("page_size");
         $lists = Admin::with(
                     [
