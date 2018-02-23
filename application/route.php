@@ -52,6 +52,9 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('add-member', 'admin/Team/createMember');
             Route::any('edit-member', 'admin/Team/modifyMember');
             Route::any('ring', 'admin/Team/ring'); // 微圈
+            Route::any('add-ring', 'admin/Team/createRing');
+            Route::any('edit-ring', 'admin/Team/modifyRing');
+            Route::post('recharge', 'admin/Team/recharge');
             Route::any('create', 'admin/Team/createUser'); //添加用户
         });
 

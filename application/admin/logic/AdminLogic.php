@@ -233,6 +233,15 @@ class AdminLogic
             $parents = Admin::where($_where)->column("admin_id");
             $where["pid"] = ["IN", $parents];
         }
+        // 上级微会员
+        if(isset($filter['member']) && !empty($filter['member'])){
+            $_where = [
+                "username" => ["LIKE", "%{$filter['member']}%"],
+                "role" => Admin::MEMBER_ROLE_ID
+            ];
+            $parents = Admin::where($_where)->column("admin_id");
+            $where["pid"] = ["IN", $parents];
+        }
         $pageSize = $pageSize ? : config("page_size");
         $lists = Admin::with(
                     [
@@ -265,5 +274,10 @@ class AdminLogic
         }
         $admin = Admin::where($where)->find();
         return $admin ? $admin->toArray() : [];
+    }
+
+    public function depositRecharge($admin_id, $money)
+    {
+        return Admin::where(['admin_id' => $admin_id])->setInc('deposit', $money);
     }
 }

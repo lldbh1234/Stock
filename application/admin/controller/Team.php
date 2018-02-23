@@ -204,4 +204,76 @@ class Team extends Base
             return "非法操作！";
         }
     }
+
+    public function createRing()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('create')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                unset($data['password2']);
+                $data['role'] = \app\admin\model\Admin::RING_ROLE_ID;
+                $data['pid'] = $this->_logic->getAdminPid();
+                $data['code'] = $this->_logic->getAdminCode($data['role']);
+                $adminId = $this->_logic->adminCreate($data);
+                if(0 < $adminId){
+                    return $this->ok();
+                } else {
+                    return $this->fail("添加失败！");
+                }
+            }
+        }
+        return view();
+    }
+
+    public function modifyRing($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('modify')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                unset($data['username']);
+                if(empty($data['password'])){
+                    unset($data['password']);
+                }
+                $res = $this->_logic->adminUpdate($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("编辑失败！");
+                }
+            }
+        }
+        $admin = $this->_logic->teamAdminById($id, "ring");
+        if($admin){
+            $this->assign("admin", $admin);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function recharge()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('recharge')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $adminId = input("post.id/d");
+                $money = input("post.number/f");
+                $res = $this->_logic->depositRecharge($adminId, $money);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("充值失败！");
+                }
+            }
+        }
+        return $this->fail("系统提示：非法操作！");
+    }
 }

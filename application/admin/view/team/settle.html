@@ -99,5 +99,38 @@
     function admin_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
+
+    function admin_recharge(_obj, _id)
+    {
+        layer.prompt({
+            title: '保证金充值',
+            formType: 0,
+        }, function(_number, _prompt){
+            layer.close(_prompt);
+            var _oData = {id : _id, number : _number},
+                _url = '{:url("admin/Team/recharge")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('充值成功！', {time: 500}, function(){
+                            if(_resp.data && _resp.data.url){
+                                parent.window.location.href = _resp.data.url;
+                            }else{
+                                var _before = $(_obj).parents("tr").children("td:eq(7)").html(),
+                                    _before = parseFloat(_before.replace("," , "")),
+                                    _change = parseFloat(_number.replace("," , "")),
+                                    _after = _before + _change,
+                                    _after = number_format(_after);
+                                $(_obj).parents("tr").children("td:eq(7)").html(_after);
+                            }
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
 </script>
 {/block}
