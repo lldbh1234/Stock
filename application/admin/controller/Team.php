@@ -15,9 +15,10 @@ class Team extends Base
 
     public function settle()
     {
-        $_res = $this->_logic->pageTeamLists("settle");
+        $_res = $this->_logic->pageTeamLists("settle", input(""));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("search", input(""));
         return view();
     }
 
@@ -60,5 +61,19 @@ class Team extends Base
             }
         }
         return view();
+    }
+
+    public function modifySettle($id = null)
+    {
+        if(request()->isPost()){
+
+        }
+        $admin = $this->_logic->teamAdminById($id, "settle");
+        if($admin){
+            $this->assign("admin", $admin);
+            return view();
+        }else{
+            return "非法操作！";
+        }
     }
 }

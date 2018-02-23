@@ -14,10 +14,10 @@ class Admin extends BaseModel
                 // 微圈
                 $where['admin_id'] = manager()['admin_id'];
             }else{
-                if(manager()['role'] == self::ADMIN_ROLE_ID){
+                /*if(manager()['role'] == self::ADMIN_ROLE_ID){
                     // 超级超级管理员
                     $where['admin_id'] = ["NEQ", self::ADMINISTRATOR_ID];
-                }elseif(!in_array(manager()['role'], [self::SERVICE_ROLE_ID, self::FINANCE_ROLE_ID])){
+                }else*/if(!in_array(manager()['role'], [self::SERVICE_ROLE_ID, self::FINANCE_ROLE_ID])){
                     // 组织架构
                     $idArr = $arr = [manager()['admin_id']];
                     do {

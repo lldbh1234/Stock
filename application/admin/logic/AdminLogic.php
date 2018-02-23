@@ -182,7 +182,7 @@ class AdminLogic
         return Admin::destroy($ids);
     }
 
-    public function pageTeamLists($role = "settle", $pageSize = null)
+    public function pageTeamLists($role = "settle", $filter = [], $pageSize = null)
     {
         $where = Admin::manager();
         switch ($role){
@@ -199,6 +199,22 @@ class AdminLogic
                 $where['role'] = Admin::RING_ROLE_ID;
                 break;
         }
+        // 登录名
+        if(isset($filter['username']) && !empty($filter['username'])){
+            $where["username"] = ["LIKE", "%{$filter['username']}%"];
+        }
+        // 昵称
+        if(isset($filter['nickname']) && !empty($filter['nickname'])){
+            $where["nickname"] = ["LIKE", "%{$filter['nickname']}%"];
+        }
+        // 手机号
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){
+            $where["mobile"] = trim($filter['mobile']);
+        }
+        // 状态
+        if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
+            $where["status"] = $filter['status'];
+        }
         $pageSize = $pageSize ? : config("page_size");
         $lists = Admin::with(
                     [
@@ -210,5 +226,26 @@ class AdminLogic
                     ->where($where)
                     ->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+    }
+
+    public function teamAdminById($id, $role="settle")
+    {
+        $where['admin_id'] = $id;
+        switch ($role){
+            case "settle": //结算中心
+                $where['role'] = Admin::SETTLE_ROLE_ID;
+                break;
+            case "operate": //运营中心
+                $where['role'] = Admin::OPERATE_ROLE_ID;
+                break;
+            case "member": //微会员
+                $where['role'] = Admin::MEMBER_ROLE_ID;
+                break;
+            case "ring": //微圈
+                $where['role'] = Admin::RING_ROLE_ID;
+                break;
+        }
+        $admin = Admin::where($where)->find();
+        return $admin ? $admin->toArray() : [];
     }
 }
