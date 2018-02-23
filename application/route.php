@@ -43,6 +43,7 @@ Route::group(["domain" => "stock.lc"], function() {
         // 组织架构
         Route::group("team", function () {
             Route::any('settle', 'admin/Team/settle');  // 结算中心
+            Route::any('add-settle', 'admin/Team/createSettle'); //添加用户
             Route::any('operate', 'admin/Team/operate'); // 运营中心
             Route::any('member', 'admin/Team/member'); // 微会员
             Route::any('ring', 'admin/Team/ring'); // 微圈

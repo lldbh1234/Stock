@@ -39,7 +39,7 @@ class Team extends Base
         dump($_res['lists']['data']);
     }
 
-    public function createUser()
+    public function createSettle()
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Team');
@@ -48,6 +48,7 @@ class Team extends Base
             }else{
                 $data = input("post.");
                 unset($data['password2']);
+                $data['role'] = \app\admin\model\Admin::SETTLE_ROLE_ID;
                 $data['pid'] = $this->_logic->getAdminPid();
                 $data['code'] = $this->_logic->getAdminCode($data['role']);
                 $adminId = $this->_logic->adminCreate($data);
@@ -58,19 +59,6 @@ class Team extends Base
                 }
             }
         }
-        $referer = $_SERVER['HTTP_REFERER'];
-        if(strpos($referer, "settle") !== false){
-            $roleId = \app\admin\model\Admin::SETTLE_ROLE_ID;
-        }elseif(strpos($referer, "operate") !== false){
-            $roleId = \app\admin\model\Admin::OPERATE_ROLE_ID;
-        }elseif(strpos($referer, "member") !== false){
-            $roleId = \app\admin\model\Admin::MEMBER_ROLE_ID;
-        }elseif(strpos($referer, "ring") !== false){
-            $roleId = \app\admin\model\Admin::RING_ROLE_ID;
-        }else{
-            return "非法操作！";
-        }
-        $this->assign("role", $roleId);
-        return view('create');
+        return view();
     }
 }

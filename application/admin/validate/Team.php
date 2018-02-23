@@ -13,7 +13,7 @@ class Team extends Validate
         'password2' => 'confirm:password',
         'nickname'  => 'max:32',
         'mobile'    => 'require|unique:admin|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
-        'role'      => 'require|checkRole',
+        //'role'      => 'require|checkRole',
         'status'    => 'require|in:0,1',
     ];
 
@@ -38,7 +38,8 @@ class Team extends Validate
     ];
 
     protected $scene = [
-        'create'  => ['username', 'password', 'password2', 'nickname', 'mobile', 'role', 'status'],
+        //'create'  => ['username', 'password', 'password2', 'nickname', 'mobile', 'role', 'status'],
+        'create'  => ['username', 'password', 'password2', 'nickname', 'mobile', 'status'],
         'modify'  => [
             'admin_id',
             'password' => "length:6,16",

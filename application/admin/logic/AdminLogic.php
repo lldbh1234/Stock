@@ -111,17 +111,18 @@ class AdminLogic
         // 所属角色
         if(isset($filter['role']) && !empty($filter['role'])){
             $where["role"] = $filter['role'];
+        }else{
+            $adminRoles = [
+                Admin::ADMIN_ROLE_ID,
+                Admin::SERVICE_ROLE_ID,
+                Admin::FINANCE_ROLE_ID,
+            ];
+            $where['role'] = ["IN", $adminRoles];
         }
         // 状态
         if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
             $where["status"] = $filter['status'];
         }
-        $adminRoles = [
-            Admin::ADMIN_ROLE_ID,
-            Admin::SERVICE_ROLE_ID,
-            Admin::FINANCE_ROLE_ID,
-        ];
-        $where['role'] = ["IN", $adminRoles];
         $pageSize = $pageSize ? : config("page_size");
         $lists = Admin::with("hasOneRole")->where($where)->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
