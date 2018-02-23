@@ -103,8 +103,8 @@ class Admin extends Base
 
     public function lists()
     {
-        $_res = $this->_logic->pageAdminLists(input(""));
-        $roles = $this->_logic->allEnableRoles();
+        $_res = $this->_logic->pageAdmins(input(""));
+        $roles = $this->_logic->allAdminRoles();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("roles", $roles);
@@ -131,7 +131,7 @@ class Admin extends Base
                 }
             }
         }
-        $roles = $this->_logic->allEnableRoles();
+        $roles = $this->_logic->allAdminRoles();
         $this->assign("roles", $roles);
         return view('create');
     }
@@ -158,7 +158,7 @@ class Admin extends Base
         }
         $admin = $this->_logic->adminById($id);
         if($admin){
-            $roles = $this->_logic->allRoles();
+            $roles = $this->_logic->allAdminRoles();
             $this->assign("admin", $admin);
             $this->assign("roles", $roles);
             return view();

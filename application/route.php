@@ -46,6 +46,7 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('operate', 'admin/Team/operate'); // 运营中心
             Route::any('member', 'admin/Team/member'); // 微会员
             Route::any('ring', 'admin/Team/ring'); // 微圈
+            Route::any('create', 'admin/Team/createUser'); //添加用户
         });
 
         // 插件管理

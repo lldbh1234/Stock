@@ -19,6 +19,22 @@ class AdminLogic
         return $lists ? collection($lists)->toArray() : [];
     }
 
+    // 不包括组织架构的角色列表
+    public function allAdminRoles()
+    {
+        $adminRoles = [
+            Admin::ADMIN_ROLE_ID,
+            Admin::SERVICE_ROLE_ID,
+            Admin::FINANCE_ROLE_ID,
+        ];
+        $where = [
+            "id"    => ["IN", $adminRoles],
+            "show"  => 1
+        ];
+        $lists = Role::where($where)->select();
+        return $lists ? collection($lists)->toArray() : [];
+    }
+
     public function allRoles()
     {
         $lists = Role::select();
@@ -71,6 +87,41 @@ class AdminLogic
         if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
             $where["status"] = $filter['status'];
         }
+        $pageSize = $pageSize ? : config("page_size");
+        $lists = Admin::with("hasOneRole")->where($where)->paginate($pageSize, false, ['query'=>request()->param()]);
+        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+    }
+
+    // 不包括组织架构的后台用户列表
+    public function pageAdmins($filter = [], $pageSize = null)
+    {
+        $where = Admin::manager();
+        // 登录名
+        if(isset($filter['username']) && !empty($filter['username'])){
+            $where["username"] = ["LIKE", "%{$filter['username']}%"];
+        }
+        // 昵称
+        if(isset($filter['nickname']) && !empty($filter['nickname'])){
+            $where["nickname"] = ["LIKE", "%{$filter['nickname']}%"];
+        }
+        // 手机号
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){
+            $where["mobile"] = $filter['mobile'];
+        }
+        // 所属角色
+        if(isset($filter['role']) && !empty($filter['role'])){
+            $where["role"] = $filter['role'];
+        }
+        // 状态
+        if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
+            $where["status"] = $filter['status'];
+        }
+        $adminRoles = [
+            Admin::ADMIN_ROLE_ID,
+            Admin::SERVICE_ROLE_ID,
+            Admin::FINANCE_ROLE_ID,
+        ];
+        $where['role'] = ["IN", $adminRoles];
         $pageSize = $pageSize ? : config("page_size");
         $lists = Admin::with("hasOneRole")->where($where)->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
