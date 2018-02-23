@@ -217,7 +217,20 @@ class AdminLogic
         }
         // 上级结算中心
         if(isset($filter['settle']) && !empty($filter['settle'])){
-            $parents = Admin::where(["username" => ["LIKE", "%{$filter['settle']}%"]])->column("admin_id");
+            $_where = [
+                "username" => ["LIKE", "%{$filter['settle']}%"],
+                "role" => Admin::SETTLE_ROLE_ID
+            ];
+            $parents = Admin::where($_where)->column("admin_id");
+            $where["pid"] = ["IN", $parents];
+        }
+        // 上级运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = [
+                "username" => ["LIKE", "%{$filter['operate']}%"],
+                "role" => Admin::OPERATE_ROLE_ID
+            ];
+            $parents = Admin::where($_where)->column("admin_id");
             $where["pid"] = ["IN", $parents];
         }
         $pageSize = $pageSize ? : config("page_size");
