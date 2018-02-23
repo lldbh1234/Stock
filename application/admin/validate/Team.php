@@ -18,6 +18,18 @@ class Team extends Validate
         'status'    => 'require|in:0,1',
         'id'        => 'require|min:1|checkId',
         'number'    => 'require|float|gt:0',
+        'name'      => 'require|max:64',
+        'domain'    => [
+            'require',
+            'regex' => '/^([a-z0-9]+([a-z0-9-]*(?:[a-z0-9]+))?.)?[a-z0-9]+([a-z0-9-]*(?:[a-z0-9]+))?(\.us|\.tv|\.org\.cn|\.org|\.net\.cn|\.net|\.mobi|\.me|\.la|\.info|\.hk|\.gov\.cn|\.edu|\.com\.cn|\.com|\.co\.jp|\.co|\.cn|\.cc|\.biz)$/i',
+            'max:64'
+        ],
+        'appid'     => 'require|alphaNum|max:64',
+        'appsecret' => 'require|alphaNum|max:64',
+        'token'     => 'alphaNum|max:64',
+        'sign_name' => 'max:64',
+        'sms_username' => 'alphaNum|max:64',
+        'sms_password' => 'alphaNum|max:64',
     ];
 
     protected $message = [
@@ -43,6 +55,24 @@ class Team extends Validate
         'number.require'    => '请输入充值金额！',
         'number.float'      => '充值金额为数字！',
         'number.gt'         => '充值金额必须大于0！',
+        'name.require'      => '微圈名不能为空！',
+        'name.max'          => '微圈名最大64个字符！',
+        'domain.require'    => '域名不能为空！',
+        'domain.regex'      => '域名不是有效域名！',
+        'domain.max'        => '域名最大64个字符！',
+        'appid.require'     => '公众号APPID不能为空！',
+        'appid.alphaNum'    => '公众号APPID格式错误！',
+        'appid.max'         => '公众号APPID最大64个字符！',
+        'appsecret.require' => '公众号秘钥不能为空！',
+        'appsecret.alphaNum' => '公众号秘钥格式错误！',
+        'appsecret.max'     => '公众号秘钥最大64个字符！',
+        'token.alphaNum'    => 'TOKEN格式错误！',
+        'token.max'         => 'TOKEN最大64个字符！',
+        'sign_name.max'     => '签名最大64个字符！',
+        'sms_username.alphaNum' => '短信用户名格式错误！',
+        'sms_username.max'  => '短信用户名最大64个字符！',
+        'sms_password.alphaNum' => '短信密码格式错误！',
+        'sms_password.max'  => '短信密码最大64个字符！',
     ];
 
     protected $scene = [
@@ -56,6 +86,7 @@ class Team extends Validate
             'status'
         ],
         'recharge' => ['id', 'number'],
+        'wechat' => ['id', 'name', 'domain', 'appid', 'appsecret', 'token', 'sign_name', 'sms_username', 'sms_password'],
     ];
 
     public function checkRole($value)

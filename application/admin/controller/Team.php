@@ -260,15 +260,20 @@ class Team extends Base
     public function ringWechat($id = null)
     {
         if(request()->isPost()){
-            $data = input("post.");
-            $data['create_by'] = manager()['admin_id'];
-            $adminId = $data['id'];
-            unset($data['id']);
-            $res = $this->_logic->saveRingWechat($adminId, $data);
-            if($res !== false){
-                return $this->ok();
-            } else {
-                return $this->fail("配置失败！");
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('wechat')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                $data['create_by'] = manager()['admin_id'];
+                $adminId = $data['id'];
+                unset($data['id']);
+                $res = $this->_logic->saveRingWechat($adminId, $data);
+                if($res !== false){
+                    return $this->ok();
+                } else {
+                    return $this->fail("配置失败！");
+                }
             }
         }
         $ring = $this->_logic->ringWechat($id);
