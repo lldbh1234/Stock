@@ -39,7 +39,7 @@
 		</thead>
 		<tbody>
 		{volist name="datas.data" id="item"}
-		<tr class="text-c">
+		<tr class="text-c mode-lists">
 			<td><input type="checkbox" value="{$item.mode_id}" name="id"></td>
 			<td>{$item.mode_id}</td>
 			<td>{$item.name}</td>
@@ -85,7 +85,7 @@
     function mode_del(_obj, _id) {
         parent.layer.confirm('确认要删除交易模式吗？',function(index){
             var _oData = {id:_id},
-                _url = '{:url("admin/Mode/remove")}',
+                _url = '{:url("admin/Mode/remove", ["act" => "single"])}',
                 _func = function (_resp) {
                     parent.layer.close(index);
                     if (!_resp.state) {
@@ -102,6 +102,37 @@
                 };
             _ajaxPost(_url, _oData, _func);
         });
+    }
+
+    function datadel()
+    {
+        var _ids = new Array();
+        $(".mode-lists").find("input[type*=checkbox]").each(function(index, el) {
+            if( $(this).is(":checked") ){
+                var _id = $(this).val();
+                _ids.push(_id);
+            }
+        });
+        if(_ids.length == 0){
+            layer.msg("请选择要删除的数据！");
+            return false;
+        }else{
+            parent.layer.confirm('确认要删除交易模式吗？',function(index){
+                var _oData = {ids: _ids},
+                    _url = '{:url("admin/Mode/remove", ["act" => "patch"])}',
+                    _func = function (_resp) {
+                        parent.layer.close(index);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('删除成功！', {time: 500}, function(){
+                                window.location.reload();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
+        }
     }
 </script>
 {/block}

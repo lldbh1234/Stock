@@ -9,6 +9,7 @@ class Mode extends Validate
 {
     protected $rule = [
         'id'        => 'require|gt:0',
+        'ids'       => 'require|array|checkIds',
         "mode_id"   => "require|gt:0",
         "name"      => "require|unique:mode|max:32",
         "product_id"    => "require|checkProduct",
@@ -23,6 +24,9 @@ class Mode extends Validate
     protected $message = [
         'id.require'    => '系统提示：非法操作！',
         'id.min'        => '系统提示：非法操作！',
+        'ids.require'   => '请选择要操作的数据！',
+        'ids.array'     => '请选择要操作的数据！',
+        'ids.checkIds'  => '请选择要操作的数据！',
         'mode_id.require' => '系统提示：非法操作！',
         'mode_id.gt'    => '系统提示：非法操作！',
         "name.require"  => "模式名称不能为空！",
@@ -62,6 +66,7 @@ class Mode extends Validate
             "status"
         ],
         'remove' => ['id'],
+        'patch'  => ['ids'],
     ];
 
     public function checkProduct($value)
@@ -75,5 +80,10 @@ class Mode extends Validate
         $_where = ["type" => "mode", "code" => $value];
         $plugins = Plugins::where($_where)->find();
         return $plugins ? true : false;
+    }
+
+    protected function checkIds($value)
+    {
+        return count($value) > 0;
     }
 }

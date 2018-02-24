@@ -76,15 +76,30 @@ class Mode extends Base
     public function remove()
     {
         if(request()->isPost()){
+            $act = input("act/s", "single");
             $validate = \think\Loader::validate('Mode');
-            if(!$validate->scene('remove')->check(input("post."))){
-                return $this->fail($validate->getError());
+            if($act == "patch"){
+                // 批量
+                if(!$validate->scene('patch')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $res = $this->_logic->deleteMode(input("post.ids/a"));
+                    if($res){
+                        return $this->ok();
+                    } else {
+                        return $this->fail("删除失败！");
+                    }
+                }
             }else{
-                $res = $this->_logic->deleteMode(input("post.id"));
-                if($res){
-                    return $this->ok();
-                } else {
-                    return $this->fail("删除失败！");
+                if(!$validate->scene('remove')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $res = $this->_logic->deleteMode(input("post.id"));
+                    if($res){
+                        return $this->ok();
+                    } else {
+                        return $this->fail("删除失败！");
+                    }
                 }
             }
         }else{
