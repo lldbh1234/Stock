@@ -74,6 +74,8 @@ Route::group(["domain" => "stock.lc"], function() {
         Route::group("mode", function(){
             Route::any('lists', 'admin/Mode/index');
             Route::any('add', 'admin/Mode/create');
+            Route::any('edit', 'admin/Mode/modify');
+            Route::post('delete', 'admin/Mode/remove');
         });
 
         // 角色管理

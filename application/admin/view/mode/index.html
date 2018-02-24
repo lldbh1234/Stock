@@ -30,9 +30,9 @@
 			<th>模式名称</th>
 			<th>所属产品</th>
 			<th>模式类型</th>
-			<th>免息期（天）</th>
-			<th>建仓费（万元）</th>
-			<th>递延费（天/万元）</th>
+			<th>免息期（工作日）</th>
+			<th>建仓费（元/万元）</th>
+			<th>递延费（元/天/万元）</th>
 			<th>状态</th>
 			<th width="70">操作</th>
 		</tr>
@@ -55,7 +55,10 @@
 				<span class="label label-danger radius">{$item.status.text}</span>
 				{/if}
 			</td>
-			<td class="f-14"><a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_role_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+			<td class="f-14">
+				<a title="编辑" href="javascript:;" onclick="mode_edit('编辑交易模式','{:url("admin/Mode/modify", ['id' => $item.mode_id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+				<a title="删除" href="javascript:;" onclick="mode_del(this,{$item.mode_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+			</td>
 		</tr>
 		{/volist}
 		</tbody>
@@ -73,6 +76,32 @@
     /*用户-添加*/
     function mode_add(title,url,w,h){
         layer_show(title,url,w,h);
+    }
+
+    function mode_edit(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function mode_del(_obj, _id) {
+        parent.layer.confirm('确认要删除交易模式吗？',function(index){
+            var _oData = {id:_id},
+                _url = '{:url("admin/Mode/remove")}',
+                _func = function (_resp) {
+                    parent.layer.close(index);
+                    if (!_resp.state) {
+                        parent.layer.msg(_resp.info);
+                    } else {
+                        layer.msg('删除成功！', {time: 500}, function(){
+                            if(_resp.data && _resp.data.url){
+                                parent.window.location.href = _resp.data.url;
+                            }else{
+                                $(_obj).parents("tr").remove();
+                            }
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
     }
 </script>
 {/block}

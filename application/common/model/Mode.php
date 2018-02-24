@@ -9,6 +9,11 @@ class Mode extends BaseModel
 
     protected $insert = ['create_at'];
 
+    protected function setSortAttr($value)
+    {
+        return is_numeric($value) ? $value : 50;
+    }
+
     protected function setCreateAtAttr()
     {
         return request()->time();

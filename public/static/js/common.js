@@ -6,7 +6,7 @@ function _ajaxPost(_url, _data, _func)
         data : _data,
         dataType : 'json',
         error: function(request) {
-            layer.msg("服务器繁忙, 请联系管理员!");
+            layer.msg("服务器繁忙, 请联系管理员!", {zIndex: 19900710});
         },
         success: _func
     });

@@ -1,14 +1,15 @@
 {extend name="layouts/layout_iframe" /}
 
-{block name="title"}添加交易模式{/block}
+{block name="title"}修改交易模式{/block}
 
 {block name="body"}
 <article class="page-container">
     <form class="form form-horizontal" id="form-team-user-add">
+        <input type="hidden" name="mode_id" value="{$mode.mode_id}" />
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>模式名称：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="" placeholder="" name="name">
+                <input type="text" class="input-text" value="{$mode.name}" placeholder="" name="name">
             </div>
         </div>
         <div class="row cl">
@@ -16,7 +17,7 @@
             <div class="formControls col-xs-8 col-sm-7"> <span class="select-box" style="width:50%;">
 			<select class="select" name="product_id" size="1">
 				{volist name="products" id="item"}
-                <option value="{$item.id}">{$item.name}</option>
+                <option value="{$item.id}" {if condition="$mode.product_id eq $item.id"}selected{/if}>{$item.name}</option>
                 {/volist}
 			</select>
 			</span> </div>
@@ -26,7 +27,7 @@
             <div class="formControls col-xs-8 col-sm-7"> <span class="select-box" style="width:50%;">
 			<select class="select" name="plugins_code" size="1">
 				{volist name="plugins" id="item"}
-                <option value="{$item.code}">{$item.name}</option>
+                <option value="{$item.code}" {if condition="$mode.plugins_code eq $item.code"}selected{/if}>{$item.name}</option>
                 {/volist}
 			</select>
 			</span> </div>
@@ -34,39 +35,39 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>免息期：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="" placeholder="" name="free">
+                <input type="text" class="input-text" value="{$mode.free}" placeholder="" name="free">
                 <p class="textarea-numberbar" style="color: #b3abab;">工作日</p>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>建仓费：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="" placeholder="" name="jiancang">
+                <input type="text" class="input-text" value="{$mode.jiancang}" placeholder="" name="jiancang">
                 <p class="textarea-numberbar" style="color: #b3abab;">元/万元</p>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>递延费：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="" placeholder="" name="defer">
+                <input type="text" class="input-text" value="{$mode.defer}" placeholder="" name="defer">
                 <p class="textarea-numberbar" style="color: #b3abab;">元/天/万元</p>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">排序：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="" placeholder="50" name="sort">
+                <input type="text" class="input-text" value="{$mode.sort}" placeholder="50" name="sort">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>状态：</label>
             <div class="formControls col-xs-8 col-sm-7 skin-minimal">
                 <div class="radio-box">
-                    <input name="status" type="radio" value="0" id="sex-1" checked>
+                    <input name="status" type="radio" value="0" id="sex-1" {if condition="$mode.status.value eq 0"}checked{/if}>
                     <label for="sex-1">开启</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" name="status" id="sex-2" value="1">
+                    <input type="radio" name="status" id="sex-2" value="1" {if condition="$mode.status.value eq 1"}checked{/if}>
                     <label for="sex-2">关闭</label>
                 </div>
             </div>
@@ -95,12 +96,12 @@ $(function(){
 
     $("#bth-submit").click(function(){
         var _oData = $("form").serialize(),
-            _url = '{:url("admin/Mode/create")}',
+            _url = '{:url("admin/Mode/modify")}',
             _func = function (_resp) {
                 if (!_resp.state) {
                     layer.msg(_resp.info);
                 } else {
-                    layer.msg('添加成功！', {time: 500}, function(){
+                    layer.msg('修改成功！', {time: 500}, function(){
                         if(_resp.data && _resp.data.url){
                             parent.window.location.href = _resp.data.url;
                         }else{
