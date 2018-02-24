@@ -94,12 +94,10 @@ CREATE TABLE IF NOT EXISTS `stock_admin_wechat` (
   PRIMARY KEY (`admin_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='微圈公众号信息表';
 
--- 正在导出表  stock.stock_admin_wechat 的数据：3 rows
+-- 正在导出表  stock.stock_admin_wechat 的数据：0 rows
 /*!40000 ALTER TABLE `stock_admin_wechat` DISABLE KEYS */;
 INSERT INTO `stock_admin_wechat` (`admin_id`, `name`, `domain`, `appid`, `appsecret`, `token`, `sign_name`, `sms_username`, `sms_password`, `create_by`, `create_at`) VALUES
-	(11, '测试用户', 'aaa.iwanbar.com.cn', '1111111111', '2222222222', '12121212', '1111111', '', '', 1, 1519388561),
-	(17, '梁健', 'www.baidu.com', '2222222', '3333333', '22222222222222', '2222222222222', '222222222222222', '222222222222', 1, 1519388950),
-	(6, '微圈', 'qq.com', '6666666666', '6666666666666', '66666666666666', '666666666666', '666666666666', '666666666666', 1, 1519389082);
+	(5, '微会员', 'www.iwanbar.com', '1111111', '1111111111111111', '111111111111111', '111111111111', '111111111111', '111111111111', 1, 1519464132);
 /*!40000 ALTER TABLE `stock_admin_wechat` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_ai 结构
@@ -3750,13 +3748,11 @@ CREATE TABLE IF NOT EXISTS `stock_mode` (
   KEY `plugins_code` (`plugins_code`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='交易模式';
 
--- 正在导出表  stock.stock_mode 的数据：1 rows
+-- 正在导出表  stock.stock_mode 的数据：2 rows
 /*!40000 ALTER TABLE `stock_mode` DISABLE KEYS */;
 INSERT INTO `stock_mode` (`mode_id`, `product_id`, `plugins_code`, `name`, `free`, `jiancang`, `defer`, `sort`, `status`, `create_at`) VALUES
 	(1, 1, 'Tn', 'T+5', 5, 19.00, 8.00, 50, 0, 0),
-	(2, 1, 'Tn', 'T+7', 7, 1.80, 1.90, 50, 0, 1519458410),
-	(3, 1, 'Tn', 'T+15', 15, 2.00, 2.30, 50, 0, 1519458658),
-	(5, 1, 'Tn', 'T+20', 20, 2.50, 3.30, 1, 0, 1519458740);
+	(3, 1, 'Tn', 'T+15', 15, 2.00, 2.30, 50, 0, 1519458658);
 /*!40000 ALTER TABLE `stock_mode` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_mode_deposit 结构
@@ -3770,10 +3766,15 @@ CREATE TABLE IF NOT EXISTS `stock_mode_deposit` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
   PRIMARY KEY (`id`),
   KEY `mode_id` (`mode_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='交易模式保证金列表';
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='交易模式保证金列表';
 
 -- 正在导出表  stock.stock_mode_deposit 的数据：0 rows
 /*!40000 ALTER TABLE `stock_mode_deposit` DISABLE KEYS */;
+INSERT INTO `stock_mode_deposit` (`id`, `mode_id`, `name`, `money`, `sort`, `status`) VALUES
+	(1, 1, '500元', 500.00, 50, 0),
+	(2, 3, '500元', 500.00, 30, 0),
+	(3, 3, '700元', 700.00, 50, 0),
+	(5, 3, '1500元', 1500.00, 50, 0);
 /*!40000 ALTER TABLE `stock_mode_deposit` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_mode_lever 结构
