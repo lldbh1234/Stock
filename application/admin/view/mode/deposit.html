@@ -1,12 +1,13 @@
 ﻿{extend name="layouts/layout_iframe" /}
 
-{block name="title"}交易模式列表{/block}
+{block name="title"}保证金列表{/block}
 
 {block name="body"}
 <nav class="breadcrumb">
 	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
 	<span class="c-gray en">&gt;</span> 交易模式
-	<span class="c-gray en">&gt;</span> 交易模式列表
+	{notempty name="mode_name"}<span class="c-gray en">&gt;</span> {$mode_name}交易模式{/notempty}
+	<span class="c-gray en">&gt;</span> 保证金列表
 	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
 		<i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
 	</a>
@@ -17,8 +18,8 @@
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
 				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
 			</a>
-			<a class="btn btn-primary radius" href="javascript:;" onclick="mode_add('添加交易模式','{:url("admin/Mode/create")}','','500')">
-				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加交易模式
+			<a class="btn btn-primary radius" href="javascript:;" onclick="deposit_add('添加保证金','{:url("admin/Mode/createDeposit")}','','350')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加保证金
 			</a> </span>
 		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
 	</div>
@@ -27,12 +28,9 @@
 		<tr class="text-c">
 			<th width="25"><input type="checkbox" value="" name=""></th>
 			<th width="40">ID</th>
-			<th>模式名称</th>
-			<th>所属产品</th>
-			<th>模式类型</th>
-			<th>免息期（工作日）</th>
-			<th>建仓费（元/万元）</th>
-			<th>递延费（元/天/万元）</th>
+			<th>保证金名称</th>
+			<th>保证金金额</th>
+			<th>排序</th>
 			<th>状态</th>
 			<th width="70">操作</th>
 		</tr>
@@ -40,14 +38,11 @@
 		<tbody>
 		{volist name="datas.data" id="item"}
 		<tr class="text-c mode-lists">
-			<td><input type="checkbox" value="{$item.mode_id}" name="id"></td>
-			<td>{$item.mode_id}</td>
+			<td><input type="checkbox" value="{$item.id}" name="id"></td>
+			<td>{$item.id}</td>
 			<td>{$item.name}</td>
-			<td>{$item.has_one_product.name}</td>
-			<td>{$item.has_one_plugins.name}</td>
-			<td>{$item.free}</td>
-			<td>{$item.jiancang|number_format=2}</td>
-			<td>{$item.defer|number_format=2}</td>
+			<td>{$item.money|number_format=2}</td>
+			<td>{$item.sort}</td>
 			<td>
 				{if condition="$item.status.value eq 0"}
 				<span class="label label-success radius">{$item.status.text}</span>
@@ -56,9 +51,8 @@
 				{/if}
 			</td>
 			<td class="f-14">
-				<a title="编辑" href="javascript:;" onclick="mode_edit('编辑交易模式','{:url("admin/Mode/modify", ['id' => $item.mode_id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-				<a title="保证金配置" href="javascript:;" onclick="mode_deposit('{$item.name}交易模式','{:url("admin/Mode/deposit", ['id' => $item.mode_id])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
-				<a title="删除" href="javascript:;" onclick="mode_del(this,{$item.mode_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+				<a title="编辑" href="javascript:;" onclick="deposit_edit('编辑保证金','{:url("admin/Mode/createDeposit", ['id' => $item.id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+				<a title="删除" href="javascript:;" onclick="deposit_del(this,{$item.mode_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
 			</td>
 		</tr>
 		{/volist}
@@ -75,27 +69,22 @@
 {block name="script"}
 <script>
     /*用户-添加*/
-    function mode_add(title,url,w,h){
+    function deposit_add(title,url,w,h){
+		var func = function(layero, index){
+            var body = layer.getChildFrame('body', index);
+            body.contents().find("input[name='mode_id']").val({$mode_id});
+		};
+        layer_show_2(title,url,w,h,func);
+    }
+
+    function deposit_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
 
-    function mode_edit(title,url,w,h){
-        layer_show(title,url,w,h);
-    }
-
-    function mode_deposit(title,url){
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
-
-    function mode_del(_obj, _id) {
-        parent.layer.confirm('确认要删除交易模式吗？',function(index){
+    function deposit_del(_obj, _id) {
+        parent.layer.confirm('确认要删除保证金吗？',function(index){
             var _oData = {id:_id},
-                _url = '{:url("admin/Mode/remove", ["act" => "single"])}',
+                _url = '{:url("admin/Mode/removeDeposit", ["act" => "single"])}',
                 _func = function (_resp) {
                     parent.layer.close(index);
                     if (!_resp.state) {
@@ -127,9 +116,9 @@
             layer.msg("请选择要删除的数据！");
             return false;
         }else{
-            parent.layer.confirm('确认要删除交易模式吗？',function(index){
+            parent.layer.confirm('确认要删除保证金吗？',function(index){
                 var _oData = {ids: _ids},
-                    _url = '{:url("admin/Mode/remove", ["act" => "patch"])}',
+                    _url = '{:url("admin/Mode/removeDeposit", ["act" => "patch"])}',
                     _func = function (_resp) {
                         parent.layer.close(index);
                         if (!_resp.state) {

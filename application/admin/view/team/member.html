@@ -78,6 +78,7 @@
             </td>
             <td class="f-14">
                 <a title="编辑" href="javascript:;" onclick="admin_edit('用户编辑','{:url("admin/Team/modifyMember", ['id' => $item.admin_id])}','','380')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                <a title="微信公众号" href="javascript:;" onclick="admin_wechat('{$item.username}-微信公众号','{:url("admin/Team/memberWechat", ['id' => $item.admin_id])}');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-share-weixin"></i></a>
                 <a title="保证金充值" href="javascript:;" onclick="admin_recharge(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
             </td>
         </tr>
@@ -101,6 +102,15 @@
 
     function admin_edit(title,url,w,h){
         layer_show(title,url,w,h);
+    }
+
+    function admin_wechat(title,url){
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
+        });
+        layer.full(index);
     }
 
     function admin_recharge(_obj, _id)

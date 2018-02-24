@@ -9,49 +9,49 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>微圈名：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$ring.has_one_wechat.name|default=$ring.username}" placeholder="" name="name">
+                <input type="text" class="input-text" value="{$member.has_one_wechat.name|default=$member.username}" placeholder="" name="name">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>域名：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$ring.has_one_wechat.domain|default=''}" placeholder="" name="domain">
+                <input type="text" class="input-text" value="{$member.has_one_wechat.domain|default=''}" placeholder="" name="domain">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>公众号APPID：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$ring.has_one_wechat.appid|default=''}" placeholder="" name="appid">
+                <input type="text" class="input-text" value="{$member.has_one_wechat.appid|default=''}" placeholder="" name="appid">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>公众号秘钥：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$ring.has_one_wechat.appsecret|default=''}" placeholder="" name="appsecret">
+                <input type="text" class="input-text" value="{$member.has_one_wechat.appsecret|default=''}" placeholder="" name="appsecret">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">TOKEN：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$ring.has_one_wechat.token|default=''}" placeholder="" name="token">
+                <input type="text" class="input-text" value="{$member.has_one_wechat.token|default=''}" placeholder="" name="token">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">签名：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$ring.has_one_wechat.sign_name|default=''}" placeholder="" name="sign_name">
+                <input type="text" class="input-text" value="{$member.has_one_wechat.sign_name|default=''}" placeholder="" name="sign_name">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">短信用户名：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$ring.has_one_wechat.sms_username|default=''}" placeholder="" name="sms_username">
+                <input type="text" class="input-text" value="{$member.has_one_wechat.sms_username|default=''}" placeholder="" name="sms_username">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">短信密码：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$ring.has_one_wechat.sms_password|default=''}" placeholder="" name="sms_password">
+                <input type="text" class="input-text" value="{$member.has_one_wechat.sms_password|default=''}" placeholder="" name="sms_password">
             </div>
         </div>
         <div class="row cl">
@@ -78,7 +78,7 @@ $(function(){
 
     $("#bth-submit").click(function(){
         var _oData = $("form").serialize(),
-            _url = '{:url("admin/Team/ringWechat")}',
+            _url = '{:url("admin/Team/memberWechat")}',
             _func = function (_resp) {
                 if (!_resp.state) {
                     layer.msg(_resp.info);

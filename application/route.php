@@ -51,10 +51,10 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('member', 'admin/Team/member'); // 微会员
             Route::any('add-member', 'admin/Team/createMember');
             Route::any('edit-member', 'admin/Team/modifyMember');
+            Route::any('member-wechat', 'admin/Team/memberWechat');
             Route::any('ring', 'admin/Team/ring'); // 微圈
             Route::any('add-ring', 'admin/Team/createRing');
             Route::any('edit-ring', 'admin/Team/modifyRing');
-            Route::any('ring-wechat', 'admin/Team/ringWechat');
             Route::post('recharge', 'admin/Team/recharge');
             Route::any('create', 'admin/Team/createUser'); //添加用户
         });
@@ -76,6 +76,8 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('add', 'admin/Mode/create');
             Route::any('edit', 'admin/Mode/modify');
             Route::post('delete', 'admin/Mode/remove');
+            Route::any('deposit', 'admin/Mode/deposit'); //保证金列表
+            Route::any('create-deposit', 'admin/Mode/createDeposit');
         });
 
         // 角色管理

@@ -35,4 +35,20 @@ class ModeLogic
         $ids = is_array($id) ? implode(",", $id) : $id;
         return Mode::destroy($ids);
     }
+
+    public function pageModeDeposits($modeId, $pageSize = null)
+    {
+        $lists = [];
+        $pages = null;
+        $modeName = "";
+        $mode = Mode::get($modeId);
+        if($mode){
+            $pageSize = $pageSize ? : config("page_size");
+            $_lists = $mode->hasManyDeposit()->paginate($pageSize);
+            $lists = $_lists->toArray();
+            $pages = $_lists->render();
+            $modeName = $mode->name;
+        }
+        return ["lists" => $lists, "pages" => $pages, "name" => $modeName];
+    }
 }

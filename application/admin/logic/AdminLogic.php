@@ -276,7 +276,7 @@ class AdminLogic
         return $admin ? $admin->toArray() : [];
     }
 
-    public function ringWechat($id)
+    public function memberWechat($id)
     {
         $wechat = Admin::with("hasOneWechat")->field("password", true)->find($id);
         return $wechat ? $wechat->toArray() : [];

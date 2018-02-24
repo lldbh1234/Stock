@@ -106,4 +106,22 @@ class Mode extends Base
             return $this->fail("非法操作！");
         }
     }
+
+    public function deposit($id)
+    {
+        $res = $this->_logic->pageModeDeposits($id);
+        $this->assign("datas", $res['lists']);
+        $this->assign("pages", $res['pages']);
+        $this->assign("mode_id", $id);
+        $this->assign("mode_name", $res['name']);
+        return view();
+    }
+
+    public function createDeposit()
+    {
+        if(request()->isPost()){
+            exit;
+        }
+        return view();
+    }
 }
