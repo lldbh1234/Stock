@@ -120,8 +120,81 @@ class Mode extends Base
     public function createDeposit()
     {
         if(request()->isPost()){
-            exit;
+            $validate = \think\Loader::validate('ModeDeposit');
+            if(!$validate->scene('create')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                $modeId = $data['mode_id'];
+                unset($data['mode_id']);
+                $depositId = $this->_logic->createModeDeposit($modeId, $data);
+                if(0 < $depositId){
+                    return $this->ok();
+                } else {
+                    return $this->fail("添加失败！");
+                }
+            }
         }
         return view();
+    }
+
+    public function modifyDeposit($mode_id = null, $id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('ModeDeposit');
+            if(!$validate->scene('modify')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $id = input("post.id/d");
+                $modeId = input("post.mode_id/d");
+                $res = $this->_logic->updateModeDeposit($modeId, $id, input("post."));
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("修改失败！");
+                }
+            }
+        }
+        $deposit = $this->_logic->modeDepositById($mode_id, $id);
+        if($deposit){
+            $this->assign("deposit", $deposit);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function removeDeposit()
+    {
+        if(request()->isPost()){
+            $act = input("act/s", "single");
+            $validate = \think\Loader::validate('ModeDeposit');
+            if($act == "patch"){
+                // 批量
+                if(!$validate->scene('patch')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $res = $this->_logic->deleteModeDeposit(input("post.mode_id"), input("post.ids/a"));
+                    if($res){
+                        return $this->ok();
+                    } else {
+                        return $this->fail("删除失败！");
+                    }
+                }
+            }else{
+                if(!$validate->scene('remove')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $res = $this->_logic->deleteModeDeposit(input("post.mode_id"), input("post.id"));
+                    if($res){
+                        return $this->ok();
+                    } else {
+                        return $this->fail("删除失败！");
+                    }
+                }
+            }
+        }else{
+            return $this->fail("非法操作！");
+        }
     }
 }

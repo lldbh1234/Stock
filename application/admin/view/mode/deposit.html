@@ -51,8 +51,8 @@
 				{/if}
 			</td>
 			<td class="f-14">
-				<a title="编辑" href="javascript:;" onclick="deposit_edit('编辑保证金','{:url("admin/Mode/createDeposit", ['id' => $item.id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-				<a title="删除" href="javascript:;" onclick="deposit_del(this,{$item.mode_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+				<a title="编辑" href="javascript:;" onclick="deposit_edit('编辑保证金','{:url("admin/Mode/modifyDeposit", ['mode_id' => $item.mode_id, 'id' => $item.id])}','','350')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+				<a title="删除" href="javascript:;" onclick="deposit_del(this, {$item.mode_id}, {$item.id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
 			</td>
 		</tr>
 		{/volist}
@@ -81,12 +81,12 @@
         layer_show(title,url,w,h);
     }
 
-    function deposit_del(_obj, _id) {
-        parent.layer.confirm('确认要删除保证金吗？',function(index){
-            var _oData = {id:_id},
+    function deposit_del(_obj, _mode_id, _id) {
+        layer.confirm('确认要删除保证金吗？',function(index){
+            var _oData = {mode_id:_mode_id, id:_id},
                 _url = '{:url("admin/Mode/removeDeposit", ["act" => "single"])}',
                 _func = function (_resp) {
-                    parent.layer.close(index);
+                    layer.close(index);
                     if (!_resp.state) {
                         parent.layer.msg(_resp.info);
                     } else {
@@ -116,11 +116,11 @@
             layer.msg("请选择要删除的数据！");
             return false;
         }else{
-            parent.layer.confirm('确认要删除保证金吗？',function(index){
-                var _oData = {ids: _ids},
+            layer.confirm('确认要删除保证金吗？',function(index){
+                var _oData = {mode_id:{$mode_id}, ids: _ids},
                     _url = '{:url("admin/Mode/removeDeposit", ["act" => "patch"])}',
                     _func = function (_resp) {
-                        parent.layer.close(index);
+                        layer.close(index);
                         if (!_resp.state) {
                             layer.msg(_resp.info);
                         } else {

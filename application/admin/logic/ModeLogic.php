@@ -44,11 +44,43 @@ class ModeLogic
         $mode = Mode::get($modeId);
         if($mode){
             $pageSize = $pageSize ? : config("page_size");
-            $_lists = $mode->hasManyDeposit()->paginate($pageSize);
+            $_lists = $mode->hasManyDeposit()->order("sort")->paginate($pageSize);
             $lists = $_lists->toArray();
             $pages = $_lists->render();
             $modeName = $mode->name;
         }
         return ["lists" => $lists, "pages" => $pages, "name" => $modeName];
+    }
+
+    public function createModeDeposit($modeId, $data)
+    {
+        $mode = Mode::find($modeId);
+        if($mode){
+            $res = $mode->hasManyDeposit()->save($data);
+            $pk = model("ModeDeposit")->getPk();
+            return $res ? $res->$pk : 0;
+        }
+        return 0;
+    }
+
+    public function modeDepositById($modeId, $id)
+    {
+        $res = Mode::find($modeId)->hasManyDeposit()->find($id);
+        return $res ? $res->toArray() : [];
+    }
+
+    public function updateModeDeposit($modeId, $id, $data)
+    {
+        $mode = Mode::find($modeId);
+        if($mode){
+            return $mode->hasManyDeposit()->find($id)->save($data);
+        }
+        return false;
+    }
+
+    public function deleteModeDeposit($modeId, $id)
+    {
+        $ids = is_array($id) ? implode(",", $id) : $id;
+        return Mode::find($modeId)->hasManyDeposit()->where(["id" => ["IN", $ids]])->delete();
     }
 }

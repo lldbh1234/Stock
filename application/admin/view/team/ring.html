@@ -51,6 +51,7 @@
             <th>返点百分比（%）</th>
             <th>保证金</th>
             <th>手续费总计</th>
+            <th>邀请码</th>
             <th>创建时间</th>
             <th>状态</th>
             <th width="70">操作</th>
@@ -68,6 +69,7 @@
             <td>{$item.point}</td>
             <td>{$item.deposit|number_format=2}</td>
             <td>{$item.total_fee|number_format=2}</td>
+            <td>{$item.code}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
             <td>
                 {if condition="$item.status.value eq 0"}

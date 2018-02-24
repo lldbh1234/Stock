@@ -77,7 +77,9 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('edit', 'admin/Mode/modify');
             Route::post('delete', 'admin/Mode/remove');
             Route::any('deposit', 'admin/Mode/deposit'); //保证金列表
-            Route::any('create-deposit', 'admin/Mode/createDeposit');
+            Route::any('add-deposit', 'admin/Mode/createDeposit');
+            Route::any('edit-deposit', 'admin/Mode/modifyDeposit');
+            Route::any('del-deposit', 'admin/Mode/removeDeposit');
         });
 
         // 角色管理
