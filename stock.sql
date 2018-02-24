@@ -55,19 +55,26 @@ CREATE TABLE IF NOT EXISTS `stock_admin` (
   UNIQUE KEY `code` (`code`),
   KEY `pid` (`pid`),
   KEY `role` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
 
--- 正在导出表  stock.stock_admin 的数据：~8 rows (大约)
+-- 正在导出表  stock.stock_admin 的数据：~14 rows (大约)
 /*!40000 ALTER TABLE `stock_admin` DISABLE KEYS */;
 INSERT INTO `stock_admin` (`admin_id`, `username`, `password`, `nickname`, `mobile`, `pid`, `role`, `company`, `realname`, `point`, `total_fee`, `deposit`, `code`, `last_ip`, `last_time`, `status`, `create_at`) VALUES
-	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0.00, 0.00, 'root', '127.0.0.1', 1518140840, 0, 1518085749),
-	(2, 'admin', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 1, NULL, NULL, 0, 0.00, 0.00, 'admin', '0.0.0.0', 0, 0, 1518085749),
+	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0.00, 0.00, 'root', '127.0.0.1', 1519435304, 0, 1518085749),
+	(2, 'admin', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 1, NULL, NULL, 0, 0.00, 0.00, 'admin', '127.0.0.1', 1519374793, 0, 1518085749),
 	(3, '结算中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 2, 2, NULL, NULL, 0, 0.00, 0.00, '111111', '127.0.0.1', 1518098557, 0, 1518085749),
 	(4, '运营中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 3, 3, NULL, NULL, 0, 0.00, 0.00, '22222222222', '0.0.0.0', 0, 0, 1518085749),
 	(5, '微会员', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 4, 4, NULL, NULL, 0, 0.00, 0.00, '333333', '0.0.0.0', 0, 0, 1518085749),
 	(6, '微圈', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 5, 5, NULL, NULL, 0, 0.00, 0.00, '44444', '127.0.0.1', 1518097308, 0, 1518085749),
-	(7, '客服', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 6, NULL, NULL, 0, 0.00, 0.00, NULL, '0.0.0.0', 0, 0, 1518085749),
-	(8, '财务', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 7, NULL, NULL, 0, 0.00, 0.00, NULL, '0.0.0.0', 0, 0, 1518085749);
+	(7, '客服', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', '', '15900000000', 0, 6, NULL, NULL, 0, 0.00, 0.00, NULL, '0.0.0.0', 0, 1, 1518085749),
+	(8, '财务', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 7, NULL, NULL, 0, 0.00, 0.00, NULL, '0.0.0.0', 0, 1, 1518085749),
+	(11, '测试用户', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', '测试用户', '15934854815', 5, 5, NULL, NULL, 0, 0.00, 2000.00, '31107666', '0.0.0.0', 0, 0, 1519292227),
+	(12, 'S201802223001', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'S201802223001', '15934854820', 2, 2, NULL, NULL, 0, 0.00, 3000.00, '3SG9jvDq', '0.0.0.0', 0, 0, 1519367225),
+	(13, 'S201802223002', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', 'S201802223002', '15934854816', 2, 2, NULL, NULL, 0, 0.00, 0.00, 'C6Xujuzb', '127.0.0.1', 1519372882, 0, 1519368678),
+	(14, 'O20180223001', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'O20180223001', '15934854817', 13, 3, NULL, NULL, 0, 0.00, 0.00, 'yNFAC34b', '0.0.0.0', 0, 0, 1519372956),
+	(15, 'O20180223002', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'O20180223002', '15934854818', 13, 3, NULL, NULL, 0, 0.00, 0.00, 'kJ9gzUZ9', '127.0.0.1', 1519374518, 0, 1519373042),
+	(16, 'M20180223001', '###84c7d8420d542acfcdb037ac1378b1bf', 'M20180223001', '15934854819', 15, 4, NULL, NULL, 0, 0.00, 0.00, 'eNUbw7m9', '127.0.0.1', 1519375163, 0, 1519374555),
+	(17, '梁健', '###84c7d8420d542acfcdb037ac1378b1bf', '梁健', '15934854821', 16, 5, NULL, NULL, 0, 0.00, 11100.00, '91287373', '0.0.0.0', 0, 0, 1519375226);
 /*!40000 ALTER TABLE `stock_admin` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_admin_wechat 结构
@@ -80,15 +87,19 @@ CREATE TABLE IF NOT EXISTS `stock_admin_wechat` (
   `appsecret` varchar(64) NOT NULL COMMENT '公众号秘钥',
   `token` varchar(64) DEFAULT NULL COMMENT 'token值',
   `sign_name` varchar(64) DEFAULT NULL COMMENT '签名',
-  `username` varchar(64) DEFAULT NULL COMMENT '短信用户名',
-  `password` varchar(64) DEFAULT NULL COMMENT '短信密码',
+  `sms_username` varchar(64) DEFAULT NULL COMMENT '短信用户名',
+  `sms_password` varchar(64) DEFAULT NULL COMMENT '短信密码',
   `create_by` int(10) NOT NULL COMMENT '添加者',
   `create_at` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`admin_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='微圈公众号信息表';
 
--- 正在导出表  stock.stock_admin_wechat 的数据：0 rows
+-- 正在导出表  stock.stock_admin_wechat 的数据：3 rows
 /*!40000 ALTER TABLE `stock_admin_wechat` DISABLE KEYS */;
+INSERT INTO `stock_admin_wechat` (`admin_id`, `name`, `domain`, `appid`, `appsecret`, `token`, `sign_name`, `sms_username`, `sms_password`, `create_by`, `create_at`) VALUES
+	(11, '测试用户', 'aaa.iwanbar.com.cn', '1111111111', '2222222222', '12121212', '1111111', '', '', 1, 1519388561),
+	(17, '梁健', 'www.baidu.com', '2222222', '3333333', '22222222222222', '2222222222222', '222222222222222', '222222222222', 1, 1519388950),
+	(6, '微圈', 'qq.com', '6666666666', '6666666666666', '66666666666666', '666666666666', '666666666666', '666666666666', 1, 1519389082);
 /*!40000 ALTER TABLE `stock_admin_wechat` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_ai 结构
@@ -3724,6 +3735,8 @@ CREATE TABLE IF NOT EXISTS `stock_menu` (
 DROP TABLE IF EXISTS `stock_mode`;
 CREATE TABLE IF NOT EXISTS `stock_mode` (
   `mode_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(10) unsigned NOT NULL COMMENT '产品ID',
+  `plugins_code` varchar(64) NOT NULL COMMENT '插件code',
   `name` varchar(32) NOT NULL COMMENT '模式名称',
   `free` smallint(8) unsigned NOT NULL COMMENT '免息期（单位：天）',
   `jiancang` decimal(10,2) unsigned NOT NULL COMMENT '建仓费（单位：万元）',
@@ -3731,11 +3744,19 @@ CREATE TABLE IF NOT EXISTS `stock_mode` (
   `sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
   `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  PRIMARY KEY (`mode_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='交易模式';
+  PRIMARY KEY (`mode_id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `product_id` (`product_id`),
+  KEY `plugins_code` (`plugins_code`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='交易模式';
 
--- 正在导出表  stock.stock_mode 的数据：0 rows
+-- 正在导出表  stock.stock_mode 的数据：1 rows
 /*!40000 ALTER TABLE `stock_mode` DISABLE KEYS */;
+INSERT INTO `stock_mode` (`mode_id`, `product_id`, `plugins_code`, `name`, `free`, `jiancang`, `defer`, `sort`, `status`, `create_at`) VALUES
+	(1, 1, 'Tn', 'T+5', 5, 19.00, 8.00, 50, 0, 0),
+	(2, 1, 'Tn', 'T+7', 7, 1.80, 1.90, 50, 0, 1519458410),
+	(3, 1, 'Tn', 'T+15', 15, 2.00, 2.30, 50, 0, 1519458658),
+	(5, 1, 'Tn', 'T+20', 20, 2.50, 3.30, 1, 0, 1519458740);
 /*!40000 ALTER TABLE `stock_mode` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_mode_deposit 结构
@@ -3817,10 +3838,10 @@ CREATE TABLE IF NOT EXISTS `stock_plugins` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='插件表';
 
--- 正在导出表  stock.stock_plugins 的数据：0 rows
+-- 正在导出表  stock.stock_plugins 的数据：1 rows
 /*!40000 ALTER TABLE `stock_plugins` DISABLE KEYS */;
 INSERT INTO `stock_plugins` (`name`, `type`, `code`, `status`) VALUES
-	('T+N', 'mode', 'Tn', 0);
+	('T+N模式', 'mode', 'Tn', 0);
 /*!40000 ALTER TABLE `stock_plugins` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_product 结构
@@ -3840,7 +3861,7 @@ CREATE TABLE IF NOT EXISTS `stock_product` (
 /*!40000 ALTER TABLE `stock_product` DISABLE KEYS */;
 INSERT INTO `stock_product` (`id`, `name`, `desc`, `is_trade`, `currency`, `on_sale`, `state`) VALUES
 	(1, '沪深A股', '沪深A股', 1, 1, 1, 1),
-	(2, '比特币', '比特币', 1, 1, 1, 1);
+	(2, '比特币', '比特币', 1, 1, -1, 0);
 /*!40000 ALTER TABLE `stock_product` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_role 结构
@@ -3853,16 +3874,16 @@ CREATE TABLE IF NOT EXISTS `stock_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='后台用户角色';
 
--- 正在导出表  stock.stock_role 的数据：~6 rows (大约)
+-- 正在导出表  stock.stock_role 的数据：~7 rows (大约)
 /*!40000 ALTER TABLE `stock_role` DISABLE KEYS */;
 INSERT INTO `stock_role` (`id`, `name`, `remark`, `show`) VALUES
-	(1, '超级管理员', '超级管理员', 1),
-	(2, '结算中心', '结算中心', 1),
-	(3, '运营中心', '运营中心', 1),
-	(4, '微会员', '微会员', 1),
-	(5, '微圈', '微圈', 1),
-	(6, '客服', '客服', 1),
-	(7, '财务', '财务', 1);
+	(1, '超级管理员', '超级管理员，请勿删除', 1),
+	(2, '结算中心', '结算中心，请勿删除', 1),
+	(3, '运营中心', '运营中心，请勿删除', 1),
+	(4, '微会员', '微会员，请勿删除', 1),
+	(5, '微圈', '微圈，请勿删除', 1),
+	(6, '客服', '客服，请勿删除', 1),
+	(7, '财务', '财务，请勿删除', 1);
 /*!40000 ALTER TABLE `stock_role` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_user 结构
