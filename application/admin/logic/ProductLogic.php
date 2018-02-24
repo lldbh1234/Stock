@@ -11,6 +11,12 @@ class ProductLogic
         return $lists ? collection($lists)->toArray() : [];
     }
 
+    public function allEnableProducts()
+    {
+        $lists = Product::where(["state" => 1])->select();
+        return $lists ? collection($lists)->toArray() : [];
+    }
+
     public function pageProductLists($pageSize = null)
     {
         $pageSize = $pageSize ? : config("page_size");

@@ -1,0 +1,78 @@
+﻿{extend name="layouts/layout_iframe" /}
+
+{block name="title"}交易模式列表{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+	<span class="c-gray en">&gt;</span> 交易模式
+	<span class="c-gray en">&gt;</span> 交易模式列表
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+	</a>
+</nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
+			</a>
+			<a class="btn btn-primary radius" href="javascript:;" onclick="mode_add('添加交易模式','{:url("admin/Mode/create")}','','500')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加交易模式
+			</a> </span>
+		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-hover table-bg">
+		<thead>
+		<tr class="text-c">
+			<th width="25"><input type="checkbox" value="" name=""></th>
+			<th width="40">ID</th>
+			<th>模式名称</th>
+			<th>所属产品</th>
+			<th>模式类型</th>
+			<th>免息期（天）</th>
+			<th>建仓费（万元）</th>
+			<th>递延费（天/万元）</th>
+			<th>状态</th>
+			<th width="70">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name="datas.data" id="item"}
+		<tr class="text-c">
+			<td><input type="checkbox" value="{$item.mode_id}" name="id"></td>
+			<td>{$item.mode_id}</td>
+			<td>{$item.name}</td>
+			<td>{$item.has_one_product.name}</td>
+			<td>{$item.has_one_plugins.name}</td>
+			<td>{$item.free}</td>
+			<td>{$item.jiancang|number_format=2}</td>
+			<td>{$item.defer|number_format=2}</td>
+			<td>
+				{if condition="$item.status.value eq 0"}
+				<span class="label label-success radius">{$item.status.text}</span>
+				{else /}
+				<span class="label label-danger radius">{$item.status.text}</span>
+				{/if}
+			</td>
+			<td class="f-14"><a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_role_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+    /*用户-添加*/
+    function mode_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+</script>
+{/block}

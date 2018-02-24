@@ -70,6 +70,12 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('create', 'admin/Product/add');
         });
 
+        // 交易模式
+        Route::group("mode", function(){
+            Route::any('lists', 'admin/Mode/index');
+            Route::any('add', 'admin/Mode/create');
+        });
+
         // 角色管理
         Route::group("role", function(){
             Route::any('lists', 'admin/Admin/roles');  // 角色列表
