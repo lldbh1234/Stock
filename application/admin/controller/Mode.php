@@ -197,4 +197,95 @@ class Mode extends Base
             return $this->fail("非法操作！");
         }
     }
+
+    public function lever($id)
+    {
+        $res = $this->_logic->pageModeLevers($id);
+        $this->assign("datas", $res['lists']);
+        $this->assign("pages", $res['pages']);
+        $this->assign("mode_id", $id);
+        $this->assign("mode_name", $res['name']);
+        return view();
+    }
+
+    public function createLever()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('ModeLever');
+            if(!$validate->scene('create')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                $modeId = $data['mode_id'];
+                unset($data['mode_id']);
+                $leverId = $this->_logic->createModeLever($modeId, $data);
+                if(0 < $leverId){
+                    return $this->ok();
+                } else {
+                    return $this->fail("添加失败！");
+                }
+            }
+        }
+        return view();
+    }
+
+    public function modifyLever($mode_id = null, $id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('ModeLever');
+            if(!$validate->scene('modify')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $id = input("post.id/d");
+                $modeId = input("post.mode_id/d");
+                $res = $this->_logic->updateModeLever($modeId, $id, input("post."));
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("修改失败！");
+                }
+            }
+        }
+        $lever = $this->_logic->modeLeverById($mode_id, $id);
+        if($lever){
+            $this->assign("lever", $lever);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function removeLever()
+    {
+        if(request()->isPost()){
+            $act = input("act/s", "single");
+            $validate = \think\Loader::validate('ModeLever');
+            if($act == "patch"){
+                // 批量
+                if(!$validate->scene('patch')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $res = $this->_logic->deleteModeLever(input("post.mode_id"), input("post.ids/a"));
+                    if($res){
+                        return $this->ok();
+                    } else {
+                        return $this->fail("删除失败！");
+                    }
+                }
+            }else{
+                if(!$validate->scene('remove')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $res = $this->_logic->deleteModeLever(input("post.mode_id"), input("post.id"));
+                    if($res){
+                        return $this->ok();
+                    } else {
+                        return $this->fail("删除失败！");
+                    }
+                }
+            }
+        }else{
+            return $this->fail("非法操作！");
+        }
+    }
 }

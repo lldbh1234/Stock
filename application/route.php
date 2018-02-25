@@ -21,17 +21,17 @@
 ];*/
 use think\Route;
 
-Route::group(["domain" => "stock.lc"], function() {
-    // Index
+// Index
+Route::any('/$','index/Index/index');
+Route::group("index", function () {
     Route::any('/$','index/Index/index');
-    Route::group("index", function () {
-        Route::any('/$','index/Index/index');
-        Route::any('index', 'index/Index/index');
-    });
-    Route::group("cron", function () {
-        Route::any('stock', 'index/Stock/grabStockLists');
-    });
+    Route::any('index', 'index/Index/index');
+});
+Route::group("cron", function () {
+    Route::any('stock', 'index/Stock/grabStockLists');
+});
 
+Route::group(["domain" => "stock.lc"], function() {
     // Admin
     Route::group("admin", function () {
         Route::any('/$','admin/Index/index');
@@ -79,7 +79,11 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('deposit', 'admin/Mode/deposit'); //保证金列表
             Route::any('add-deposit', 'admin/Mode/createDeposit');
             Route::any('edit-deposit', 'admin/Mode/modifyDeposit');
-            Route::any('del-deposit', 'admin/Mode/removeDeposit');
+            Route::post('del-deposit', 'admin/Mode/removeDeposit');
+            Route::any('lever', 'admin/Mode/lever'); //保证金列表
+            Route::any('add-lever', 'admin/Mode/createLever');
+            Route::any('edit-lever', 'admin/Mode/modifyLever');
+            Route::post('del-lever', 'admin/Mode/removeLever');
         });
 
         // 角色管理
