@@ -86,6 +86,13 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::post('del-lever', 'admin/Mode/removeLever');
         });
 
+        Route::group("ai", function(){
+            Route::any('index', 'admin/Ai/index'); //智能推荐类型
+            Route::any('add-type', 'admin/Ai/createType'); //添加推荐类型
+            Route::any('edit-type', 'admin/Ai/modifyType'); //修改推荐类型
+            Route::post('del-type', 'admin/Ai/removeType'); //删除推荐类型
+        });
+
         // 角色管理
         Route::group("role", function(){
             Route::any('lists', 'admin/Admin/roles');  // 角色列表
