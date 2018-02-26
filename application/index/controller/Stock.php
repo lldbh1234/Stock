@@ -51,9 +51,11 @@ class Stock extends Controller
             @file_put_contents($_jsPath, $_jsText);
             // 提交事务
             Db::commit();
+            echo "ok";
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
+            echo "false";
         }
     }
 }
