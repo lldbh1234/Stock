@@ -2,16 +2,12 @@
 namespace app\index\controller;
 
 use think\Request;
+use think\Controller;
 
-class Index extends Base
+class Base extends Controller
 {
     public function __construct(Request $request = null)
     {
         parent::__construct($request);
-    }
-
-    public function index()
-    {
-        return "index";
     }
 }
