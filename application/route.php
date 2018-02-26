@@ -91,6 +91,10 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('add-type', 'admin/Ai/createType'); //添加推荐类型
             Route::any('edit-type', 'admin/Ai/modifyType'); //修改推荐类型
             Route::post('del-type', 'admin/Ai/removeType'); //删除推荐类型
+            Route::any('stocks', 'admin/Ai/stocks'); //智能推荐股票
+            Route::any('add', 'admin/Ai/create'); //添加推荐股票
+            Route::any('edit', 'admin/Ai/modify'); //修改推荐股票
+            Route::post('del', 'admin/Ai/remove'); //删除推荐股票
         });
 
         // 角色管理
