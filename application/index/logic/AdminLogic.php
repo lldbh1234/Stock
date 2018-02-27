@@ -9,4 +9,9 @@ class AdminLogic
     {
         return Admin::where(["code" => $code])->find();
     }
+
+    public function allMemberLists()
+    {
+        return Admin::where(["role" => Admin::MEMBER_ROLE_ID])->column("username,nickname", "admin_id");
+    }
 }

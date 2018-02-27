@@ -16,8 +16,29 @@ class Home extends Controller
             exit;
         }else{
             if(request()->isPost()){
-
+                $validate = \think\Loader::validate('User');
+                if(!$validate->scene('login')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $username = input("post.username/s");
+                    $password = input("post.password/s");
+                    $member = input("post.institution/d");
+                    $userId = (new LoginLogic())->login($username, $password, $member);
+                    if(0 < $userId){ // 登录成功，$uid 为登录的 UID
+                        //跳转到登录前页面
+                        return $this->ok(['url' => url("index/Index/index")]);
+                    } else { //登录失败
+                        switch($userId) {
+                            case -1: $error = '账户不存在或已禁用！'; break; //系统级别禁用
+                            case -2: $error = '账户或密码错误！'; break;
+                            default: $error = '未知错误！'; break; // 0-接口参数错误
+                        }
+                        return $this->fail($error);
+                    }
+                }
             }
+            $members = (new AdminLogic())->allMemberLists();
+            $this->assign("members", $members);
             return view();
         }
     }

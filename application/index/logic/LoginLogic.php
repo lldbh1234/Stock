@@ -1,15 +1,19 @@
 <?php
 namespace app\index\logic;
 
+use app\index\model\Admin;
 use app\index\model\User;
 
 class LoginLogic
 {
-    public function login($username, $password)
+    public function login($username, $password, $memberAdminId)
     {
+        $ringAdminIds = Admin::where(["pid" => $memberAdminId])->column("admin_id");
+        array_push($ringAdminIds, $memberAdminId);
         $map = [];
         $map['username'] = $username;
-        $map['status'] = 0;
+        $map['state'] = 0;
+        $map['admin_id'] = ["IN", $ringAdminIds];
 
         /* 获取用户数据 */
         $user = User::where($map)->find();
