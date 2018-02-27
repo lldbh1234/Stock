@@ -31,6 +31,12 @@ Route::group("index", function () {
     Route::any('/$','index/Index/index');
     Route::any('index', 'index/Index/index');
 });
+
+//我的
+Route::group("user", function () {
+    Route::any('home','index/User/index');
+});
+
 Route::group("cron", function () {
     Route::any('stock', 'index/Stock/grabStockLists');
 });
