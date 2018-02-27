@@ -6,6 +6,7 @@ class User extends BaseModel
 {
     protected $pk = "user_id";
     protected $table = 'stock_user';
+    protected $field = true;
 
     protected $insert = ['create_at'];
 

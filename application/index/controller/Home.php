@@ -1,29 +1,99 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\AdminLogic;
+use app\index\logic\LoginLogic;
+use app\index\logic\UserLogic;
 use think\Controller;
+use app\index\logic\SmsLogic;
 
 class Home extends Controller
 {
     public function login()
     {
-        if(request()->isPost()){
+        if(isLogin()){
+            return $this->redirect(url("index/Index/index"));
+            exit;
+        }else{
+            if(request()->isPost()){
 
+            }
+            return view();
         }
-        return view();
     }
 
     public function register()
     {
+        if(isLogin()){
+            return $this->redirect(url("index/Index/index"));
+            exit;
+        }else{
+            if(request()->isPost()){
+                $validate = \think\Loader::validate('User');
+                if(!$validate->scene('register')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $data = input("post.");
+                    $admin = (new AdminLogic())->adminByCode($data['orgCode']);
+                    if($admin){
+                        $data['username'] = $data["mobile"];
+                        $data['nickname'] = $data["mobile"];
+                        $data['face'] = config("default_face");
+                        $data['admin_id'] = $admin['admin_id'];
+                        $data['parent_id'] = input("post.pid/d", 0);
+                        $userId = (new UserLogic())->createUser($data);
+                        if($userId > 0){
+                            $_autoLogin = [
+                                'user_id'  => $userId,
+                                'username' => $data['username'],
+                            ];
+                            (new LoginLogic())->autoLogin($_autoLogin);
+                            $url = url('index/Index/index');
+                            return $this->ok(['url' => $url]);
+                        }else{
+                            return $this->fail("注册失败！");
+                        }
+                    }else{
+                        return $this->fail("机构编码不存在！");
+                    }
+                }
+            }
+            $pid = input("?pid") ? input("pid") : 0;
+            return view();
+        }
+    }
+
+    public function logout(){
+        if(isLogin()){
+            session("user_id", null);
+            session('user_info', null);
+            session('user_auth', null);
+            session('user_auth_sign', null);
+            session('[destroy]');
+            return $this->redirect(url('index/Home/login'));
+        } else {
+            return $this->redirect(url('index/Home/login'));
+        }
+    }
+
+    public function captcha()
+    {
         if(request()->isPost()){
             $validate = \think\Loader::validate('User');
-            if(!$validate->scene('register')->check(input("post."))){
+            if(!$validate->scene('captcha')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
-
+                $mobile = input("post.mobile/s");
+                $act = input("post.act/s");
+                list($res, $code) = (new SmsLogic())->send($mobile, $act);
+                if($res){
+                    return $this->ok(['code' => $code]);
+                }else{
+                    return $this->fail("发送失败！");
+                }
             }
+        }else{
+            return $this->fail("非法操作！");
         }
-        $pid = input("?pid") ? input("pid") : 0;
-        return view();
     }
 }

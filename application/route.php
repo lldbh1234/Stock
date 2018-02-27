@@ -24,6 +24,7 @@ use think\Route;
 // Index
 Route::any('/$','index/Index/index');
 Route::any('login','index/Home/login');
+Route::post('captcha','index/Home/captcha'); // 验证码
 Route::any('register','index/Home/register');
 Route::any('logout','index/Home/logout');
 Route::group("index", function () {

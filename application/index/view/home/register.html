@@ -22,15 +22,15 @@
 			<div class="my_form_group">
 				<input type="text" placeholder="请输入手机号码" id="mobile" name="mobile" />
 			</div>
-			<div class="my_form_group has_get">
-				<input type="text" placeholder="请输入验证码" id="code" name="code" />
-				<span class="get_btn">获取短信验证码</span>
-			</div>
 			<div class="my_form_group">
 				<input type="password" placeholder="请输入6~16位密码" id="password" name="password" />
 			</div>
 			<div class="my_form_group">
 				<input type="password" placeholder="请再次输入6~16位密码" id="rePassword" name="rePassword" />
+			</div>
+			<div class="my_form_group has_get">
+				<input type="text" placeholder="请输入验证码" id="code" name="code" />
+				<span class="get_btn">获取短信验证码</span>
 			</div>
 			<div class="my_form_group">
 				<input class="sub_btn" type="button"  value="立刻注册" id="submit" />
@@ -50,12 +50,33 @@
 	<script src="__RESOURCE__/js/mui.min.js"></script>
 	<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 	<script type="text/javascript">
+        $(".get_btn").click(function(){
+            var _url = "{:url('index/Home/captcha')}",
+				_mobile = $("input[name='mobile']").val(),
+                _oData = {mobile:_mobile, act:"register"};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){ // 登录成功
+                    $alert("发送成功");
+                    $("input[name='code']").val(res.data.code);
+                }else{
+                    $alert(res.info);
+                }
+            });
+		});
+
         $("#submit").click(function(e){
             var _url = "{:url('index/Home/register')}",
 				_oData = $("form").serialize();
             $ajaxCustom(_url, _oData, function(res){
                 if(res.state){ // 登录成功
-                    $alert("登录成功");
+                    $alert("注册成功");
+                    setTimeout(function(){
+                        if(res.data.url){
+                            window.location.href = res.data.url;
+						}else{
+                            window.location.href = "/";
+                        }
+					}, 1000);
                 }else{
                     $alert(res.info);
                 }
