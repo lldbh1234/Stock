@@ -12,6 +12,8 @@ class Index extends Base
 
     public function index()
     {
+        $menu = self::leftMenu();
+        $this->assign('menu', $menu);
         return view();
     }
 
