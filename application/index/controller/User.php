@@ -56,4 +56,12 @@ class User extends Base
         }
         return view();
     }
+
+    public function withdraw()
+    {
+        if(request()->isPost()){
+            exit;
+        }
+        return view();
+    }
 }

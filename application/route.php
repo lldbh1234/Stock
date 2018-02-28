@@ -26,6 +26,7 @@ Route::any('/$','index/Index/index');
 Route::any('login','index/Home/login');
 Route::post('captcha','index/Home/captcha'); // 验证码
 Route::any('register','index/Home/register');
+Route::any('forget','index/Home/forget');
 Route::any('logout','index/Home/logout');
 Route::group("index", function () {
     Route::any('/$','index/Index/index');
@@ -38,6 +39,7 @@ Route::group("user", function () {
     Route::any('setting','index/User/setting'); //设置
     Route::any('password','index/User/password'); //修改密码
     Route::any('recharge','index/User/recharge'); //充值
+    Route::any('withdraw','index/User/withdraw'); //提现
 });
 
 //Ai

@@ -45,4 +45,14 @@ class LoginLogic
         session('user_auth', $auth);
         session('user_auth_sign', dataAuthSign($auth));
     }
+
+    public function forgetPassword($mobile, $password, $memberAdminId)
+    {
+        $ringAdminIds = Admin::where(["pid" => $memberAdminId])->column("admin_id");
+        array_push($ringAdminIds, $memberAdminId);
+        $map = [];
+        $map['mobile'] = $mobile;
+        $map['admin_id'] = ["IN", $ringAdminIds];
+        return User::where($map)->update(["password" => spPassword($password)]);
+    }
 }

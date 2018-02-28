@@ -28,8 +28,10 @@ class User extends Validate
         'mobile.require'    => '手机号码不能为空！',
         'mobile.regex'      => '手机号码格式错误！',
         'mobile.checkMobile' => '手机号码已注册！',
+        'mobile.checkMobileExist' => '手机号码不存在！',
         'code.require'      => '短信验证码不能为空！',
         'code.checkCode'    => '短信验证码错误！',
+        'code.checkForgetCode'    => '短信验证码错误！',
         'password.require'  => '密码不能为空！',
         'password.length'   => '密码为6-16位字符！',
         'rePassword.confirm' => '俩次输入密码不一致！',
@@ -46,10 +48,16 @@ class User extends Validate
         'register'  => ['orgCode', 'mobile', 'password', 'rePassword', 'code'],
         'captcha'   => [
             'mobile' => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
-            'act' => "in:register"
+            'act' => "in:register,forget"
         ],
         'login'     => ['username', 'password', 'institution'],
         'password'  => ['oldPassword', 'newPassword', 'reNewPassword'],
+        'forget'    => [
+            'mobile' => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/|checkMobileExist',
+            'code'   => 'require|checkForgetCode',
+            'password',
+            'institution',
+        ],
     ];
 
     protected function checkOrgCode($value)
@@ -71,10 +79,24 @@ class User extends Validate
         return $user ? false : true;
     }
 
+    protected function checkMobileExist($value, $rule, $data)
+    {
+        $ringAdminIds = Admin::where(["pid" => $data['institution']])->column("admin_id");
+        array_push($ringAdminIds, $data['institution']);
+        $user = \app\index\model\User::where(["mobile" => $value, "admin_id" => ["IN", $ringAdminIds]])->find();
+        return $user ? true : false;
+    }
+
     protected function checkCode($value, $rule, $data)
     {
         $mobile = $data['mobile'];
         return (new SmsLogic())->verify($mobile, $value, "register");
+    }
+
+    protected function checkForgetCode($value, $rule, $data)
+    {
+        $mobile = $data['mobile'];
+        return (new SmsLogic())->verify($mobile, $value, "forget");
     }
 
     protected function checkInstitution($value)
