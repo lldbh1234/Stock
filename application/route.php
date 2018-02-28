@@ -40,8 +40,17 @@ Route::group("user", function () {
     Route::any('recharge','index/User/recharge'); //充值
 });
 
+//Ai
+Route::group("ai", function () {
+    Route::any('index','index/Ai/index'); //推荐列表
+});
+
+Route::group("stock", function () {
+    Route::any('buy','index/Stock/stockBuy'); //购买
+});
+
 Route::group("cron", function () {
-    Route::any('stock', 'index/Stock/grabStockLists');
+    Route::any('stock', 'index/Cron/grabStockLists');
 });
 
 Route::group(["domain" => "stock.lc"], function() {
