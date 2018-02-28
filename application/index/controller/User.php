@@ -61,7 +61,12 @@ class User extends Base
     public function withdraw()
     {
         if(request()->isPost()){
-            exit;
+            $validate = \think\Loader::validate('Withdraw');
+            if(!$validate->scene('do')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                
+            }
         }
         $banks = (new BankLogic())->bankLists();
         $this->assign("user", uInfo());

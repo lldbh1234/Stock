@@ -8,7 +8,8 @@ use think\Validate;
 class Withdraw extends Validate
 {
     protected $rule = [
-        'money'     => "checkTime|require|float|gt:10",
+        'mobile'    => 'checkDateTime',
+        'money'     => "require|float|gt:10",
         'bank'      => 'require|checkBank',
         'card'      => 'require|max:19',
         'realname'  => 'require|max:16',
@@ -17,6 +18,7 @@ class Withdraw extends Validate
     ];
 
     protected $message = [
+        'mobile.checkDateTime' => '不在规定提现时间内！',
         'money.require' => '提现金额不能为空！',
         'money.float'   => '提现金额必须为数字！',
         'money.gt'      => '提现金额必须大于10！',
@@ -33,8 +35,28 @@ class Withdraw extends Validate
     ];
 
     protected $scene = [
-        'do' => ['money', 'bank', 'card', 'realname', 'address', 'code'],
+        'do' => ['mobile', 'money', 'bank', 'card', 'realname', 'address', 'code'],
     ];
+
+    public function checkDateTime($value)
+    {
+        if(date('w') == 0){
+            return false;
+        }
+        if(date('w') == 6){
+            return false;
+        }
+        if(date('G') < 9){
+            return false;
+        }
+        if(date('G') > 17){
+            return false;
+        }
+        if(date('G') == 17 && date('i') > 30){
+            return false;
+        }
+        return true;
+    }
 
     protected function checkBank($value)
     {
