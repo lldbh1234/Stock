@@ -1,0 +1,113 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+设置
+{/block}
+
+{block name="style"}
+<style type="text/css">
+    body{
+        background: #f5f5f5;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<body style="height: 100%;display: inline-block;width: 100%;" class="mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+
+{block name="content"}
+    <div class="bg" style="min-height: 100%;margin-bottom: -50px;">
+        <div class="person_content mui-content" style="min-height: 100%;">
+            <header class="has_back_top ">
+                设置
+                <a href="javascript:history.go(-1)" class="back_icon">
+                    <img src="__RESOURCE__/img/back_icon.png">
+                </a>
+            </header>
+
+
+            <ul class="setting_list" style="margin-top: 58px;">
+                <li class="clear_fl" id="uploadImg">
+                    <span class="setting_key lf">头像</span>
+                    <img class="rt right_arrow" src="__RESOURCE__/img/right_arrow1.png">
+                    <span class="rt setting_value">
+                        <img src="{$user.face|default='/resource/home/img/default-user-img.png'}">
+                    </span>
+                </li>
+                <li class="clear_fl">
+                    <span class="setting_key lf">昵称</span>
+                    <img class="rt right_arrow" src="__RESOURCE__/img/right_arrow1.png">
+                    <span class="rt setting_value">{$user.nickname|default=$user.username}</span>
+                </li>
+                <li class="clear_fl">
+                    <span class="setting_key lf">手机号码</span>
+                    <span class="rt setting_value">{$user.mobile}</span>
+                </li>
+                <li class="clear_fl">
+                    <a href="{:url('index/User/password')}" class="clear_fl">
+                        <span class="setting_key lf">登录密码</span>
+                        <img class="rt right_arrow" src="__RESOURCE__/img/right_arrow1.png">
+                        <span class="rt setting_value">修改密码</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="clear_fl publish_msg">
+                <div class="lf setting_key">是否公开实盘信息</div>
+                <input type="checkbox" class="switch__mui-switch___3_30S switch__mui-switch-anim___3IUf5 rt"  value="on">
+            </div>
+
+            <div class="recharge-btn" id="payBtn">退出系统</div>
+        </div>
+    </div>
+{/block}
+
+{block name="nav"}
+{/block}
+
+{block name="script"}
+    <script src="__RESOURCE__/js/jquery.ajaxfileupload.js"></script>
+    <script type="text/javascript">
+        mui.init({
+            swipeBack: true //启用右滑关闭功能
+        })
+        //选项卡
+         mui('body').on('tap', 'a', function() {
+            var data_href = this.getAttribute("data-href");
+            var href = this.getAttribute("href");
+            var url=data_href;
+            if(!url||url==''){
+                url=href;
+            }
+            window.location.href = url;
+         });
+        /**
+         * 上传头像
+         */
+        $('#uploadImg').AjaxFileUpload({
+            //处理文件上传操作的服务器端地址
+            action: '/index/index/doImgUpload',
+            onComplete: function(filename, resp) { //服务器响应成功时的处理函数
+                if(resp.code == '0') {
+                    $('#headImg').attr('src', resp.data);
+                    var params = {};
+                    params['headImg'] = resp.data;
+                    $.post("/index/ucenter/savePeopleImg", params, function(data) {
+                        if(data.code == '0') {
+                            mui.toast("修改成功");
+                        } else {
+                            mui.alert(data.msg);
+                        }
+                    }, 'json');
+                } else {
+                    mui.alert(resp.msg );
+                }
+            }
+        });
+
+        $("#payBtn").click(function(){
+            window.location.href = "{:url('index/Home/logout')}";
+        });
+    </script>
+{/block}

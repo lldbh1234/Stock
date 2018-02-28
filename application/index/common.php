@@ -13,3 +13,15 @@ if(!function_exists("isLogin")){
         }
     }
 }
+
+if(!function_exists("uInfo")){
+    function uInfo()
+    {
+        $user = session("user_info");
+        if(!$user){
+            $user = model("User")->find(isLogin());
+            $user = $user ? $user->toArray() : [];
+        }
+        return $user;
+    }
+}

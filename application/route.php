@@ -35,6 +35,8 @@ Route::group("index", function () {
 //我的
 Route::group("user", function () {
     Route::any('home','index/User/index');
+    Route::any('setting','index/User/setting');
+    Route::any('recharge','index/User/recharge');
 });
 
 Route::group("cron", function () {

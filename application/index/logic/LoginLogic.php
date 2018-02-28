@@ -19,6 +19,7 @@ class LoginLogic
         $user = User::where($map)->find();
         if($user){
             /* 验证用户密码 */
+            $user = $user->toArray();
             if(spComparePassword($password, $user['password'])){
                 //登录成功
                 $userId = $user['user_id'];

@@ -15,6 +15,21 @@ class User extends Base
 
     public function index()
     {
+        $this->assign("user", uInfo());
+        return view();
+    }
+
+    public function setting()
+    {
+        $this->assign("user", uInfo());
+        return view();
+    }
+
+    public function recharge()
+    {
+        if(request()->isPost()){
+            exit;
+        }
         return view();
     }
 }
