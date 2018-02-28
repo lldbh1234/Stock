@@ -8,6 +8,7 @@ use app\index\model\Admin;
 class User extends Validate
 {
     protected $rule = [
+        'oldPassword' => "require|checkOldPassword",
         'username'  => 'require',
         'orgCode'   => 'require|checkOrgCode',
         'mobile'    => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/|checkMobile',
@@ -15,9 +16,13 @@ class User extends Validate
         'rePassword' => 'confirm:password',
         'code'      => 'require|checkCode',
         'institution' => 'require|checkInstitution',
+        'newPassword'	=> 'require|length:6,16',
+        'reNewPassword' => 'confirm:newPassword',
     ];
 
     protected $message = [
+        'oldPassword.require' => '旧密码不能为空！',
+        'oldPassword.checkOldPassword' => '旧密码输入错误！',
         'orgCode.require'   => '机构编码不能为空！',
         'orgCode.checkOrgCode' => '机构编码填写错误！',
         'mobile.require'    => '手机号码不能为空！',
@@ -32,6 +37,9 @@ class User extends Validate
         'username.require'  => '手机号码不能为空！',
         'institution.require' => '请选择机构！',
         'institution.checkInstitution' => '机构不正确！',
+        'newPassword.require'   => '新密码不能为空！',
+        'newPassword.length'    => '新密码为6-16位字符！',
+        'reNewPassword.confirm' => '俩次输入密码不一致！',
     ];
 
     protected $scene = [
@@ -41,6 +49,7 @@ class User extends Validate
             'act' => "in:register"
         ],
         'login'     => ['username', 'password', 'institution'],
+        'password'  => ['oldPassword', 'newPassword', 'reNewPassword'],
     ];
 
     protected function checkOrgCode($value)
@@ -76,5 +85,10 @@ class User extends Validate
         ];
         $admin = Admin::where($_where)->find();
         return $admin ? true : false;
+    }
+
+    protected function checkOldPassword($value)
+    {
+        return spComparePassword($value, uInfo()['password']);
     }
 }

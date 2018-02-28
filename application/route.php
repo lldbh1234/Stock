@@ -34,9 +34,10 @@ Route::group("index", function () {
 
 //我的
 Route::group("user", function () {
-    Route::any('home','index/User/index');
-    Route::any('setting','index/User/setting');
-    Route::any('recharge','index/User/recharge');
+    Route::any('home','index/User/index'); //用户中心
+    Route::any('setting','index/User/setting'); //设置
+    Route::any('password','index/User/password'); //修改密码
+    Route::any('recharge','index/User/recharge'); //充值
 });
 
 Route::group("cron", function () {

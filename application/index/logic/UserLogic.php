@@ -9,4 +9,9 @@ class UserLogic
     {
         return model("User")->save($data);
     }
+
+    public function updateUser($data)
+    {
+        return User::update($data);
+    }
 }

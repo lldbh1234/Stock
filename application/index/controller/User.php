@@ -25,6 +25,30 @@ class User extends Base
         return view();
     }
 
+    public function password()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('User');
+            if(!$validate->scene('password')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "user_id"   => $this->user_id,
+                    "password"  => input("post.newPassword/s")
+                ];
+                $res = $this->_logic->updateUser($data);
+                if($res){
+                    session("user_info", null);
+                    $url = url("index/User/setting");
+                    return $this->ok(['url' => $url]);
+                }else{
+                    return $this->fail("修改失败！");
+                }
+            }
+        }
+        return view();
+    }
+
     public function recharge()
     {
         if(request()->isPost()){

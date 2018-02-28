@@ -21,6 +21,7 @@ if(!function_exists("uInfo")){
         if(!$user){
             $user = model("User")->find(isLogin());
             $user = $user ? $user->toArray() : [];
+            session('user_info', $user);
         }
         return $user;
     }
