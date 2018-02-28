@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\BankLogic;
 use think\Request;
 use app\index\logic\UserLogic;
 
@@ -62,6 +63,9 @@ class User extends Base
         if(request()->isPost()){
             exit;
         }
+        $banks = (new BankLogic())->bankLists();
+        $this->assign("user", uInfo());
+        $this->assign("banks", $banks);
         return view();
     }
 }

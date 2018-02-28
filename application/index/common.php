@@ -17,12 +17,15 @@ if(!function_exists("isLogin")){
 if(!function_exists("uInfo")){
     function uInfo()
     {
-        $user = session("user_info");
+        /*$user = session("user_info");
         if(!$user){
             $user = model("User")->find(isLogin());
             $user = $user ? $user->toArray() : [];
             session('user_info', $user);
         }
         return $user;
+        */
+        $user = model("User")->find(isLogin());
+        return $user ? $user->toArray() : [];
     }
 }
