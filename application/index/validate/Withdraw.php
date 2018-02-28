@@ -9,7 +9,7 @@ class Withdraw extends Validate
 {
     protected $rule = [
         'mobile'    => 'checkDateTime',
-        'money'     => "require|float|gt:10",
+        'money'     => "require|float|gt:10|checkMoney",
         'bank'      => 'require|checkBank',
         'card'      => 'require|max:19',
         'realname'  => 'require|max:16',
@@ -22,6 +22,7 @@ class Withdraw extends Validate
         'money.require' => '提现金额不能为空！',
         'money.float'   => '提现金额必须为数字！',
         'money.gt'      => '提现金额必须大于10！',
+        'money.checkMoney' => '账户余额不足！',
         'bank.require'  => '请选择到账银行！',
         'bank.checkBank' => '到账银行错误！',
         'card.require'  => '银行卡号不能为空！',
@@ -68,5 +69,11 @@ class Withdraw extends Validate
     {
         $mobile = uInfo()['mobile'];
         return (new SmsLogic())->verify($mobile, $value, "withdraw");
+    }
+
+    protected function checkMoney($value)
+    {
+        $account = uInfo()['account'];
+        return $account >= $value;
     }
 }
