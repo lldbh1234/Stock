@@ -29,3 +29,11 @@ if(!function_exists("uInfo")){
         return $user ? $user->toArray() : [];
     }
 }
+
+if(!function_exists("createOrderSn")){
+    function createOrderSn()
+    {
+        //return date("YmdHis") . isLogin() . randomString(6, true);
+        return uniqid() . randomString(4, true);
+    }
+}

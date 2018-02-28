@@ -18,6 +18,7 @@ class User extends Validate
         'institution' => 'require|checkInstitution',
         'newPassword'	=> 'require|length:6,16',
         'reNewPassword' => 'confirm:newPassword',
+        'act'       => "checkAct"
     ];
 
     protected $message = [
@@ -35,7 +36,7 @@ class User extends Validate
         'password.require'  => '密码不能为空！',
         'password.length'   => '密码为6-16位字符！',
         'rePassword.confirm' => '俩次输入密码不一致！',
-        'act.in'            => '系统提示：非法操作！',
+        'act.checkAct'      => '系统提示：非法操作！',
         'username.require'  => '手机号码不能为空！',
         'institution.require' => '请选择机构！',
         'institution.checkInstitution' => '机构不正确！',
@@ -48,7 +49,7 @@ class User extends Validate
         'register'  => ['orgCode', 'mobile', 'password', 'rePassword', 'code'],
         'captcha'   => [
             'mobile' => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
-            'act' => "in:register,forget"
+            'act',
         ],
         'login'     => ['username', 'password', 'institution'],
         'password'  => ['oldPassword', 'newPassword', 'reNewPassword'],
@@ -112,5 +113,11 @@ class User extends Validate
     protected function checkOldPassword($value)
     {
         return spComparePassword($value, uInfo()['password']);
+    }
+
+    protected function checkAct($value)
+    {
+        $_array = ['register', 'forget', 'withdraw'];
+        return in_array($value, $_array);
     }
 }

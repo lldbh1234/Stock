@@ -74,7 +74,7 @@
 			        <div class="withdrawal-name">卡号</div>
 			        <div class="withdrawal-con" tabindex="1">
 			            <div class="form-group field-useraccount-bank_card required">
-							<input type="text" id="useraccount-bank_card" class="control-style" name="bank_card" placeholder="请输入卡号">
+							<input type="text" id="useraccount-bank_card" class="control-style" name="card" placeholder="请输入卡号">
 							<div class="help-block"></div>
 						</div>
 					</div>
@@ -100,7 +100,7 @@
 			    <div class="boxflex1 none clearfloat">
 			        <div class="withdrawal-name">手机号</div>
 			        <div class="withdrawal-con" tabindex="1">
-			            <input type="text" value="{$user.mobile}" class="control-style" id="mobile" name="mobile" readonly="readonly" placeholder="">
+			            <input type="text" value="{$user.mobile|mobileHide}" class="control-style" id="mobile" readonly="readonly" placeholder="{$user.mobile|mobileHide}">
 			        </div>
 			    </div>
 			    <div class="boxflex1 none clearfloat">
@@ -112,8 +112,8 @@
 			    </div>
 			    <div class="withdrawal-tips">
 			        <ul>提现规则：
-			            <li>1、提现时间工作日上午9:00到晚17:00。</li>
-			            <li>2、每笔提现扣除3元手续费。</li>
+			            <li>1、提现时间工作日上午9:00到晚17:30。</li>
+			            <li>2、每笔提现扣除2元手续费。</li>
 			            <li>3、每笔提现金额最小10元。</li>
 			            <li></li>
 			        </ul>
@@ -121,7 +121,7 @@
 
 			    <div class="recharge-btn mt10" id="submitBtn">立即提现</div>
 			    <div class="form-group field-useraccount-bank_mobile required">
-					<input type="hidden" id="useraccount-bank_mobile" class="form-control" name="UserAccount[bank_mobile]" value="15851408673">
+					<input type="hidden" id="useraccount-bank_mobile" class="form-control" name="mobile" value="{$user.mobile}">
 					<div class="help-block"></div>
 				</div>    
 			</form>
@@ -137,17 +137,22 @@
 	<script>
 	$(function () {
 	    $("#submitBtn").click(function () {
-	        $("form").ajaxSubmit($.config('ajaxSubmit', {
-	            success: function (msg) {
-	                if (!msg.state) {
-	                    $.alert(msg.info);
-	                } else {
-	                    $.alert(msg.info);
-	                    window.location.href = '/user/index'
-	                }
-	            }
-	        }));
-	        return false;
+            var _url = "{:url('index/User/withdraw')}",
+                _oData = $("form").serialize();
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){ // 登录成功
+                    $alert("申请提现成功，请等待审核！");
+                    setTimeout(function(){
+                        if(res.data.url){
+                            window.location.href = res.data.url;
+                        }else{
+                            window.location.href = "/";
+                        }
+                    }, 1000);
+                }else{
+                    $alert(res.info);
+                }
+            });
 	    });
 	    // 验证码
 	    $("#verifyCodeBtn").click(function () {

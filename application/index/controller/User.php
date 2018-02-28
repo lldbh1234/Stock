@@ -61,7 +61,26 @@ class User extends Base
     public function withdraw()
     {
         if(request()->isPost()){
-            exit;
+            $validate = \think\Loader::validate('Withdraw');
+            if(!$validate->scene('do')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $money = input("post.money/f");
+                $bank = (new BankLogic())->bankByNumber(input("post.bank"));
+                $remark = [
+                    "bank" => $bank['name'],
+                    "card" => input("post.card/s"),
+                    "name" => input("post.realname/s"),
+                    "addr" => input("post.address/s"),
+                ];
+                $withdrawId = $this->_logic->createUserWithdraw($this->user_id, $money, $remark);
+                if($withdrawId > 0){
+                    $url = url("index/User/index");
+                    return $this->ok(['url' => $url]);
+                }else{
+                    return $this->fail("提现申请失败！");
+                }
+            }
         }
         $banks = (new BankLogic())->bankLists();
         $this->assign("user", uInfo());

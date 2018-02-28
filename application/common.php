@@ -90,3 +90,10 @@ if(!function_exists("dataAuthSign")){
         return $sign;
     }
 }
+
+if(!function_exists("mobileHide")){
+    function mobileHide($mobile)
+    {
+        return substr_replace($mobile,'****',3,4);
+    }
+}
