@@ -97,3 +97,19 @@ if(!function_exists("mobileHide")){
         return substr_replace($mobile,'****',3,4);
     }
 }
+
+if(!function_exists("numberFormat")){
+    function numberFormat($number)
+    {
+        $b=1000;
+        $c=10000;
+        $d=100000000;
+        if ($number>=$b && $number<$c){
+            return round($number/$b, 2).'千';
+        }else if ($number>=$c && $number<$d){
+            return round($number/$c, 2).'万';
+        }else {
+            return round($number/$d, 2).'亿';
+        }
+    }
+}

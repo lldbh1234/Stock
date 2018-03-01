@@ -50,7 +50,7 @@
                 {/if}
             </a>
             <span style="width:20%">
-                <a href="{:url('index/Stock/stockBuy', ['code' => {$item.code}])}" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>
+                <a href="{:url('index/Stock/stockBuy', ['code' => $item.code])}" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>
             </span>
         </li>
         {/volist}
@@ -90,6 +90,7 @@
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__STATIC__/js/stock.js"></script>
 <script type="text/javascript">
 	$(".edit_btn").on("tap" , function(){
 		$(".select_btn").toggle();
