@@ -122,4 +122,10 @@ class User extends Base
         $this->assign("banks", $banks);
         return view();
     }
+
+    public function manager()
+    {
+        $user = $this->_logic->userIncAdmin($this->user_id);
+        dump($user);
+    }
 }

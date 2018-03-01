@@ -73,4 +73,10 @@ class UserLogic
     {
         return User::find($userId)->hasManyOptional()->column("code");
     }
+
+    public function userIncAdmin($userId)
+    {
+        $user = User::with("hasOneAdmin")->find($userId);
+        return $user ? $user->toArray() : [];
+    }
 }
