@@ -12,8 +12,8 @@ function $alert(content){
             $(".alert-mask").remove();
             clearTimeout(timer);
             timer = null;
-        },1000);         
-    },2000)
+        },800);         
+    },1000)
 } 
 
 
