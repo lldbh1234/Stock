@@ -20,8 +20,13 @@ class User extends BaseModel
         return request()->time();
     }
 
-    protected function hasOneAdmin()
+    public function hasOneAdmin()
     {
         return $this->hasOne("\\app\\common\\model\\Admin", "admin_id", "admin_id");
+    }
+
+    public function hasManyWithdraw()
+    {
+        return $this->hasMany("\\app\\common\\model\\UserWithdraw", "user_id", "user_id");
     }
 }

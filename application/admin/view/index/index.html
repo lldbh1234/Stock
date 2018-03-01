@@ -76,6 +76,18 @@
 				</ul>
 			</dd>
 		</dl>-->
+		{volist name='menu' id='vo'}
+			<dl id="">
+				<dt><i class="Hui-iconfont {$vo.icon}"></i> {$vo.name}<i class="Hui-iconfont menu_dropdown-arrow Hui-iconfont-arrow2-bottom"></i></dt>
+				<dd>
+					<ul>
+						{volist name='vo.lists' id='lists'}
+							<li><a data-href="{:url($lists.act)}" data-title="{$lists.name}" href="javascript:void(0);">{$lists.name}</a></li>
+						{/volist}
+					</ul>
+				</dd>
+			</dl>
+		{/volist}
 		<dl id="menu-team">
 			<dt><i class="Hui-iconfont Hui-iconfont-fenlei"></i> 组织架构<i class="Hui-iconfont menu_dropdown-arrow Hui-iconfont-arrow2-bottom"></i></dt>
 			<dd>

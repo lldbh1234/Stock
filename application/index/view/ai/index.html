@@ -1,0 +1,137 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+AI智能推荐
+{/block}
+
+{block name="style"}
+<style type="text/css">
+	body{
+		background: #f5f5f5!important;
+	}
+	.niu_dongtai+.niu_dongtai{
+		margin-top: 10px;
+	}
+	.zixuan_top {
+		position: fixed;
+		width: 100%;
+		z-index: 999;
+		left: 0;
+		top: 0;
+	}
+	.ai_r_con{
+		margin-top: 58px;
+		margin-bottom: 52px;
+	}
+</style>
+{/block}
+
+{block name="body"}
+<body class="mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+
+{block name="content"}
+	<header class="zixuan_top">
+		AI智能推荐
+	</header>
+	<div class="ai_r_con">
+        {volist name="datas" id="item"}
+		<div class="niu_dongtai">
+			<div class="pa14">
+				<h1 class="search_h_title clear_fl">
+					{$item.name}
+				</h1>
+			</div>
+			<div class="pa14">
+				<div class="clear_fl ai_gu_options">
+                    {volist name="item.has_many_ai" id="ai" length="3"}
+					<div {eq name="key" value="0"}class="active"{/eq} data-class-name="detail-{$ai.type_id}-{$ai.id}">
+						<h1 class="ai_gu_output">+17.44%</h1>
+						<p class="ai_gu_o_title">{$ai.name}</p>
+						<p class="ai_gu_code">{$ai.code}</p>
+					</div>
+                    {/volist}
+				</div>
+
+                {volist name="item.has_many_ai" id="ai" length="3"}
+				<div class="home-stock-pool__stock-pool-price___C91NS detail-{$ai.type_id}-{$ai.id}" {neq name="key" value="0"} style="display: none;"{/neq}>
+					<div class="pool-profit-table__pool-profit-table___REAP-">
+						<table class="pool-profit-table__table___V-LxU" cellspacing="0">
+							<tbody>
+								<tr>
+									<td>入价</td>
+									<td>30.91</td>
+									<td class="pool-profit-table__title___2adNx">现价</td>
+									<td>36.30</td></tr><tr><td>表现</td>
+                                    <td colspan="2" class="pool-profit-table__revealed___3r1pm">{$ai.remark}</td>
+									<td>
+										<a href="{:url('index/Stock/stockBuy', ['code' => $ai.code])}" class="rt ai_follow_btn follow_buy_btn">跟买</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+                {/volist}
+			</div>
+		</div>
+        {/volist}
+	</div>
+{/block}
+
+{block name="nav"}
+	<nav class="ml_tab mui-bar mui-bar-tab">
+		<a class="mui-tab-item" href="{:url('index/Index/index')}">
+			<span class="mui-icon mui-icon-home"></span>
+			<span class="mui-tab-label">首页</span>
+		</a>
+		<a class="mui-tab-item" href="{:url('index/User/optional')}">
+			<span class="mui-icon mui-icon-zixuan"></span>
+			<span class="mui-tab-label">自选</span>
+		</a>
+		<a class="mui-tab-item center_item mui-active" href="javascript:void(0);">
+			<span class="mui-icon mui-icon-celue"></span>
+			<span class="mui-tab-label">AI智能推荐</span>
+		</a>
+		<a class="mui-tab-item" href="{:url('index/Strategy/index')}">
+			<span class="mui-icon mui-icon-jingu"></span>
+			<span class="mui-tab-label">策略</span>
+		</a>
+		<a class="mui-tab-item" href="{:url('index/User/index')}">
+			<span class="mui-icon mui-icon-my"></span>
+			<span class="mui-tab-label">我的</span>
+		</a>
+	</nav>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+	$(".edit_btn").on("tap" , function(){
+		$(".select_btn").toggle();
+	});
+
+	mui.init({
+		swipeBack: true //启用右滑关闭功能
+	})
+
+	//选项卡
+	 mui('body').on('tap', 'a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
+
+    $(".ai_gu_options").on("tap" , "div" ,  function(){
+        var _this = $(this),
+            _className = _this.data("class-name"),
+            _that = $("." + _className);
+        _this.addClass("active").siblings(".active").removeClass("active");
+        _that.siblings(".home-stock-pool__stock-pool-price___C91NS").hide();
+        _that.show();
+    });
+</script>
+{/block}

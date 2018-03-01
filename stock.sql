@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `stock_admin` (
 -- 正在导出表  stock.stock_admin 的数据：~14 rows (大约)
 /*!40000 ALTER TABLE `stock_admin` DISABLE KEYS */;
 INSERT INTO `stock_admin` (`admin_id`, `username`, `password`, `nickname`, `mobile`, `pid`, `role`, `company`, `realname`, `point`, `total_fee`, `deposit`, `code`, `last_ip`, `last_time`, `status`, `create_at`) VALUES
-	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0.00, 0.00, 'root', '127.0.0.1', 1519609179, 0, 1518085749),
+	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0.00, 0.00, 'root', '127.0.0.1', 1519790798, 0, 1518085749),
 	(2, 'admin', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 1, NULL, NULL, 0, 0.00, 0.00, 'admin', '127.0.0.1', 1519374793, 0, 1518085749),
 	(3, '结算中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 2, 2, NULL, NULL, 0, 0.00, 0.00, '111111', '127.0.0.1', 1518098557, 0, 1518085749),
 	(4, '运营中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 3, 3, NULL, NULL, 0, 0.00, 0.00, '22222222222', '0.0.0.0', 0, 0, 1518085749),
@@ -113,10 +113,21 @@ CREATE TABLE IF NOT EXISTS `stock_ai` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
   PRIMARY KEY (`id`),
   KEY `type_id` (`type_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='ai智能推荐';
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='ai智能推荐';
 
 -- 正在导出表  stock.stock_ai 的数据：0 rows
 /*!40000 ALTER TABLE `stock_ai` DISABLE KEYS */;
+INSERT INTO `stock_ai` (`id`, `code`, `name`, `full_code`, `remark`, `type_id`, `sort`, `status`) VALUES
+	(6, '600007', '中国国贸', 'sh600007', '预计收益相当可观', 1, 100, 0),
+	(4, '600000', '浦发银行', 'sh600000', '相当棒', 1, 50, 0),
+	(5, '600004', '白云机场', 'sh600004', '推荐购买', 1, 13, 0),
+	(7, '600009', '上海机场', 'sh600009', '不错不错', 2, 50, 0),
+	(8, '600015', '华夏银行', 'sh600015', '推荐推荐', 2, 35, 0),
+	(9, '600016', '民生银行', 'sh600016', '值得推荐', 2, 50, 0),
+	(10, '600018', '上港集团', 'sh600018', '信我没错', 2, 60, 0),
+	(11, '600021', '上海电力', 'sh600021', '疯狂买入', 3, 50, 0),
+	(12, '600022', '山东钢铁', 'sh600022', '看涨看涨', 3, 40, 0),
+	(13, '600027', '华电国际', 'sh600027', '前途一片光明', 3, 50, 0);
 /*!40000 ALTER TABLE `stock_ai` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_ai_type 结构
@@ -3922,12 +3933,14 @@ CREATE TABLE IF NOT EXISTS `stock_user` (
   KEY `username` (`username`),
   KEY `admin_id` (`admin_id`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- 正在导出表  stock.stock_user 的数据：1 rows
 /*!40000 ALTER TABLE `stock_user` DISABLE KEYS */;
 INSERT INTO `stock_user` (`user_id`, `username`, `password`, `mobile`, `nickname`, `face`, `admin_id`, `parent_id`, `invide_code`, `account`, `blocked_account`, `state`, `is_manager`, `manager_state`, `is_niuren`, `niuren_state`, `create_at`) VALUES
-	(1, '15934854815', '###14e1b600b1fd579f47433b88e8d85291', '15934854815', '15934854815', '/resource/home/img/default-user-img.png', 6, 0, NULL, 0.00, 0.00, 0, -1, 0, -1, 0, 1519716476);
+	(1, '15934854815', '###70873e8580c9900986939611618d7b1e', '15934854815', '15934854815', '/resource/home/img/default-user-img.png', 6, 0, NULL, 3000.00, 0.00, 0, -1, 0, -1, 0, 1519716476),
+	(2, '15934854816', '###14e1b600b1fd579f47433b88e8d85291', '15934854816', '15934854816', '/resource/home/img/default-user-img.png', 11, 0, NULL, 0.00, 0.00, 0, -1, 0, -1, 0, 1519811310),
+	(4, '15934854817', '###70873e8580c9900986939611618d7b1e', '15934854817', '15934854817', '/resource/home/img/default-user-img.png', 11, 0, NULL, 0.00, 0.00, 0, -1, 0, -1, 0, 1519811999);
 /*!40000 ALTER TABLE `stock_user` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_user_coupon 结构

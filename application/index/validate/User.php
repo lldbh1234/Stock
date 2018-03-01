@@ -18,6 +18,7 @@ class User extends Validate
         'institution' => 'require|checkInstitution',
         'newPassword'	=> 'require|length:6,16',
         'reNewPassword' => 'confirm:newPassword',
+        'act'       => "checkAct"
     ];
 
     protected $message = [
@@ -28,12 +29,14 @@ class User extends Validate
         'mobile.require'    => '手机号码不能为空！',
         'mobile.regex'      => '手机号码格式错误！',
         'mobile.checkMobile' => '手机号码已注册！',
+        'mobile.checkMobileExist' => '手机号码不存在！',
         'code.require'      => '短信验证码不能为空！',
         'code.checkCode'    => '短信验证码错误！',
+        'code.checkForgetCode'    => '短信验证码错误！',
         'password.require'  => '密码不能为空！',
         'password.length'   => '密码为6-16位字符！',
         'rePassword.confirm' => '俩次输入密码不一致！',
-        'act.in'            => '系统提示：非法操作！',
+        'act.checkAct'      => '系统提示：非法操作！',
         'username.require'  => '手机号码不能为空！',
         'institution.require' => '请选择机构！',
         'institution.checkInstitution' => '机构不正确！',
@@ -46,10 +49,16 @@ class User extends Validate
         'register'  => ['orgCode', 'mobile', 'password', 'rePassword', 'code'],
         'captcha'   => [
             'mobile' => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
-            'act' => "in:register"
+            'act',
         ],
         'login'     => ['username', 'password', 'institution'],
         'password'  => ['oldPassword', 'newPassword', 'reNewPassword'],
+        'forget'    => [
+            'mobile' => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/|checkMobileExist',
+            'code'   => 'require|checkForgetCode',
+            'password',
+            'institution',
+        ],
     ];
 
     protected function checkOrgCode($value)
@@ -71,10 +80,24 @@ class User extends Validate
         return $user ? false : true;
     }
 
+    protected function checkMobileExist($value, $rule, $data)
+    {
+        $ringAdminIds = Admin::where(["pid" => $data['institution']])->column("admin_id");
+        array_push($ringAdminIds, $data['institution']);
+        $user = \app\index\model\User::where(["mobile" => $value, "admin_id" => ["IN", $ringAdminIds]])->find();
+        return $user ? true : false;
+    }
+
     protected function checkCode($value, $rule, $data)
     {
         $mobile = $data['mobile'];
         return (new SmsLogic())->verify($mobile, $value, "register");
+    }
+
+    protected function checkForgetCode($value, $rule, $data)
+    {
+        $mobile = $data['mobile'];
+        return (new SmsLogic())->verify($mobile, $value, "forget");
     }
 
     protected function checkInstitution($value)
@@ -90,5 +113,11 @@ class User extends Validate
     protected function checkOldPassword($value)
     {
         return spComparePassword($value, uInfo()['password']);
+    }
+
+    protected function checkAct($value)
+    {
+        $_array = ['register', 'forget', 'withdraw'];
+        return in_array($value, $_array);
     }
 }

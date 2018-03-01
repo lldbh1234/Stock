@@ -1,18 +1,18 @@
 <?php
-namespace app\index\controller;
-
+namespace app\admin\controller;
 
 use think\Request;
 
-class Stock extends Base
+class Test extends Base
 {
     public function __construct(Request $request = null)
     {
         parent::__construct($request);
     }
 
-    public function stockBuy($code)
+    public function test()
     {
-
+        self::checkAuth();
     }
+
 }

@@ -64,11 +64,8 @@ class Home extends Controller
                         $data['parent_id'] = input("post.pid/d", 0);
                         $userId = (new UserLogic())->createUser($data);
                         if($userId > 0){
-                            $_autoLogin = [
-                                'user_id'  => $userId,
-                                'username' => $data['username'],
-                            ];
-                            (new LoginLogic())->autoLogin($_autoLogin);
+                            $user = (new UserLogic())->userById($userId);
+                            (new LoginLogic())->autoLogin($user);
                             $url = url('index/Index/index');
                             return $this->ok(['url' => $url]);
                         }else{
@@ -80,6 +77,35 @@ class Home extends Controller
                 }
             }
             $pid = input("?pid") ? input("pid") : 0;
+            return view();
+        }
+    }
+
+    public function forget()
+    {
+        if(isLogin()){
+            return $this->redirect(url("index/Index/index"));
+            exit;
+        }else{
+            if(request()->isPost()){
+                $validate = \think\Loader::validate('User');
+                if(!$validate->scene('forget')->check(input("post."))){
+                    return $this->fail($validate->getError());
+                }else{
+                    $mobile = input("post.mobile");
+                    $password = input("post.password/s");
+                    $member = input("post.institution/d");
+                    $res = (new LoginLogic())->forgetPassword($mobile, $password, $member);
+                    if($res !== false){
+                        $url = url("index/Home/login");
+                        return $this->ok(["url" => $url]);
+                    }else{
+                        return $this->fail("密码找回失败！");
+                    }
+                }
+            }
+            $members = (new AdminLogic())->allMemberLists();
+            $this->assign("members", $members);
             return view();
         }
     }
