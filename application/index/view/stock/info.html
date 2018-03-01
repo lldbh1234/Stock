@@ -129,7 +129,16 @@
 <script type="text/javascript" src="__RESOURCE__/js/config.js"></script>
 <script type="text/javascript">
     $(".add_zixuan").click(function(){
-        var _url = '{:url("index/User/createOptional")}';
+        var _url = '{:url("index/User/createOptional")}',
+            _code = $("#guName").data("code"),
+            _oData = {code:_code};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ // 登录成功
+                $alert("自选添加成功！");
+            }else{
+                $alert(res.info);
+            }
+        });
     });
 	/**---- 获取跳转参数更新页面内容 ----*/
 	var code = getQueryString("code");
