@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<title>充值</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<link href="css/mui.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/person.css">
+		<script src="js/jquery-2.2.0.min.js"></script>
+
+	</head>
+<!--个人中心-充值-->
+<body class="payment_body">  
+	<div class="payment_body">
+		<header class="header_con">
+		    <a href="javascript:history.go(-1)" class="lf">
+		        <img src="img/call_back.png">
+		    </a>
+		    <p>充值</p>
+		</header>
+		<div class=" " style="padding:0;">
+		    <p class="selecthe">选择充值面额（元）</p>
+		    <div class="col-xs-12">
+		        <div style="padding: 0 10px;" class="form-group field-chargeAmount required">
+		            <input type="text" id="chargeAmount" class="form-control custorm_count" placeholder="可输入10-10000的整数金额（元）">
+		            <div class="help-block"></div>
+		        </div>            
+		    </div>
+		    <form id="payform" action="/user/pay" method="post">
+				<input type="hidden" name="_csrf" value="">    <div class="boxflex1 paystyle" style="padding: 10px 15px 0;">
+		        <div class="group_btn clear_fl">
+		            <div class="btn_re">
+		                <a class="btn_money on">74</a>
+		            </div>
+		            <div class="btn_re btn_center">
+		                <a class="btn_money">154</a>
+		            </div>
+		            <div class="btn_re btn_center">
+		                <a class="btn_money">331</a>
+		            </div>
+		            <div class="btn_re">
+		                <a class="btn_money">857</a>
+		            </div>
+		            <div class="btn_re">
+		                <a class="btn_money">1507</a>
+		            </div>
+		            <div class="btn_re">
+		                <a class="btn_money">2299</a>
+		            </div>
+		            <div class="btn_re">
+		                <a class="btn_money">3209</a>
+		            </div>
+		            <div class="btn_re">
+		                <a class="btn_money">4398</a>
+		            </div>
+		        </div>
+		        <input type="hidden" id="amount" name="amount" value="74">
+		        <input type="hidden" id="type" name="type" value="1">
+		    </div>
+		    <p class="real_count_con">实际到账：<span class="real_count">72</span></p>
+		    <div class="boxflex1">
+		        <div class="moneyhead">充值方式</div>
+		    </div>
+		    <div class="payType">
+		        <div class="boxflex1 paystyle checkImg2" style="border-top:0;" data-type="1">
+		            <img src="img/icon-chat.png" style="width: 20px;">
+		            <span>微信扫码</span>
+		            <img src="img/seleted.png" alt="" style="float:right;" class="check-paytwo checkPay">
+		        </div>
+
+		       <div class="boxflex1 paystyle checkImg1" data-type="2">
+		            <img src="img/alipay.png" style="width: 20px;">
+		            <span>支付宝扫码</span>
+		            <img src="img/notseleted.png" alt="" style="float:right;" class="check-payone checkPay">
+		        </div>
+		       <div class="boxflex1 paystyle checkImg1" data-type="3">
+		            <img src="img/qqpay.png" style="width: 20px;">
+		            <span>QQ扫码</span>
+		            <img src="img/notseleted.png" alt="" style="float:right;" class="check-payone checkPay">
+		        </div>
+		       <!--<div class="boxflex1 paystyle checkImg2" style="border-top:0;"  data-type="4">
+		            <img src="img/jd.png" style="width: 20px;">
+		            <span>京东扫码</span>
+		            <img src="img/notseleted.png" alt="" style="float:right;" class="check-paytwo checkPay" >
+		        </div>-->
+		       <div class="boxflex1 paystyle checkImg1" data-type="5">
+		            <img src="img/pay.png" style="width: 20px;">
+		            <span>银联扫码</span>
+		            <img src="img/notseleted.png" alt="" style="float:right;" class="check-payone checkPay">
+		        </div>
+		       <div class="boxflex1 paystyle checkImg1" data-type="6">
+		            <img src="img/pay.png" style="width: 20px;">
+		            <span>H5网银支付</span>
+		            <img src="img/notseleted.png" alt="" style="float:right;" class="check-payone checkPay">
+		        </div>
+		        <div class="boxflex1 paystyle checkImg1" data-type="7">
+		            <img src="img/pay.png" style="width: 20px;">
+		            <span>手机银联快捷</span>
+		            <img src="img/notseleted.png" alt="" style="float:right;" class="check-payone checkPay">
+		        </div>
+		    </div>
+		    <div class="recharge-btn" id="payBtn">立即充值</div>
+
+
+		    <p class="recharge-run">充值规则：每笔收取2%手续费</p>
+
+		    </form>
+		</div>
+	</div>  
+	<script>
+	$(function() {
+	    var options = [68, 160, 340, 860, 1500, 2300, 3200, 4400];
+	    $(".btn_money").each(function(index, el) {
+	       var range = parseInt( 10 - Math.random() * 20 );
+	       var count = options[index] + range;
+	       $(el).html(count);
+	    });
+
+
+
+
+	    $('#type').val(1);
+	    $(".btn_money").click(function() {
+	        $(".on").removeClass("on");
+	        $(this).addClass("on");
+	        $('#amount').val($(this).html());
+	        $("#chargeAmount").val( $(this).html() );
+
+	        var val = $(this).html();
+	        var rate = 0.02;    //后台给定
+	        $(".real_count").html(val - Math.ceil( val * rate ));
+	    });
+
+	    $(".btn_money.on").trigger("click");
+	    
+	    $("#chargeAmount").blur(function(){
+	        var val = $(this).val();
+	        var rate = 0.02;    //后台给定
+
+	        $(".btn_money.on").removeClass("on");
+	        var amount = $(this).val();
+	        var _this = $(this);
+	        if( isNaN(amount) ){
+	            $.alert("充值金额必须为数字", function(){
+	                _this.val(10);
+	                $('#amount').val(10);
+	                val = 10;
+	                $(".real_count").html(val - Math.ceil( val * rate ));
+	            });
+	        }
+	        if(amount < 10){
+	            $.alert("充值金额不小于10元", function(){
+	                _this.val(10);
+	                $('#amount').val(10);
+	                val = 10;
+	                $(".real_count").html(val - Math.ceil( val * rate ));
+	            });
+	        }
+
+	        $('#amount').val(amount);
+	        $(".real_count").html(val - Math.ceil( val * rate ));
+	    });
+
+	    $('#payBtn').on('click', function(){
+	        var amount = $('#amount').val();
+	        if(!amount || isNaN(amount) || amount <= 0){
+	            alert('金额输入不合法!');
+	            return false;
+	        }
+	        $("#payform").submit();
+	    });
+
+	    $('.payType .paystyle').on('click', function(){
+	        var type = $(this).data('type');
+	        $('.payType .paystyle').each(function(){
+	            if (type == $(this).data('type')) {
+	                $(this).find('.checkPay').attr({"src":"img/seleted.png"});
+	            } else {
+	                $(this).find('.checkPay').attr({"src":"img/notseleted.png"});
+	            }
+	        });
+	        $('#type').val(type);
+	    });
+
+	})
+	</script>
+</body>
+</html>

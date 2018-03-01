@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+	<title>自选</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link href="css/person.css" rel="stylesheet">
+	<script src="js/jquery-2.2.0.min.js"></script>
+	<script src="js/mui.min.js"></script>
+	<style type="text/css">
+		body{
+			background: #f5f5f5!important;
+		}
+	</style>
+</head>
+	<body class="  mui-ios mui-ios-10 mui-ios-10-3">  
+		<header class="zixuan_top">
+			自选
+		</header>
+		<div class="search_con">
+			<input placeholder="请输入股票代码/名称/拼音">
+			<span class="edit_btn"></span>
+		</div>
+		<ul class="zixuan_list">
+			<li class="list_header flex_nowrap">
+					<div class="select_btn" style="width:15%">
+					</div>
+					<span style="width:40%;padding-left: 18px">名称代码</span>
+					<span style="width:20%">现价</span>
+					<span style="width:20%">涨跌幅</span>
+					<span style="width:20%"></span>
+			</li>
+			<li class="list_header flex_nowrap">
+				<div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
+					<label></label>
+					<input name="checkbox" value="Item 1" type="checkbox">
+				</div>
+				<a style="width:80%" class="flex_nowrap" href="">
+					<span class="zi_name" style="width:80%;padding-left: 18px;"> <span>士兰微</span><span>600460</span></span>
+					<span style="width:40%" class="red">16.25</span>
+					<span style="width:40%" class="red">-2.45%</span>
+					
+				</a>
+				<span style="width:20%">
+					<a href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>
+				</span>
+			</li>
+			<li class="list_header flex_nowrap">
+				<div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
+					<label></label>
+					<input name="checkbox" value="Item 1" type="checkbox">
+				</div>
+				<a style="width:80%" class="flex_nowrap" href="">
+					<span class="zi_name" style="width:80%;padding-left: 18px;"> <span>士兰微</span><span>600460</span></span>
+					<span style="width:40%" class="red">16.25</span>
+					<span style="width:40%" class="red">-2.45%</span>
+					
+				</a>
+				<span style="width:20%">
+					<a href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>
+				</span>
+			</li>
+			<li class="list_header flex_nowrap">
+				<div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
+					<label></label>
+					<input name="checkbox" value="Item 1" type="checkbox">
+				</div>
+				<a style="width:80%" class="flex_nowrap" href="">
+					<span class="zi_name" style="width:80%;padding-left: 18px;"> <span>士兰微</span><span>600460</span></span>
+					<span style="width:40%" class="red">16.25</span>
+					<span style="width:40%" class="red">-2.45%</span>
+					
+				</a>
+				<span style="width:20%">
+					<a href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>
+				</span>
+			</li>
+			<li class="list_header flex_nowrap">
+				<div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
+					<label></label>
+					<input name="checkbox" value="Item 1" type="checkbox">
+				</div>
+				<a style="width:80%" class="flex_nowrap" href="">
+					<span class="zi_name" style="width:80%;padding-left: 18px;"> <span>士兰微</span><span>600460</span></span>
+					<span style="width:40%" class="red">16.25</span>
+					<span style="width:40%" class="red">-2.45%</span>
+					
+				</a>
+				<span style="width:20%">
+					<a href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>
+				</span>
+			</li>
+		</ul>
+
+		<div class="delete_panel clear_fl">
+			<div style="display: block;float: left;height: 32px;" class="mui-input-row mui-checkbox mui-left select_btn">
+				<label></label>
+				<input name="checkbox" value="Item 1" type="checkbox">
+			</div>
+			<button class="rt zixun_delete_btn">删除</button>
+		</div>
+
+		
+		<nav class="ml_tab mui-bar mui-bar-tab">
+		    <a class="mui-tab-item" href="index.html">
+		        <span class="mui-icon mui-icon-home"></span>
+		        <span class="mui-tab-label">首页</span>
+		    </a>
+		    <a class="mui-tab-item mui-active" href="自选.html">
+		        <span class="mui-icon mui-icon-zixuan"></span>
+		        <span class="mui-tab-label">自选</span>
+		    </a>
+		    <a class="mui-tab-item center_item" href="ai_recommend.html">
+		        <span class="mui-icon mui-icon-celue"></span>
+		        <span class="mui-tab-label">AI智能推荐</span>
+		    </a>
+		    <a class="mui-tab-item" href="策略.html">
+		        <span class="mui-icon mui-icon-jingu"></span>
+		        <span class="mui-tab-label">策略</span>
+		    </a>
+		    <a class="mui-tab-item" href="home.html">
+		        <span class="mui-icon mui-icon-my"></span>
+		        <span class="mui-tab-label">我的</span>
+		    </a>
+		</nav>
+
+
+
+<script type="text/javascript">
+	$(".edit_btn").on("tap" , function(){
+		$(".select_btn").toggle();
+	});
+
+	mui.init({
+		swipeBack: true //启用右滑关闭功能
+	})
+
+	//选项卡
+	 mui('body').on('tap', 'a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
+</script>
+</body></html>

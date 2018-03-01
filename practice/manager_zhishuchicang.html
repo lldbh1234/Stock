@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+	<title>经纪人</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/manager.css">
+    <link rel="stylesheet" type="text/css" href="css/person.css">
+    <link href="css/foundation-datepicker.min.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery-2.2.0.min.js"></script>
+    <script src="js/foundation-datepicker.js"></script>
+    <style type="text/css">
+        body{
+            background: #f5f5f5;
+        }
+        .ml_btn{
+            margin-top: 16px!important;
+            margin-bottom: 16px;
+        }
+        .fan_key:before {
+            content: "";
+            display: inline-block;
+            vertical-align: middle;
+            width: 24px;
+            height: 24px;
+            background: url(img/icons.png) no-repeat;
+            background-size: 900%;
+            background-position: -60px -52px;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>  
+	<div class="manager_con">
+		<header class="header_con">
+		    <a href="javascript:history.go(-1)" class="lf">
+		        <img src="img/call_back.png">
+		    </a>
+		    <p>经纪人</p>
+		</header>
+        <div id="main">
+            <p class="income_title">
+                <span class="fan_key">总笔数</span>
+                <span class="fan_count">0笔</span>
+            </p>
+            <ul class="search_result_list">
+                <li class="s_r_title flex_nowrap">
+                    <span class="lf">客户</span>
+                    <span class="lf">股票简称</span>
+                    <span class="lf">保证金</span>
+                    <span class="lf">建仓费</span>
+                    <span class="lf">递延费</span>
+                </li>
+                <li class="flex_nowrap">
+                    <span class="lf">15454</span>
+                    <span class="lf">招商银行</span>
+                    <span class="lf">1000.00</span>
+                    <span class="lf">10000.00</span>
+                    <span class="lf">1000.00</span>
+                </li>
+                <!-- empty -->
+                <li class="empty">当前查询记录为0条</li>
+            </ul>
+
+        </div>
+	</div>
+
+<script type="text/javascript">
+    $(function(){
+
+    });
+    
+</script>
+</body>
+</html>
