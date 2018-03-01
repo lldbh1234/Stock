@@ -79,4 +79,10 @@ class UserLogic
         $user = User::with("hasOneAdmin")->find($userId);
         return $user ? $user->toArray() : [];
     }
+
+    public function userIncAttention($userId)
+    {
+        $user = User::with("hasManyAttention,hasManyAttention.belongsToAttention")->find($userId);
+        return $user ? $user->toArray() : [];
+    }
 }

@@ -49,6 +49,11 @@ Route::group("manager", function(){
     Route::any('index','index/User/manager'); // 经纪人首页
 });
 
+//关注
+Route::group("attention", function(){
+    Route::any('index','index/Attention/index'); // 关注
+});
+
 //Ai
 Route::group("ai", function () {
     Route::any('index','index/Ai/index'); //推荐列表
