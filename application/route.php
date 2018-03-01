@@ -50,6 +50,8 @@ Route::group("ai", function () {
 
 Route::group("stock", function () {
     Route::any('buy','index/Stock/stockBuy'); //购买
+    Route::any('real','index/Stock/real'); //实时行情
+    Route::any('simple','index/Stock/simple'); //行情基本数据
 });
 
 Route::group("cron", function () {
