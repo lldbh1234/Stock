@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<title>资金明细</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link href="css/person.css" rel="stylesheet">
+</head>
+<body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3"> 
+	<header class="has_back_top ">
+		资金明细
+		<a href="javascript:history.go(-1)" class="back_icon">
+			<img src="img/back_icon.png">
+		</a>
+	</header>   
+	<div class="money_header">
+		<h1 class="m_balance">0</h1>
+		<p class="m_balance_title">账户余额（元）</p>
+		<div class="clear_fl m_panel">
+			<a href="recharge.html" class="lf">
+				<img src="img/recharge_icon.png"><br/>
+				充值
+			</a>
+			<a href="withdraw.html" class="rt">
+				<img src="img/withdrew_icon.png"><br/>
+				提现
+			</a>
+		</div>
+	</div>
+
+
+	<ul class="postion_tab flex_nowrap">
+		<li class="active">
+			<p><span>全部</span></p>
+		</li>
+		<li>
+			<p><span>保证金</span></p>
+		</li>
+		<li>
+			<p><span>建仓费</span></p>
+		</li>
+		<li>
+			<p><span>递延费</span></p>
+		</li>
+	</ul>
+
+	<div class="money_tab_con" style="text-align: center;">
+		<img style="width: 30%;margin-top: 60px;" src="img/no-search-data@3x.png">
+	</div>
+
+
+<script src="js/jquery-2.2.0.min.js"></script>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript">
+	$(".postion_tab").on("tap" , "li" , function(){
+		$(this).addClass("active").siblings(".active").removeClass("active");
+	});
+</script>
+
+
+</body>
+</html>

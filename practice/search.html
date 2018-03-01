@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)http://www.fcml888.com/ucenter/quick_pay.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<title>策略</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<link href="css/mui.min.css" rel="stylesheet">
+		<link href="css/person.css" rel="stylesheet">
+	</head>
+<!--个人中心-充值-支付宝-->
+	<body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">  
+		<header class="strategy_top search_top">
+			<input class="search_input lf" placeholder="请输入股票代码/名称/拼音"/>
+			<a href="index.html" class="rt cancel_btn">取消</a>
+		</header>
+		<div class="search_history">
+			<h1 class="search_h_title clear_fl">
+				搜索历史
+				<a href="" class="rt">清空</a>
+			</h1>
+
+			<div class="empty_pic">
+				<img src="img/no-search-data@3x.png">
+			</div>
+
+			<!-- <ul class="search_h_list">
+				<li class="flex_nowrap">
+					<span>安通控股 600179</span>
+					<span class="red">28.17</span>
+					<span class="red">+8.17%</span>
+					<span class="add_h_btn"><img src="img/add_btn.png"></span>
+					<span class="remove_btn"><img class="rt" src="img/remove_btn.png"></span>
+				</li>
+				<li class="flex_nowrap">
+					<span>安通控股 600179</span>
+					<span class="red">28.17</span>
+					<span class="red">+8.17%</span>
+					<span class="add_h_btn"><img src="img/add_btn.png"></span>
+					<span class="remove_btn"><img class="rt" src="img/remove_btn.png"></span>
+				</li>
+				<li class="flex_nowrap">
+					<span>安通控股 600179</span>
+					<span class="red">28.17</span>
+					<span class="red">+8.17%</span>
+					<span class="add_h_btn"><img src="img/add_btn.png"></span>
+					<span class="remove_btn"><img class="rt" src="img/remove_btn.png"></span>
+				</li>
+				<li class="flex_nowrap">
+					<span>安通控股 600179</span>
+					<span class="red">28.17</span>
+					<span class="red">+8.17%</span>
+					<span class="add_h_btn"><img src="img/add_btn.png"></span>
+					<span class="remove_btn"><img class="rt" src="img/remove_btn.png"></span>
+				</li>
+			</ul> -->
+		</div>
+		<div class="search_history hot_recommend" style="margin-top: 8px;">
+			<h1 class="search_h_title clear_fl">热门推荐</h1>
+			<ul class="recommend_list flex_nowrap">
+				<li>
+					<a href="">
+						<p class="shares_name">南京新百</p>
+						<p class="shares_code">600682</p>
+						<p class="shares_price">37.45</p>
+						<p class="shares_detail">
+							<span>-0.23</span>
+							<span>-0.83%</span>
+						</p>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<p class="shares_name">中国国航</p>
+						<p class="shares_code">600682</p>
+						<p class="shares_price">37.45</p>
+						<p class="shares_detail">
+							<span>-0.23</span>
+							<span>-0.83%</span>
+						</p>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<p class="shares_name">一品红</p>
+						<p class="shares_code">600682</p>
+						<p class="shares_price">37.45</p>
+						<p class="shares_detail">
+							<span>-0.23</span>
+							<span>-0.83%</span>
+						</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+
+
+		<nav class="ml_tab mui-bar mui-bar-tab">
+		    <a class="mui-tab-item" href="index.html">
+		        <span class="mui-icon mui-icon-home"></span>
+		        <span class="mui-tab-label">首页</span>
+		    </a>
+		    <a class="mui-tab-item" href="自选.html">
+		        <span class="mui-icon mui-icon-zixuan"></span>
+		        <span class="mui-tab-label">自选</span>
+		    </a>
+		    <a class="mui-tab-item center_item" href="AI智能推荐.html">
+		        <span class="mui-icon mui-icon-celue"></span>
+		        <span class="mui-tab-label">AI智能推荐</span>
+		    </a>
+		    <a class="mui-tab-item mui-active" href="策略.html">
+		        <span class="mui-icon mui-icon-jingu"></span>
+		        <span class="mui-tab-label">策略</span>
+		    </a>
+		    <a class="mui-tab-item" href="home.html">
+		        <span class="mui-icon mui-icon-my"></span>
+		        <span class="mui-tab-label">我的</span>
+		    </a>
+		</nav>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			})
+			//选项卡
+			 mui('body').on('tap', 'a', function() {
+		        var data_href = this.getAttribute("data-href");
+		        var href = this.getAttribute("href");
+		        var url=data_href;
+		        if(!url||url==''){
+		            url=href;
+		        }
+		        window.location.href = url;
+		     });
+		</script>
+
+</body></html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+	<title>经纪人</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/manager.css">
+    <link rel="stylesheet" type="text/css" href="css/person.css">
+	<script src="js/jquery-2.2.0.min.js"></script>
+    <style type="text/css">
+        body{
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>  
+	<div class="manager_con">
+		<header class="header_con">
+		    <a href="javascript:history.go(-1)" class="lf">
+		        <img src="img/call_back.png">
+		    </a>
+		    <p>经纪人</p>
+		</header>
+        <div id="main">
+            <div class="index-box">
+                <a href="erweima.html" class="client_profile clear_fl">
+                    <div class="lf">
+                        <p class="client_p_name">闪电侠0330</p>
+                        <p class="client_p_phone">13484965455</p>
+                    </div>
+                    <i class="earrow earrow-right rt"></i>
+                    <span class="rt">分享二维码</span>
+                </a>
+
+                <a href="manager_income.html" class="client_profile my_input_con clear_fl">
+                    <p class="lf my_input">0</p>
+                    <i class="earrow earrow-right rt"></i>
+                    <span class="rt">我的收入</span>
+                </a>
+
+                <ul class="clear_fl manager_inpu">
+                    <li>
+                        <p class="m_key">实时收入</p>
+                        <p class="m_value">0</p>
+                    </li>
+                    <li>
+                        <p class="m_key">未结收入</p>
+                        <p class="m_value">0</p>
+                    </li>
+                    <li class="border_bottom">
+                        <p class="m_key">可转收入</p>
+                        <p class="m_value clear_fl">
+                            <span>0</span> 
+                            <a href="" class="rt">转出</a>
+                        </p>
+                    </li>
+                    <li class="border_bottom">
+                        <p class="m_key">已转收入</p>
+                        <p class="m_value">0</p>
+                    </li>
+                </ul>
+
+                <div class="meun-box menuBox">
+                    <div class="menu-wrap">
+                        <a href="manager_zhishukehu.html" style="display: block;">
+                            <div class="menu-item customer boxflex" data-index="0">
+                                <i class="icon icon-customer"></i>
+                                <span class="menu-itemTitle">直属客户</span>
+                                <span class="box_flex_1 menu-itemNum">0人</span>
+                                <i class="earrow earrow-right"></i>
+                            </div>
+                        </a>
+                        <a href="manager_zhishupingcang.html" style="display: block;">
+                            <div class="menu-item coverings boxflex" data-index="2">
+                                <i class="icon icon-coverings"></i>
+                                <span class="menu-itemTitle menu-cover">直属平仓</span>
+                                <span class="box_flex_1 menu-itemNum">0笔</span>
+                                <i class="earrow earrow-right"></i>
+                            </div>
+                        </a>
+                        <a href="manager_zhishuchicang.html" style="display: block;">
+                            <div class="menu-item boxflex" data-index="3">
+                                <i class="icon icon-mycard"></i>
+                                <span class="menu-itemTitle menu-id">直属持仓</span>
+                                <span class="box_flex_1 menu-itemNum"></span>
+                                <span class="box_flex_1 menu-itemNum">0笔</span>
+                                <i class="earrow earrow-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="home__incomeTip___t5txi">*实际收入以交易日结算完成后为准</div>
+            </div>
+        </div>
+	</div>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+    //屏蔽所有右上角功能
+    function onBridgeReady(){
+        WeixinJSBridge.call('hideOptionMenu');
+    }
+
+    if (typeof WeixinJSBridge == "undefined"){
+        if( document.addEventListener ){
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        }else if (document.attachEvent){
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+</script>
+</body>
+</html>

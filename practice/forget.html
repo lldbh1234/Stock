@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>忘记密码</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link href="css/person.css" rel="stylesheet">
+</head>
+<body>
+	<header class="has_back_top ">
+			忘记密码
+			<a href="javascript:history.go(-1)" class="back_icon">
+				<img src="img/back_icon.png">
+			</a>
+		</header>
+
+		<form class="my_from">
+			<div class="my_form_group has_get">
+				<input type="text" placeholder="请输入手机号码" id="code" />
+				<span class="selected_jigou">选择机构</span>	
+			</div>
+			<div class="my_form_group has_get">
+				<input type="text" placeholder="请输入验证码" id="code" />
+				<span class="get_btn">获取短信验证码</span>
+			</div>
+			<div class="my_form_group has_get">
+				<input type="password" placeholder="请输入6~12位密码" id="password" />
+				<span class="eye cl0se"></span>
+			</div>
+			<div class="my_form_group">
+				<input class="sub_btn" type="button"  value="提交" id="submit" />
+			</div>
+		</form>
+
+		<div class="risk_mask">
+		<div class="risk_content">
+			<p class="risk_title">选择登录会员单位</p>
+			<div class="risk_text">
+				<ul>
+					<li>上上策</li>
+					<li>上上策</li>
+					<li>上上策</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery-2.2.0.min.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript">
+		$(".eye").on("tap" , function(){
+			if( $(this).hasClass("close") ){
+				$(this).removeClass("close").addClass("open");
+				$(this).prev("input").attr("type" , "text");
+			}else{
+				$(this).removeClass("open").addClass("close");
+				$(this).prev("input").attr("type" , "password");
+			}
+		});
+
+
+		$(".risk_text").on("tap" , "li" , function(){
+			var val = $(this).html();
+			$(".selected_jigou").html(val);
+			$(".risk_mask").hide();
+		});
+
+		$(".selected_jigou").on("tap" , function(){
+			$(".risk_mask").show();
+		});
+	</script>
+	
+</body>
+</html>

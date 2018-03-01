@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>登录</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link href="css/person.css" rel="stylesheet">
+</head>
+<body>
+	<header class="has_back_top ">
+			登录
+			<a href="javascript:history.go(-1)" class="back_icon">
+				<img src="img/back_icon.png">
+			</a>
+		</header>
+
+		<form id="loginForm" action="" method="post" class="my_from">
+			<div class="my_form_group has_get">
+				<input name="phone" type="text" placeholder="请输入手机号码" id="phone" />
+				<span class="selected_jigou">选择机构</span>
+				<input name="institution" type="hidden" id="institution" />	
+			</div>
+			<div class="my_form_group has_get">
+				<input name="psd" type="password" placeholder="请输入6~12位密码" id="password" />
+				<span class="eye cl0se"></span>
+			</div>
+			<div class="my_form_group">
+				<input class="sub_btn" type="button"  value="登录" id="submit" />
+			</div>
+		</form>
+		<p class="forget_psd">
+			<a href="forget.html">忘记密码？立刻找回</a>
+		</p>
+
+		<a href="register.html" class="register_link">还没有账号？立刻注册</a>
+
+		<div class="risk_mask">
+		<div class="risk_content">
+			<p class="risk_title">选择登录会员单位</p>
+			<div class="risk_text">
+				<ul class="institution_list">
+					<li data-id="1">上上策</li>
+					<li data-id="2">上上策</li>
+					<li data-id="3">上上策</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery-2.2.0.min.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+
+	<script type="text/javascript">
+		// 事件绑定
+		$(".eye").on("tap" , function(){
+			if( $(this).hasClass("close") ){
+				$(this).removeClass("close").addClass("open");
+				$(this).prev("input").attr("type" , "text");
+			}else{
+				$(this).removeClass("open").addClass("close");
+				$(this).prev("input").attr("type" , "password");
+			}
+		});
+		$(".risk_text").on("tap" , "li" , function(){
+			var val = $(this).html();
+			$(".selected_jigou").html(val);
+			$(".risk_mask").hide();
+		});
+
+		$(".selected_jigou").on("tap" , function(){
+			$(".risk_mask").show();
+		});
+
+		$(".institution_list").on("click", "li", function(){
+			var _id = $(this).data("id");
+			$("#institution").val( _id );
+		});
+	</script>
+
+	<script type="text/javascript">
+		// 登录逻辑
+		var storage = window.localStorage; 
+	    var token = storage.token;
+	    // 如果登录直接返回到上一个页面
+	    if(token){
+	        window.history.go(-1);
+	    }
+
+	    // 提交登录
+	    $("#submit").click(function(e){
+	        e.preventDefault();
+	        var mobile = $("#phone").val();
+	        var password = $("#password").val();
+	        var institution = $("#institution").val();
+
+	        // 验证输入
+	        if(mobile == "" || password == ""){
+	            $alert("请输入手机号和密码");
+	            return false;
+	        }
+	        if( !(/^1[34578]\d{9}$/.test(mobile)) ){
+	            $alert("输入手机号码有误！");
+	            return false;
+	        }
+	        if(institution = ""){
+	        	$alert("请选择机构");
+	        	return false;
+	        }
+
+	        var url = config.api.base + config.api.login;
+            var data = {
+                mobile: mobile,
+                password: password,
+                institution: institution
+            };
+            $ajaxCustom(url, data, function(res){
+                if(res.code == 0){ // 登录成功
+                    $alert("登录成功");
+                    var token = res.data.token;
+                    var expire = res.data.expire;
+                    var storage = window.localStorage; 
+                    storage.token = token;
+                    storage.expire = expire;
+                    setTimeout(function(){
+                        window.history.go(-1);
+                    },1000)
+                }else{
+                    $alert(res.message);
+                }
+	        })
+
+	    });
+	</script>
+</body>
+</html>

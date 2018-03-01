@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>策略</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link href="css/person.css" rel="stylesheet">
+	<style type="text/css">
+		body{
+			background: #f5f5f5!important;
+		}
+	</style>
+</head>
+	<body class="quick_body mui-ios mui-ios-10 mui-ios-10-3">  
+		<header class="strategy_top">
+			<p>
+				<a href="strategy.html" class="active">策略</a>
+				<a href="position.html">持仓</a>
+			</p>
+		</header>
+		<div class="search_con">
+			<input placeholder="请输入股票代码/名称/拼音"/>
+		</div>
+		<div class="search_history">
+			<h1 class="search_h_title clear_fl">
+				搜索历史
+				<a href="" class="rt">清空</a>
+			</h1>
+
+			<!-- <div class="empty_pic">
+				<img src="img/no-search-data@3x.png">
+			</div> -->
+
+			<ul class="search_h_list">
+				<li>
+					<a  class="flex_nowrap" href="hangqing.html?code=600179">
+						<span>招商银行 600179</span>
+						<span class="red">28.17</span>
+						<span class="red">+8.17%</span>
+						<span class="add_h_btn"><img src="img/add_btn.png"></span>
+						<span class="remove_btn"><img class="rt" src="img/remove_btn.png"></span>
+					</a>
+				</li>
+				<li>
+					<a  class="flex_nowrap" href="hangqing.html?code=300664">
+						<span>鹏鹞环保 300664</span>
+						<span class="red">28.17</span>
+						<span class="red">+8.17%</span>
+						<span class="add_h_btn"><img src="img/add_btn.png"></span>
+						<span class="remove_btn"><img class="rt" src="img/remove_btn.png"></span>
+					</a>
+				</li>
+				<li>
+					<a  class="flex_nowrap" href="hangqing.html?code=603980">
+						<span>吉华集团 603980</span>
+						<span class="red">28.17</span>
+						<span class="red">+8.17%</span>
+						<span class="add_h_btn"><img src="img/add_btn.png"></span>
+						<span class="remove_btn"><img class="rt" src="img/remove_btn.png"></span>
+					</a>
+				</li>
+				<li>
+					<a  class="flex_nowrap" href="hangqing.html?code=601566">
+						<span>九牧王 601566</span>
+						<span class="red">28.17</span>
+						<span class="red">+8.17%</span>
+						<span class="add_h_btn"><img src="img/add_btn.png"></span>
+						<span class="remove_btn"><img class="rt" src="img/remove_btn.png"></span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="search_history hot_recommend" style="margin-top: 8px;">
+			<h1 class="search_h_title clear_fl">热门推荐</h1>
+			<ul class="recommend_list flex_nowrap">
+				<li>
+					<a href="hangqing.html?code=603980">
+						<p class="shares_name">吉华集团</p>
+						<p class="shares_code">603980</p>
+						<p class="shares_price">37.45</p>
+						<p class="shares_detail">
+							<span>-0.23</span>
+							<span>-0.83%</span>
+						</p>
+					</a>
+				</li>
+				<li>
+					<a href="hangqing.html?code=601566">
+						<p class="shares_name">九牧王</p>
+						<p class="shares_code">601566</p>
+						<p class="shares_price">37.45</p>
+						<p class="shares_detail">
+							<span>-0.23</span>
+							<span>-0.83%</span>
+						</p>
+					</a>
+				</li>
+				<li>
+					<a href="hangqing.html?code=300664">
+						<p class="shares_name">鹏鹞环保</p>
+						<p class="shares_code">300664</p>
+						<p class="shares_price">37.45</p>
+						<p class="shares_detail">
+							<span>-0.23</span>
+							<span>-0.83%</span>
+						</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+
+
+		<nav class="ml_tab mui-bar mui-bar-tab">
+		    <a class="mui-tab-item" href="index.html">
+		        <span class="mui-icon mui-icon-home"></span>
+		        <span class="mui-tab-label">首页</span>
+		    </a>
+		    <a class="mui-tab-item" href="zixuan.html">
+		        <span class="mui-icon mui-icon-zixuan"></span>
+		        <span class="mui-tab-label">自选</span>
+		    </a>
+		    <a class="mui-tab-item center_item" href="ai_recommend.html">
+		        <span class="mui-icon mui-icon-celue"></span>
+		        <span class="mui-tab-label">AI智能推荐</span>
+		    </a>
+		    <a class="mui-tab-item mui-active" href="strategy.html">
+		        <span class="mui-icon mui-icon-jingu"></span>
+		        <span class="mui-tab-label">策略</span>
+		    </a>
+		    <a class="mui-tab-item" href="home.html">
+		        <span class="mui-icon mui-icon-my"></span>
+		        <span class="mui-tab-label">我的</span>
+		    </a>
+		</nav>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			})
+			//选项卡
+			 mui('body').on('tap', 'a', function() {
+		        var data_href = this.getAttribute("data-href");
+		        var href = this.getAttribute("href");
+		        var url=data_href;
+		        if(!url||url==''){
+		            url=href;
+		        }
+		        window.location.href = url;
+		     });
+		</script>
+
+</body></html>

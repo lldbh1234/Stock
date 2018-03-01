@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>提现</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/person.css">
+	<script src="js/jquery-2.2.0.min.js"></script>
+	<style type="text/css">
+		.withdrawal-name {
+	        line-height: 30px;
+	    }
+	    .withdrawal-con .control-style {
+	        line-height: 30px;
+	    }
+	    .boxflex1 .get-btn {
+	        line-height: 30px;
+	    }
+	    .withdrawal-con.yanzheng {
+	        width: 40%;
+	    }
+	    .boxflex1 .get-btn {
+	        border: 1px solid #0066FF;
+	        padding: 0 .2rem;
+	    }
+
+	</style>
+</head>
+<!--个人中心-充值-->
+<body class="withdrew_body">    
+	<div class="withdrew_body">
+		<header class="header_con">
+		    <a href="javascript:history.go(-1)" class="lf">
+		        <img src="img/call_back.png">
+		    </a>
+		    <p>提现</p>
+		</header>
+		<div class="personal">
+		    <div class="boxflex boxflex1">
+		        <div class="img-wrap"><img class="userimage" src="http://wx.qlogo.cn/mmopen/aXUpZVUYfjzDMoq5pZ0iaatiaX4eXf0XAOeG0GDFd4dGpx7zppqlJfSn7bVhLHibqBuu2vYaibpuXq32av27BxatKkiaUL7ibQXAlh/0"></div>
+		        <div class="box_flex_1">
+		            <div class="p_zichan">测试</div>
+		            <div class="cash">可提现金额：<b class="mon">3000</b>元</div>
+		        </div>
+		    </div>
+		    <form id="with-drawForm" method="post">
+				<input type="hidden" name="_csrf" value="dWRoZndpTnoSKzg.RCwkJQ0OWw8WLQs8TRcNAEEvFhYeND8SEB8sHA==">    
+				<div class="boxflex1 mt10 clearfloat">
+			        <div class="withdrawal-name">提现金额</div>
+			        <div class="withdrawal-con">
+			            <div class="form-group field-userwithdraw-amount required">
+							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入提现金额">
+							<div class="help-block"></div>
+						</div>        
+					</div>
+			    </div>
+			    <div class="boxflex1 mt10">
+			        <div class="moneyhead">提现方式</div>
+			    </div>
+			    <div class="boxflex1 none none">
+			        <img src="/images/pay.png" style="width: 30px;">
+			        <span>银联支付</span>
+			        <img src="/images/seleted.png" alt="" style="float:right;padding: 0px 0;">
+			    </div>
+			    <div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">银行</div>
+			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+			            <div class="form-group field-useraccount-bank_name required">
+							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
+							<option value="102">中国工商银行</option>
+							<option value="103">中国农业银行</option>
+							<option value="104">中国银行</option>
+							<option value="105">中国建设银行</option>
+							<option value="301">交通银行</option>
+							<option value="303">中国光大银行</option>
+							<option value="305">中国民生银行</option>
+							<option value="308">招商银行</option>
+							<option value="310">上海浦东发展银行</option>
+							<option value="403">中国邮政储蓄银行</option>
+							</select>
+							<div class="help-block"></div>
+						</div>       
+					</div>
+		    	</div>
+		   		<div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">卡号</div>
+			        <div class="withdrawal-con" tabindex="1">
+			            <div class="form-group field-useraccount-bank_card required">
+							<input type="text" id="useraccount-bank_card" class="control-style" name="UserAccount[bank_card]" placeholder="请输入卡号">
+							<div class="help-block"></div>
+						</div>
+					</div>
+			    </div>
+		    	<div class="boxflex1 none clearfloat">
+		        	<div class="withdrawal-name">持卡人</div>
+		    		<div class="withdrawal-con" tabindex="1">
+		                <div class="form-group field-useraccount-realname required">
+							<input type="text" id="useraccount-realname" class="control-style" name="UserAccount[realname]" placeholder="请输入持卡人姓名">
+							<div class="help-block"></div>
+						</div>          
+					</div>
+		    	</div>
+				<div class="boxflex1 none clearfloat">
+				    <div class="withdrawal-name">开卡行详细地址</div>
+				    <div class="withdrawal-con" tabindex="1">
+				        <div class="form-group field-useraccount-bank_address required">
+							<input type="text" id="useraccount-bank_address" class="form-control" name="UserAccount[bank_address]" placeholder="开卡行地址(XX银行XX省XX市XX支行)">
+							<div class="help-block"></div>
+						</div>        
+					</div>
+				</div> 
+			    <div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">手机号</div>
+			        <div class="withdrawal-con" tabindex="1">
+			            <input type="text" value="15851408673" class="control-style" id="mobile" readonly="readonly" placeholder="158*****673">
+			        </div>
+			    </div>
+			    <div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">验证码</div>
+			        <div class="withdrawal-con yanzheng" tabindex="1">
+			            <input type="text" id="user-verifycode" class="control-style" placeholder="输入短信验证码" name="UserAccount[verifyCode]">
+			        </div>
+			        <div class="get-btn" id="verifyCodeBtn" data-action="/site/verify-code">获取验证码</div>
+			    </div>
+			    <div class="withdrawal-tips">
+			        <ul>提现规则：
+			            <li>1、提现时间工作日上午9:00到晚17:00。</li>
+			            <li>2、每笔提现扣除3元手续费。</li>
+			            <li>3、每笔提现金额最小10元。</li>
+			            <li></li>
+			        </ul>
+			    </div>
+
+			    <div class="recharge-btn mt10" id="submitBtn">立即提现</div>
+			    <div class="form-group field-useraccount-bank_mobile required">
+					<input type="hidden" id="useraccount-bank_mobile" class="form-control" name="UserAccount[bank_mobile]" value="15851408673">
+					<div class="help-block"></div>
+				</div>    
+			</form>
+		</div>
+	</div>
+	<script>
+	$(function () {
+	    $("#submitBtn").click(function () {
+	        $("form").ajaxSubmit($.config('ajaxSubmit', {
+	            success: function (msg) {
+	                if (!msg.state) {
+	                    $.alert(msg.info);
+	                } else {
+	                    $.alert(msg.info);
+	                    window.location.href = '/user/index'
+	                }
+	            }
+	        }));
+	        return false;
+	    });
+	    // 验证码
+	    $("#verifyCodeBtn").click(function () {
+	        var url = $(this).data('action');
+	        $.post(url, {mobile: '15851408673'}, function(msg) {
+	                $.alert(msg.info);
+	        }, 'json');
+	    });
+	});
+	</script>
+</body>
+</html>

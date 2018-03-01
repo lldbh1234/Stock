@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+		<link href="css/mui.min.css" rel="stylesheet">
+		<link href="css/person.css" rel="stylesheet">
+		<style type="text/css">
+			body{
+				background: #f5f5f5;
+			}
+		</style>
+	</head>
+	<body style="height: 100%;display: inline-block;width: 100%;" class="mui-ios mui-ios-10 mui-ios-10-3">
+		<div class="bg" style="min-height: 100%;margin-bottom: -50px;">
+			<div class="person_content mui-content" style="min-height: 100%;">
+				<header class="has_back_top ">
+					设置
+					<a href="javascript:history.go(-1)" class="back_icon">
+						<img src="img/back_icon.png">
+					</a>
+				</header>
+
+
+			    <ul class="setting_list" style="margin-top: 58px;">
+			    	<li class="clear_fl" id="uploadImg">
+			    		<span class="setting_key lf">头像</span>
+			    		<img class="rt right_arrow" src="img/right_arrow1.png">
+			    		<span class="rt setting_value">
+			    			<img src="img/default-user-img.png">
+			    		</span>
+			    	</li>
+			    	<li class="clear_fl">
+			    		<span class="setting_key lf">昵称</span>
+			    		<img class="rt right_arrow" src="img/right_arrow1.png">
+			    		<span class="rt setting_value">闪电侠123</span>
+			    	</li>
+			    	<li class="clear_fl">
+			    		<span class="setting_key lf">手机号码</span>
+			    		<span class="rt setting_value">1348546454</span>
+			    	</li>
+			    	<li class="clear_fl">
+			    		<a href="modify_pwd.html" class="clear_fl">
+			    			<span class="setting_key lf">登录密码</span>
+				    		<img class="rt right_arrow" src="img/right_arrow1.png">
+				    		<span class="rt setting_value">修改密码</span>
+			    		</a>
+			    	</li>
+			    </ul>
+
+			    <div class="clear_fl publish_msg">
+					<div class="lf setting_key">是否公开实盘信息</div>
+					<input type="checkbox" class="switch__mui-switch___3_30S switch__mui-switch-anim___3IUf5 rt"  value="on">
+				</div>
+
+			    <div class="recharge-btn" id="payBtn">退出系统</div>
+			</div>
+		</div>
+
+		<script src="js/jquery-2.2.0.min.js"></script>
+		<script src="js/jquery.ajaxfileupload.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			})
+			//选项卡
+			 mui('body').on('tap', 'a', function() {
+                var data_href = this.getAttribute("data-href");
+                var href = this.getAttribute("href");
+                var url=data_href;
+                if(!url||url==''){
+                    url=href;
+                }
+                window.location.href = url;
+	         });
+		/**
+		 * 上传头像
+		 */
+        $('#uploadImg').AjaxFileUpload({
+			//处理文件上传操作的服务器端地址
+			action: '/index/index/doImgUpload',
+			onComplete: function(filename, resp) { //服务器响应成功时的处理函数
+				if(resp.code == '0') {
+					$('#headImg').attr('src', resp.data);
+					var params = {};
+					params['headImg'] = resp.data;
+					$.post("/index/ucenter/savePeopleImg", params, function(data) {
+						if(data.code == '0') {
+							mui.toast("修改成功");
+						} else {
+							mui.alert(data.msg);
+						}
+					}, 'json');
+				} else {
+					mui.alert(resp.msg );
+				}
+			}
+		});
+		</script>
+	
+</body></html>
