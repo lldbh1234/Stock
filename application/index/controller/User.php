@@ -1,9 +1,10 @@
 <?php
 namespace app\index\controller;
 
-use app\index\logic\BankLogic;
+use app\index\logic\StockLogic;
 use think\Request;
 use app\index\logic\UserLogic;
+use app\index\logic\BankLogic;
 
 class User extends Base
 {
@@ -23,6 +24,20 @@ class User extends Base
     public function setting()
     {
         $this->assign("user", uInfo());
+        return view();
+    }
+
+    public function optional()
+    {
+        $stocks = $this->_logic->userOptional($this->user_id);
+        if($stocks){
+            $codes = array_column($stocks, "code");
+            $lists = (new StockLogic())->simpleData($codes);
+            array_filter($stocks, function(&$item) use ($lists){
+                $item['quotation'] = $lists[$item['code']];
+            });
+        }
+        $this->assign("stocks", $stocks);
         return view();
     }
 

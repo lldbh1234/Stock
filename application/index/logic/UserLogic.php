@@ -50,4 +50,15 @@ class UserLogic
         }
         return 0;
     }
+
+    public function userOptional($userId)
+    {
+        $lists = User::find($userId)->hasManyOptional;
+        return $lists ? collection($lists)->toArray() : [];
+    }
+
+    public function userOptionalCodes($userId)
+    {
+        return User::find($userId)->hasManyOptional()->column("code");
+    }
 }

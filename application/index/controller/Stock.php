@@ -18,12 +18,27 @@ class Stock extends Base
 
     }
 
+    public function info($code)
+    {
+        $stock = $this->_logic->stockByCode($code);
+        if($stock){
+            $quotation = $this->_logic->realTimeData($code);
+            if(isset($quotation[0]) && !empty($quotation[0])){
+                $this->assign("quotation", $quotation[0]);
+                return view();
+            }else{
+                return "错误页面！";
+            }
+        }else{
+            return view('public/error');
+        }
+    }
+
     public function real()
     {
         $code = input("code");
         if($code){
-            $codes = $this->_logic->fullCodeByCodes($code);
-            $res = $this->_logic->realTimeData($codes);
+            $res = $this->_logic->realTimeData($code);
             if(request()->isPost()){
                 return $this->ok($res);
             }else{
@@ -37,8 +52,7 @@ class Stock extends Base
     {
         $code = input("code");
         if($code){
-            $codes = $this->_logic->fullCodeByCodes($code);
-            $res = $this->_logic->simpleData($codes);
+            $res = $this->_logic->simpleData($code);
             if(request()->isPost()){
                 return $this->ok($res);
             }else{

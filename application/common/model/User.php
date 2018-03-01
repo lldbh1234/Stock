@@ -29,4 +29,9 @@ class User extends BaseModel
     {
         return $this->hasMany("\\app\\common\\model\\UserWithdraw", "user_id", "user_id");
     }
+
+    public function hasManyOptional()
+    {
+        return $this->hasMany("\\app\\common\\model\\UserOptional", "user_id", "user_id");
+    }
 }

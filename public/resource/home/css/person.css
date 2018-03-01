@@ -1325,7 +1325,19 @@ nav.ml_tab {
 }
 .g_price_detail li:nth-child(1),.g_price_detail li:nth-child(2){
     margin-bottom: 8px;
-}   
+}
+
+.r_price{
+    font-size: 28px;
+    padding-bottom: 10px;
+    color: #e60012;
+}
+.r_rate{
+    color: #e60012;
+}
+.r_rate span+span{
+    margin-left: 10px;
+}
 /* 充值 */
 .payment_body{background:#fff!important;}
 .header_con{
@@ -2317,7 +2329,7 @@ em, i, b {
     margin-left: 5px;
 }
 .green{
-    color: #27ca41!important;
+    color: #27ca41 !important;
 }
 .niu_dongtai .pa14:last-child{
     border-bottom: 0;

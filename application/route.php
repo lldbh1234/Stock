@@ -37,6 +37,7 @@ Route::group("index", function () {
 //我的
 Route::group("user", function () {
     Route::any('home','index/User/index'); //用户中心
+    Route::any('optional','index/User/optional'); //自选
     Route::any('setting','index/User/setting'); //设置
     Route::any('password','index/User/password'); //修改密码
     Route::any('recharge','index/User/recharge'); //充值
@@ -50,6 +51,7 @@ Route::group("ai", function () {
 
 Route::group("stock", function () {
     Route::any('buy','index/Stock/stockBuy'); //购买
+    Route::any('home','index/Stock/info'); //购买
     Route::any('real','index/Stock/real'); //实时行情
     Route::any('simple','index/Stock/simple'); //行情基本数据
 });

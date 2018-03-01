@@ -12,16 +12,18 @@ class StockLogic
         $this->_library = new api51();
     }
 
-    public function fullCodeByCodes($codes = [])
+    public function stockByCode($code)
     {
-        return Stock::where(["code" => ["IN", $codes]])->column("full_code");
+        $stock = Stock::where(["code" => $code])->find();
+        return $stock ? $stock->toArray() : [];
     }
 
     public function simpleData($codes)
     {
+        $codes = $this->_fullCodeByCodes($codes);
         $codes = $this->_handleCodes($codes);
         $code = implode(',', $codes);
-        $fields = 'last_px,px_change,px_change_rate';
+        $fields = 'prod_name,last_px,px_change,px_change_rate';
         $response = $this->_library->realtime($code, $fields);
         if($response){
             $_resp = [];
@@ -34,7 +36,7 @@ class StockLogic
                     foreach($fields as $k=>$v){
                         $_temp[$v] = $val[$k];
                     }
-                    $_resp[] = $_temp;
+                    $_resp[$_temp['code']] = $_temp;
                 }
             }
             return $_resp;
@@ -44,6 +46,7 @@ class StockLogic
 
     public function realTimeData($codes)
     {
+        $codes = $this->_fullCodeByCodes($codes);
         $codes = $this->_handleCodes($codes);
         $code = implode(',', $codes);
         $response = $this->_library->realtime($code);
@@ -70,6 +73,11 @@ class StockLogic
             return $_resp;
         }
         return [];
+    }
+
+    private function _fullCodeByCodes($codes)
+    {
+        return Stock::where(["code" => ["IN", $codes]])->column("full_code");
     }
 
     private function _handleCodes($codes = [])
