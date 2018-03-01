@@ -1,10 +1,10 @@
 <?php
 namespace app\index\controller;
 
-use app\index\logic\StockLogic;
 use think\Request;
 use app\index\logic\UserLogic;
 use app\index\logic\BankLogic;
+use app\index\logic\StockLogic;
 
 class User extends Base
 {
@@ -39,6 +39,26 @@ class User extends Base
         }
         $this->assign("stocks", $stocks);
         return view();
+    }
+
+    public function createOptional()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Optional');
+            if(!$validate->scene('create')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $code = input("post.code/s");
+                $stock = (new StockLogic())->stockByCode($code);
+                $optionalId = $this->_logic->createUserOptional($this->user_id, $stock);
+                if($optionalId > 0){
+                    return $this->ok();
+                }else{
+                    return $this->fail("自选股票添加失败！");
+                }
+            }
+        }
+        return $this->fail("系统提示：非法操作！");
     }
 
     public function password()
@@ -101,5 +121,11 @@ class User extends Base
         $this->assign("user", uInfo());
         $this->assign("banks", $banks);
         return view();
+    }
+
+    public function manager()
+    {
+        $user = $this->_logic->userIncAdmin($this->user_id);
+        dump($user);
     }
 }

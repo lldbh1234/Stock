@@ -34,4 +34,14 @@ class User extends BaseModel
     {
         return $this->hasMany("\\app\\common\\model\\UserOptional", "user_id", "user_id");
     }
+
+    public function hasManyAttention()
+    {
+        return $this->hasMany("\\app\\common\\model\\UserFollow", "fans_id", "user_id");
+    }
+
+    public function hasManyFans()
+    {
+        return $this->hasMany("\\app\\common\\model\\UserFollow", "follow_id", "user_id");
+    }
 }

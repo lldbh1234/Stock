@@ -57,8 +57,32 @@ class UserLogic
         return $lists ? collection($lists)->toArray() : [];
     }
 
+    public function createUserOptional($userId, $stock)
+    {
+        try{
+            unset($stock['id']);
+            $res = User::find($userId)->hasManyOptional()->save($stock);
+            return $res ? model("UserOptional")->getLastInsID() : 0;
+        } catch(\Exception $e) {
+            dump($e->getMessage());
+            return 0;
+        }
+    }
+
     public function userOptionalCodes($userId)
     {
         return User::find($userId)->hasManyOptional()->column("code");
+    }
+
+    public function userIncAdmin($userId)
+    {
+        $user = User::with("hasOneAdmin")->find($userId);
+        return $user ? $user->toArray() : [];
+    }
+
+    public function userIncAttention($userId)
+    {
+        $user = User::with("hasManyAttention,hasManyAttention.belongsToAttention")->find($userId);
+        return $user ? $user->toArray() : [];
     }
 }

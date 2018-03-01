@@ -7,7 +7,7 @@ class api51
 	const REAL_REQUEST_URL = 'http://stock.api51.cn/real';
 	
 	public function realtime($code, $field = null){
-		$field = $field ? : "prod_code,prod_name,data_timestamp,open_px,high_px,low_px,last_px,preclose_px,business_amount,business_balance,offer_grp,bid_grp,px_change,px_change_rate,amplitude";
+		$field = $field ? : "prod_code,prod_name,data_timestamp,open_px,high_px,low_px,last_px,preclose_px,business_amount,business_balance,offer_grp,bid_grp,px_change,px_change_rate,circulation_value,pe_rate,amplitude,business_amount_in,business_amount_out,total_shares";
 		$data = [
 			'en_prod_code'	=> $code,//接收手机号
 			'fields'		=> $field,//模板变量，多个以英文逗号隔开

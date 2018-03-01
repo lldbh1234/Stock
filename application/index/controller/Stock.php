@@ -18,7 +18,7 @@ class Stock extends Base
 
     }
 
-    public function info($code)
+    public function info($code = null)
     {
         $stock = $this->_logic->stockByCode($code);
         if($stock){
