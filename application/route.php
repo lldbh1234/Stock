@@ -143,5 +143,14 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::post('del', 'admin/Admin/remove'); // 删除管理员
             Route::post('delete', 'admin/Admin/patchRemove'); //批量删除
         });
+        //权限管理
+        Route::group("permission", function(){
+            Route::any('lists', 'admin/Permission/lists');  // 权限资源列表
+            Route::any('add', 'admin/Permission/add'); // 添加权限资源
+            Route::any('modify', 'admin/Permission/modify'); // 修改权限资源
+            Route::post('del', 'admin/Permission/del'); // 删除权限资源
+            Route::any('role-push', 'admin/Permission/rolePush'); // 角色授权
+        });
+
     });
 });

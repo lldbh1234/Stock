@@ -9,5 +9,6 @@ namespace app\common\model;
 
 class Menu extends BaseModel
 {
+    protected $table = 'stock_menu';
 
 }
