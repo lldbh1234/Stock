@@ -33,6 +33,12 @@
                                     <input type="checkbox" value="{$act.id}" name="node[]" {in name="$act.id" value="$nodeIdArr"} checked {/in}>
                                     {$act.name}
                                 </label>
+                                {volist name="act.children" id="little"}
+                                <label class="">
+                                    <input type="checkbox" value="{$little.id}" name="node[]" {in name="$little.id" value="$nodeIdArr"} checked {/in}>
+                                    {$little.name}
+                                </label>
+                                {/volist}
                                 {/volist}
                             </dd>
                         </dl>
