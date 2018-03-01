@@ -44,6 +44,10 @@ Route::group("user", function () {
     Route::any('recharge','index/User/recharge'); //充值
     Route::any('withdraw','index/User/withdraw'); //提现
 });
+// 经纪人
+Route::group("manager", function(){
+    Route::any('index','index/User/manager'); // 经纪人首页
+});
 
 //Ai
 Route::group("ai", function () {
