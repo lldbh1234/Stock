@@ -158,6 +158,9 @@
         border-color: #F54B4B;
         background: #F54B4B;
     }
+    * {
+        -webkit-user-select: auto!important;
+    }
 </style>
 <link rel="stylesheet" type="text/css" href="__RESOURCE__/css/dropload.css">
 {/block}
@@ -214,7 +217,7 @@
                         <p class="lf count_panel flex_nowrap">
                             <span class="minus_btn count_btn">-</span>
                             <!-- <span class="now_count">13.63</span> -->
-                            <input readonly="readonly" value="13.08" class="now_count profitCount" data-initvalue="13.88">
+                            <input  class="now_count profitCount" >
                             <span class="plus_btn count_btn">+</span>
                         </p>
                         <p class="rt fudong zhangfu">涨幅约 <span>+11.85%</span></p>
@@ -225,7 +228,7 @@
                         <p class="lf count_panel flex_nowrap">
                             <span class="minus_btn count_btn">-</span>
                             <!-- <span class="now_count">13.63</span> -->
-                            <input readonly="readonly" value="9.07" class="now_count lossCount" data-initvalue="10.94">
+                            <input  class="now_count lossCount">
                             <span class="plus_btn count_btn">+</span>
                         </p>
                         <p class="rt fudong diefu">跌幅约 <span>-11.83%</span></p>
@@ -521,18 +524,54 @@
         //止盈止损点
         var profit = parseFloat(context.data("profit"));
         var loss = parseFloat(context.data("loss"));
+        var nowPrice = parseFloat( context.find(".p_now_price").html() );
 
         //买入价
         var buyPrice = context.find(".buy_price").html();
 
-        $(".profitCount").val( profit.toFixed(2) );
-        $(".lossCount").val( loss.toFixed(2) );
+        $(".profitCount").val( profit.toFixed(2) ).attr("data-initValue", profit.toFixed(2));
+        $(".lossCount").val( loss.toFixed(2) ).attr("data-initValue", loss.toFixed(2));
         $(".account_balance span").html( accountBalance.toFixed(2) );
 
 
-        $(".profit_loss_mask").show().attr("data-baozhengjin", baohzengjin).attr("data-count", count).attr("data-buyPrice", buyPrice);
+        $(".profit_loss_mask").show().attr("data-baozhengjin", baohzengjin).attr("data-count", count).attr("data-buyPrice", buyPrice).attr("data-nowPrice", nowPrice);
         calcNum();
      });
+
+
+     $(".now_count").change(function(){
+        var context = $(this).parents(".control_point");
+        var now_count = parseFloat( context.find(".now_count").val() );
+        var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+        var nowPrice = parseFloat( $(this).parents(".profit_loss_mask").attr("data-nowPrice") ); //现价
+
+
+        var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+
+        if( context.hasClass( "zhisun" ) && now_count > nowPrice){
+            $(this).val( initValue );
+            return false;
+        }
+        if( context.hasClass( "zhiying" ) && now_count < nowPrice){
+            $(this).val( initValue );
+            return false;
+        }
+
+        // var profit = parseFloat( $(this).parents(".profit_loss_mask").attr("profit") );
+        // var loss = parseFloat( $(this).parents(".profit_loss_mask").attr("loss") );
+
+        // if( context.hasClass( "zhisun" ) && (-rate - loss > 0)){
+        //     $(this).val( initValue );
+        //     return false;
+        // }
+        // if( context.hasClass( "zhiying" ) && ( profit - rate > 0 )){
+        //     $(this).val( initValue );
+        //     return false;
+        // }
+
+
+        context.find(".fudong").find("span").html( rate + "%" );
+    });
 
      function calcNum(){
         var context = $(".profit_loss_mask");
@@ -573,7 +612,7 @@
             }
             val = (val + 0.01).toFixed(2);
         }
-        context.find(".now_count").val( val );
+        context.find(".now_count").val( val ).attr("data-initValue", val);
         calcNum();
      });
 
