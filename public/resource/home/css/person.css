@@ -2916,7 +2916,12 @@ em, i, b {
     color: #c0c0c0;
 }
 /* ---end--- */
-
+.no_more{
+    background: url(../img/no-search-data@3x.png) no-repeat center center!important;
+    width: 100%!important;
+    height: 200px!important;
+    background-size: 40%!important;
+}
 
 
 

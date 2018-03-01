@@ -2905,7 +2905,11 @@ em, i, b {
 }
 /* ---end--- */
 
-
+.no_more{
+    background: url(../img/no-search-data@3x.png) no-repeat center center;
+    width: 100%;
+    height: 200px;
+}
 
 
 

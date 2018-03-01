@@ -105,6 +105,7 @@
             return false;
         }
 		$(".select_btn").toggle();
+        $(".delete_panel").toggle();
 	});
 
 	mui.init({
@@ -146,7 +147,7 @@
             for (var i = 0; i < stocks.length; i++) {
                 var reg = new RegExp('^' + items + '.*$', 'im');
                 if (reg.test(stocks[i][0]) || reg.test(stocks[i][1]) || reg.test(stocks[i][2]) || reg.test(stocks[i][3])) {
-                    if(j < 10){
+                    if(j < 5){
                         code.push( stocks[i][1] );
                         j++;
                     }else{
@@ -155,12 +156,24 @@
                 }
             }
 
+            if(code.length == 0){
+                var html = '<li class="no_more"></li><li style="text-align:center;font-size:12px;color:#999;background:transparent;border:none;">暂无搜索结果</li>';
+                $(".zixuan_list").html( html );
+            }
+
             code = code.join(",");
             var _url = "{:url('index/Stock/simple')}",
                 _oData = {code: code};
             $ajaxCustom(_url, _oData, function(res){
                 if(res.state){ // 登录成功
-                    for( var key in res.data ){console.log(res.data);
+                    for( var key in res.data ){
+                        var rate = parseFloat(res.data[key].px_change_rate);
+                        var className = "";
+                        if(rate >= 0){
+                            className = "red"
+                        }else{
+                            className = "green"
+                        }
                         html += '<li class="list_header flex_nowrap">\
                                     <div style="width: 15%; display: none;" class="mui-input-row mui-checkbox mui-left select_btn">\
                                         <label></label>\
@@ -168,8 +181,8 @@
                                     </div>\
                                     <a style="width:80%" class="flex_nowrap" href="">\
                                         <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
-                                        <span style="width:40%" class="red">' + res.data[key].last_px + '</span>\
-                                        <span style="width:40%" class="red">' + res.data[key].px_change_rate + '%</span>\
+                                        <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
+                                        <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
                                         \
                                     </a>\
                                     <span style="width:20%">\
