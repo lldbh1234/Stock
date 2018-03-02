@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: 2018-03-02 22:13:25
+-- Generation Time: 2018-03-02 23:02:59
 -- 服务器版本： 5.5.42
 -- PHP Version: 5.6.7
 
@@ -37,6 +37,9 @@ INSERT INTO `stock_access` (`role_id`, `node_id`) VALUES
 (2, 10),
 (2, 2),
 (1, 1),
+(1, 20),
+(1, 21),
+(1, 22),
 (1, 16),
 (1, 19),
 (1, 18),
@@ -47,9 +50,6 @@ INSERT INTO `stock_access` (`role_id`, `node_id`) VALUES
 (1, 8),
 (1, 12),
 (1, 9),
-(1, 20),
-(1, 21),
-(1, 22),
 (1, 7),
 (1, 49),
 (1, 53),
@@ -61,11 +61,11 @@ INSERT INTO `stock_access` (`role_id`, `node_id`) VALUES
 (1, 55),
 (1, 56),
 (1, 6),
+(1, 57),
 (1, 48),
 (1, 47),
 (1, 46),
 (1, 45),
-(1, 57),
 (1, 3),
 (1, 24),
 (1, 25),
@@ -88,13 +88,16 @@ INSERT INTO `stock_access` (`role_id`, `node_id`) VALUES
 (1, 29),
 (1, 28),
 (1, 27),
-(1, 69),
-(1, 70),
-(1, 72),
-(1, 71),
 (1, 58),
 (1, 59),
 (1, 60),
+(1, 69),
+(1, 75),
+(1, 73),
+(1, 74),
+(1, 70),
+(1, 72),
+(1, 71),
 (1, 2),
 (1, 23);
 
@@ -3880,7 +3883,7 @@ CREATE TABLE `stock_menu` (
   `level` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '等级',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '状态；0-关闭，1-开启',
   `sort` tinyint(4) unsigned NOT NULL DEFAULT '50' COMMENT '排序'
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COMMENT='后台节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8 COMMENT='后台节点表';
 
 --
 -- 转存表中的数据 `stock_menu`
@@ -3956,7 +3959,10 @@ INSERT INTO `stock_menu` (`id`, `pid`, `name`, `act`, `module`, `icon`, `level`,
 (69, 0, '会员管理', '', 0, 'Hui-iconfont-user2', 1, 1, 50),
 (70, 69, '会员列表', 'admin/User/lists', 1, '', 1, 1, 50),
 (71, 70, '修改密码', 'admin/User/modifyPwd', 2, '', 1, 1, 50),
-(72, 70, '编辑', 'admin/User/modify', 2, '', 1, 1, 50);
+(72, 70, '编辑', 'admin/User/modify', 2, '', 1, 1, 50),
+(73, 69, '会员赠金', 'admin/User/giveLists', 1, '', 1, 1, 50),
+(74, 73, '会员赠金', 'admin/User/giveAccount', 2, '', 1, 1, 50),
+(75, 69, '赠金日志', 'admin/User/giveLog', 1, '', 1, 1, 50);
 
 -- --------------------------------------------------------
 
@@ -4171,7 +4177,7 @@ CREATE TABLE `stock_user` (
 --
 
 INSERT INTO `stock_user` (`user_id`, `username`, `password`, `mobile`, `nickname`, `face`, `admin_id`, `parent_id`, `invide_code`, `account`, `blocked_account`, `state`, `is_manager`, `manager_state`, `is_niuren`, `niuren_state`, `create_at`) VALUES
-(1, '15934854815', '###70873e8580c9900986939611618d7b1e', '15934854815', '15934854815', '/resource/home/img/default-user-img.png', 6, 0, NULL, '2700.00', '0.00', 0, 1, 0, -1, 0, 1519716476),
+(1, '15934854815', '###70873e8580c9900986939611618d7b1e', '15934854815', '15934854815', '/resource/home/img/default-user-img.png', 6, 0, NULL, '2810.00', '0.00', 0, 1, 0, -1, 0, 1519716476),
 (2, '15934854816', '###14e1b600b1fd579f47433b88e8d85291', '15934854816', '15934854816', '/resource/home/img/default-user-img.png', 11, 0, NULL, '0.00', '0.00', 0, -1, 0, -1, 0, 1519811310),
 (4, '15934854817', '###70873e8580c9900986939611618d7b1e', '15934854817', '15934854817', '/resource/home/img/default-user-img.png', 11, 0, NULL, '0.00', '0.00', 0, -1, 0, -1, 0, 1519811999);
 
@@ -4223,7 +4229,14 @@ CREATE TABLE `stock_user_give` (
   `amount` decimal(10,2) unsigned NOT NULL COMMENT '赠送金额',
   `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '赠送时间',
   `create_by` int(10) unsigned NOT NULL COMMENT '赠送人；后台管理员id'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户赠金';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户赠金';
+
+--
+-- 转存表中的数据 `stock_user_give`
+--
+
+INSERT INTO `stock_user_give` (`id`, `user_id`, `amount`, `create_at`, `create_by`) VALUES
+(1, 1, '10.00', 1520002646, 2);
 
 -- --------------------------------------------------------
 
@@ -4578,7 +4591,7 @@ ALTER TABLE `stock_list`
 -- AUTO_INCREMENT for table `stock_menu`
 --
 ALTER TABLE `stock_menu`
-  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '节点ID自增',AUTO_INCREMENT=73;
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '节点ID自增',AUTO_INCREMENT=76;
 --
 -- AUTO_INCREMENT for table `stock_mode`
 --
@@ -4623,7 +4636,7 @@ ALTER TABLE `stock_user_coupon`
 -- AUTO_INCREMENT for table `stock_user_give`
 --
 ALTER TABLE `stock_user_give`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `stock_user_manager`
 --
