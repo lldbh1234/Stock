@@ -53,15 +53,15 @@ class Stock extends Base
         $code = input("code");
         $cnc = input("cnc");
         $min = input("min");
-        if($code){
+        $res = [];
+        if(checkStockTradeTime() && $code){
             $res = $this->_logic->realData($code, $cnc, $min);
-            if(request()->isPost()){
-                return $this->ok($res);
-            }else{
-                return json($res);
-            }
         }
-        return json([]);
+        if(request()->isPost()){
+            return $this->ok($res);
+        }else{
+            return json($res);
+        }
     }
 
     public function simple()
