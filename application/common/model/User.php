@@ -25,6 +25,11 @@ class User extends BaseModel
         return $this->hasOne("\\app\\common\\model\\Admin", "admin_id", "admin_id");
     }
 
+    public function hasOneParent()
+    {
+        return $this->hasOne("\\app\\common\\model\\User", "user_id", "pid");
+    }
+
     public function hasOneManager()
     {
         return $this->hasOne("\\app\\common\\model\\UserManager", "user_id", "user_id");
