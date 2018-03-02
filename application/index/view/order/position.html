@@ -416,7 +416,7 @@
 
 
      //充值保证金
-     $("body").on("click", ".add_money", function(){
+     $("body").on("tap", ".add_money", function(){
         var context = $(this).parents("li");
         var baohzengjin = context.find(".banzhengjin").html();
         baohzengjin = baohzengjin.split(",");
@@ -501,7 +501,7 @@
      });
 
      //修改止盈止损
-     $("body").on("click", ".modify_point", function(){
+     $("body").on("tap", ".modify_point", function(){
         var context = $(this).parents("li");
         var accountBalance = $(".h_re_banlance").data("balance"); //账户余额
         accountBalance = accountBalance.split(",");
