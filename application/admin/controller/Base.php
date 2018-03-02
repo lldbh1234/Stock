@@ -20,7 +20,7 @@ class Base extends Controller
             return $this->redirect(url("admin/Home/login"));
             exit;
         }
-//        self::checkAuth();
+        self::checkAuth();
     }
 
     /**
@@ -33,7 +33,10 @@ class Base extends Controller
         $action_name = request()->action();
         $rule_name = $module_name.'/'.$controller_name.'/'.$action_name;
 
-        if(in_array($controller_name, ['Index', 'index']) || BaseModel::ADMINISTRATOR_ID == $this->adminId)
+        if(
+            in_array($controller_name, ['Index', 'index'])
+            || in_array($action_name, ['login', 'logout'])
+            || BaseModel::ADMINISTRATOR_ID == $this->adminId)
         {
             return true;
         }
