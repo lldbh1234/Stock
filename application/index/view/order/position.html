@@ -558,7 +558,7 @@
         $(".bazhengjin_count span").html(buchong.toFixed(2));
      }
 
-     $(".control_point").on("click", ".count_btn", function(){
+     $(".control_point").on("tap", ".count_btn", function(){
         var context = $(this).parents(".control_point");
         var val = parseFloat( context.find(".now_count").val() );
         var buyPrice = parseFloat( $(".profit_loss_mask").data("buyprice"));
@@ -578,7 +578,7 @@
      });
 
      //平仓
-     $("body").on("click", ".sell_position_btn", function(){
+     $("body").on("tap", ".sell_position_btn", function(){
         var context = $(this).parents("li");
         var id = context.data("id");
         layer.open({
