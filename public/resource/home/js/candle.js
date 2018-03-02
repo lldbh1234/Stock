@@ -54,10 +54,6 @@ Date.prototype.format = function (format) {
 
 
 var lineData = new Array(); // 保存请求回来的行情数据
-
-/* mock */
-
-
 var upColor = '#ff0200';
 var downColor = '#008002';
 var myChart = echarts.init(document.getElementById('chart'));
@@ -68,18 +64,13 @@ function splitData(rawData) {
     var values = [];
     var volumes = [];
     for (var i = 0; i < rawData.length; i++) {
-        // categoryData.push(rawData[i].splice(0, 1)[0]);
-        values.push(rawData[i]);
-        volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+        values.push([rawData[i].avg_px, rawData[i].last_px, rawData[i].min_time]);
+        var _count = rawData[i].business_amount;
+        if( i != 0 ){
+            _count = rawData[i].business_amount - rawData[i - 1].business_amount;
+        }
+        volumes.push([i, _count]);
     }
-
-    // full = 242;
-    // for (var i = 0; i < full - categoryData.length; i++) {
-    //     categoryData.push("-");
-    //     values.push("-");
-    //     volumes.push([full - categoryData.length + i,"-","-"]);
-    // }
-
     for (var i = 0930; i <= 1130; i++) {
 
         var arr = (i < 1000 ? "0" + i + "" : "" + i + "").split(" ");
@@ -121,6 +112,8 @@ function splitData(rawData) {
 
     }
 
+    console.log(values);
+
     return {
         categoryData: categoryData,
         values: values,
@@ -150,12 +143,312 @@ $(".koptions_nav").on("click", "p", function(){
     var type = $(this).find("a").data("type");
     if( type == 0 ){
         //加载分时图
-
+        initAreaLine();
     }else{
         //加载k线
         initKline( type );
     }
 });
+
+
+$(function(){
+    // 页面加载完成就加载分时图
+    initAreaLine();
+});
+
+/*** init分时图 ****/
+function initAreaLine(){
+    if( !lineData[0] ){ //第一次加载
+        var _url = areaLineUrl,
+            _code = $("#guName").data("code"),
+            _oData = {code:_code};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ 
+                var _data = res.data.trend;
+                lineData[0] = splitData(_data);
+                drawAreaLine(lineData[0]);
+
+            }else{
+                $alert(res.info);
+            }
+        });
+    }
+}
+
+/**** 绘制分时图 ******/
+function drawAreaLine( data ){
+    var areaOption = {
+        backgroundColor: '#fff',
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
+            },
+            // formatter:function(data){
+            //     var dom='开盘价'+data[0].value[1]+'</br>';
+            //     dom+='收盘价'+data[0].value[2]+'</br>';
+            //     dom+='最低价'+data[0].value[3]+'</br>';
+            //     dom+='最高价'+data[0].value[4];
+            //     return dom
+            // }
+        },
+        grid: [
+            {
+                left: '10%',
+                right: '8%',
+                height: '56%',
+                top:"10%"
+            },
+            {
+                left: '10%',
+                right: '8%',
+                top: '78%',
+                height: '16%'
+            },
+            {
+                left: '10%',
+                right: '8%',
+                height: '56%',
+                top:"10%"
+            }
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                data: data.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: ['#f2f2f2']
+                    }
+                },
+                splitNumber: 5,
+                min: 'dataMin',
+                max: 'dataMax',
+                axisLine: {
+                    lineStyle: {
+                        color: '#a3a3a3',
+                        width: 0.6,
+                    },
+                },
+                axisLabel: {
+                    interval: function(index, value) {
+
+                        if (value == "09:30") return true;
+
+                        if (value == "10:30") return true;
+
+                        if (value == "11:30") return true;
+
+                        if (value == "14:00") return true;
+
+                        if (value == "15:00") return true;
+
+                        return false;
+
+                    },
+
+                    formatter: function(value, index) {
+
+                        if (value == "11:30") return "11:30/13:00";
+
+                        return value;
+
+                    },
+
+                    textStyle: {
+                        color: '#0f0f0f',
+                        fontSize: "8"
+                    },
+
+                    color: "#fff"
+
+                },
+            },
+            {
+                type: 'category',
+                gridIndex: 1,
+                data: data.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                axisTick: {show: false},
+                // splitLine: {show: false},
+                axisLabel: {show: false},
+                splitNumber: 5,
+                min: 'dataMin',
+                max: 'dataMax',
+                axisLine: {
+                    lineStyle: {
+                        color: '#a3a3a3',
+                        width: 0.6,
+                    },
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: ['#f2f2f2']
+                    }
+                },
+            }
+        ],
+        yAxis: [
+            {
+                position: 'left',
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                axisLabel: {
+                    inside: false,
+                    margin: 0,
+                    formatter: function (value, index) {
+                        return value + "\n";
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#a3a3a3',
+                        width: 0.6,
+                    },
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: ['#f2f2f2']
+                    }
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#0f0f0f',
+                        fontSize: "8"
+                    }
+                },
+                // minInterval: 1,
+                splitNumber: 4,
+            },
+            {
+                position: 'left',
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                // axisLabel: {show: false},
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#0f0f0f',
+                        fontSize: "8"
+                    },
+                    formatter: function(value, index) {
+
+                        if (index == 0) return "(万)";
+
+                        return value;
+
+                    },
+                },
+                axisLine: {show: false},
+                axisTick: {show: false},
+                // splitLine: {show: false},
+                axisLine: {
+                    lineStyle: {
+                        color: '#999',
+                        width: 1,
+                    },
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: ['#f2f2f2']
+                    }
+                },
+                splitNumber: 2,
+            },
+            {
+                position: 'right',
+                min:-1,
+                max:1,
+                scale: true,
+                splitArea: {
+                    show: false
+                },
+                axisLabel: {
+                    inside: false,
+                    margin: 0,
+                    formatter: function (value, index) {
+                        return value + "\n";
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: 'transparent',
+                        width: 0.6,
+                    },
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: ['#f2f2f2']
+                    }
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#0f0f0f',
+                        fontSize: "8"
+                    }
+                },
+                // minInterval: 1,
+                splitNumber: 4,
+            },
+        ],
+        series: [
+            {
+                name: '分时图',
+                type: 'line',
+                data: calculateMA(1, data),
+                smooth: true,
+                lineStyle: {
+                    normal: {opacity: 0.5}
+                },
+                symbol: 'none',
+                smooth: true,
+                itemStyle: {
+                    normal: {
+                        areaStyle: { type: 'default' },
+                        // color: "#d5e1f2",
+                        borderColor: "#3b98d3",
+                        lineStyle: { width: 1, color: ['#3b98d3'] },
+                    }
+                },
+            },
+            {
+                name: 'Volume',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                data: data.volumes,
+
+                itemStyle: {
+                    normal: {
+                        color: '#e2d194'
+                    },
+                    emphasis: {
+                        color: '#140'
+                    }
+                },
+            }
+
+        ]
+    }
+
+
+    myChart.setOption(areaOption, true);
+
+
+}
+/***** k线 ******/
 function initKline( type ){
     // 如果不是第一次请求， 直接使用已有数据绘制
     if( lineData[type] ){
@@ -164,7 +457,7 @@ function initKline( type ){
         /****---- 初始化分时图 -----***/
         var _url = kLineUrl,
             _code = $("#guName").data("code"),
-            _oData = {code:_code, periodK:type, count: 60};
+            _oData = {code:_code, period:type, count: 60};
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){ 
                 var _data = res.data;
@@ -467,310 +760,6 @@ function drawKchart(data){
 }
 
 
-$(function (rawData) {
-var areaOption = {
-        backgroundColor: '#fff',
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross'
-            },
-            // formatter:function(data){
-            //     var dom='开盘价'+data[0].value[1]+'</br>';
-            //     dom+='收盘价'+data[0].value[2]+'</br>';
-            //     dom+='最低价'+data[0].value[3]+'</br>';
-            //     dom+='最高价'+data[0].value[4];
-            //     return dom
-            // }
-        },
-        grid: [
-            {
-                left: '10%',
-                right: '8%',
-                height: '56%',
-                top:"10%"
-            },
-            {
-                left: '10%',
-                right: '8%',
-                top: '78%',
-                height: '16%'
-            },
-            {
-                left: '10%',
-                right: '8%',
-                height: '56%',
-                top:"10%"
-            }
-        ],
-        xAxis: [
-            {
-                type: 'category',
-                data: data.categoryData,
-                scale: true,
-                boundaryGap : false,
-                axisLine: {onZero: false},
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: ['#f2f2f2']
-                    }
-                },
-                splitNumber: 5,
-                min: 'dataMin',
-                max: 'dataMax',
-                axisLine: {
-                    lineStyle: {
-                        color: '#a3a3a3',
-                        width: 0.6,
-                    },
-                },
-                axisLabel: {
-                    interval: function(index, value) {
-
-                        if (value == "09:30") return true;
-
-                        if (value == "10:30") return true;
-
-                        if (value == "11:30") return true;
-
-                        if (value == "14:00") return true;
-
-                        if (value == "15:00") return true;
-
-                        return false;
-
-                    },
-
-                    formatter: function(value, index) {
-
-                        if (value == "11:30") return "11:30/13:00";
-
-                        return value;
-
-                    },
-
-                    textStyle: {
-                        color: '#0f0f0f',
-                        fontSize: "8"
-                    },
-
-                    color: "#fff"
-
-                },
-            },
-            {
-                type: 'category',
-                gridIndex: 1,
-                data: data.categoryData,
-                scale: true,
-                boundaryGap : false,
-                axisLine: {onZero: false},
-                axisTick: {show: false},
-                // splitLine: {show: false},
-                axisLabel: {show: false},
-                splitNumber: 5,
-                min: 'dataMin',
-                max: 'dataMax',
-                axisLine: {
-                    lineStyle: {
-                        color: '#a3a3a3',
-                        width: 0.6,
-                    },
-                },
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: ['#f2f2f2']
-                    }
-                },
-            }
-        ],
-        yAxis: [
-            {
-                position: 'left',
-                scale: true,
-                splitArea: {
-                    show: false
-                },
-                axisLabel: {
-                    inside: false,
-                    margin: 0,
-                    formatter: function (value, index) {
-                        return value + "\n";
-                    }
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: '#a3a3a3',
-                        width: 0.6,
-                    },
-                },
-                splitLine: {
-                    lineStyle: {
-                        color: ['#f2f2f2']
-                    }
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#0f0f0f',
-                        fontSize: "8"
-                    }
-                },
-                // minInterval: 1,
-                splitNumber: 4,
-            },
-            {
-                position: 'left',
-                scale: true,
-                gridIndex: 1,
-                splitNumber: 2,
-                // axisLabel: {show: false},
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#0f0f0f',
-                        fontSize: "8"
-                    },
-                    formatter: function(value, index) {
-
-                        if (index == 0) return "(万)";
-
-                        return value;
-
-                    },
-                },
-                axisLine: {show: false},
-                axisTick: {show: false},
-                // splitLine: {show: false},
-                axisLine: {
-                    lineStyle: {
-                        color: '#999',
-                        width: 1,
-                    },
-                },
-                splitLine: {
-                    lineStyle: {
-                        color: ['#f2f2f2']
-                    }
-                },
-                splitNumber: 2,
-            },
-            {
-                position: 'right',
-                min:-1,
-                max:1,
-                scale: true,
-                splitArea: {
-                    show: false
-                },
-                axisLabel: {
-                    inside: false,
-                    margin: 0,
-                    formatter: function (value, index) {
-                        return value + "\n";
-                    }
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: 'transparent',
-                        width: 0.6,
-                    },
-                },
-                splitLine: {
-                    lineStyle: {
-                        color: ['#f2f2f2']
-                    }
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#0f0f0f',
-                        fontSize: "8"
-                    }
-                },
-                // minInterval: 1,
-                splitNumber: 4,
-            },
-        ],
-        // dataZoom: [
-        //     {
-        //         type: 'inside',
-        //         xAxisIndex: [0, 1],
-        //         start: 0,
-        //         end: 100
-        //     },
-        //     {
-        //         show: false,
-        //         xAxisIndex: [0, 1],
-        //         type: 'slider',
-        //         top: '85%',
-        //         start: 0,
-        //         end: 100
-        //     }
-        // ],
-        series: [
-            {
-                name: '分时图',
-                type: 'line',
-                data: calculateMA(5, data),
-                smooth: true,
-                lineStyle: {
-                    normal: {opacity: 0.5}
-                },
-                symbol: 'none',
-                smooth: true,
-                itemStyle: {
-                    normal: {
-                        areaStyle: { type: 'default' },
-                        color: "#d5e1f2",
-                        borderColor: "#3b98d3",
-                        lineStyle: { width: 1, color: ['#3b98d3'] },
-                    }
-                },
-                // markLine : {
-                //     symbol: ['arrow', 'none'],
-                //     symbolSize: [10, 10],
-                //     data:[{
-                //         yAxis:data.values[data.values.length - 1][1],
-                //         value:data.values[data.values.length - 1][1]
-                //     }],
-                //     itemStyle : {
-                //         normal: {
-                //             lineStyle: {color:'#C23531'},
-                //             barBorderColor:'#C23531',
-                //             label:{
-                //                 position:'left',
-                //                 formatter:function(params){
-                //                     return "\t" + params.value;
-                //                 },
-                //                 textStyle:{color:'#C23531'}
-                //             }
-                //         }
-                //     }
-                // }
-            },
-            {
-                name: 'Volume',
-                type: 'bar',
-                xAxisIndex: 1,
-                yAxisIndex: 1,
-                data: data.volumes,
-
-                itemStyle: {
-                    normal: {
-                        color: '#e2d194'
-                    },
-                    emphasis: {
-                        color: '#140'
-                    }
-                },
-            }
-
-        ]
-    }
-});
 
 
 
