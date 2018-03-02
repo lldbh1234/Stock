@@ -11,6 +11,7 @@ class User extends Validate
         'password'	=> 'require|length:6,16',
         'state'     => 'require|in:0,1',
         'parent_id' => 'is_manager',
+        'number'    => 'require|float|gt:0',
     ];
 
     protected $message = [
@@ -22,6 +23,9 @@ class User extends Validate
         'state.require'     => '系统提示：非法操作！',
         'state.in'          => '系统提示：非法操作！',
         'parent_id.is_manager' => '系统提示：当前填写邀请人不是经纪人',
+        'number.require'    => '请输入赠送金额！',
+        'number.float'      => '赠送金额为数字！',
+        'number.gt'         => '赠送金额必须大于0！',
     ];
 
     protected $scene = [
@@ -33,7 +37,11 @@ class User extends Validate
         ],
         'modify_pwd' => [
             'user_id',
-            'password' => "length:6,16",
+            'password',
+        ],
+        'give' => [
+            'user_id',
+            'number',
         ],
     ];
     public function is_manager($value)

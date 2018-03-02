@@ -3,6 +3,7 @@ namespace app\admin\logic;
 
 use app\admin\model\User;
 use app\admin\model\Admin;
+use app\admin\model\UserGive;
 use think\Db;
 
 class UserLogic
@@ -77,6 +78,33 @@ class UserLogic
     public function update($where=[])
     {
         return User::update($where);
+    }
+    public function setInc($data)
+    {
+
+        if(isset($data['user_id']) && isset($data['number']))
+        {
+            // 启动事务
+            Db::startTrans();
+            try{
+                User::where(['user_id' => $data['user_id']])->setInc('account', $data['number']);
+                UserGive::create([
+                    'user_id'   => $data['user_id'],
+                    'amount'    => $data['number'],
+                    'create_at' => time(),
+                    'create_by' => isLogin()
+                ]);
+                // 提交事务
+                Db::commit();
+                return true;
+            } catch (\Exception $e) {
+                // 回滚事务
+                Db::rollback();
+                return false;
+            }
+        }
+        return false;
+
     }
 
 }

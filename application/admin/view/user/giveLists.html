@@ -1,12 +1,12 @@
 {extend name="layouts/layout_iframe" /}
 
-{block name="title"}会员管理{/block}
+{block name="title"}会员赠金{/block}
 
 {block name="body"}
 <nav class="breadcrumb">
     <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
     <span class="c-gray en">&gt;</span> 会员管理
-    <span class="c-gray en">&gt;</span> 会员列表
+    <span class="c-gray en">&gt;</span> 会员赠金
     <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
         <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
     </a>
@@ -15,7 +15,7 @@
     <form action="" method="get">
     <div class="text-c">
         <input type="text" class="input-text" style="width:170px;" placeholder="微圈" name="admin_username" value="{$search.admin_username|default=''}">
-        <!--<input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">-->
+        <input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="推荐人" name="parent_username" value="{$search.parent_username|default=''}">
@@ -75,8 +75,7 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="编辑" href="javascript:;" onclick="admin_edit('会员编辑','{:url("admin/User/modify", ['user_id' => $item.user_id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-                <a title="修改密码" href="javascript:;" onclick="admin_pwd(this, '{$item.user_id}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-key"></i></a>
+                <a title="修改密码" href="javascript:;" onclick="admin_give(this, '{$item.user_id}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
             </td>
         </tr>
         {/volist}
@@ -92,23 +91,16 @@
 
 {block name="script"}
 <script>
-    /*用户-添加*/
-    function admin_pwd(title,url,w,h){
-        layer_show(title,url,w,h);
-    }
 
-    function admin_edit(title,url,w,h){
-        layer_show(title,url,w,h);
-    }
-    function admin_pwd(_obj, _id)
+    function admin_give(_obj, _id)
     {
         layer.prompt({
-            title: '修改密码',
+            title: '会员赠金',
             formType: 0,
         }, function(_number, _prompt){
             layer.close(_prompt);
-            var _oData = {user_id : _id, password : _number},
-                _url = '{:url("admin/User/modifyPwd")}',
+            var _oData = {user_id : _id, number : _number},
+                _url = '{:url("admin/User/giveAccount")}',
                 _loading = parent.layer.load(1),
                 _func = function (_resp) {
                     parent.layer.close(_loading);
