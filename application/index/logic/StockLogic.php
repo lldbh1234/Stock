@@ -44,6 +44,32 @@ class StockLogic
         return [];
     }
 
+    public function klineData($code, $period = 6, $count = 50)
+    {
+        $code = $this->_fullCodeByCodes($code);
+        $code = reset($code);
+        $code = $this->_handleCodes($code);
+        if($code){
+            $period = in_array($period, [6,7,8]) ? $period : 6;
+            $response = $this->_library->kline($code, $period, $count);
+            if($response && isset($response['data']['candle'])){
+                $_resp = [];
+                $data = $response['data']['candle'];
+                $fields = $data['fields'];
+                $kline = $data[$code];
+                foreach ($kline as $item){
+                    $_temp = [];
+                    foreach($fields as $k=>$v){
+                        $_temp[$v] = $item[$k];
+                    }
+                    $_resp[] = $_temp;
+                }
+                return $_resp;
+            }
+        }
+        return [];
+    }
+
     public function realTimeData($codes)
     {
         $codes = $this->_fullCodeByCodes($codes);
@@ -93,6 +119,15 @@ class StockLogic
                     }
                 }
             });
+        }elseif (!empty($codes)){
+            preg_match('/^([sh|sz]{2})(\d{6})/i', $codes, $match);
+            if($match){
+                if($match[1] == 'sh'){
+                    $codes = "{$match[2]}.SS";
+                }elseif($match[1] == 'sz'){
+                    $codes = "{$match[2]}.SZ";
+                }
+            }
         }
         return $codes;
     }

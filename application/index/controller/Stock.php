@@ -61,4 +61,20 @@ class Stock extends Base
         }
         return json([]);
     }
+
+    public function kline()
+    {
+        $code = input("code");
+        if($code){
+            $period = input("period", 6);
+            $count = input("count", 50);
+            $res = $this->_logic->klineData($code, $period, $count);
+            if(request()->isPost()){
+                return $this->ok($res);
+            }else{
+                return json($res);
+            }
+        }
+        return json([]);
+    }
 }
