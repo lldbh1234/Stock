@@ -112,8 +112,6 @@ function splitData(rawData) {
 
     }
 
-    console.log(values);
-
     return {
         categoryData: categoryData,
         values: values,
@@ -154,6 +152,72 @@ $(".koptions_nav").on("click", "p", function(){
 $(function(){
     // 页面加载完成就加载分时图
     initAreaLine();
+    /*** 没两秒请求数据， 更新页面 ****/
+    setInterval(function(){
+        if( !isTradingTime() ){
+            return false;
+        }
+        var _url = refreshUrl,
+            _code = $("#guName").data("code"),
+            _oData = {code:_code,cnc: lineData[-2].trend_crc, min: lineData[-2].min_time};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ 
+                // 如果有新点, 重新渲染分时图
+                if(res.data.trend.length > 0){
+                    // 将数据添加到 lineData[-1]；
+                    lineData[-1] = lineData[-1].concat( res.data.trend );
+                    lineData[0] = splitData( lineData[-1] );
+                    lineData[-2].min_time = lineData[-1][_data.length - 1].min_time;
+                    drawAreaLine(lineData[0]);
+                }
+                lineData[-2].trend_crc = res.data.trend_crc;
+                //更新页面数据
+
+                var html = '<div class="clear_fl g_info">\
+                    <div class="lf">\
+                                                <p class="g_price">12.41</p>\
+                        <p class="g_rate clear_fl">\
+                            <span class="lf">-0.06</span>\
+                            <span class="lf">-0.48%</span>\
+                        </p>\
+                                            </div>\
+                    <ul class="rt g_price_detail clear_fl">\
+                        <li>\
+                            <p>昨收</p>\
+                            <p>12.47</p>\
+                        </li>\
+                        <li>\
+                            <p>今开</p>\
+                            <p>12.40</p>\
+                        </li>\
+                        <li>\
+                            <p>最高</p>\
+                            <p>12.46</p>\
+                        </li>\
+                        <li>\
+                            <p>最低</p>\
+                            <p>12.36</p>\
+                        </li>\
+                    </ul>\
+                </div>  \
+                <ul class="g_detail_list clear_fl">\
+                    <li>振幅 <span>0.80%</span></li>\
+                    <li>成交量 <span>23.02万手</span></li>\
+                    <li>成交额 <span>2.85亿元</span></li>\
+                    <li>内盘 <span>12.4万手</span></li>\
+                    <li>外盘 <span>10.62万手</span></li>\
+                    <li>总市值 <span>3642.59亿</span></li>\
+                    <li>市盈率 <span>6.52</span></li>\
+                    <li>流通市值 <span>3487.68亿</span></li>\
+                </ul>';
+
+                $(".g_section").html( html );
+
+            }else{
+                $alert(res.info);
+            }
+        });
+    },2000);
 });
 
 /*** init分时图 ****/
@@ -165,13 +229,18 @@ function initAreaLine(){
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){ 
                 var _data = res.data.trend;
+                lineData[-1] = _data;
                 lineData[0] = splitData(_data);
+                lineData[-2] = {}; //存放trend_crc， min_time
+                lineData[-2].trend_crc = res.data.trend_crc;
+                lineData[-2].min_time = _data[_data.length - 1].min_time;
                 drawAreaLine(lineData[0]);
-
             }else{
                 $alert(res.info);
             }
         });
+    }else{
+        drawAreaLine(lineData[0]);
     }
 }
 
