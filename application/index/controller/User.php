@@ -143,7 +143,8 @@ class User extends Base
                 return view("manager/register");
             }
         }else{
-
+            $this->assign("user", $user);
+            return view("manager/home");
         }
     }
 
