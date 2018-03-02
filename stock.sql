@@ -3999,7 +3999,7 @@ CREATE TABLE IF NOT EXISTS `stock_order` (
   `jiancang_fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '建仓费',
   `defer` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '递延费',
   `free_time` int(10) NOT NULL COMMENT '免息到期时间',
-  `is_defer` tinyint(4) NOT NULL DEFAULT '1' COMMENT '自动递延；1-是，-1否',
+  `is_defer` tinyint(4) NOT NULL DEFAULT '1' COMMENT '自动递延；1-是，0否',
   `stop_profit_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止盈金额',
   `stop_profit_point` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止盈点数',
   `stop_loss_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止损金额',
