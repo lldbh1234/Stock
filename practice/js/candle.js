@@ -114,7 +114,6 @@ function splitData(rawData) {
     }
 
 
-    console.log(categoryData);
 
     for (var i = values.length; i < categoryData.length; i++) {
 

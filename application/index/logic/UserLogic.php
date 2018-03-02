@@ -73,6 +73,22 @@ class UserLogic
         return User::find($userId)->hasManyOptional()->column("code");
     }
 
+    public function userIncManager($userId)
+    {
+        $user = User::with("hasOneAdmin,hasOneManager")->find($userId);
+        return $user ? $user->toArray() : [];
+    }
+
+    public function saveUserManager($userId, $data)
+    {
+        $user = User::get($userId);
+        if($user->hasOneManager){
+            return $user->hasOneManager->save($data);
+        }else{
+            return $user->hasOneManager()->save($data);
+        }
+    }
+
     public function userIncAdmin($userId)
     {
         $user = User::with("hasOneAdmin")->find($userId);

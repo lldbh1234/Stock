@@ -117,7 +117,7 @@ class User extends Validate
 
     protected function checkAct($value)
     {
-        $_array = ['register', 'forget', 'withdraw'];
+        $_array = ['register', 'forget', 'withdraw', 'manager'];
         return in_array($value, $_array);
     }
 }

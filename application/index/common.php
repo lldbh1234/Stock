@@ -37,3 +37,26 @@ if(!function_exists("createOrderSn")){
         return uniqid() . randomString(4, true);
     }
 }
+
+if(!function_exists("checkStockTradeTime"))
+{
+    function checkStockTradeTime()
+    {
+        if(date('w') == 0){
+            return false;
+        }
+        if(date('w') == 6){
+            return false;
+        }
+        if(date('G') < 9 || (date('G') == 9 && date('i') < 30)){
+            return false;
+        }
+        if(((date('G') == 11 && date('i') > 30) || date('G') > 11) && date('G') < 13){
+            return false;
+        }
+        if(date('G') > 15){
+            return false;
+        }
+        return true;
+    }
+}

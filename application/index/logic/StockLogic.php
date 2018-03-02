@@ -70,6 +70,50 @@ class StockLogic
         return [];
     }
 
+    public function realData($code, $crc='', $min='')
+    {
+        $code = $this->_fullCodeByCodes($code);
+        $code = reset($code);
+        $code = $this->_handleCodes($code);
+        $min_date = $min ? date("Hi", strtotime($min)) : [];
+        if($code){
+            try{
+                $_response = [];
+                $real = $this->_library->realtime($code);
+                $realFields = $real['data']['snapshot']['fields'];
+                $realData = $real['data']['snapshot'][$code];
+                foreach ($realFields as $key=>$val){
+                    if($val == 'offer_grp' || $val == 'bid_grp'){
+                        $_array = explode(',', $realData[$key]);
+                        array_pop($_array);
+                        $_response[$val] = $_array;
+                    }else{
+                        $_response[$val] = $realData[$key];
+                    }
+                }
+                $trend = $this->_library->trend($code, $crc, $min_date);
+                $trendFields = $trend['data']['trend']['fields'];
+                $trendCrc = $trend['data']['trend']['crc'][$code];
+                $trendData = $trend['data']['trend'][$code];
+                $_response['trend_crc'] = $trendCrc;
+                $_response['trend'] = [];
+                foreach ($trendData as $item){
+                    if($item[0] != $min){
+                        $_temp = [];
+                        foreach($trendFields as $k=>$v){
+                            $_temp[$v] = $item[$k];
+                        }
+                        $_response['trend'][] = $_temp;
+                    }
+                }
+                return $_response;
+            }catch (\Exception $e){
+                return [];
+            }
+        }
+        return [];
+    }
+
     public function realTimeData($codes)
     {
         $codes = $this->_fullCodeByCodes($codes);

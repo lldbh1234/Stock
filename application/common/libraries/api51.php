@@ -21,14 +21,6 @@ class api51
 
     public function kline($code, $period = 6, $count = 50, $type = 'offset')
     {
-        preg_match('/^([sh|sz]{2})(\d{6})/i', $code, $match);
-        if($match){
-            if($match[1] == 'sh'){
-                $code = "{$match[2]}.SS";
-            }elseif($match[1] == 'sz'){
-                $code = "{$match[2]}.SZ";
-            }
-        }
         $data = [
             'prod_code' => $code,
             'candle_period' => $period,//K线周期	取值可以是数字1-9，表示含义如下： 1：1分钟K线 2：5分钟K线 3：15分钟K线 4：30分钟K线 5：60分钟K线 6：日K线 7：周K线 8：月K线 9：年K线
@@ -41,7 +33,18 @@ class api51
         return json_decode($response, true);
     }
 
-
+    public function trend($code, $crc = '', $min = '')
+    {
+        $data = [
+            'prod_code' => $code,
+            'fields' => 'last_px,avg_px,business_amount',
+            'crc' => $crc,
+            'min_time' => $min,
+        ];
+        $data = http_build_query($data);
+        $response = $this->api51_curl(self::TREND_REQUEST_URL, $data, 0, self::APP_CODE);
+        return json_decode($response, true);
+    }
 	
 	public function api51_curl($url, $data=false, $ispost=0, $appcode){
 		$headers = array();

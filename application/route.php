@@ -47,7 +47,8 @@ Route::group("user", function () {
 
 // 经纪人
 Route::group("manager", function(){
-    Route::any('index','index/User/manager'); // 经纪人首页
+    Route::any('home','index/User/manager'); // 经纪人首页
+    Route::post('register','index/User/RegisterManager');
 });
 
 //关注
@@ -69,6 +70,7 @@ Route::group("stock", function () {
     Route::any('buy', 'index/Stock/stockBuy'); //购买
     Route::any('home', 'index/Stock/info'); //购买
     Route::any('real', 'index/Stock/real'); //实时行情
+    Route::any('inc-real', 'index/Stock/incReal'); //增量
     Route::any('simple', 'index/Stock/simple'); //行情基本数据
     Route::any('kline', 'index/Stock/kline'); //K线
 });
@@ -130,6 +132,20 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('add-lever', 'admin/Mode/createLever');
             Route::any('edit-lever', 'admin/Mode/modifyLever');
             Route::post('del-lever', 'admin/Mode/removeLever');
+        });
+
+        Route::group("deposit", function(){
+            Route::any('lists', 'admin/Deposit/index');
+            Route::any('add', 'admin/Deposit/create');
+            Route::any('edit', 'admin/Deposit/modify');
+            Route::post('del', 'admin/Deposit/remove');
+        });
+
+        Route::group("lever", function(){
+            Route::any('lists', 'admin/Lever/index');
+            Route::any('add', 'admin/Lever/create');
+            Route::any('edit', 'admin/Lever/modify');
+            Route::post('del', 'admin/Lever/remove');
         });
 
         Route::group("ai", function(){

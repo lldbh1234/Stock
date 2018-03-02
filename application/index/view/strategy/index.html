@@ -24,89 +24,91 @@
         </p>
     </header>
     <div class="search_con">
-        <input placeholder="请输入股票代码/名称"/>
+        <input id="searchInput" placeholder="请输入股票代码/名称"/>
     </div>
-    <div class="search_history">
-        <h1 class="search_h_title clear_fl">
-            搜索历史
-            <a href="" class="rt">清空</a>
-        </h1>
-        <ul class="search_h_list">
-            <li>
-                <a  class="flex_nowrap" href="hangqing.html?code=600179">
-                    <span>招商银行 600179</span>
-                    <span class="red">28.17</span>
-                    <span class="red">+8.17%</span>
-                    <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
-                    <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
-                </a>
-            </li>
-            <li>
-                <a  class="flex_nowrap" href="hangqing.html?code=300664">
-                    <span>鹏鹞环保 300664</span>
-                    <span class="red">28.17</span>
-                    <span class="red">+8.17%</span>
-                    <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
-                    <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
-                </a>
-            </li>
-            <li>
-                <a  class="flex_nowrap" href="hangqing.html?code=603980">
-                    <span>吉华集团 603980</span>
-                    <span class="red">28.17</span>
-                    <span class="red">+8.17%</span>
-                    <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
-                    <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
-                </a>
-            </li>
-            <li>
-                <a  class="flex_nowrap" href="hangqing.html?code=601566">
-                    <span>九牧王 601566</span>
-                    <span class="red">28.17</span>
-                    <span class="red">+8.17%</span>
-                    <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
-                    <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <div class="search_history hot_recommend" style="margin-top: 8px;">
-        <h1 class="search_h_title clear_fl">热门推荐</h1>
-        <ul class="recommend_list flex_nowrap">
-            <li>
-                <a href="hangqing.html?code=603980">
-                    <p class="shares_name">吉华集团</p>
-                    <p class="shares_code">603980</p>
-                    <p class="shares_price">37.45</p>
-                    <p class="shares_detail">
-                        <span>-0.23</span>
-                        <span>-0.83%</span>
-                    </p>
-                </a>
-            </li>
-            <li>
-                <a href="hangqing.html?code=601566">
-                    <p class="shares_name">九牧王</p>
-                    <p class="shares_code">601566</p>
-                    <p class="shares_price">37.45</p>
-                    <p class="shares_detail">
-                        <span>-0.23</span>
-                        <span>-0.83%</span>
-                    </p>
-                </a>
-            </li>
-            <li>
-                <a href="hangqing.html?code=300664">
-                    <p class="shares_name">鹏鹞环保</p>
-                    <p class="shares_code">300664</p>
-                    <p class="shares_price">37.45</p>
-                    <p class="shares_detail">
-                        <span>-0.23</span>
-                        <span>-0.83%</span>
-                    </p>
-                </a>
-            </li>
-        </ul>
+    <div class="search_content_box">
+        <div class="search_history">
+            <h1 class="search_h_title clear_fl">
+                搜索历史
+                <a href="" class="rt">清空</a>
+            </h1>
+            <ul class="search_h_list">
+                <li>
+                    <a  class="flex_nowrap" href="hangqing.html?code=600179">
+                        <span>招商银行 600179</span>
+                        <span class="red">28.17</span>
+                        <span class="red">+8.17%</span>
+                        <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
+                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
+                    </a>
+                </li>
+                <li>
+                    <a  class="flex_nowrap" href="hangqing.html?code=300664">
+                        <span>鹏鹞环保 300664</span>
+                        <span class="red">28.17</span>
+                        <span class="red">+8.17%</span>
+                        <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
+                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
+                    </a>
+                </li>
+                <li>
+                    <a  class="flex_nowrap" href="hangqing.html?code=603980">
+                        <span>吉华集团 603980</span>
+                        <span class="red">28.17</span>
+                        <span class="red">+8.17%</span>
+                        <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
+                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
+                    </a>
+                </li>
+                <li>
+                    <a  class="flex_nowrap" href="hangqing.html?code=601566">
+                        <span>九牧王 601566</span>
+                        <span class="red">28.17</span>
+                        <span class="red">+8.17%</span>
+                        <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
+                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="search_history hot_recommend" style="margin-top: 8px;">
+            <h1 class="search_h_title clear_fl">热门推荐</h1>
+            <ul class="recommend_list flex_nowrap">
+                <li>
+                    <a href="hangqing.html?code=603980">
+                        <p class="shares_name">吉华集团</p>
+                        <p class="shares_code">603980</p>
+                        <p class="shares_price">37.45</p>
+                        <p class="shares_detail">
+                            <span>-0.23</span>
+                            <span>-0.83%</span>
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a href="hangqing.html?code=601566">
+                        <p class="shares_name">九牧王</p>
+                        <p class="shares_code">601566</p>
+                        <p class="shares_price">37.45</p>
+                        <p class="shares_detail">
+                            <span>-0.23</span>
+                            <span>-0.83%</span>
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a href="hangqing.html?code=300664">
+                        <p class="shares_name">鹏鹞环保</p>
+                        <p class="shares_code">300664</p>
+                        <p class="shares_price">37.45</p>
+                        <p class="shares_detail">
+                            <span>-0.23</span>
+                            <span>-0.83%</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 {/block}
 
@@ -136,6 +138,9 @@
 {/block}
 
 {block name="script"}
+    <script type="text/javascript" src="__STATIC__/js/stock.js"></script>
+    <script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
     <script type="text/javascript">
         mui.init({
             swipeBack: true //启用右滑关闭功能
@@ -150,5 +155,81 @@
             }
             window.location.href = url;
          });
+
+
+
+         $("#searchInput").keyup(function(){
+            var val = $(this).val();
+            displayItems(val);
+        });
+
+        var searchCon = $(".search_content_box").html();
+        function displayItems(items) {
+            var code = new Array();
+            var html = "";
+            if (items==''){ //搜索结果为空， 置空列表
+                html=searchCon;
+                $(".search_content_box").html( html );
+            }else{
+                var j = 0;
+                for (var i = 0; i < stocks.length; i++) {
+                    var reg = new RegExp('^' + items + '.*$', 'im');
+                    if (reg.test(stocks[i][0]) || reg.test(stocks[i][1]) || reg.test(stocks[i][2]) || reg.test(stocks[i][3])) {
+                        if(j < 5){
+                            code.push( stocks[i][1] );
+                            j++;
+                        }else{
+                            break;
+                        }
+                    }
+                }
+
+                if(code.length == 0){
+                    var html = '<ul><li class="no_more"></li><li style="text-align:center;font-size:12px;color:#999;background:transparent;border:none;">暂无搜索结果</li></ul>';
+                    $(".search_content_box").html( html );
+                }
+
+                code = code.join(",");
+                var _url = "{:url('index/Stock/simple')}",
+                    _oData = {code: code};
+                $ajaxCustom(_url, _oData, function(res){
+                    if(res.state){ // 登录成功
+                        for( var key in res.data ){
+                            var rate = parseFloat(res.data[key].px_change_rate);
+                            var className = "";
+                            if(rate >= 0){
+                                className = "red"
+                            }else{
+                                className = "green"
+                            }
+                            html += '<li class="list_header flex_nowrap">\
+                                        <div style="width: 15%; display: none;" class="mui-input-row mui-checkbox mui-left select_btn">\
+                                            <label></label>\
+                                            <input name="checkbox" value="Item 1" type="checkbox">\
+                                        </div>\
+                                        <a style="width:80%" class="flex_nowrap" href="/stock/home.html?code='+ res.data[key].code +'">\
+                                            <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
+                                            <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
+                                            <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
+                                            \
+                                        </a>\
+                                        <span style="width:20%">\
+                                            <a href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>\
+                                        </span>\
+                                    </li>';
+                        }
+
+                        $(".search_content_box").html( "<ul class='zixuan_list'></ul>" );
+                        $(".zixuan_list").html(html);
+                    }else{
+                        // $alert(res.info);
+                    }
+                });
+            }
+        }
+
+
+
+
     </script>
 {/block}

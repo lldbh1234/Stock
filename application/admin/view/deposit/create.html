@@ -1,0 +1,81 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}添加保证金{/block}
+
+{block name="body"}
+<article class="page-container">
+    <form class="form form-horizontal" id="form-team-user-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>保证金名称：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="text" class="input-text" value="" placeholder="" name="name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>保证金金额：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="text" class="input-text" value="" placeholder="" name="money">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">排序：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="text" class="input-text" value="" placeholder="50" name="sort">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>状态：</label>
+            <div class="formControls col-xs-8 col-sm-7 skin-minimal">
+                <div class="radio-box">
+                    <input name="status" type="radio" value="0" id="sex-1" checked>
+                    <label for="sex-1">开启</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" name="status" id="sex-2" value="1">
+                    <label for="sex-2">关闭</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" id="bth-submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+$(function(){
+    $('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox-blue',
+        radioClass: 'iradio-blue',
+        increaseArea: '20%'
+    });
+
+    $("#bth-submit").click(function(){
+        var _oData = $("form").serialize(),
+            _url = '{:url("admin/Deposit/create")}',
+            _func = function (_resp) {
+                if (!_resp.state) {
+                    layer.msg(_resp.info);
+                } else {
+                    layer.msg('添加成功！', {time: 500}, function(){
+                        if(_resp.data && _resp.data.url){
+                            parent.window.location.href = _resp.data.url;
+                        }else{
+                            parent.window.location.reload();
+                        }
+                    });
+                }
+            };
+        _ajaxPost(_url, _oData, _func);
+    });
+});
+</script>
+{/block}

@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\ModeLogic;
 use think\Request;
 use app\index\logic\StockLogic;
 
@@ -13,9 +14,26 @@ class Stock extends Base
         $this->_logic = new StockLogic();
     }
 
-    public function stockBuy($code)
+    public function stockBuy($code = null)
     {
+        if(request()->isPost()){
 
+        }else{
+            $stock = $this->_logic->stockByCode($code);
+            if($stock){
+                $quotation = $this->_logic->simpleData($code);
+                if(isset($quotation[$code]) && !empty($quotation[$code])){
+                    $modes = (new ModeLogic())->productModes();
+                    dump($modes);
+                    $this->assign("stock", $quotation[$code]);
+                    return view('buy');
+                }else{
+                    return view('public/error');
+                }
+            }else{
+                return view('public/error');
+            }
+        }
     }
 
     public function info($code = null)
@@ -27,7 +45,7 @@ class Stock extends Base
                 $this->assign("quotation", $quotation[0]);
                 return view();
             }else{
-                return "错误页面！";
+                return view('public/error');
             }
         }else{
             return view('public/error');
@@ -38,7 +56,7 @@ class Stock extends Base
     {
         $code = input("code");
         if($code){
-            $res = $this->_logic->realTimeData($code);
+            $res = $this->_logic->realData($code);
             if(request()->isPost()){
                 return $this->ok($res);
             }else{
@@ -46,6 +64,22 @@ class Stock extends Base
             }
         }
         return json([]);
+    }
+
+    public function incReal()
+    {
+        $code = input("code");
+        $cnc = input("cnc");
+        $min = input("min");
+        $res = [];
+        if(checkStockTradeTime() && $code){
+            $res = $this->_logic->realData($code, $cnc, $min);
+        }
+        if(request()->isPost()){
+            return $this->ok($res);
+        }else{
+            return json($res);
+        }
     }
 
     public function simple()
