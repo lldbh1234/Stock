@@ -126,7 +126,7 @@
 								<span class="mui-pull-right color color_red">0.38%</span>
 							</div>
 		                </li>
-		                </li class="swiper-slide mui-text-center">
+		                <li class="swiper-slide mui-text-center">
 		                	<a href="">
 		                		<p class="Ashare_t">创业板指</p>
 								<p class="Ashare_num color color_red">1801.42</p>
@@ -532,10 +532,36 @@
 
 		loadZhiPrice();
 		function loadZhiPrice(){
-            var _url = "http://www.baonastone.com.cn/plate.json?" + Math.random(),
+            var _url = "http://hq.sinajs.cn/rn=1520407404627&list=s_sh000001,s_sz399001,s_sz399006",
                 _oData = {};
             $.get(_url,function(data,status){
-				console.log(data);
+            	var _data = JSON.parse( data );
+            	var html = "";
+				for( var key in _data ){
+					var className =  "";
+					if( _data[key].px_change >= 0 ){
+						className = "color_red";
+					}else{
+						className = "color_green";
+					}
+					html += '<li class="swiper-slide mui-text-center">\
+		                	<a href="">\
+		                		<p class="Ashare_t">'+ _data[key].plate_name +'</p>\
+								<p class="Ashare_num color ' + className + '">'+ (_data[key].last_px).toFixed(2) +'</p>\
+								<div class="per mui-clearfix">\
+									<span class="mui-pull-left color ' + className + '">' + className + '">'+ _data[key].px_change +'</span>\
+									<span class="mui-pull-right color ' + className + '">' + className + '">'+ _data[key].px_change_rate +'%</span>\
+								</div>\
+		                	</a>\
+		                </li>';
+				}
+
+				$(".Ashare_top li:nth-child(1)").remove();
+				$(".Ashare_top li:nth-child(2)").remove();
+				$(".Ashare_top li:nth-child(3)").remove();
+				var $dom = $( html );
+				$(".Ashare_top ul").prepend( $dom );
+
 			});
 		}
 	</script>
