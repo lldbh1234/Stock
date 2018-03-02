@@ -184,6 +184,11 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::post('del', 'admin/Permission/del'); // 删除权限资源
             Route::any('role-push', 'admin/Permission/rolePush'); // 角色授权
         });
+        //系统管理
+        Route::group("system", function(){
+            Route::any('lists', 'admin/System/lists');  // 系统设置
+            Route::post('modify', 'admin/System/modify'); // 修改
+        });
 
     });
 });

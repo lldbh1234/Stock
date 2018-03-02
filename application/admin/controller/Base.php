@@ -42,6 +42,7 @@ class Base extends Controller
         }
         //读取用户权限列表
         $userNodeList = self::getUserNodeList();
+//        dump($userNodeList);
         if(!in_array($rule_name, $userNodeList)){
             if(request()->isAjax()){
                 return $this->fail('您没有权限访问');
