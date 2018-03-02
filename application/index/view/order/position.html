@@ -289,32 +289,9 @@
     </ul>
 {/block}
 
-{block name="nav"}
-<nav class="ml_tab mui-bar mui-bar-tab">
-    <a class="mui-tab-item" href="{:url('index/Index/index')}">
-        <span class="mui-icon mui-icon-home"></span>
-        <span class="mui-tab-label">首页</span>
-    </a>
-    <a class="mui-tab-item" href="{:url('index/User/optional')}">
-        <span class="mui-icon mui-icon-zixuan"></span>
-        <span class="mui-tab-label">自选</span>
-    </a>
-    <a class="mui-tab-item center_item" href="{:url('index/Ai/index')}">
-        <span class="mui-icon mui-icon-celue"></span>
-        <span class="mui-tab-label">AI智能推荐</span>
-    </a>
-    <a class="mui-tab-item mui-active" href="javascript:void(0);">
-        <span class="mui-icon mui-icon-jingu"></span>
-        <span class="mui-tab-label">策略</span>
-    </a>
-    <a class="mui-tab-item" href="{:url('index/User/index')}">
-        <span class="mui-icon mui-icon-my"></span>
-        <span class="mui-tab-label">我的</span>
-    </a>
-</nav>
-{/block}
 
-{block name="script"}
+
+{block name="script"} -->
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript" src="__RESOURCE__/js/dropload.min.js"></script>
 <script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
@@ -324,36 +301,36 @@
 		swipeBack: true //启用右滑关闭功能
 	})
 	//选项卡
-	 mui('body').on('tap', 'nav a', function() {
-        var data_href = this.getAttribute("data-href");
-        var href = this.getAttribute("href");
-        var url=data_href;
-        if(!url||url==''){
-            url=href;
-        }
-        window.location.href = url;
-     });
+	 // mui('body').on('tap', 'nav a', function() {
+  //       var data_href = this.getAttribute("data-href");
+  //       var href = this.getAttribute("href");
+  //       var url=data_href;
+  //       if(!url||url==''){
+  //           url=href;
+  //       }
+  //       window.location.href = url;
+  //    });
 
-     mui('body').on('tap', '.strategy_top a', function() {
-        var data_href = this.getAttribute("data-href");
-        var href = this.getAttribute("href");
-        var url=data_href;
-        if(!url||url==''){
-            url=href;
-        }
-        window.location.href = url;
-     });
+  //    mui('body').on('tap', '.strategy_top a', function() {
+  //       var data_href = this.getAttribute("data-href");
+  //       var href = this.getAttribute("href");
+  //       var url=data_href;
+  //       if(!url||url==''){
+  //           url=href;
+  //       }
+  //       window.location.href = url;
+  //    });
 
 
-     mui('body').on('tap', '.postion_tab a', function() {
-        var data_href = this.getAttribute("data-href");
-        var href = this.getAttribute("href");
-        var url=data_href;
-        if(!url||url==''){
-            url=href;
-        }
-        window.location.href = url;
-     });
+  //    mui('body').on('tap', '.postion_tab a', function() {
+  //       var data_href = this.getAttribute("data-href");
+  //       var href = this.getAttribute("href");
+  //       var url=data_href;
+  //       if(!url||url==''){
+  //           url=href;
+  //       }
+  //       window.location.href = url;
+  //    });
 
      var refreshIntervel = setInterval(refreshPrice,6000);
 
@@ -396,8 +373,10 @@
                 for(var key in _data){
                     var items = _data[key];
                     var context = $(".position" + items.id);
-                    var className = "red";
-                    if( parseFloat( items.yield_rate < 0) ){
+                    var className = "";
+                    if( data.orders[key].yield_rate >= 0 ){
+                        className = "red";
+                    }else{
                         className = "green";
                     }
                     context.find(".p_now_price").html( items.last_px ).removeClass("red").removeClass("green").addClass(className);
