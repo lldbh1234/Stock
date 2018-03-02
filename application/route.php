@@ -44,6 +44,7 @@ Route::group("user", function () {
     Route::any('recharge','index/User/recharge'); //充值
     Route::any('withdraw','index/User/withdraw'); //提现
 });
+
 // 经纪人
 Route::group("manager", function(){
     Route::any('index','index/User/manager'); // 经纪人首页
@@ -57,6 +58,11 @@ Route::group("attention", function(){
 //Ai
 Route::group("ai", function () {
     Route::any('index','index/Ai/index'); //推荐列表
+});
+
+//策略
+Route::group("strategy", function () {
+    Route::any('home','index/Strategy/index');
 });
 
 Route::group("stock", function () {

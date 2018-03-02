@@ -64,7 +64,6 @@ class UserLogic
             $res = User::find($userId)->hasManyOptional()->save($stock);
             return $res ? model("UserOptional")->getLastInsID() : 0;
         } catch(\Exception $e) {
-            dump($e->getMessage());
             return 0;
         }
     }
