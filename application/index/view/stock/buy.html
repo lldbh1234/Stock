@@ -102,7 +102,7 @@
 				<p class="lf count_panel flex_nowrap">
 					<span class="minus_btn count_btn">-</span>
 					<!-- <span class="now_count">13.63</span> -->
-					<input value="13.08" class="now_count profitCount" />
+					<input readonly="readonly" value="13.08" class="now_count profitCount" />
 					<span class="plus_btn count_btn">+</span>
 				</p>
 				<p class="rt fudong zhangfu">涨幅约 <span>+11.9%</span></p>
@@ -113,7 +113,7 @@
 				<p class="lf count_panel flex_nowrap">
 					<span class="minus_btn count_btn">-</span>
 					<!-- <span class="now_count">13.63</span> -->
-					<input value="9.07" class="now_count lossCount" />
+					<input readonly="readonly" value="9.07" class="now_count lossCount" />
 					<span class="plus_btn count_btn">+</span>
 				</p>
 				<p class="rt fudong diefu">跌幅约 <span>+11.9%</span></p>
@@ -187,9 +187,23 @@
 
 	//止盈止损
 	$(".control_point").on("click",".count_btn",function(){
-		
+		var context = $(this).parents(".control_point");
+		var now_count = parseFloat( context.find(".now_count").val() );
+		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
 
+		if( $(this).hasClass("minus_btn") ){ //减
+			if(now_count <= initValue){
+				return false;
+			}
+			now_count = (now_count * 100 - 1) / 100;
+		}else{ //加
+			now_count = (now_count * 100 + 1) / 100;
+		}
 
+		context.find(".now_count").val( now_count );
+		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+		context.find(".fudong").find("span").html( rate + "%" );
 
 	});
 
@@ -229,8 +243,8 @@
 		var maxProfit = (nowPrice * (1 + profit / 100)).toFixed(2);
 		var maxLoss = (nowPrice * (1 - profit / 100)).toFixed(2);
 
-		$(".profitCount").val(maxProfit);
-		$(".lossCount").val( maxLoss );
+		$(".profitCount").val(maxProfit).attr("data-initValue", maxProfit);
+		$(".lossCount").val( maxLoss ).attr("data-initValue", maxLoss);
 		$(".zhangfu span").html("+" + profit + "%");
 		$(".diefu span").html("-" + loss + "%");
 	}
