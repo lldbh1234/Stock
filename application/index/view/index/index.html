@@ -487,6 +487,9 @@
 			if( !isTradingTime() ){
 				return false;
 			}
+			loadZhiPrice();
+
+
         	var code = new Array();
         	if( $(".share_item").length <= 0 ){
         		return false;
@@ -522,5 +525,22 @@
             });
 		},4000);
 
+
+		setInterval(function(){
+			loadZhiPrice();
+		},2000);
+
+		loadZhiPrice();
+		function loadZhiPrice(){
+            var _url = "http://www.baonastone.com.cn/plate.json",
+                _oData = {};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){
+                   
+                }else{
+                    // $alert(res.info);
+                }
+            });
+		}
 	</script>
 {/block}
