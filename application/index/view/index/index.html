@@ -543,7 +543,7 @@
 		                		<p class="Ashare_t">'+ _data[key].plate_name +'</p>\
 								<p class="Ashare_num color ' + className + '">'+ (_data[key].last_px * 10 / 10).toFixed(2) +'</p>\
 								<div class="per mui-clearfix">\
-									<span class="mui-pull-left color ' + className + '">' + className + '">'+ _data[key].px_change +'</span>\
+									<span class="mui-pull-left color ' + className + '">'+ _data[key].px_change +'</span>\
 									<span class="mui-pull-right color ' + className + '">'+ _data[key].px_change_rate +'%</span>\
 								</div>\
 		                	</a>\
@@ -551,8 +551,8 @@
 				}
 
 				$(".Ashare_top li:nth-child(1)").remove();
-				$(".Ashare_top li:nth-child(2)").remove();
-				$(".Ashare_top li:nth-child(3)").remove();
+				$(".Ashare_top li:nth-child(1)").remove();
+				$(".Ashare_top li:nth-child(1)").remove();
 				var $dom = $( html );
 				$(".Ashare_top ul").prepend( $dom );
 
