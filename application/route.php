@@ -119,7 +119,7 @@ Route::group("cron", function () {
 
 // www.baonastone.com.cn
 // stock.lc
-Route::group(["domain" => "www.baonastone.com.cn"], function() {
+Route::group(["domain" => "stock.lc"], function() {
     // Admin
     Route::group("admin", function () {
         Route::any('/$','admin/Index/index');
