@@ -524,12 +524,6 @@
                 }
             });
 		},4000);
-
-
-		setInterval(function(){
-			loadZhiPrice();
-		},2000);
-
 		loadZhiPrice();
 		function loadZhiPrice(){
             var _url = "http://www.baonastone.com.cn/plate.json?" + Math.random(),
@@ -550,7 +544,7 @@
 								<p class="Ashare_num color ' + className + '">'+ (_data[key].last_px * 10 / 10).toFixed(2) +'</p>\
 								<div class="per mui-clearfix">\
 									<span class="mui-pull-left color ' + className + '">' + className + '">'+ _data[key].px_change +'</span>\
-									<span class="mui-pull-right color ' + className + '">' + className + '">'+ _data[key].px_change_rate +'%</span>\
+									<span class="mui-pull-right color ' + className + '">'+ _data[key].px_change_rate +'%</span>\
 								</div>\
 		                	</a>\
 		                </li>';
