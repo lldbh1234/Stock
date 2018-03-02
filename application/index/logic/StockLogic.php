@@ -114,11 +114,6 @@ class StockLogic
         return [];
     }
 
-    public function incRealData()
-    {
-
-    }
-
     public function realTimeData($codes)
     {
         $codes = $this->_fullCodeByCodes($codes);
