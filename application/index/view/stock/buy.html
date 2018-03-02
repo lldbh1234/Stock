@@ -196,9 +196,15 @@
 			if(now_count <= initValue){
 				return false;
 			}
-			now_count = (now_count * 100 - 1) / 100;
+			now_count = ((now_count * 100 - 1) / 100).toFixed(2);
 		}else{ //加
-			now_count = (now_count * 100 + 1) / 100;
+			if( context.hasClass("zhisun") ){ 
+				var _rate = parseFloat( context.find(".fudong").find("span").html() );
+				if( _rate >= 0 ){
+					return false;
+				}
+			}
+			now_count = ((now_count * 100 + 1) / 100).toFixed(2);
 		}
 
 		context.find(".now_count").val( now_count );
