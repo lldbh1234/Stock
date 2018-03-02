@@ -1,10 +1,10 @@
 <?php
 namespace app\index\controller;
 
+use think\Request;
 use app\index\logic\DepositLogic;
 use app\index\logic\LeverLogic;
 use app\index\logic\ModeLogic;
-use think\Request;
 use app\index\logic\StockLogic;
 
 class Stock extends Base
@@ -19,7 +19,25 @@ class Stock extends Base
     public function stockBuy($code = null)
     {
         if(request()->isPost()){
+            $validate = \think\Loader::validate('Stock');
+            if(!$validate->scene('buy')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $modeId = input("post.mode/d");
+                $depositId = input("post.deposit/d");
+                $leverId = input("post.lever/d");
+                $user = uInfo();
+                $mode = (new ModeLogic())->modeById($modeId);
+                $deposit = (new DepositLogic())->depositById($depositId);
+                $lever = (new LeverLogic())->leverById($leverId);
+                $jiancangTotal = ($deposit['money'] * $lever['multiple']) / 10000 * $mode['jiancang'];
+                $moneyTotal = $deposit['money'] + $jiancangTotal;
+                if($moneyTotal <= $user['account']){
 
+                }else{
+                    return $this->fail("您的余额不足，请充值！");
+                }
+            }
         }else{
             $stock = $this->_logic->stockByCode($code);
             if($stock){
