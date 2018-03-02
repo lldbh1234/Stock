@@ -1,0 +1,132 @@
+﻿{extend name="layouts/layout_iframe" /}
+
+{block name="title"}杠杆列表{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+	<span class="c-gray en">&gt;</span> 交易杠杆
+	<span class="c-gray en">&gt;</span> 杠杆列表
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+	</a>
+</nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
+			</a>
+			<a class="btn btn-primary radius" href="javascript:;" onclick="lever_add('添加杠杆','{:url("admin/Lever/create")}','','350')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加杠杆
+			</a> </span>
+		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-hover table-bg">
+		<thead>
+		<tr class="text-c">
+			<th width="25"><input type="checkbox" value="" name=""></th>
+			<th width="40">ID</th>
+			<th>杠杆名称</th>
+			<th>杠杆倍数</th>
+			<th>排序</th>
+			<th>状态</th>
+			<th width="70">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name="datas.data" id="item"}
+		<tr class="text-c mode-lists">
+			<td><input type="checkbox" value="{$item.id}" name="id"></td>
+			<td>{$item.id}</td>
+			<td>{$item.name}</td>
+			<td>{$item.multiple}</td>
+			<td>{$item.sort}</td>
+			<td>
+				{if condition="$item.status.value eq 0"}
+				<span class="label label-success radius">{$item.status.text}</span>
+				{else /}
+				<span class="label label-danger radius">{$item.status.text}</span>
+				{/if}
+			</td>
+			<td class="f-14">
+				<a title="编辑" href="javascript:;" onclick="lever_edit('编辑杠杆','{:url("admin/Lever/modify", ['id' => $item.id])}','','350')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+				<a title="删除" href="javascript:;" onclick="lever_del(this, {$item.id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+			</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+    /*用户-添加*/
+    function lever_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function lever_edit(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function lever_del(_obj, _id) {
+        layer.confirm('确认要删除此杠杆配置吗？',function(index){
+            var _oData = {id:_id},
+                _url = '{:url("admin/Lever/remove", ["act" => "single"])}',
+                _func = function (_resp) {
+                    layer.close(index);
+                    if (!_resp.state) {
+                        parent.layer.msg(_resp.info);
+                    } else {
+                        layer.msg('删除成功！', {time: 500}, function(){
+                            if(_resp.data && _resp.data.url){
+                                parent.window.location.href = _resp.data.url;
+                            }else{
+                                $(_obj).parents("tr").remove();
+                            }
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+    function datadel()
+    {
+        var _ids = new Array();
+        $(".mode-lists").find("input[type*=checkbox]").each(function(index, el) {
+            if( $(this).is(":checked") ){
+                var _id = $(this).val();
+                _ids.push(_id);
+            }
+        });
+        if(_ids.length == 0){
+            layer.msg("请选择要删除的数据！");
+            return false;
+        }else{
+            layer.confirm('确认要删除此杠杆配置吗？',function(index){
+                var _oData = {ids: _ids},
+                    _url = '{:url("admin/Lever/remove", ["act" => "patch"])}',
+                    _func = function (_resp) {
+                        layer.close(index);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('删除成功！', {time: 500}, function(){
+                                window.location.reload();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
+        }
+    }
+</script>
+{/block}
