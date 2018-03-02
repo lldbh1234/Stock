@@ -47,7 +47,8 @@ Route::group("user", function () {
 
 // 经纪人
 Route::group("manager", function(){
-    Route::any('index','index/User/manager'); // 经纪人首页
+    Route::any('home','index/User/manager'); // 经纪人首页
+    Route::post('register','index/User/RegisterManager');
 });
 
 //关注
@@ -69,7 +70,7 @@ Route::group("stock", function () {
     Route::any('buy', 'index/Stock/stockBuy'); //购买
     Route::any('home', 'index/Stock/info'); //购买
     Route::any('real', 'index/Stock/real'); //实时行情
-    Route::any('inc-real', 'index/Stock/incReal'); //增量的
+    Route::any('inc-real', 'index/Stock/incReal'); //增量
     Route::any('simple', 'index/Stock/simple'); //行情基本数据
     Route::any('kline', 'index/Stock/kline'); //K线
 });

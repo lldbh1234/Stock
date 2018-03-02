@@ -125,7 +125,44 @@ class User extends Base
 
     public function manager()
     {
-        $user = $this->_logic->userIncAdmin($this->user_id);
-        dump($user);
+        $user = $this->_logic->userIncManager($this->user_id);
+        if($user['is_manager'] == -1){
+            if($user['has_one_manager']){
+                if($user['has_one_manager']['state'] == 0){
+                    // 待审核
+                    $this->assign("user", $user);
+                    return view("manager/wait");
+                }elseif ($user['has_one_manager']['state'] == 1){
+                    // 审核通过
+                }else{
+
+                }
+            }else{
+                // 未申请
+                $this->assign("user", $user);
+                return view("manager/register");
+            }
+        }else{
+            $this->assign("user", $user);
+            return view("manager/home");
+        }
+    }
+
+    public function RegisterManager()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Manager');
+            if(!$validate->scene('register')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $res = $this->_logic->saveUserManager($this->user_id, input("post."));
+                if($res){
+                    return $this->ok();
+                }else{
+                    return $this->fail("经纪人申请失败！");
+                }
+            }
+        }
+        return $this->fail("系统提示：非法操作！");
     }
 }

@@ -1,0 +1,58 @@
+{extend name="layouts/layout_manager" /}
+
+{block name="title"}
+经纪人
+{/block}
+
+{block name="style"}
+{/block}
+
+{block name="body"}
+<body>
+{/block}
+
+{block name="content"}
+	<div class="manager_con">
+		<header class="header_con">
+		    <a href="javascript:history.go(-1)" class="lf">
+		        <img src="__RESOURCE__/img/call_back.png">
+		    </a>
+		    <p>经纪人</p>
+		</header>
+
+		<div id="main">
+		    <form id="registerForm" method="post">
+				<div class="register-box">
+			        <div class="input-wrap boxflex">
+			            <i class="icon icon-tel"></i>
+			            <div class="form-group field-userextend-mobile">
+							<input type="text" id="userextend-mobile" class="box_flex_1 register-tel regTel" value="{$user.has_one_manager.mobile}" name="mobile" readonly="readonly" placeholder="请输入您的手机号码">
+							<div class="help-block"></div>
+						</div>
+			        </div>
+			        <div class="input-wrap boxflex">
+			            <i class="icon icon-name"></i>
+			            <div class="form-group field-userextend-realname required">
+							<input type="text" id="userextend-realname" class="box_flex_1 register-name" value="{$user.has_one_manager.realname}" name="realname" readonly="readonly" placeholder="请输入您的真实姓名">
+							<div class="help-block"></div>
+						</div>
+			        </div>
+			        <div class="input-wrap boxflex">
+			            <i class="icon icon-pwd"></i>
+			            <div class="form-group field-userextend-coding">
+							<input type="text" id="userextend-coding" class="box_flex_1 orgcode" name="coding" value="{$user.has_one_manager.coding}" readonly="readonly" placeholder="请输入邀请码">
+							<div class="help-block"></div>
+						</div>
+			        </div>
+			        <div class="btn-regsubmit disabled">待审核</div>
+			    </div>
+			</form>
+		</div>
+	</div>
+{/block}
+
+{block name="nav"}
+{/block}
+
+{block name="script"}
+{/block}

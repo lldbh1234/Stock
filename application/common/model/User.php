@@ -25,6 +25,11 @@ class User extends BaseModel
         return $this->hasOne("\\app\\common\\model\\Admin", "admin_id", "admin_id");
     }
 
+    public function hasOneManager()
+    {
+        return $this->hasOne("\\app\\common\\model\\UserManager", "user_id", "user_id");
+    }
+
     public function hasManyWithdraw()
     {
         return $this->hasMany("\\app\\common\\model\\UserWithdraw", "user_id", "user_id");
