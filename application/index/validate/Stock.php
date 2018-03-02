@@ -16,7 +16,7 @@ class Stock extends Validate
         'lever' => 'require|checkLever',
         'profit' => 'require|float|checkProfit',
         'loss'  => 'require|float|checkLoss',
-        'defer' => 'require|in:1,0|checkUserAccount',
+        'defer' => 'require|in:1,0',
     ];
 
     protected $message = [
@@ -37,7 +37,6 @@ class Stock extends Validate
         'loss.checkLoss'    => '止损价格错误！',
         'defer.require'     => '请选择是否自动递延！',
         'defer.in'          => '自动递延选择错误！',
-        'defer.checkUserAccount' => '余额不足，请充值！',
     ];
 
     protected $scene = [
