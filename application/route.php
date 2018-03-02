@@ -189,6 +189,15 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('lists', 'admin/System/lists');  // 系统设置
             Route::post('modify', 'admin/System/modify'); // 修改
         });
+        //会员管理
+        Route::group("user", function(){
+            Route::any('lists', 'admin/User/lists');  // 会员列表
+            Route::any('modify', 'admin/User/modify'); // 修改
+            Route::any('modify-pwd', 'admin/User/modifyPwd'); // 修改密码
+            Route::any('give-lists', 'admin/User/giveLists');  // 会员赠金列表
+            Route::any('give-account', 'admin/User/giveAccount');  // 会员赠金
+            Route::any('give-log', 'admin/User/giveLog');  // 会员赠金日志
+        });
 
     });
 });

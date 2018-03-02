@@ -1,0 +1,128 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}会员管理{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 会员管理
+    <span class="c-gray en">&gt;</span> 会员列表
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+    <form action="" method="get">
+    <div class="text-c">
+        <input type="text" class="input-text" style="width:170px;" placeholder="微圈" name="admin_username" value="{$search.admin_username|default=''}">
+        <!--<input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">-->
+        <input type="text" class="input-text" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="推荐人" name="parent_username" value="{$search.parent_username|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="微会员" name="admin_parent_username" value="{$search.admin_parent_username|default=''}">
+
+        <span class="select-box" style="width:70px;height: 31px;">
+            <select class="select" name="state" size="1">
+                <option value="">状态</option>
+                <option value="0" {if condition="isset($search.state) AND $search.state heq '0'"}selected{/if}>正常</option>
+                <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>禁用</option>
+            </select>
+        </span>
+        <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+    </div>
+    </form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+
+        <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+    </div>
+    <table class="table table-border table-bordered table-hover table-bg">
+        <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" value="" name=""></th>
+            <th width="40">ID</th>
+            <th>登录名</th>
+            <th>昵称</th>
+            <th>手机号</th>
+            <th>推荐人</th>
+            <th>微圈</th>
+            <th>微会员</th>
+            <th>账户余额</th>
+            <!--<th>总盈利</th>-->
+            <!--<th>总亏损</th>-->
+            <th>注册时间</th>
+            <th>状态</th>
+            <th width="70">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="datas.data" id="item"}
+        <tr class="text-c admin-lists">
+            <td width="25"><input type="checkbox" value="{$item.user_id}" name=""></td>
+            <td width="40">{$item.user_id}</td>
+            <td>{$item.username}</td>
+            <td>{$item.nickname}</td>
+            <td>{$item.mobile}</td>
+            <td>{$item.has_one_parent.username | default='无'}</td>
+            <td>{$item.has_one_admin.username | default='无'}</td>
+            <td>{$item.has_one_admin.has_one_parent.username | default='无'}</td>
+            <td>{$item.account|default='0.00'}</td>
+            <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
+            <td>
+                {if condition="$item.state eq 0"}
+                <span class="label label-success radius">正常</span>
+                {else /}
+                <span class="label label-danger radius">禁用</span>
+                {/if}
+            </td>
+            <td class="f-14">
+                <a title="编辑" href="javascript:;" onclick="admin_edit('会员编辑','{:url("admin/User/modify", ['user_id' => $item.user_id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                <a title="修改密码" href="javascript:;" onclick="admin_pwd(this, '{$item.user_id}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-key"></i></a>
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+    /*用户-添加*/
+    function admin_pwd(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function admin_edit(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    function admin_pwd(_obj, _id)
+    {
+        layer.prompt({
+            title: '修改密码',
+            formType: 0,
+        }, function(_number, _prompt){
+            layer.close(_prompt);
+            var _oData = {user_id : _id, password : _number},
+                _url = '{:url("admin/User/modifyPwd")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('修改成功！', {time: 500}, function(){
+
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+</script>
+{/block}
