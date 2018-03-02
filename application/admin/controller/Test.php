@@ -2,10 +2,11 @@
 namespace app\admin\controller;
 
 use app\admin\logic\OrderLogic;
+use think\Controller;
 use think\Queue;
 use think\Request;
 
-class Test extends Base
+class Test extends Controller
 {
     public function __construct(Request $request = null)
     {

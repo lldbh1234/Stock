@@ -127,6 +127,75 @@ class OrderLogic
             return false;
         }
     }
+
+    // 强制平仓
+    public function forceSell($orderId, $price)
+    {
+        Db::startTrans();
+        try{
+            $order = Order::find($orderId)->toArray();
+            // 订单更改
+            $data = [
+                "order_id" => $orderId,
+                "sell_price" => $price,
+                "sell_hand" => $order["hand"],
+                "sell_deposit" => $order["hand"] * $price,
+                "profit" => ($price - $order["price"]) * $order["hand"],
+                "state" => 2,
+                "update_by" => isLogin()
+            ];
+            Order::update($data);
+            // 分成
+            if($data["profit"] > 0){
+                // 盈利
+                $configs = cfgs();
+                $bonus_rate = isset($configs['bonus_rate']) && !empty($configs['bonus_rate']) ? $configs['bonus_rate'] : 90;
+                $bonus = round($order["profit"] * $bonus_rate / 100, 2);
+                // 用户资金
+                $user = User::find($order['user_id']);
+                $user->setInc("account", $order['deposit'] + $bonus);
+                // 冻结资金
+                $user->setDec("blocked_account", $order['deposit']);
+                // 资金明细(保证金)
+                $rData = [
+                    "type" => 4,
+                    "amount" => $order['deposit'],
+                    "remark" => json_encode(['orderId' => $order["order_id"]]),
+                    "direction" => 1
+                ];
+                $user->hasManyRecord()->save($rData);
+                // 资金明细(分红)
+                $rData = [
+                    "type" => 7,
+                    "amount" => $bonus,
+                    "remark" => json_encode(['orderId' => $order["order_id"]]),
+                    "direction" => 1
+                ];
+                $user->hasManyRecord()->save($rData);
+            }else{
+                // 亏损
+                // 用户资金
+                $user = User::find($order['user_id']);
+                $user->setInc("account", $order['deposit'] + $order["profit"]);
+                // 冻结资金
+                $user->setDec("blocked_account", $order['deposit']);
+                // 资金明细(保证金)
+                $rData = [
+                    "type" => 4,
+                    "amount" => $order['deposit'] + $order["profit"],
+                    "remark" => json_encode(['orderId' => $order["order_id"]]),
+                    "direction" => 1
+                ];
+                $user->hasManyRecord()->save($rData);
+            }
+            Db::commit();
+            return true;
+        }catch(\Exception $e){
+            Db::rollback();
+            return false;
+        }
+    }
+
     public function getAllBy($where=[])
     {
         $map = [];

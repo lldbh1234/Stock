@@ -64,8 +64,19 @@ class User extends BaseModel
     {
         return $this->hasMany("\\app\\common\\model\\Order", "user_id", "user_id");
     }
+
     public function hasManyNotice()
     {
         return $this->hasMany("\\app\\common\\model\\UserNotice", "user_id", "user_id");
+    }
+
+    public function hasOneNiuren()
+    {
+        return $this->hasOne("\\app\\common\\model\\UserNiuren", "user_id", "user_id");
+    }
+
+    public function hasManyNiurenRecord()
+    {
+        return $this->hasOne("\\app\\common\\model\\UserNiurenRecord", "user_id", "user_id");
     }
 }

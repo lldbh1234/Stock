@@ -113,8 +113,8 @@ Route::group("stock", function () {
 });
 
 Route::group("cron", function () {
-    Route::any('stock', 'index/Cron/grabStockLists');
-    Route::any('defer', 'index/Cron/scanOrderDefer');
+    Route::any('stock', 'index/Cron/grabStockLists'); //股票列表
+    Route::any('defer', 'index/Cron/scanOrderDefer'); // 订单递延
 });
 
 // www.baonastone.com.cn
@@ -259,10 +259,11 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('lists', 'admin/Order/index'); //委托订单
             Route::any('history', 'admin/Order/history'); //已平仓订单
             Route::any('position', 'admin/Order/position'); //持仓订单
-            Route::any('buy-ok', 'admin/Order/buyOk'); //建仓成功
-            Route::any('buy-fail', 'admin/Order/buyFail'); //建仓失败
-            Route::any('sell-ok', 'admin/Order/sellOk'); //平仓成功
-            Route::any('sell-fail', 'admin/Order/sellFail'); //平仓失败
+            Route::post('buy-ok', 'admin/Order/buyOk'); //建仓成功
+            Route::post('buy-fail', 'admin/Order/buyFail'); //建仓失败
+            Route::post('sell-ok', 'admin/Order/sellOk'); //平仓成功
+            Route::post('sell-fail', 'admin/Order/sellFail'); //平仓失败
+            Route::post('force-sell', 'admin/Order/forceSell'); //强制平仓
         });
     });
 });

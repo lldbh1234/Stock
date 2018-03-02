@@ -124,7 +124,7 @@ class Stock extends Validate
                 return $value > $max ? "止损金额最大可设置为" . number_format($max, 2) : true;
             }
         }else{
-            return "止损金额不能大于策略委托价！";
+            return "止损金额必须小于策略委托价！";
         }
     }
 

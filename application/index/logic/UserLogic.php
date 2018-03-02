@@ -1,7 +1,7 @@
 <?php
 namespace app\index\logic;
 
-use app\index\model\Niuren;
+use app\index\model\UserNiuren;
 use app\index\model\Order;
 use app\index\model\User;
 use app\index\model\UserRecord;
@@ -197,7 +197,7 @@ class UserLogic
     }
 
     // $state 1委托建仓，2抛出，3持仓，4-委托平仓
-    public function pageUserOrder($userId, $state = 1, $field = "*", $pageSize = 2){
+    public function pageUserOrder($userId, $state = 1, $field = "*", $pageSize = 4){
         try{
             $where = is_array($state) ? ["state" => ["IN", $state]] : ["state" => $state];
             $res = User::find($userId)->hasManyOrder()->where($where)->field($field)->paginate($pageSize);
@@ -209,9 +209,10 @@ class UserLogic
 
     public function getNiuStaticByUid($uid)
     {
-        $data = Niuren::where(['user_id' => $uid])->find();
+        $data = UserNiuren::where(['user_id' => $uid])->find();
         return $data ? $data->toArray() : [];
     }
+
     public function recordList($where=[])
     {
         $map = [];

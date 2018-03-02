@@ -8,6 +8,7 @@ class Order extends Validate
     protected $rule = [
         'id'    => 'require|gt:0|canBuy',
         'price' => 'require|float|gt:0|checkPrice',
+        'code'  => 'require|forceSell',
     ];
 
     protected $message = [
@@ -19,12 +20,18 @@ class Order extends Validate
         'price.float'   => '实际买入价必须为数字！',
         'price.gt'      => '实际买入价必须大于0！',
         "price.checkPrice" => "实际买入价与委托买入价相差不得超过0.02",
+        'code.require'  => '系统提示：非法操作！',
+        'code.forceSell' => '系统提示：非法操作！',
     ];
 
     protected $scene = [
         "buyOk" => ["id", "price"],
         "buyFail" => ["id"],
-        "sell"  => ["id" => "require|gt:0|canSell"]
+        "sell"  => ["id" => "require|gt:0|canSell"],
+        "force" => [
+            "id" => "require|gt:0",
+            "code"
+        ]
     ];
 
     protected function canBuy($value)
@@ -47,5 +54,13 @@ class Order extends Validate
         $order = \app\admin\model\Order::where($where)->find();
         $order = $order->toArray();
         return abs($value - $order['price']) > 0.02 ? false : true;
+    }
+
+    protected function forceSell($value, $rule, $data)
+    {
+        $orderId = $data['id'];
+        $where = ["order_id" => $orderId, "code" => $value, "state" => 3];
+        $order = \app\admin\model\Order::where($where)->find();
+        return $order ? true : false;
     }
 }

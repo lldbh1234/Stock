@@ -11,6 +11,7 @@ class Cron extends Controller
     // 半小时
     public function grabStockLists()
     {
+        set_time_limit(0);
         if(checkStockTradeTime()){
             $_arrays = [];
             $_jsTextIndex = 0;
@@ -27,9 +28,9 @@ class Cron extends Controller
                 $_arrays[] = [
                     "full_code"	=> $item[0],
                     "code"  => $item[1],
-                    "name"  => $item[2],
+                    "name"  => str_replace(' ', '', $item[2]),
                 ];
-                $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $item[1] . "','" . $item[2] . "','" . $item[0] . "'); ";
+                $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $item[1] . "','" . str_replace(' ', '', $item[2]) . "','" . $item[0] . "'); ";
                 $_jsTextIndex++;
             }
             for ($i = 2; $i <= $count; $i++){
@@ -41,9 +42,9 @@ class Cron extends Controller
                     $_arrays[] = [
                         "full_code"	=> $_item[0],
                         "code"  => $_item[1],
-                        "name"  => $_item[2],
+                        "name"  => str_replace(' ', '', $_item[2]),
                     ];
-                    $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $_item[1] . "','" . $_item[2] . "','" . $_item[0] . "'); ";
+                    $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $_item[1] . "','" . str_replace(' ', '', $_item[2]) . "','" . $_item[0] . "'); ";
                     $_jsTextIndex++;
                 }
             }
@@ -52,7 +53,7 @@ class Cron extends Controller
             try{
                 model("Lists")->query("truncate table stock_list");
                 model("Lists")->saveAll($_arrays);
-                @file_put_contents($_jsPath, $_jsText);
+                //@file_put_contents($_jsPath, $_jsText);
                 // 提交事务
                 Db::commit();
                 echo "ok";
@@ -85,14 +86,39 @@ class Cron extends Controller
         }
     }
 
-    // 下午5-6点执行
-    public function handleOrderRebate()
+    // 牛人返点-每天停盘后的时间段 17-23点
+    public function handleNiurenRebate()
     {
         if(checkSettleTime()){
-            $orders = (new OrderLogic())->todaySellOrder();
+            $orders = (new OrderLogic())->todayNiurenRebateOrder();
             if($orders){
                 foreach ($orders as $order){
+                    if($order['is_follow'] == 1){
+                        // 跟买
+                        $followData = [
+                            "money" => $order["profit"], //盈利额
+                            "order_id" => $order["order_id"], //订单ID
+                            "follow_id" => $order["follow_id"] //跟买订单ID
+                        ];
+                        Queue::push('app\index\job\RebateJob@handleFollowOrder', $followData, null);
+                    }
+                }
+            }
+        }
+    }
 
+    // 代理商返点-每天停盘后的时间段 17-23点
+    public function handleProxyRebate()
+    {
+        if(checkSettleTime()){
+            $orders = (new OrderLogic())->todayProxyRebateOrder();
+            if($orders){
+                foreach ($orders as $order){
+                    $rebateData = [
+                        "money" => $order["profit"],
+                        "user_id" => $order["user_id"]
+                    ];
+                    Queue::push('app\index\job\RebateJob@handleProxyRebate', $rebateData, null);
                 }
             }
         }
