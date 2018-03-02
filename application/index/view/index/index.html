@@ -547,7 +547,7 @@
 					html += '<li class="swiper-slide mui-text-center">\
 		                	<a href="">\
 		                		<p class="Ashare_t">'+ _data[key].plate_name +'</p>\
-								<p class="Ashare_num color ' + className + '">'+ (_data[key].last_px).toFixed(2) +'</p>\
+								<p class="Ashare_num color ' + className + '">'+ (_data[key].last_px * 10 / 10).toFixed(2) +'</p>\
 								<div class="per mui-clearfix">\
 									<span class="mui-pull-left color ' + className + '">' + className + '">'+ _data[key].px_change +'</span>\
 									<span class="mui-pull-right color ' + className + '">' + className + '">'+ _data[key].px_change_rate +'%</span>\
