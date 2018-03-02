@@ -532,10 +532,10 @@
 
 		loadZhiPrice();
 		function loadZhiPrice(){
-            var _url = "http://www.baonastone.com.cn/plate.json",
+            var _url = "http://www.baonastone.com.cn/plate.json?" + Math.random(),
                 _oData = {};
             $.get(_url,function(data,status){
-			
+				console.log(data);
 			});
 		}
 	</script>
