@@ -38,7 +38,23 @@ class Stock extends Base
     {
         $code = input("code");
         if($code){
-            $res = $this->_logic->realTimeData($code);
+            $res = $this->_logic->realData($code);
+            if(request()->isPost()){
+                return $this->ok($res);
+            }else{
+                return json($res);
+            }
+        }
+        return json([]);
+    }
+
+    public function incReal()
+    {
+        $code = input("code");
+        $cnc = input("cnc");
+        $min = input("min");
+        if($code){
+            $res = $this->_logic->realData($code, $cnc, $min);
             if(request()->isPost()){
                 return $this->ok($res);
             }else{
