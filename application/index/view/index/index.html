@@ -110,6 +110,32 @@
 			<div class="Ashare_top">
 				<div class="slid-container swiper-container swiper-container-horizontal swiper-container-free-mode">
 		            <ul class="swiper-wrapper">
+		            	<li class="swiper-slide mui-text-center">
+		                    <p class="Ashare_t">深证成指</p>
+							<p class="Ashare_num color color_red">11342.85</p>
+							<div class="per mui-clearfix">
+								<span class="mui-pull-left color color_red">1.5</span>
+								<span class="mui-pull-right color color_red">0.01%</span>
+							</div>
+		                </li>
+		                <li class="swiper-slide mui-text-center">
+		                    <p class="Ashare_t">创业板指</p>
+							<p class="Ashare_num color color_red">1801.42</p>
+							<div class="per mui-clearfix">
+								<span class="mui-pull-left color color_red">6.81</span>
+								<span class="mui-pull-right color color_red">0.38%</span>
+							</div>
+		                </li>
+		                </li class="swiper-slide mui-text-center">
+		                	<a href="">
+		                		<p class="Ashare_t">创业板指</p>
+								<p class="Ashare_num color color_red">1801.42</p>
+								<div class="per mui-clearfix">
+									<span class="mui-pull-left color color_red">6.81</span>
+									<span class="mui-pull-right color color_red">0.38%</span>
+								</div>
+		                	</a>
+		                </li>
 						{volist name="stocks" id="item"}
 		                <li data-code="{$item.quotation.code}"  class="share_item swiper-slide mui-text-center share_item_{$item.quotation.code}">
 		                	<a href="{:url('index/Stock/info',['code' => $item.quotation.code])}">
@@ -128,32 +154,6 @@
 							</a>
 		                </li>
 						{/volist}
-		                <!--<li class="swiper-slide mui-text-center">-->
-		                    <!--<p class="Ashare_t">深证成指</p>-->
-							<!--<p class="Ashare_num color color_red">11342.85</p>-->
-							<!--<div class="per mui-clearfix">-->
-								<!--<span class="mui-pull-left color color_red">1.5</span>-->
-								<!--<span class="mui-pull-right color color_red">0.01%</span>-->
-							<!--</div>-->
-		                <!--</li>-->
-		                <!--<li class="swiper-slide mui-text-center">-->
-		                    <!--<p class="Ashare_t">创业板指</p>-->
-							<!--<p class="Ashare_num color color_red">1801.42</p>-->
-							<!--<div class="per mui-clearfix">-->
-								<!--<span class="mui-pull-left color color_red">6.81</span>-->
-								<!--<span class="mui-pull-right color color_red">0.38%</span>-->
-							<!--</div>-->
-		                <!--</li>-->
-		                <!--<li class="swiper-slide mui-text-center">-->
-		                	<!--<a href="">-->
-		                		<!--<p class="Ashare_t">创业板指</p>-->
-								<!--<p class="Ashare_num color color_red">1801.42</p>-->
-								<!--<div class="per mui-clearfix">-->
-									<!--<span class="mui-pull-left color color_red">6.81</span>-->
-									<!--<span class="mui-pull-right color color_red">0.38%</span>-->
-								<!--</div>-->
-		                	<!--</a>-->
-		                <!--</li>-->
 		                <li class="swiper-slide mui-text-center">
 		                    <a class="add_item" href="{:url('index/User/optional')}">
 		                    	
@@ -534,13 +534,9 @@
 		function loadZhiPrice(){
             var _url = "http://www.baonastone.com.cn/plate.json",
                 _oData = {};
-            $ajaxCustom(_url, _oData, function(res){
-                if(res.state){
-                   
-                }else{
-                    // $alert(res.info);
-                }
-            });
+            $.get(_url,function(data,status){
+			
+			});
 		}
 	</script>
 {/block}
