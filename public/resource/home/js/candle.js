@@ -417,7 +417,7 @@ function drawAreaLine( data ){
                 itemStyle: {
                     normal: {
                         areaStyle: { type: 'default' },
-                        // color: "#d5e1f2",
+                        color: "rgba(0,0,0,0)",
                         borderColor: "#3b98d3",
                         lineStyle: { width: 1, color: ['#3b98d3'] },
                     }
