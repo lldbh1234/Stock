@@ -9,6 +9,15 @@
 	body{
 		background: #f5f5f5 !important;
 	}
+	.now_count{
+		width: 100%;
+		border: 1px solid #ededed;
+	    height: 30px;
+	    line-height: 30px;
+	    text-align: center;
+	    font-size: 12px;
+	    color: #333;
+	}
 </style>
 {/block}
 
@@ -92,7 +101,8 @@
 				<span class="lf">止盈</span>
 				<p class="lf count_panel flex_nowrap">
 					<span class="minus_btn count_btn">-</span>
-					<span class="now_count">13.63</span>
+					<!-- <span class="now_count">13.63</span> -->
+					<input value="13.08" class="now_count profitCount" />
 					<span class="plus_btn count_btn">+</span>
 				</p>
 				<p class="rt fudong zhangfu">涨幅约 <span>+11.9%</span></p>
@@ -102,7 +112,8 @@
 				<span class="lf">止损</span>
 				<p class="lf count_panel flex_nowrap">
 					<span class="minus_btn count_btn">-</span>
-					<span class="now_count">13.63</span>
+					<!-- <span class="now_count">13.63</span> -->
+					<input value="9.07" class="now_count lossCount" />
 					<span class="plus_btn count_btn">+</span>
 				</p>
 				<p class="rt fudong diefu">跌幅约 <span>+11.9%</span></p>
@@ -113,7 +124,7 @@
 		<section class="buy_section">
 			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border">
 				<div class="agent_price_title lf">建仓费</div>
-				<div class="create_price lf">78.00元</div>
+				<div class="create_price lf jiangcangfei">78.00元</div>
 				<a class="rt">说明</a>
 			</div>
 		</section>
@@ -121,7 +132,7 @@
 		<section class="buy_section">
 			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border">
 				<div class="agent_price_title lf">递延费</div>
-				<div class="create_price lf">9.90元/天/万元</div>
+				<div class="create_price lf diyanfei">9.90元/天/万元</div>
 				<a class="rt">说明</a>
 			</div>
 			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border no_arrow">
@@ -158,17 +169,72 @@
 <script type="text/javascript">
 	$(".pattern_options").on("tap" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
+		calcNum()
 	});
 
 	$(".x_y_options").on("tap" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
 		var val = $(this).html();
 		$(".selected_count").html(val);
+		calcNum()
 	});
 
 	$(".beishu_options").on("tap" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
+		calcNum()
 	});
+
+
+	//止盈止损
+	$(".control_point").on("click",".count_btn",function(){
+		
+
+
+
+	});
+
+	$(function(){
+		$(".x_y_options span:nth-child(1)").addClass("active");
+		$(".pattern_options span:nth-child(1)").addClass("active");
+		$(".beishu_options span:nth-child(1)").addClass("active");
+		calcNum();
+	});
+
+	//计算
+	function calcNum(){
+		var creditNum = parseFloat( $(".x_y_options").find(".active").data("money") ); //信用金
+		var multiple = parseFloat( $(".beishu_options").find(".active").data("multiple") );//倍数
+		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
+
+		var count = Math.floor(creditNum * multiple / nowPrice /100) * 100; //股数
+		var ammount = count * nowPrice;
+		$(".baishu_detail .lf").html(count + "股");
+		$(".baishu_detail .rt").html("市值" + ammount + "元");
+
+		//计算建仓费
+		var jiancangUnit = parseFloat( $(".pattern_options").find(".active").data("jiancang") );
+		var jiangcang = Math.ceil( jiancangUnit * ammount / 10000 );
+		$(".jiangcangfei").html(jiangcang + ".00 元");
+
+		//支付总价
+		var sum = jiangcang + creditNum;
+		$(".need_pay_count span").html(sum);
+
+
+		//涨跌幅
+		var profit = parseFloat( $(".pattern_options").find(".active").data("profit") );
+		var loss = parseFloat( $(".pattern_options").find(".active").data("loss") );
+		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() );
+
+		var maxProfit = (nowPrice * (1 + profit / 100)).toFixed(2);
+		var maxLoss = (nowPrice * (1 - profit / 100)).toFixed(2);
+
+		$(".profitCount").val(maxProfit);
+		$(".lossCount").val( maxLoss );
+		$(".zhangfu span").html("+" + profit + "%");
+		$(".diefu span").html("-" + loss + "%");
+	}
+
 </script>
 {/block}
 
