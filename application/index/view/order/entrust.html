@@ -93,7 +93,7 @@
     </ul>
 {/block}
 
-<!-- {block name="nav"}
+{block name="nav"}
 <nav class="ml_tab mui-bar mui-bar-tab">
     <a class="mui-tab-item" href="{:url('index/Index/index')}">
         <span class="mui-icon mui-icon-home"></span>
@@ -116,7 +116,7 @@
         <span class="mui-tab-label">我的</span>
     </a>
 </nav>
-{/block} -->
+{/block}
 
 {block name="script"}
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
@@ -127,41 +127,41 @@
 		swipeBack: true //启用右滑关闭功能
 	})
 	//选项卡
-	 // mui('body').on('tap', 'nav a', function() {
-  //       var data_href = this.getAttribute("data-href");
-  //       var href = this.getAttribute("href");
-  //       var url=data_href;
-  //       if(!url||url==''){
-  //           url=href;
-  //       }
-  //       window.location.href = url;
-  //    });
+	 mui('body').on('tap', 'nav a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
 
 
-  //    mui('body').on('tap', '.strategy_top a', function() {
-  //       var data_href = this.getAttribute("data-href");
-  //       var href = this.getAttribute("href");
-  //       var url=data_href;
-  //       if(!url||url==''){
-  //           url=href;
-  //       }
-  //       window.location.href = url;
-  //    });
+     mui('body').on('tap', '.strategy_top a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
 
 
-  //    mui('body').on('tap', '.postion_tab a', function() {
-  //       var data_href = this.getAttribute("data-href");
-  //       var href = this.getAttribute("href");
-  //       var url=data_href;
-  //       if(!url||url==''){
-  //           url=href;
-  //       }
-  //       window.location.href = url;
-  //    });
+     mui('body').on('tap', '.postion_tab a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
 
 
      //撤销委托
-     $("body").on("click", ".sell_position_btn", function(){
+     $("body").on("tap", ".sell_position_btn", function(){
         var id = $(this).data("id");
         var _url = '{:url("index/Order/cancel")}',
             _oData = {id: id};

@@ -289,7 +289,7 @@
     </ul>
 {/block}
 
-<!-- {block name="nav"}
+{block name="nav"}
 <nav class="ml_tab mui-bar mui-bar-tab">
     <a class="mui-tab-item" href="{:url('index/Index/index')}">
         <span class="mui-icon mui-icon-home"></span>
@@ -314,46 +314,46 @@
 </nav>
 {/block}
 
-{block name="script"} -->
+{block name="script"}
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript" src="__RESOURCE__/js/dropload.min.js"></script>
 <script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
 
 <script type="text/javascript">
-	// mui.init({
-	// 	swipeBack: true //启用右滑关闭功能
-	// })
+	mui.init({
+		swipeBack: true //启用右滑关闭功能
+	})
 	//选项卡
-	 // mui('body').on('tap', 'nav a', function() {
-  //       var data_href = this.getAttribute("data-href");
-  //       var href = this.getAttribute("href");
-  //       var url=data_href;
-  //       if(!url||url==''){
-  //           url=href;
-  //       }
-  //       window.location.href = url;
-  //    });
+	 mui('body').on('tap', 'nav a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
 
-  //    mui('body').on('tap', '.strategy_top a', function() {
-  //       var data_href = this.getAttribute("data-href");
-  //       var href = this.getAttribute("href");
-  //       var url=data_href;
-  //       if(!url||url==''){
-  //           url=href;
-  //       }
-  //       window.location.href = url;
-  //    });
+     mui('body').on('tap', '.strategy_top a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
 
 
-  //    mui('body').on('tap', '.postion_tab a', function() {
-  //       var data_href = this.getAttribute("data-href");
-  //       var href = this.getAttribute("href");
-  //       var url=data_href;
-  //       if(!url||url==''){
-  //           url=href;
-  //       }
-  //       window.location.href = url;
-  //    });
+     mui('body').on('tap', '.postion_tab a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
 
      var refreshIntervel = setInterval(refreshPrice,6000);
 
