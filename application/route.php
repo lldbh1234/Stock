@@ -134,6 +134,20 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::post('del-lever', 'admin/Mode/removeLever');
         });
 
+        Route::group("deposit", function(){
+            Route::any('lists', 'admin/Deposit/index');
+            Route::any('add', 'admin/Deposit/create');
+            Route::any('edit', 'admin/Deposit/modify');
+            Route::post('del', 'admin/Deposit/remove');
+        });
+
+        Route::group("lever", function(){
+            Route::any('lists', 'admin/Lever/index');
+            Route::any('add', 'admin/Lever/create');
+            Route::any('edit', 'admin/Lever/modify');
+            Route::post('del', 'admin/Lever/remove');
+        });
+
         Route::group("ai", function(){
             Route::any('index', 'admin/Ai/index'); //智能推荐类型
             Route::any('add-type', 'admin/Ai/createType'); //添加推荐类型
