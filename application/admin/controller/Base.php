@@ -3,7 +3,6 @@ namespace app\admin\controller;
 
 use app\admin\logic\AccessLogic;
 use app\admin\logic\MenuLogic;
-use app\admin\model\Access;
 use app\common\model\BaseModel;
 use think\Controller;
 use think\Request;
@@ -21,7 +20,7 @@ class Base extends Controller
             return $this->redirect(url("admin/Home/login"));
             exit;
         }
-        self::checkAuth();
+//        self::checkAuth();
     }
 
     /**

@@ -81,8 +81,8 @@
 				<dt><i class="Hui-iconfont {$vo.icon}"></i> {$vo.name}<i class="Hui-iconfont menu_dropdown-arrow Hui-iconfont-arrow2-bottom"></i></dt>
 				<dd>
 					<ul>
-						{volist name='vo.lists' id='lists'}
-							<li><a data-href="{:url($lists.act)}" data-title="{$lists.name}" href="javascript:void(0);">{$lists.name}</a></li>
+						{volist name='vo.children' id='children'}
+							<li><a data-href="{:url($children.act)}" data-title="{$children.name}" href="javascript:void(0);">{$children.name}</a></li>
 						{/volist}
 					</ul>
 				</dd>
@@ -147,7 +147,7 @@
 			<dd>
 				<ul>
 					<li><a data-href="{:url('admin/Admin/roles')}" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
-					<li><a data-href="admin-permission.html" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
+					<li><a data-href="{:url('admin/Permission/lists')}" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
 					<li><a data-href="{:url('admin/Admin/lists')}" data-title="管理员列表" href="javascript:void(0)">管理员列表</a></li>
 			</ul>
 		</dd>

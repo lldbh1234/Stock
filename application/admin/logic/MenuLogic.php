@@ -10,28 +10,30 @@ class MenuLogic
     {
         $filter = [];
         if(isset($where['id'])) $filter['id'] = ['in', $where['id']];
-        $filter['module'] = 0;
+        //$filter['module'] = 0;
         //获取模块
         $module = Menu::where($filter)->order('sort')->select();
         //获取模块下列表
         if(!$module) return [];
-        foreach($module as $k => $v)
-        {
-            $module[$k]['lists'] = self::getChildBy(['pid' => $v['id'], 'module' => 1]);//获取列表
-
-//            if($module[$k]['lists'])
-//            {
-//                foreach ($module[$k]['lists'] as $key => $val)
-//                {
-//                    $module[$k]['lists'][$key]['act'] = self::getChildBy(['pid' => $val['id'], 'module' => 2]);//获取操作
-//                }
-//
-//            }
-
-        }
-        return collection($module)->toArray();
+        return self::create_menu($module);
 
     }
+
+    public function create_menu($menu, $pid=0){
+        $menus = array();
+        foreach($menu as $val){
+            if($val['pid'] == $pid){
+                $children = $this->create_menu($menu, $val['id']);
+                $val['children'] = [];
+                if($children){
+                    $val['children'] = $children;
+                }
+                $menus[] = $val;
+            }
+        }
+        return collection($menus)->toArray();
+    }
+
     public function getActBy($where=[])
     {
         $filter = [];
@@ -45,7 +47,25 @@ class MenuLogic
         $filter = [];
         if(isset($where['pid'])) $filter['pid'] = $where['pid'];
         if(isset($where['module'])) $filter['module'] = $where['module'];
+        if(empty($filter)) return [];
         return Menu::where($filter)->order('sort')->select();
+    }
+    public function create($data)
+    {
+        $res = Menu::create($data);
+        return $res ? $res->id : 0;
+    }
+    public function update($data)
+    {
+        return Menu::update($data);
+    }
+
+    public function delete($id)
+    {
+        return isset($id) ? Menu::destroy($id) : '';
+    }
+    public function getOneBy($id){
+        return Menu::find($id);
     }
 
 }

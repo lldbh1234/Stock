@@ -1,0 +1,130 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}权限管理{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 管理员管理
+    <span class="c-gray en">&gt;</span> 权限管理
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+            <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+                <i class="Hui-iconfont  Hui-iconfont-del3"></i> 批量删除
+            </a>-->
+			<a class="btn btn-primary radius" href="javascript:;" onclick="permission_add('添加节点','{:url("admin/permission/add")}','', '650')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加节点
+            </a>
+        </span>
+
+    </div>
+    <table class="table table-border table-bordered table-hover table-bg">
+        <thead>
+        <tr class="text-c">
+            <th width="40">ID</th>
+            <th>节点名称</th>
+            <th>操作地址</th>
+            <th>类型</th>
+            <th>ICON</th>
+            <th>状态</th>
+            <th>排序</th>
+            <th width="70">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="menu" id="item"}
+            <tr class="text-c">
+                <td width="40">{$item.id}</td>
+                <td class="text-l">{$item.name}</td>
+                <td>{$item.act}</td>
+                <td>{if condition="$item.module eq 0"}模块{elseif condition="$item.module eq 1" /}列表{elseif condition="$item.module eq 2" /}操作{/if}</td>
+                <td>{$item.icon}</td>
+                <td>{if condition="$item.status eq 0"}关闭{elseif condition="$item.status eq 1" /}开启{/if}</td>
+                <td>{$item.sort}</td>
+                <td class="f-14">
+                    <a title="编辑" href="javascript:;" onclick="permission_edit('编辑','{:url("admin/permission/modify", ['id' => $item.id])}','','650')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                    <a title="删除" href="javascript:;" class="ml-5" onclick="permission_del('{$item.id}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+                </td>
+            </tr>
+            {volist name="item.children" id="children"}
+
+                <tr class="text-c">
+                    <td width="40">{$children.id}</td>
+                    <td class="text-l">&nbsp;&nbsp;├&nbsp;{$children.name}</td>
+                    <td>{$children.act}</td>
+                    <td>{if condition="$children.module eq 0"}模块{elseif condition="$children.module eq 1" /}列表{elseif condition="$children.module eq 2" /}操作{/if}</td>
+                    <td>{$children.icon}</td>
+                    <td>{if condition="$children.status eq 0"}关闭{elseif condition="$children.status eq 1" /}开启{/if}</td>
+                    <td>{$children.sort}</td>
+                    <td class="f-14">
+                        <a title="编辑" href="javascript:;" onclick="permission_edit('编辑','{:url("admin/permission/modify", ['id' => $children.id])}','','650')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                        <a title="删除" href="javascript:;" class="ml-5" onclick="permission_del('{$children.id}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+                    </td>
+                </tr>
+                {volist name="children.children" id="act"}
+                    <tr class="text-c">
+                        <td width="40">{$act.id}</td>
+                        <td class="text-l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├&nbsp;{$act.name}</td>
+                        <td>{$act.act}</td>
+                        <td>{if condition="$act.module eq 0"}模块{elseif condition="$act.module eq 1" /}列表{elseif condition="$act.module eq 2" /}操作{/if}</td>
+                        <td>{$act.icon}</td>
+                        <td>{if condition="$act.status eq 0"}关闭{elseif condition="$act.status eq 1" /}开启{/if}</td>
+                        <td>{$act.sort}</td>
+                        <td class="f-14">
+                            <a title="编辑" href="javascript:;" onclick="permission_edit('编辑','{:url("admin/permission/modify", ['id' => $act.id])}','','650')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                            <a title="删除" href="javascript:;" class="ml-5" onclick="permission_del('{$act.id}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+                        </td>
+                    </tr>
+                {/volist}
+            {/volist}
+        {/volist}
+        </tbody>
+    </table>
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+    /*用户-添加*/
+    function permission_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function permission_edit(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    function permission_del(id){
+        layer.confirm('确认要删除当前节点吗？',function(index){
+            var _oData = {id:id},
+                _url = '{:url("admin/Permission/del")}',
+                _func = function (_resp) {
+                    layer.close(index);
+                    if (!_resp.state) {
+                        parent.layer.msg(_resp.info);
+                    } else {
+                        layer.msg('删除成功！', {time: 500}, function(){
+                            if(_resp.data && _resp.data.url){
+                                parent.window.location.href = _resp.data.url;
+                            }else{
+                                window.location.reload();
+                            }
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+
+</script>
+{/block}
