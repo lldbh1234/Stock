@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `stock_admin` (
   KEY `role` (`role`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
 
--- 正在导出表  stock.stock_admin 的数据：~15 rows (大约)
+-- 正在导出表  stock.stock_admin 的数据：~14 rows (大约)
 /*!40000 ALTER TABLE `stock_admin` DISABLE KEYS */;
 INSERT INTO `stock_admin` (`admin_id`, `username`, `password`, `nickname`, `mobile`, `pid`, `role`, `company`, `realname`, `point`, `total_fee`, `deposit`, `code`, `last_ip`, `last_time`, `status`, `create_at`) VALUES
 	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0.00, 0.00, 'root', '127.0.0.1', 1519984952, 0, 1518085749),
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `stock_admin_wechat` (
   PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微圈公众号信息表';
 
--- 正在导出表  stock.stock_admin_wechat 的数据：~1 rows (大约)
+-- 正在导出表  stock.stock_admin_wechat 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `stock_admin_wechat` DISABLE KEYS */;
 INSERT INTO `stock_admin_wechat` (`admin_id`, `name`, `domain`, `appid`, `appsecret`, `token`, `sign_name`, `sms_username`, `sms_password`, `create_by`, `create_at`) VALUES
 	(5, '微会员', 'www.iwanbar.com', '1111111', '1111111111111111', '111111111111111', '111111111111', '111111111111', '111111111111', 1, 1519464132);
@@ -345,12 +345,19 @@ CREATE TABLE IF NOT EXISTS `stock_deposit` (
   `sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='保证金列表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='保证金列表';
 
--- 正在导出表  stock.stock_deposit 的数据：~1 rows (大约)
+-- 正在导出表  stock.stock_deposit 的数据：~8 rows (大约)
 /*!40000 ALTER TABLE `stock_deposit` DISABLE KEYS */;
 INSERT INTO `stock_deposit` (`id`, `name`, `money`, `sort`, `status`) VALUES
-	(2, '1500元', 1500.00, 50, 0);
+	(2, '1500', 1500.00, 50, 0),
+	(3, '3000', 3000.00, 50, 0),
+	(4, '5000', 5000.00, 50, 0),
+	(5, '10000', 10000.00, 50, 0),
+	(6, '20000', 20000.00, 50, 0),
+	(7, '30000', 30000.00, 50, 0),
+	(8, '40000', 40000.00, 50, 0),
+	(9, '50000', 50000.00, 50, 0);
 /*!40000 ALTER TABLE `stock_deposit` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_lever 结构
@@ -362,10 +369,14 @@ CREATE TABLE IF NOT EXISTS `stock_lever` (
   `sort` smallint(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='杠杆列表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='杠杆列表';
 
--- 正在导出表  stock.stock_lever 的数据：~0 rows (大约)
+-- 正在导出表  stock.stock_lever 的数据：~3 rows (大约)
 /*!40000 ALTER TABLE `stock_lever` DISABLE KEYS */;
+INSERT INTO `stock_lever` (`id`, `name`, `multiple`, `sort`, `status`) VALUES
+	(3, '10倍', 10, 50, 0),
+	(4, '8倍', 8, 50, 0),
+	(5, '6倍', 6, 50, 0);
 /*!40000 ALTER TABLE `stock_lever` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_list 结构
@@ -3831,9 +3842,9 @@ CREATE TABLE IF NOT EXISTS `stock_menu` (
   `sort` tinyint(4) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 COMMENT='后台节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 COMMENT='后台节点表';
 
--- 正在导出表  stock.stock_menu 的数据：~58 rows (大约)
+-- 正在导出表  stock.stock_menu 的数据：~66 rows (大约)
 /*!40000 ALTER TABLE `stock_menu` DISABLE KEYS */;
 INSERT INTO `stock_menu` (`id`, `pid`, `name`, `act`, `module`, `icon`, `level`, `status`, `sort`) VALUES
 	(1, 0, '组织架构', '', 0, 'Hui-iconfont-fenlei', 1, 1, 1),
@@ -3914,6 +3925,8 @@ CREATE TABLE IF NOT EXISTS `stock_mode` (
   `free` smallint(8) unsigned NOT NULL COMMENT '免息期（单位：天）',
   `jiancang` decimal(10,2) unsigned NOT NULL COMMENT '建仓费（单位：万元）',
   `defer` decimal(10,2) unsigned NOT NULL COMMENT '递延费（单位：天/万元）',
+  `profit` decimal(5,2) unsigned NOT NULL COMMENT '最大涨幅',
+  `loss` decimal(5,2) unsigned NOT NULL COMMENT '最大跌幅',
   `sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
   `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
@@ -3925,9 +3938,9 @@ CREATE TABLE IF NOT EXISTS `stock_mode` (
 
 -- 正在导出表  stock.stock_mode 的数据：~2 rows (大约)
 /*!40000 ALTER TABLE `stock_mode` DISABLE KEYS */;
-INSERT INTO `stock_mode` (`mode_id`, `product_id`, `plugins_code`, `name`, `free`, `jiancang`, `defer`, `sort`, `status`, `create_at`) VALUES
-	(1, 1, 'Tn', 'T+5', 5, 19.00, 8.00, 50, 0, 0),
-	(3, 1, 'Tn', 'T+15', 15, 2.00, 2.30, 50, 0, 1519458658);
+INSERT INTO `stock_mode` (`mode_id`, `product_id`, `plugins_code`, `name`, `free`, `jiancang`, `defer`, `profit`, `loss`, `sort`, `status`, `create_at`) VALUES
+	(1, 1, 'Tn', 'T+5', 5, 19.00, 8.00, 11.85, 11.83, 50, 0, 0),
+	(3, 1, 'Tn', 'T+15', 15, 2.00, 2.30, 9.52, 9.64, 50, 0, 1519458658);
 /*!40000 ALTER TABLE `stock_mode` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_mode_deposit 结构
@@ -4017,7 +4030,7 @@ CREATE TABLE IF NOT EXISTS `stock_plugins` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='插件表';
 
--- 正在导出表  stock.stock_plugins 的数据：~1 rows (大约)
+-- 正在导出表  stock.stock_plugins 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `stock_plugins` DISABLE KEYS */;
 INSERT INTO `stock_plugins` (`name`, `type`, `code`, `status`) VALUES
 	('T+N模式', 'mode', 'Tn', 0);
@@ -4036,7 +4049,7 @@ CREATE TABLE IF NOT EXISTS `stock_product` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='交易产品表';
 
--- 正在导出表  stock.stock_product 的数据：~2 rows (大约)
+-- 正在导出表  stock.stock_product 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `stock_product` DISABLE KEYS */;
 INSERT INTO `stock_product` (`id`, `name`, `desc`, `is_trade`, `currency`, `on_sale`, `state`) VALUES
 	(1, '沪深A股', '沪深A股', 1, 1, 1, 1),
@@ -4262,7 +4275,7 @@ CREATE TABLE IF NOT EXISTS `stock_user_withdraw` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户出金表';
 
--- 正在导出表  stock.stock_user_withdraw 的数据：~1 rows (大约)
+-- 正在导出表  stock.stock_user_withdraw 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `stock_user_withdraw` DISABLE KEYS */;
 INSERT INTO `stock_user_withdraw` (`id`, `user_id`, `amount`, `actual`, `poundage`, `out_sn`, `type`, `state`, `remark`, `create_at`, `update_at`, `update_by`) VALUES
 	(1, 1, 300.00, 298.00, 2.00, '5a96abe60c1c80620', 0, 0, '{"bank":"\\u4e2d\\u56fd\\u5de5\\u5546\\u94f6\\u884c","card":"6205882900166205","name":"\\u6881\\u5065","addr":"\\u9655\\u897f\\u7701\\u897f\\u5b89\\u5e02\\u592a\\u767d\\u8def\\u652f\\u884c"}', 1519823845, 0, 0);

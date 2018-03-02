@@ -17,6 +17,8 @@ class Mode extends Validate
         "free"      => "require|number|gt:0|max:365",
         "jiancang"  => "require|float|gt:0",
         "defer"     => "require|float|gt:0",
+        "profit"    => "require|float|gt:0|max:100",
+        "loss"      => "require|float|gt:0|max:100",
         "sort"      => "number|max:255",
         "status"    => "require|in:0,1"
     ];
@@ -46,6 +48,14 @@ class Mode extends Validate
         "defer.require" => "递延费不能为空！",
         "defer.float"   => "递延费必须为数字！",
         "defer.gt"      => "递延费必须大于0！",
+        "profit.require" => "最大止盈不能为空！",
+        "profit.float"   => "最大止盈必须为数字！",
+        "profit.gt"      => "最大止盈必须大于0！",
+        "profit.max"      => "最大止盈最大100%！",
+        "loss.require" => "最大止损不能为空！",
+        "loss.float"   => "最大止损必须为数字！",
+        "loss.gt"      => "最大止损必须大于0！",
+        "loss.max"      => "最大止损最大100%！",
         "sort.number"   => "排序必须为数字！",
         "sort.max"      => "排序值最大为255！",
         'status.require'    => '系统提示：非法操作！',
@@ -53,7 +63,7 @@ class Mode extends Validate
     ];
 
     protected $scene = [
-        "create" => ["name", "product_id", "plugins_code", "free", "jiancang", "defer", "sort", "status"],
+        "create" => ["name", "product_id", "plugins_code", "free", "jiancang", "defer", "profit", "loss", "sort", "status"],
         "modify" => [
             "mode_id",
             "name" => "require|unique:mode,name^mode_id|max:32",
@@ -62,6 +72,8 @@ class Mode extends Validate
             "free",
             "jiancang",
             "defer",
+            "profit",
+            "loss",
             "sort",
             "status"
         ],
