@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\ModeLogic;
 use think\Request;
 use app\index\logic\StockLogic;
 
@@ -13,9 +14,26 @@ class Stock extends Base
         $this->_logic = new StockLogic();
     }
 
-    public function stockBuy($code)
+    public function stockBuy($code = null)
     {
+        if(request()->isPost()){
 
+        }else{
+            $stock = $this->_logic->stockByCode($code);
+            if($stock){
+                $quotation = $this->_logic->simpleData($code);
+                if(isset($quotation[$code]) && !empty($quotation[$code])){
+                    $modes = (new ModeLogic())->productModes();
+                    dump($modes);
+                    $this->assign("stock", $quotation[$code]);
+                    return view('buy');
+                }else{
+                    return view('public/error');
+                }
+            }else{
+                return view('public/error');
+            }
+        }
     }
 
     public function info($code = null)
@@ -27,7 +45,7 @@ class Stock extends Base
                 $this->assign("quotation", $quotation[0]);
                 return view();
             }else{
-                return "错误页面！";
+                return view('public/error');
             }
         }else{
             return view('public/error');
