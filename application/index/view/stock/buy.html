@@ -40,7 +40,7 @@
 			</a>
 			<div class="b_gupiao_detail clear_fl b_gupiao_intro">
 				<div class="agent_price_title lf">策略委托价</div>
-				<div class="agent_price lf">12.42</div>
+				<div class="agent_price lf">{$stock.last_px}</div>
 				<a class="rt">说明</a>
 			</div>
 		</section>
@@ -48,9 +48,10 @@
 			<div class="celue_pattern clear_fl">
 				<span class="lf pattern_title">策略模式</span>
 				<div class="lf pattern_options flex_nowrap">
-					<span class="active">T+1</span>
-					<span>T+5</span>
-					<span>T+20</span>
+					<!--<span class="active">T+1</span>-->
+                    {volist name="modes" id="item"}
+					<span data-id="{$item.id}" data-jiancang="{$item.jiancang}" data-defer="{$item.defer}">{$item.name}</span>
+                    {/volist}
 				</div>
 				<a class="rt">说明</a>
 			</div>
@@ -63,14 +64,10 @@
 			<div class="xinyongjin_options_con clear_fl">
 				<span class="x_o_title lf">选择数额</span>
 				<div class="clear_fl rt x_y_options">
-					<span class="active">1500</span>
-					<span>3000</span>
-					<span>5000</span>
-					<span>10000</span>
-					<span>20000</span>
-					<span>30000</span>
-					<span>40000</span>
-					<span>50000</span>
+					<!--<span class="active">1500</span>-->
+                    {volist name="deposits" id="item"}
+					<span data-id="{$item.id}" data-money="{$item.money|floatval}">{$item.name}</span>
+                    {/volist}
 				</div>
 			</div>
 		</section>
@@ -78,9 +75,10 @@
 			<div class="celue_pattern clear_fl no_arrow">
 				<span class="lf pattern_title">策略匹配</span>
 				<div class="lf beishu_options flex_nowrap">
-					<span class="active">10倍</span>
-					<span>8倍</span>
-					<span>6倍</span>
+					<!--<span class="active">10倍</span>-->
+                    {volist name="levers" id="item"}
+					<span data-id="{$item.id}" data-multiple="{$item.multiple}">{$item.name}</span>
+                    {/volist}
 				</div>
 			</div>
 			<div class="clear_fl baishu_detail">
@@ -139,7 +137,7 @@
 			<div class="sub_pay_con clear_fl">
 				<div class="lf">
 					<p class="need_pay_count">需要支付 <span>1289.00</span> 元</p>
-					<p class="balance_count">(账户余额 （8898989.546） 元)</p>
+					<p class="balance_count">(账户余额：{$user.account|number_format} 元)</p>
 				</div>
 				<a href="" class="rt sub_pay_btn">马上创建</a>
 			</div>

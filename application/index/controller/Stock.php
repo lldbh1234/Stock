@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\DepositLogic;
+use app\index\logic\LeverLogic;
 use app\index\logic\ModeLogic;
 use think\Request;
 use app\index\logic\StockLogic;
@@ -24,8 +26,13 @@ class Stock extends Base
                 $quotation = $this->_logic->simpleData($code);
                 if(isset($quotation[$code]) && !empty($quotation[$code])){
                     $modes = (new ModeLogic())->productModes();
-                    dump($modes);
+                    $deposits = (new DepositLogic())->allDeposits();
+                    $levers = (new LeverLogic())->allLevers();
                     $this->assign("stock", $quotation[$code]);
+                    $this->assign("modes", $modes);
+                    $this->assign("deposits", $deposits);
+                    $this->assign("levers", $levers);
+                    $this->assign("user", uInfo());
                     return view('buy');
                 }else{
                     return view('public/error');
