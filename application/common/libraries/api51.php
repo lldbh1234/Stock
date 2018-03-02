@@ -5,6 +5,7 @@ class api51
 {
 	const APP_CODE = "d43834bad1ae4bafaa3129b7b205a293";
 	const REAL_REQUEST_URL = 'http://stock.api51.cn/real';
+    const KLINE_REQUEST_URL = 'http://stock.api51.cn/kline';
 	
 	public function realtime($code, $field = null){
 		$field = $field ? : "prod_code,prod_name,data_timestamp,open_px,high_px,low_px,last_px,preclose_px,business_amount,business_balance,offer_grp,bid_grp,px_change,px_change_rate,circulation_value,pe_rate,amplitude,business_amount_in,business_amount_out,total_shares";
@@ -16,6 +17,28 @@ class api51
 		$response = $this->api51_curl(self::REAL_REQUEST_URL, $data, 0, self::APP_CODE);
 		return json_decode($response, true);
 	}
+
+    public function kline($code, $period = 6, $count = 50, $type = 'offset')
+    {
+        preg_match('/^([sh|sz]{2})(\d{6})/i', $code, $match);
+        if($match){
+            if($match[1] == 'sh'){
+                $code = "{$match[2]}.SS";
+            }elseif($match[1] == 'sz'){
+                $code = "{$match[2]}.SZ";
+            }
+        }
+        $data = [
+            'prod_code' => $code,
+            'candle_period' => $period,//K线周期	取值可以是数字1-9，表示含义如下： 1：1分钟K线 2：5分钟K线 3：15分钟K线 4：30分钟K线 5：60分钟K线 6：日K线 7：周K线 8：月K线 9：年K线
+            'get_type ' => $type,//查找类别	offset 按偏移查找；range 按日期区间查找；必须输入其中一个值
+            'fields' => 'open_px,high_px,low_px,close_px',
+            'data_count' => $count
+        ];
+        $data = http_build_query($data);
+        $response = $this->api51_curl(self::KLINE_REQUEST_URL, $data, 0, self::APP_CODE);
+        return json_decode($response, true);
+    }
 	
 	public function api51_curl($url, $data=false, $ispost=0, $appcode){
 		$headers = array();
