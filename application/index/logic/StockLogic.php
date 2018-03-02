@@ -49,21 +49,23 @@ class StockLogic
         $code = $this->_fullCodeByCodes($code);
         $code = reset($code);
         $code = $this->_handleCodes($code);
-        $period = in_array($period, [6,7,8]) ? $period : 6;
-        $response = $this->_library->kline($code, $period, $count);
-        if($response && isset($response['data']['candle'])){
-            $_resp = [];
-            $data = $response['data']['candle'];
-            $fields = $data['fields'];
-            $kline = $data[$code];
-            foreach ($kline as $item){
-                $_temp = [];
-                foreach($fields as $k=>$v){
-                    $_temp[$v] = $item[$k];
+        if($code){
+            $period = in_array($period, [6,7,8]) ? $period : 6;
+            $response = $this->_library->kline($code, $period, $count);
+            if($response && isset($response['data']['candle'])){
+                $_resp = [];
+                $data = $response['data']['candle'];
+                $fields = $data['fields'];
+                $kline = $data[$code];
+                foreach ($kline as $item){
+                    $_temp = [];
+                    foreach($fields as $k=>$v){
+                        $_temp[$v] = $item[$k];
+                    }
+                    $_resp[] = $_temp;
                 }
-                $_resp[] = $_temp;
+                return $_resp;
             }
-            return $_resp;
         }
         return [];
     }
