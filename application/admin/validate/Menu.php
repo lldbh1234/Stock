@@ -6,7 +6,8 @@ use think\Validate;
 class Menu extends Validate
 {
     protected $rule = [
-        'name'      => 'require|unique:menu',
+//        'name'      => 'require|unique:menu',
+        'name'      => 'require',
         'pid'       => 'require',
         'act'       => 'max:64',
         'module'    => 'require|in:0,1,2',
@@ -26,7 +27,8 @@ class Menu extends Validate
     protected $scene = [
         'create' => ['name', 'pid', 'act', 'module', 'status', 'icon', 'sort'],
         'del' => ['id'],
-        'modify' => ['id', 'name' => 'require|unique:menu,name^id|length:1,64', 'pid', 'act', 'module', 'status', 'icon', 'sort'],
+//        'modify' => ['id', 'name' => 'require|unique:menu,name^id|length:1,64', 'pid', 'act', 'module', 'status', 'icon', 'sort'],
+        'modify' => ['id', 'name' => 'require|length:1,64', 'pid', 'act', 'module', 'status', 'icon', 'sort'],
     ];
 
 }
