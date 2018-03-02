@@ -21,7 +21,9 @@ class Stock extends Validate
         'code.checkCode' => '股票不存在！',
         'code.checkTradeTime' => '非交易时间，不可购买！',
         'mode.require'  => '请选择策略模式！',
-        'mode.checkMode' => '非交易时间，不可购买！',
+        'mode.checkMode' => '策略模式不存在！',
+        'deposit.require' => '请选择信用金！',
+        'deposit.checkDeposit' => '系统提示:非法操作！',
     ];
 
     protected $scene = [
@@ -41,6 +43,6 @@ class Stock extends Validate
 
     protected function checkMode()
     {
-
+        return true;
     }
 }

@@ -50,7 +50,7 @@
 				<div class="lf pattern_options flex_nowrap">
 					<!--<span class="active">T+1</span>-->
                     {volist name="modes" id="item"}
-					<span data-id="{$item.id}" data-jiancang="{$item.jiancang}" data-defer="{$item.defer}">{$item.name}</span>
+					<span data-id="{$item.mode_id}" data-profit="{$item.profit}" data-loss="{$item.loss}" data-jiancang="{$item.jiancang}" data-defer="{$item.defer}">{$item.name}</span>
                     {/volist}
 				</div>
 				<a class="rt">说明</a>
