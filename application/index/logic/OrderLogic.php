@@ -49,7 +49,8 @@ class OrderLogic
                 $map[$k] = $v;
             }
         }
-        return Order::where($map)->select();
+        $data = Order::with(['hasOneUser'])->where($map)->select();
+        return collection($data)->toArray();
 
     }
 

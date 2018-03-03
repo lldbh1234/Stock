@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\UserFollowLogic;
+use app\index\model\UserFollow;
 use think\Request;
 use app\index\logic\UserLogic;
 
@@ -72,5 +74,38 @@ class Cattle extends Base
             return $this->ok();
         }
         return $this->fail('系统提示：申请失败');
+    }
+    public function follow()
+    {
+        if(request()->isPost())
+        {
+            $id = input('post.user_id/d');
+            $type = input('post.type/d');
+            $userFollowLogic = new UserFollowLogic();
+            if(intval($id) > 0 && $type > 0){
+                $user = $this->_logic->userById($id);
+                if($user){
+                    $map = [
+                        'follow_id' => $id,
+                        'fans_id' => $this->user_id,
+                    ];
+                    if($type == 1){
+                        if($userFollowLogic->add($map))
+                        {
+                            return $this->ok();
+                        }
+                    }
+                    if($type == 2){
+                        if($userFollowLogic->delBy($map))
+                        {
+                            return $this->ok();
+                        }
+                    }
+
+                }
+            }
+
+        }
+        return $this->fail('系统提示：非法操作');
     }
 }

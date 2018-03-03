@@ -74,6 +74,7 @@ Route::group("strategy", function () {
 Route::group("cattle", function () {
     Route::any('index','index/Cattle/index');
     Route::post('apply','index/Cattle/apply');//申请牛人
+    Route::post('follow','index/Cattle/follow');//关注
 });
 
 Route::group("stock", function () {
