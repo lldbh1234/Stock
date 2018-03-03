@@ -30,17 +30,26 @@
             <th width="25"><input type="checkbox" value="" name=""></th>
             <th width="40">ID</th>
             <th>用户id</th>
+            <th>登录名</th>
+            <th>昵称</th>
             <th>赠金金额</th>
             <th>赠金时间</th>
             <th>赠金人ID</th>
         </tr>
         </thead>
         <tbody>
+        {empty name="datas.data"}
+        <tr class="text-c admin-lists">
+            <td colspan="12">暂时没有匹配到数据</td>
+        </tr>
+        {/empty}
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
             <td width="25"><input type="checkbox" value="{$item.id}" name=""></td>
             <td width="40">{$item.id}</td>
             <td>{$item.user_id}</td>
+            <td>{$item.has_one_user.username}</td>
+            <td>{$item.has_one_user.nickname}</td>
             <td>{$item.amount|default='0.00'}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
             <td>{$item.create_by}</td>

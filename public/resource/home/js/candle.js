@@ -65,9 +65,10 @@ function splitData(rawData) {
     var volumes = [];
     for (var i = 0; i < rawData.length; i++) {
         values.push([rawData[i].avg_px, rawData[i].last_px, rawData[i].min_time]);
-        var _count = rawData[i].business_amount;
+        // var _count = rawData[i].business_amount;
+        var _count = "-";
         if( i != 0 ){
-            _count = rawData[i].business_amount - rawData[i - 1].business_amount;
+            _count = parseFloat ((rawData[i].business_amount - rawData[i - 1].business_amount)) / 1000;
         }
         volumes.push([i, _count]);
     }
@@ -435,42 +436,41 @@ function drawAreaLine( data ){
                 },
                 splitNumber: 2,
             },
-            {
-                position: 'right',
-                min:-1,
-                max:1,
-                scale: true,
-                splitArea: {
-                    show: false
-                },
-                axisLabel: {
-                    inside: false,
-                    margin: 0,
-                    formatter: function (value, index) {
-                        return value + "\n";
-                    }
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: 'transparent',
-                        width: 0.6,
-                    },
-                },
-                splitLine: {
-                    lineStyle: {
-                        color: ['#f2f2f2']
-                    }
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#0f0f0f',
-                        fontSize: "8"
-                    }
-                },
-                // minInterval: 1,
-                splitNumber: 4,
-            },
+            // {
+            //     position: 'right',
+            //     min:-1,
+            //     max:1,
+            //     scale: true,
+            //     splitArea: {
+            //         show: false
+            //     },
+            //     axisLabel: {
+            //         inside: false,
+            //         margin: 0,
+            //         formatter: function (value, index) {
+            //             return value + "\n";
+            //         }
+            //     },
+            //     axisLine: {
+            //         lineStyle: {
+            //             color: 'transparent',
+            //             width: 0.6,
+            //         },
+            //     },
+            //     splitLine: {
+            //         lineStyle: {
+            //             color: ['#f2f2f2']
+            //         }
+            //     },
+            //     axisLabel: {
+            //         show: true,
+            //         textStyle: {
+            //             color: '#0f0f0f',
+            //             fontSize: "8"
+            //         }
+            //     },
+            //     splitNumber: 4,
+            // },
         ],
         series: [
             {
@@ -547,7 +547,11 @@ function splieKNum(rawData){
     for (var i = 0; i < rawData.length; i++) {
         categoryData.push( rawData[i].min_time );
         values.push([rawData[i].open_px, rawData[i].close_px,  rawData[i].low_px, rawData[i].high_px, rawData[i].business_balance, rawData[i].business_amount]);
-        volumes.push([i, rawData[i].business_amount, rawData[i].open_px > rawData[i].close_px ? 1 : -1]);
+        var _count = "-";
+        if(i != 0){
+            _count = rawData[i].business_amount / 1000000;
+        }
+        volumes.push([i, _count, rawData[i].open_px > rawData[i].close_px ? 1 : -1]);
     }
 
     return {
@@ -562,19 +566,36 @@ function drawKchart(data){
     var kOption = {
         backgroundColor: '#fff',
         tooltip: {
+            transitionDuration: 0,
+            confine: true,
+            bordeRadius: 4,
+            borderWidth: 1,
+            borderColor: '#999',
+            backgroundColor: 'rgba(255,255,255,0.9)',
             trigger: 'axis',
+            textStyle: {
+                fontSize: 10,
+                color: '#333'
+            },
+            position: function (pos, params, el, elRect, size) {
+                var obj = {
+                    top: 10
+                };
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+                return obj;
+            },
             axisPointer: {
                 type: 'cross'
             },
-            formatter:function(data){
-                var dom='开盘价'+data[0].value[1]+'</br>';
-                dom+='收盘价'+data[0].value[2]+'</br>';
-                dom+='最低价'+data[0].value[3]+'</br>';
-                dom+='最高价'+data[0].value[4]+'</br>';
-                dom+='成交量'+data[0].value[6]+'</br>';
-                dom+='成交额'+data[0].value[5];
-                return dom
-            }
+            // formatter:function(data){
+            //     var dom='开盘价'+data[0].value[1]+'</br>';
+            //     dom+='收盘价'+data[0].value[2]+'</br>';
+            //     dom+='最低价'+data[0].value[3]+'</br>';
+            //     dom+='最高价'+data[0].value[4]+'</br>';
+            //     dom+='成交量'+data[0].value[6]+'</br>';
+            //     dom+='成交额'+data[0].value[5];
+            //     return dom
+            // }
         },
         // axisPointer: {
         //     link: {xAxisIndex: 'all'},
@@ -709,7 +730,14 @@ function drawKchart(data){
                     textStyle: {
                         color: '#0f0f0f',
                         fontSize: "8"
-                    }
+                    },
+                    formatter: function(value, index) {
+
+                        if (index == 0) return "(百万)";
+
+                        return value;
+
+                    },
                 },
                 axisLine: {show: false},
                 axisTick: {show: false},
@@ -810,8 +838,7 @@ function drawKchart(data){
                     normal: {
                         color: '#e6262e',
                         lineStyle:{
-                            width:0.5,//折线宽度
-                            // color:"#FF0000"//折线颜色
+                            width:0.5
                         }
                     }
                 },
