@@ -62,7 +62,7 @@
         {/volist}
     </ul>
     <div class="delete_panel clear_fl">
-        <div style="display: block;float: left;height: 32px;" class="mui-input-row mui-checkbox mui-left select_btn">
+        <div id="allChecked" style="display: none;float: left;height: 32px;" class="mui-input-row mui-checkbox mui-left select_btn">
             <label></label>
             <input name="checkbox" value="Item 1" type="checkbox">
         </div>
@@ -100,12 +100,23 @@
 <script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
+    var refreshTimer = null;
 	$(".edit_btn").on("tap" , function(){
         if( $("#searchInput").val() != "" || $(".zixuan_list li").length == 1 ){
             return false;
         }
 		$(".select_btn").toggle();
         $(".delete_panel").toggle();
+        $(this).toggleClass("active");
+
+        if( $(this).hasClass("active") ){
+            if( refreshTimer ){
+                clearInterval( refreshTimer );
+                refreshTimer = null;
+            }
+        }else{
+            refreshTimer =setInterval(refreshPrice,2000);
+        }
 	});
 
 	mui.init({
@@ -142,12 +153,17 @@
         if (items==''){ //搜索结果为空， 置空列表
             html=listCon;
             $(".zixuan_list").html( html );
+            refreshTimer =setInterval(refreshPrice,2000);
         }else{
+            if( refreshTimer ){
+                clearInterval( refreshTimer );
+                refreshTimer = null;
+            }
             var j = 0;
             for (var i = 0; i < stocks.length; i++) {
                 var reg = new RegExp('^' + items + '.*$', 'im');
                 if (reg.test(stocks[i][0]) || reg.test(stocks[i][1]) || reg.test(stocks[i][2]) || reg.test(stocks[i][3])) {
-                    if(j < 5){
+                    if(j < 15){
                         code.push( stocks[i][1] );
                         j++;
                     }else{
@@ -197,6 +213,72 @@
             });
         }
     }
+
+    //实时更新
+    refreshTimer =setInterval(refreshPrice,2000);
+    function refreshPrice(){
+        var code = new Array();
+        if( $(".zixuan_list li+li").length > 0 ){
+            var html='<li class="list_header flex_nowrap">\
+                <div class="select_btn" style="width: 15%; display: none;">\
+                </div>\
+                <span style="width:40%;padding-left: 18px">名称代码</span>\
+                <span style="width:20%">现价</span>\
+                <span style="width:20%">涨跌幅</span>\
+                <span style="width:20%"></span>\
+            </li>';
+            $(".zixuan_list li+li").each(function(){
+                var _code = $(this).find(".zi_name").find("span+span").html();
+                code.push( _code );
+            });
+
+            code = code.join(",");
+            var _url = "{:url('index/Stock/simple')}",
+                _oData = {code: code};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){ // 登录成功
+                    if( $(".edit_btn").hasClass("active") ){
+                        return false;
+                    }
+                    for( var key in res.data ){
+                        var rate = parseFloat(res.data[key].px_change_rate);
+                        var className = "";
+                        if(rate >= 0){
+                            className = "red"
+                        }else{
+                            className = "green"
+                        }
+                        html += '<li class="list_header flex_nowrap">\
+                                    <div style="width: 15%; display: none;" class="mui-input-row mui-checkbox mui-left select_btn">\
+                                        <label></label>\
+                                        <input name="checkbox" value="Item 1" type="checkbox">\
+                                    </div>\
+                                    <a style="width:80%" class="flex_nowrap" href="/stock/home.html?code='+ res.data[key].code +'">\
+                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
+                                        <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
+                                        <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
+                                        \
+                                    </a>\
+                                    <span style="width:20%">\
+                                        <a href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>\
+                                    </span>\
+                                </li>';
+                    }
+                    $(".zixuan_list").html( html );
+                }else{
+                    // $alert(res.info);
+                }
+            });
+        }
+    }
+
+    // 删除自选
+    $("#allChecked").change(function(){
+        console.log( $(this).attr("checked") );
+        if( $(this).is(":checked") ){
+            alert(123);
+        }
+    });
 
 </script>
 {/block}

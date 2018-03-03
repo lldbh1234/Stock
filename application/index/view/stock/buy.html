@@ -343,6 +343,8 @@
 		var balaceCount = parseFloat( $(".balance_count").data("account") );
 		if( balaceCount < sum ){ //余额不足
 			$(".sub_pay_btn").html("余额不足").addClass("disabled");
+		}else{
+			$(".sub_pay_btn").html("创建策略").removeClass("disabled");
 		}
 	}
 
