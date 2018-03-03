@@ -25,23 +25,19 @@ class User extends Base
     public function lists()
     {
         $_res = $this->userLogic->pageUserLists(input(''));
-
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("search", input(""));
         return view();
-
     }
 
     public function modify()
     {
-        if(request()->isPost())
-        {
+        if(request()->isPost()) {
             $validate = \think\Loader::validate('User');
             if(!$validate->scene('modify')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
-
                 if($this->userLogic->update(input("post."))){
                     return $this->ok();
                 } else {
@@ -71,8 +67,9 @@ class User extends Base
                     return $this->fail("修改失败！");
                 }
             }
-        };
+        }
     }
+
     public function giveLists()
     {
         $_res = $this->userLogic->pageUserLists(input(''));
@@ -116,24 +113,34 @@ class User extends Base
     public function withdrawLists()
     {
         $_res = (new UserWithdrawLogic())->pageUserWithdrawLists(input(''));
-
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("search", input(""));
         return view();
+    }
 
+    public function withdrawDetail($id = null)
+    {
+        $withdraw = (new UserWithdrawLogic())->getWithdrawById($id);
+        if($withdraw){
+            $state = [0=>"待审核", 1=>"审核通过",-1=>"审核拒绝"];
+            $withdraw['remark'] = json_decode($withdraw['remark'], true);
+            $withdraw['state_text'] = $state[$withdraw['state']];
+            $this->assign("withdraw", $withdraw);
+            return view();
+        }else{
+            return "非法操作！";
+        }
     }
 
     public function withdraw()
     {
         if(request()->isPost())
         {
-
-            $validate = \think\Loader::validate('UserWithdraw');
+            $validate = \think\Loader::validate('UserWithDraw');
             if(!$validate->scene('user_withdraw')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
-
                 $ret = (new UserWithdrawLogic())->withdrawById(input('post.'));
                 if($ret['code'] == 0){
                     return $this->ok();
@@ -141,8 +148,6 @@ class User extends Base
                     return $this->fail([$ret['msg']]);
                 }
             }
-        };
+        }
     }
-
-
 }

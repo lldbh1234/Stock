@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bruce
- * Date: 18/3/3
- * Time: 上午10:46
- */
 namespace app\admin\logic;
 
 use app\admin\model\User;
@@ -13,6 +7,12 @@ use think\Db;
 
 class UserWithdrawLogic
 {
+    public function getWithdrawById($id)
+    {
+        $withdraw = UserWithdraw::with("hasOneUser,hasOneAdmin")->find($id);
+        return $withdraw ? $withdraw->toArray() : [];
+    }
+
     public function pageUserWithdrawLists($filter = [], $pageSize = null)
     {
 //        $where = Admin::manager();

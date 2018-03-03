@@ -128,10 +128,14 @@
             _oData = {user_id : id, type:type};
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){
+                if(type == 2){
+                    $(obj).removeClass('active');
+                }
+                if(type == 1){
+                    $(obj).addClass('active');
+                }
                 $alert(msg);
-                setTimeout(function(){
-                    window.location.reload();
-                }, 1000);
+
             }else{
                 $alert(res.info);
             }

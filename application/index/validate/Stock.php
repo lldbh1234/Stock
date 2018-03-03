@@ -131,7 +131,8 @@ class Stock extends Validate
     protected function checkFollowId($value, $rule, $data)
     {
         if($value){
-            $order = (new StockLogic())->orderById($value);
+            $order = (new OrderLogic())->orderById($value);
+            
             if($order){
                 if($order['user_id'] == isLogin()){
                     return "不可跟买自己的策略！";

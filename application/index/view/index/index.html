@@ -172,8 +172,10 @@
 							{volist name="$bestUserList" id="vo"}
 							<li>
 								<div class="clear_fl">
+									<a href="{:url('index/Cattle/niurenDetail', ['uid' => $vo.user_id])}" class="lf">
 									<img class="lf user_pic" src="{$vo.face | default='__RESOURCE__/img/default-user-img.png'}">
 									<p class="lf user_name">{$vo.nickname | default=$vo.username} <img src="__RESOURCE__/img/niuren.png"></p>
+									</a>
 									<a href="javascript:void(0)" onclick="follow('{$vo.user_id}', this);" class="rt guanzhu_btn {in name='vo.user_id' value='$followIds'}active{/in}"></a>
 								</div>
 								<div class="clear_fl daren_info">
@@ -445,7 +447,6 @@
 		    var content = '是否关注牛人？';
 		    var msg = '已关注';
 		    var type = 1;//关注
-			console.log(obj);
 
 
 		    if($(obj).hasClass('active')){
@@ -462,10 +463,18 @@
                         _oData = {user_id : id, type:type};
                     $ajaxCustom(_url, _oData, function(res){
                         if(res.state){
+                            if(type == 2){
+                                $(obj).removeClass('active');
+							}
+                            if(type == 1){
+                                $(obj).addClass('active');
+                            }
+
+
                             $alert(msg);
-                            setTimeout(function(){
-                                window.location.reload();
-                            }, 1000);
+//                            setTimeout(function(){
+//                                window.location.reload();
+//                            }, 1000);
                         }else{
                             $alert(res.info);
                         }
@@ -526,7 +535,7 @@
 		},4000);
 		loadZhiPrice();
 		function loadZhiPrice(){
-            var _url = "http://www.baonastone.com.cn/plate.json?" + Math.random(),
+            var _url = "/plate.json?" + Math.random(),
                 _oData = {};
             $.get(_url,function(data,status){
             	var _data = JSON.parse( data );

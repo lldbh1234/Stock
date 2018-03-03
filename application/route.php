@@ -122,7 +122,12 @@ Route::group("cron", function () {
 
 // www.baonastone.com.cn
 // stock.lc
+<<<<<<< HEAD
 Route::group(["domain" => "stock.lc"], function() {
+=======
+//Route::group(["domain" => "www.baonastone.com.cn"], function() {
+Route::group([], function() {
+>>>>>>> ce9e22e04b5d20a151270ce10a9646088ad4c29c
     // Admin
     Route::group("admin", function () {
         Route::any('/$','admin/Index/index');
@@ -249,6 +254,7 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('give-account', 'admin/User/giveAccount');  // 会员赠金
             Route::any('give-log', 'admin/User/giveLog');  // 会员赠金日志
             Route::any('withdraw-lists', 'admin/User/withdrawLists');  // 会员出金列表
+            Route::any('withdraw-detail', 'admin/User/withdrawDetail');  // 会员出金列表
             Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
         });
         //经纪人管理
