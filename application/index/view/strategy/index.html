@@ -276,7 +276,7 @@ function isTradingTime(){
                     var array = searchHistory.split(",");
                     for( var i in array){
                         var key = array[i];
-                        console.log(key);
+                        // console.log(key);
                         var rate = parseFloat(res.data[key].px_change_rate);
                         var className = "";
                         if(rate >= 0){
