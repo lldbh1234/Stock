@@ -77,39 +77,19 @@
         <div class="search_history hot_recommend" style="margin-top: 8px;">
             <h1 class="search_h_title clear_fl">热门推荐</h1>
             <ul class="recommend_list flex_nowrap">
+                {volist name="hots" id="item"}
                 <li>
-                    <a href="hangqing.html?code=603980">
-                        <p class="shares_name">吉华集团</p>
-                        <p class="shares_code">603980</p>
-                        <p class="shares_price">37.45</p>
+                    <a href="{:url('index/Stock/stockBuy', ['code' => $item.code])}">
+                        <p class="shares_name">{$item.name}</p>
+                        <p class="shares_code">{$item.code}</p>
+                        <p class="shares_price">{$item.last_px}</p>
                         <p class="shares_detail">
-                            <span>-0.23</span>
-                            <span>-0.83%</span>
+                            <span>{$item.px_change}</span>
+                            <span>{$item.px_change_rate}%</span>
                         </p>
                     </a>
                 </li>
-                <li>
-                    <a href="hangqing.html?code=601566">
-                        <p class="shares_name">九牧王</p>
-                        <p class="shares_code">601566</p>
-                        <p class="shares_price">37.45</p>
-                        <p class="shares_detail">
-                            <span>-0.23</span>
-                            <span>-0.83%</span>
-                        </p>
-                    </a>
-                </li>
-                <li>
-                    <a href="hangqing.html?code=300664">
-                        <p class="shares_name">鹏鹞环保</p>
-                        <p class="shares_code">300664</p>
-                        <p class="shares_price">37.45</p>
-                        <p class="shares_detail">
-                            <span>-0.23</span>
-                            <span>-0.83%</span>
-                        </p>
-                    </a>
-                </li>
+                {/volist}
             </ul>
         </div>
     </div>
