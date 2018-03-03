@@ -18,6 +18,29 @@
 	    font-size: 12px;
 	    color: #333;
 	}
+	.risk_title{
+		text-align: left;
+	}
+	.read_risk_btn{
+		position: absolute;
+	    width: 100%;
+	    text-align: center;
+	    height: 40px;
+	    line-height: 40px;
+	    color: #fc5155;
+	    font-size: 14px;
+	    left: 0;
+	    bottom: 0;
+	    border-top: 1px solid #ececec;
+	    margin: 0;
+	}
+	.risk_text p {
+	    font-size: 12px;
+	    color: #333;
+	    line-height: 20px;
+	    text-align: justify;
+	    margin-bottom: 40px;
+	}
 </style>
 {/block}
 
@@ -50,7 +73,19 @@
 			<div class="b_gupiao_detail clear_fl b_gupiao_intro">
 				<div class="agent_price_title lf">策略委托价</div>
 				<div class="agent_price lf">{$stock.last_px}</div>
-				<a class="rt">说明</a>
+				<a class="rt intro_btn">说明
+					<!-- 说明 - start -->
+				    <div class="risk_mask">
+				        <div class="risk_content">
+				            <p class="risk_title">策略委托价说明</p>
+				            <div class="risk_text">
+				            	<p>策略委托价是在当前行情价格基础上浮动 0.02 元，方便促使策略委托单在实盘尽可能成交.</p>
+				            </div>
+				            <p class="read_risk_btn">确认</p>
+				        </div>
+				    </div>
+				    <!-- end -->
+				</a>
 			</div>
 		</section>
 		<section class="buy_section">
@@ -62,7 +97,19 @@
 					<span data-id="{$item.mode_id}" data-profit="{$item.profit}" data-loss="{$item.loss}" data-jiancang="{$item.jiancang}" data-defer="{$item.defer}">{$item.name}</span>
                     {/volist}
 				</div>
-				<a class="rt">说明</a>
+				<a class="rt intro_btn">说明
+					<!-- 说明 - start -->
+				    <div class="risk_mask">
+				        <div class="risk_content">
+				            <p class="risk_title">策略模式说明</p>
+				            <div class="risk_text">
+				            	<p>选择不同的策略模式，对应不同的配资周期，建仓费和递延费不同。</p>
+				            </div>
+				            <p class="read_risk_btn">确认</p>
+				        </div>
+				    </div>
+				    <!-- end -->
+				</a>
 			</div>
 		</section>
 		<section class="buy_section">
@@ -125,7 +172,19 @@
 			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border">
 				<div class="agent_price_title lf">建仓费</div>
 				<div class="create_price lf jiangcangfei">78.00元</div>
-				<a class="rt">说明</a>
+				<a class="rt intro_btn">说明
+					<!-- 说明 - start -->
+				    <div class="risk_mask">
+				        <div class="risk_content">
+				            <p class="risk_title">建仓费说明</p>
+				            <div class="risk_text">
+				            	<p>交易建仓费是当策略第一次发起时，策略人要支付给平台的费用，费用包括交易印花税、过户费、佣金以及平台的居间费。此费用根据策略金额收取，在第一天收取，一般标准为39元/万（数据仅供参考，以实际平台公布为准）。</p>
+				            </div>
+				            <p class="read_risk_btn">确认</p>
+				        </div>
+				    </div>
+				    <!-- end -->
+				</a>
 			</div>
 		</section>
 
@@ -133,7 +192,19 @@
 			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border">
 				<div class="agent_price_title lf">递延费</div>
 				<div class="create_price lf diyanfei">9.90元/天/万元</div>
-				<a class="rt">说明</a>
+				<a class="rt intro_btn">说明
+					<!-- 说明 - start -->
+				    <div class="risk_mask">
+				        <div class="risk_content">
+				            <p class="risk_title">递延费说明</p>
+				            <div class="risk_text">
+				            	<p>策略持仓超过T+1时，第三个交易日起，策略人需要缴纳的递延费用，扣费时间为14:40，直接从策略人平台余额中扣除。如策略人不想递延，请务必在第二个 交易日的14:40分前发起卖出指令，否则视为要求递延，递延成功即扣费，扣费标准一般为 <span class="intro_diyanfei"></span>元/万/天（数据仅供参考，以实际平台公布为准）。</p>
+				            </div>
+				            <p class="read_risk_btn">确认</p>
+				        </div>
+				    </div>
+				    <!-- end -->
+				</a>
 			</div>
 			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border no_arrow">
 				<div class="agent_price_title lf">自动递延</div>
@@ -168,6 +239,15 @@
 {block name="script"}
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
+	$(".intro_btn").click(function(){
+		$(this).find(".risk_mask").show();
+	});
+	
+	$("body").on("click", ".read_risk_btn", function(){
+		$(this).parents(".risk_mask").hide();
+	});
+
+
 	$(".pattern_options").on("tap" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
 		calcNum()
@@ -257,6 +337,7 @@
 		$(".zhangfu span").html("+" + profit + "%");
 		$(".diefu span").html("-" + loss + "%");
 		$(".diyanfei").html(deferCount + "元/天/万元");
+		$(".intro_diyanfei").html(deferCount);
 
 
 		var balaceCount = parseFloat( $(".balance_count").data("account") );
