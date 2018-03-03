@@ -318,7 +318,7 @@
 		$(".jiangcangfei").html(jiangcang + "元").attr("data-fee", jiangcang);
 
 		//支付总价
-		var sum = jiangcang + creditNum;
+		var sum = (jiangcang + creditNum).toFixed(2);
 		$(".need_pay_count span").html(sum);
 
 
@@ -381,7 +381,13 @@
 		var _url = "{:url('index/Stock/stockBuy')}";
         $ajaxCustom(_url, params, function(res){
             if(res.state){ 
-                
+            	$alert("建仓成功");
+                var data = res.data;
+                if(data.url){
+                	setTimeout(function(){
+                		window.location.href = data.url;
+                	},1000);
+                }
             }else{
                 $alert(res.info);
             }
