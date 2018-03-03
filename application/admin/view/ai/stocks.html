@@ -31,6 +31,7 @@
 			<th>股票代码</th>
 			<th>股票名称</th>
 			<!--<th>股票完整代码</th>-->
+			<th>买入价</th>
 			<th>推荐理由</th>
 			<th>排序</th>
 			<th>状态</th>
@@ -45,6 +46,7 @@
 			<td>{$item.code}</td>
 			<td>{$item.name}</td>
 			<!--<td>{$item.full_code}</td>-->
+			<td>{$item.income|number_format=2}</td>
 			<td>{$item.remark}</td>
 			<td>{$item.sort}</td>
 			<td>
