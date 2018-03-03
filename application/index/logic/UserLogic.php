@@ -123,12 +123,7 @@ class UserLogic
         $user = User::with("hasManyAttention,hasManyAttention.belongsToAttention")->find($userId);
         return $user ? $user->toArray() : [];
     }
-<<<<<<< HEAD
     public function userDetail($uid, $orderMap=[])
-=======
-
-    public function userDetail($uid)
->>>>>>> e547ffd058942e358c50f97541a5073849d1709c
     {
         $result = [];
         $map = ['user_id' => $uid];
