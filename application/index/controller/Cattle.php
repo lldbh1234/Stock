@@ -4,7 +4,7 @@ namespace app\index\controller;
 use think\Request;
 use app\index\logic\UserLogic;
 
-class Attention extends Base
+class Cattle extends Base
 {
     protected $_logic;
     public function __construct(Request $request = null)

@@ -18,7 +18,7 @@
             <div class="tabBar cl">
                 <span>基本设置</span>
                 <span>配置设置</span>
-                <!--<span>其他设置</span>-->
+                <span>牛人申请条件设置</span>
             </div>
             <div class="tabCon">
                 <div class="row cl">
@@ -50,20 +50,41 @@
             <div class="tabCon">
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">开盘时间：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
+                    <div class="formControls col-xs-2 col-sm-4">
                         <input type="text" id="open_time" name="open_time" placeholder="输入时间晚上23点即23" value="{$lists.open_time.val | default=''}" class="input-text">
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">开盘时间：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
+                    <div class="formControls col-xs-2 col-sm-4">
                         <input type="text" id="close_time" name="close_time" placeholder="输入时间晚上23点即23" value="{$lists.close_time.val | default=''}" class="input-text">
                     </div>
                 </div>
             </div>
 
-            <!--<div class="tabCon">-->
-            <!--</div>-->
+            <div class="tabCon">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">发布策略次数：</label>
+                    <div class="formControls col-xs-2 col-sm-4">
+                        <input type="text" id="pulish_strategy" name="pulish_strategy" placeholder="发布策略次数" value="{$lists.pulish_strategy.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">次</p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">策略胜算率：</label>
+                    <div class="formControls col-xs-2 col-sm-4">
+                        <input type="text" id="strategy_win" name="strategy_win" placeholder="策略胜算率" value="{$lists.strategy_win.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">%</p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">策略收益率：</label>
+                    <div class="formControls col-xs-2 col-sm-4">
+                        <input type="text" id="strategy_yield" name="strategy_yield" placeholder="策略收益率" value="{$lists.strategy_yield.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">%</p>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">

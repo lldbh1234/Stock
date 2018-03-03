@@ -65,6 +65,11 @@ Route::group("ai", function () {
 Route::group("strategy", function () {
     Route::any('home','index/Strategy/index');
 });
+//牛人
+Route::group("cattle", function () {
+    Route::any('index','index/Cattle/index');
+    Route::any('apply','index/Cattle/apply');//申请牛人
+});
 
 Route::group("stock", function () {
     Route::any('buy', 'index/Stock/stockBuy'); //购买
