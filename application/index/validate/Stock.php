@@ -92,8 +92,8 @@ class Stock extends Validate
     {
         if($value < $data['price']){
             $mode = (new ModeLogic())->modeById($data['mode']);
-            $max = round($data['price'] * (1 - $mode['loss'] / 100), 2);
-            return $value > $max ? "止损最大可设置为" . number_format($max, 2) : true;
+            $min = round($data['price'] * (1 - $mode['loss'] / 100), 2);
+            return $value < $min ? "止损最小可设置为" . number_format($min, 2) : true;
         }else{
             return "止损金额不能大于策略委托价！";
         }
