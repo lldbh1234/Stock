@@ -97,7 +97,6 @@
 
 {block name="script"}
 <script type="text/javascript" src="__STATIC__/js/stock.js"></script>
-<script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
     var refreshTimer = null;
@@ -285,8 +284,18 @@
             if(code.length == 0){
                 return false;
             }
-            code = code.join(",");
-            console.log(code);
+            var _url = '{:url("index/User/removeOptional")}',
+                _oData = {ids: code};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){ // 登录成功
+                    $alert("操作成功！");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 500);
+                }else{
+                    $alert(res.info);
+                }
+            });
         }
         
     });

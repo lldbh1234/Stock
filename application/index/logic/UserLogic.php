@@ -85,7 +85,7 @@ class UserLogic
 
     public function removeUserOptional($userId, $ids){
         try{
-            return User::find($userId)->hasManyOptional()->where(["id" => $ids])->delete();
+            return User::find($userId)->hasManyOptional()->where(["code" => ["IN", $ids]])->delete();
         } catch(\Exception $e) {
             return false;
         }
