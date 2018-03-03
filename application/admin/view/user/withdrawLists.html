@@ -22,7 +22,7 @@
                 <option value="">状态</option>
                 <option value="0" {if condition="isset($search.state) AND $search.state heq '0'"}selected{/if}>待审核</option>
                 <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>审核通过</option>
-                <option value="-1" {if condition="isset($search.state) AND $search.state heq '1-'"}selected{/if}>审核失败</option>
+                <option value="-1" {if condition="isset($search.state) AND $search.state heq '-1'"}selected{/if}>审核失败</option>
             </select>
         </span>
         <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>

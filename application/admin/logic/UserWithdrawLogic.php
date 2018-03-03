@@ -32,6 +32,10 @@ class UserWithdrawLogic
 
         }
 
+        if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,-1])){//状态
+            $where['state'] = $filter['state'];
+        }
+
         $pageSize = $pageSize ? : config("page_size");
         //推荐人-微圈-微会员
         $lists = UserWithdraw::with(['hasOneUser', 'hasOneAdmin',])
