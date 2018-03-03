@@ -308,14 +308,14 @@
 		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
 		var usage = parseFloat( $(".balance_count").data("usage") ); //资金使用率
 		var count = Math.floor(creditNum * multiple * usage / nowPrice /100 / 100) * 100; //股数
-		var ammount = count * nowPrice;
+		var ammount =  (count * nowPrice).toFixed(2);
 		$(".baishu_detail .lf").html(count + "股").attr("data-count",count);
 		$(".baishu_detail .rt").html("市值" + ammount + "元").attr("data-ammount",ammount);
 
 		//计算建仓费
 		var jiancangUnit = parseFloat( $(".pattern_options").find(".active").data("jiancang") );
-		var jiangcang = Math.ceil( jiancangUnit * ammount / 10000 );
-		$(".jiangcangfei").html(jiangcang + ".00 元").attr("data-fee", jiangcang);
+		var jiangcang = ( jiancangUnit * (creditNum * multiple ) / 10000 ).toFixed(2);
+		$(".jiangcangfei").html(jiangcang + "元").attr("data-fee", jiangcang);
 
 		//支付总价
 		var sum = jiangcang + creditNum;
