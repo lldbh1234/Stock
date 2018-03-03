@@ -18,6 +18,7 @@
             <div class="tabBar cl">
                 <span>基本设置</span>
                 <span>配置设置</span>
+                <span>交易配置</span>
                 <span>牛人申请条件设置</span>
             </div>
             <div class="tabCon">
@@ -27,10 +28,8 @@
                         网站名称：</label>
                     <div class="formControls col-xs-2 col-sm-4 ">
                         <input type="text" id="website-title" name="website" placeholder="控制在25个字、50个字节以内" value="{$lists.website.val | default=''}" class="input-text">
-
                     </div>
                 </div>
-
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">
                         <span class="c-red">*</span>
@@ -45,7 +44,6 @@
                         <input type="text" id="website-icp" name="icp" placeholder="京ICP备00000000号" value="{$lists.icp.val | default=''}" class="input-text">
                     </div>
                 </div>
-
             </div>
             <div class="tabCon">
                 <div class="row cl">
@@ -61,7 +59,29 @@
                     </div>
                 </div>
             </div>
-
+            <div class="tabCon">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">策略资金最大使用率：</label>
+                    <div class="formControls col-xs-2 col-sm-9">
+                        <input type="text" id="capital_usage" name="capital_usage" placeholder="创建策略时的最大资金使用百分比" value="{$lists.capital_usage.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">%</p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">节假日：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <textarea name="holiday" cols="" rows="" class="textarea" placeholder="节假日列表，多个用英文逗号分割" >{$lists.holiday.val | default=''}</textarea>
+                        <p class="textarea-numberbar" style="color: #b3abab;">例：2018-01-01，多个用英文逗号分割</p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">经纪人默认返点率：</label>
+                    <div class="formControls col-xs-2 col-sm-9">
+                        <input type="text" id="manager_point" name="manager_point" placeholder="经纪人默认返点率" value="{$lists.manager_point.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">%</p>
+                    </div>
+                </div>
+            </div>
             <div class="tabCon">
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">发布策略次数：</label>
