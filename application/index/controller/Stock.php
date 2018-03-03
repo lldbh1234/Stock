@@ -60,7 +60,8 @@ class Stock extends Base
                     ];
                     $orderId = (new OrderLogic())->createOrder($order);
                     if($orderId > 0){
-                        return $this->ok();
+                        $url = url("index/Order/position");
+                        return $this->ok(["url" => $url]);
                     }else{
                         return $this->fail("创建策略失败！");
                     }

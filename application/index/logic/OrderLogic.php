@@ -33,7 +33,6 @@ class OrderLogic
             Db::commit();
             return $res->$pk;
         } catch (\Exception $e) {
-            dump($e->getMessage());
             // 回滚事务
             Db::rollback();
             return 0;

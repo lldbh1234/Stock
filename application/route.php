@@ -45,6 +45,11 @@ Route::group("user", function () {
     Route::any('withdraw','index/User/withdraw'); //提现
 });
 
+// 订单
+Route::group("order", function(){
+    Route::any('index','index/Order/position'); // 持仓
+});
+
 // 经纪人
 Route::group("manager", function(){
     Route::any('home','index/User/manager'); // 经纪人首页
