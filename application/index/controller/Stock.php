@@ -28,9 +28,8 @@ class Stock extends Base
                 $modeId = input("post.mode/d");
                 $depositId = input("post.deposit/d");
                 $leverId = input("post.lever/d");
+                $price = input("post.price/f");
                 $stock = $this->_logic->stockByCode($code);
-                $quotation = $this->_logic->simpleData($code);
-                $quotation = $quotation[$code];
                 $mode = (new ModeLogic())->modeIncPluginsById($modeId);
                 $deposit = (new DepositLogic())->depositById($depositId);
                 $lever = (new LeverLogic())->leverById($leverId);
@@ -38,7 +37,7 @@ class Stock extends Base
                 $plugins = $mode['has_one_plugins'];
                 require_once request()->root() . "../plugins/{$plugins['type']}/{$plugins['code']}.php";
                 $obj = new $plugins['code'];
-                $trade = $obj->getTradeInfo($quotation['last_px'], $configs['capital_usage'], $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
+                $trade = $obj->getTradeInfo($price, $configs['capital_usage'], $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
                 $holiday = explode(',', $configs['holiday']);
                 $order = [
                     "user_id" => $this->user_id,
@@ -46,16 +45,16 @@ class Stock extends Base
                     "code"  => $code,
                     "name"  => $stock['name'],
                     "full_code" => $stock['full_code'],
-                    "price" => $quotation['last_px'],
+                    "price" => $price,
                     "hand"  => $trade["hand"],
                     "jiancang_fee" => $trade["jiancang"],
                     "defer" => $trade["defer"],
                     "free_time" => workTimestamp($mode['free'], $holiday),
                     "is_defer" => input("post.defer/d"),
                     "stop_profit_price" => input("post.profit/f"),
-                    "stop_profit_point" => (input("post.profit/f") - $quotation['last_px']) / $quotation['last_px'],
+                    "stop_profit_point" => (input("post.profit/f") - $price) / $price,
                     "stop_loss_price" => input("post.loss/f"),
-                    "stop_loss_point" => ($quotation['last_px'] - input("post.profit/f")) / $quotation['last_px'],
+                    "stop_loss_point" => ($price - input("post.profit/f")) / $price,
                     "deposit"   => $deposit['money']
                 ];
                 $orderId = (new OrderLogic())->createOrder($order);

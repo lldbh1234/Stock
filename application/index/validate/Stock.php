@@ -10,7 +10,8 @@ use think\Validate;
 class Stock extends Validate
 {
     protected $rule = [
-        'code'  => 'require|checkCode|checkTradeTime',
+        'price' => 'require|float|gt:0|checkTradeTime',
+        'code'  => 'require|checkCode',
         'mode'  => 'require|checkMode',
         'deposit' => 'require|checkDeposit',
         'lever' => 'require|checkLever',
@@ -20,9 +21,12 @@ class Stock extends Validate
     ];
 
     protected $message = [
+        'price.require'     => '系统提示:非法操作！',
+        'price.float'       => '系统提示:非法操作！',
+        'price.gt'          => '系统提示:非法操作！',
+        'price.checkTradeTime' => '非交易时间，不可购买！',
         'code.require'      => '系统提示:非法操作！',
         'code.checkCode'    => '股票不存在！',
-        'code.checkTradeTime' => '非交易时间，不可购买！',
         'mode.require'      => '请选择策略模式！',
         'mode.checkMode'    => '策略模式不存在！',
         'deposit.require'   => '请选择信用金！',
@@ -74,19 +78,27 @@ class Stock extends Validate
 
     protected function checkProfit($value, $rule, $data)
     {
-        $stock = (new StockLogic())->simpleData($data['code']);
-        $stock = $stock[$data['code']];
-        $mode = (new ModeLogic())->modeById($data['mode']);
-        $max = $stock['last_px'] * (1 + $mode['profit'] / 100);
-        return $value > $max ? "止盈最大可设置为" . number_format($max, 2) : true;
+        if($value > $data['price']){
+            $stock = (new StockLogic())->simpleData($data['code']);
+            $stock = $stock[$data['code']];
+            $mode = (new ModeLogic())->modeById($data['mode']);
+            $max = $stock['last_px'] * (1 + $mode['profit'] / 100);
+            return $value > $max ? "止盈最大可设置为" . number_format($max, 2) : true;
+        }else{
+            return "止盈金额不能小于策略委托价！";
+        }
     }
 
     protected function checkLoss($value, $rule, $data)
     {
-        $stock = (new StockLogic())->simpleData($data['code']);
-        $stock = $stock[$data['code']];
-        $mode = (new ModeLogic())->modeById($data['mode']);
-        $min = $stock['last_px'] * (1 - $mode['profit'] / 100);
-        return $value < $min ? "止损最小可设置为" . number_format($min, 2) : true;
+        if($value < $data['price']){
+            $stock = (new StockLogic())->simpleData($data['code']);
+            $stock = $stock[$data['code']];
+            $mode = (new ModeLogic())->modeById($data['mode']);
+            $min = $stock['last_px'] * (1 - $mode['profit'] / 100);
+            return $value < $min ? "止损最小可设置为" . number_format($min, 2) : true;
+        }else{
+            return "止损金额不能大于策略委托价！";
+        }
     }
 }
