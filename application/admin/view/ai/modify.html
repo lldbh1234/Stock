@@ -25,6 +25,12 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>买入价：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="text" class="input-text" value="{$ai.income|default=0.00}" placeholder="" name="income">
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>推荐理由：</label>
             <div class="formControls col-xs-8 col-sm-7">
                 <textarea name="remark" cols="" rows="" class="textarea"  placeholder="">{$ai.remark|default=''}</textarea>

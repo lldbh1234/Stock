@@ -219,7 +219,7 @@
 			<div class="sub_pay_con clear_fl">
 				<div class="lf">
 					<p class="need_pay_count">需要支付 <span>1289.00</span> 元</p>
-					<p class="balance_count" data-usage="{$usage}" data-account="{$user.account}">(账户余额：{$user.account|number_format} 元)</p>
+					<p class="balance_count" data-usage="{$usage|default=95}" data-account="{$user.account}">(账户余额：{$user.account|number_format=2} 元)</p>
 				</div>
 				<a href="" class="rt sub_pay_btn">马上创建</a>
 			</div>
@@ -306,19 +306,19 @@
 		var creditNum = parseFloat( $(".x_y_options").find(".active").data("money") ); //信用金
 		var multiple = parseFloat( $(".beishu_options").find(".active").data("multiple") );//倍数
 		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
-
-		var count = Math.floor(creditNum * multiple / nowPrice /100) * 100; //股数
-		var ammount = count * nowPrice;
+		var usage = parseFloat( $(".balance_count").data("usage") ); //资金使用率
+		var count = Math.floor(creditNum * multiple * usage / nowPrice /100 / 100) * 100; //股数
+		var ammount =  (count * nowPrice).toFixed(2);
 		$(".baishu_detail .lf").html(count + "股").attr("data-count",count);
 		$(".baishu_detail .rt").html("市值" + ammount + "元").attr("data-ammount",ammount);
 
 		//计算建仓费
 		var jiancangUnit = parseFloat( $(".pattern_options").find(".active").data("jiancang") );
-		var jiangcang = Math.ceil( jiancangUnit * ammount / 10000 );
-		$(".jiangcangfei").html(jiangcang + ".00 元").attr("data-fee", jiangcang);
+		var jiangcang = ( jiancangUnit * (creditNum * multiple ) / 10000 ).toFixed(2);
+		$(".jiangcangfei").html(jiangcang + "元").attr("data-fee", jiangcang);
 
 		//支付总价
-		var sum = jiangcang + creditNum;
+		var sum = parseFloat((jiangcang + creditNum)).toFixed(2);
 		$(".need_pay_count span").html(sum);
 
 
@@ -362,32 +362,36 @@
 		}
 
 		var params = {};
-		params.newPrice = $(".agent_price").html(); //委托价
-		params.pattern = $(".pattern_options").find(".active").data("id");//策略模式
-		params.pattern = $(".x_y_options").find(".active").data("id");//信用金
-		params.pattern = $(".beishu_options").find(".active").data("id");//策略匹配
-		params.stockCount = $(".baishu_detail .lf").attr("data-count"); //股数
-		params.marketPrice = $(".baishu_detail .rt").attr("data-ammount"); //市值
+		params.price = $(".agent_price").html(); //委托价
+		params.mode = $(".pattern_options").find(".active").data("id");//策略模式
+		params.deposit = $(".x_y_options").find(".active").data("id");//信用金
+		params.lever = $(".beishu_options").find(".active").data("id");//策略匹配
+		// params.stockCount = $(".baishu_detail .lf").attr("data-count"); //股数
+		// params.marketPrice = $(".baishu_detail .rt").attr("data-ammount"); //市值
 		params.profit = $(".profitCount").val();//止盈
 		params.loss = $(".lossCount").val();//止损
-		params.fee = $(".jiangcangfei").data("fee"); //建仓费
-		params.defer = $(".pattern_options").find(".active").data("defer");//递延费
-		params.isAutoDefaer = false; //自动递延
+		// params.fee = $(".jiangcangfei").data("fee"); //建仓费
+		// params.defer = $(".pattern_options").find(".active").data("defer");//递延费
+		params.defer = 0; //自动递延
+		params.code = $(".b_gupiao_code").html();
 		if( $("#autoDefer").is(":checked") ){
-			params.isAutoDefaer = true;
+			params.defer = 1;
 		}
 
-		console.log(params);
-		// var _url = '',
-  //           _code = $("#guName").data("code"),
-  //           _oData = {params};
-  //       $ajaxCustom(_url, _oData, function(res){
-  //           if(res.state){ 
-                
-  //           }else{
-  //               $alert(res.info);
-  //           }
-  //       });
+		var _url = "{:url('index/Stock/stockBuy')}";
+        $ajaxCustom(_url, params, function(res){
+            if(res.state){ 
+            	$alert("建仓成功");
+                var data = res.data;
+                if(data.url){
+                	setTimeout(function(){
+                		window.location.href = data.url;
+                	},1000);
+                }
+            }else{
+                $alert(res.info);
+            }
+        });
 
 
 
