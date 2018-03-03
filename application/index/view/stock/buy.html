@@ -139,7 +139,7 @@
 				<div class="agent_price_title lf">自动递延</div>
 				<div class="zidongdiyan lf">若未开启自动递延<br/>次日 14.40 将卖出股票</div>
 				<a class="rt">
-					<input type="checkbox" class="switch__mui-switch___3_30S switch__mui-switch-anim___3IUf5" value="on">
+					<input id="autoDefer" type="checkbox" class="switch__mui-switch___3_30S switch__mui-switch-anim___3IUf5" value="on">
 				</a>
 			</div>
 		</section>
@@ -166,6 +166,7 @@
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
 	$(".pattern_options").on("tap" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
@@ -228,13 +229,13 @@
 
 		var count = Math.floor(creditNum * multiple / nowPrice /100) * 100; //股数
 		var ammount = count * nowPrice;
-		$(".baishu_detail .lf").html(count + "股");
-		$(".baishu_detail .rt").html("市值" + ammount + "元");
+		$(".baishu_detail .lf").html(count + "股").attr("data-count",count);
+		$(".baishu_detail .rt").html("市值" + ammount + "元").attr("data-ammount",ammount);
 
 		//计算建仓费
 		var jiancangUnit = parseFloat( $(".pattern_options").find(".active").data("jiancang") );
 		var jiangcang = Math.ceil( jiancangUnit * ammount / 10000 );
-		$(".jiangcangfei").html(jiangcang + ".00 元");
+		$(".jiangcangfei").html(jiangcang + ".00 元").attr("data-fee", jiangcang);
 
 		//支付总价
 		var sum = jiangcang + creditNum;
@@ -249,11 +250,65 @@
 		var maxProfit = (nowPrice * (1 + profit / 100)).toFixed(2);
 		var maxLoss = (nowPrice * (1 - profit / 100)).toFixed(2);
 
+		var deferCount = parseFloat( $(".pattern_options").find(".active").data("defer") );
+
 		$(".profitCount").val(maxProfit).attr("data-initValue", maxProfit);
 		$(".lossCount").val( maxLoss ).attr("data-initValue", maxLoss);
 		$(".zhangfu span").html("+" + profit + "%");
 		$(".diefu span").html("-" + loss + "%");
+		$(".diyanfei").html(deferCount + "元/天/万元");
+
+
+		var balaceCount = parseFloat( $(".balance_count").data("account") );
+		if( balaceCount < sum ){ //余额不足
+			$(".sub_pay_btn").html("余额不足").addClass("disabled");
+		}
 	}
+
+	//建仓
+	$(".sub_pay_btn").click(function(e){
+		e.preventDefault();
+		if( $(this).hasClass("disabled") ){
+			//余额不足，跳转到充值
+			window.location.href = "/user/recharge.html";
+		}
+
+		if( !$("#agree").is(":checked") ){
+			$alert("请仔细阅读合作协议");
+			return false;
+		}
+
+		var params = {};
+		params.newPrice = $(".agent_price").html(); //委托价
+		params.pattern = $(".pattern_options").find(".active").data("id");//策略模式
+		params.pattern = $(".x_y_options").find(".active").data("id");//信用金
+		params.pattern = $(".beishu_options").find(".active").data("id");//策略匹配
+		params.stockCount = $(".baishu_detail .lf").attr("data-count"); //股数
+		params.marketPrice = $(".baishu_detail .rt").attr("data-ammount"); //市值
+		params.profit = $(".profitCount").val();//止盈
+		params.loss = $(".lossCount").val();//止损
+		params.fee = $(".jiangcangfei").data("fee"); //建仓费
+		params.defer = $(".pattern_options").find(".active").data("defer");//递延费
+		params.isAutoDefaer = false; //自动递延
+		if( $("#autoDefer").is(":checked") ){
+			params.isAutoDefaer = true;
+		}
+
+		console.log(params);
+		// var _url = '',
+  //           _code = $("#guName").data("code"),
+  //           _oData = {params};
+  //       $ajaxCustom(_url, _oData, function(res){
+  //           if(res.state){ 
+                
+  //           }else{
+  //               $alert(res.info);
+  //           }
+  //       });
+
+
+
+	});
 
 </script>
 {/block}
