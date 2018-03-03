@@ -1,6 +1,7 @@
 <?php
 namespace app\index\logic;
 
+use app\index\model\Order;
 use app\index\model\User;
 use think\Db;
 
@@ -21,6 +22,20 @@ class UserLogic
     {
         $user = User::find($userId);
         return $user ? $user->toArray() : [];
+    }
+    public function getAllBy($where=[])
+    {
+        $map = [];
+        if(!empty($where) && is_array($where))
+        {
+            foreach($where as $k => $v)
+            {
+                $map[$k] = $v;
+            }
+        }
+        $data = User::where($map)->select();
+        return collection($data)->toArray();
+
     }
 
     public function createUserWithdraw($userId, $money, $remark)
@@ -99,5 +114,30 @@ class UserLogic
     {
         $user = User::with("hasManyAttention,hasManyAttention.belongsToAttention")->find($userId);
         return $user ? $user->toArray() : [];
+    }
+    public function userDetail($uid)
+    {
+        $result = [];
+        $user_info = User::find($uid);
+        if($user_info) $user_info = $user_info->toArray();
+        $result['user'] = $user_info;
+        $map = ['user_id' => $uid];
+        //查询策略数量
+        $order_num = Order::where($map)->count();
+        $result['pulish_strategy'] = $order_num;
+        //查询胜算率
+        $map['profit'] = ['>', 0];
+        $order_win = Order::where($map)->count();
+
+        $result['strategy_win'] = empty($order_win) ? 0 : round($order_win/$order_num/100, 2);
+        //查询收益率
+        $order_sale_amount = Order::where($map)->sum('sell_price');//卖出
+        $order_income_amount = Order::where($map)->sum('price');//买入
+        $income = $order_sale_amount-$order_income_amount;
+
+        $result['strategy_yield'] = empty($order_income_amount) ? 0 : round($income/$order_income_amount/100, 2);
+        return $result;
+
+
     }
 }

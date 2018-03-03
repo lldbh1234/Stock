@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>我关注的牛人</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
-    <link href="__RESOURCE__/css/mui.min.css" rel="stylesheet">
-    <link href="__RESOURCE__/css/person.css" rel="stylesheet">
-</head>
+{extend name="layouts/layout_user" /}
+{block name="title"}我关注的牛人{/block}
+{block name="style"}{/block}
+<!--个人中心-充值-支付宝-->
+{block name="body"}
+<body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+{block name="content"}
 <body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">
 <header class="has_back_top ">
     关注的牛人
@@ -174,5 +173,7 @@
         <!--</div>-->
     <!--</li>-->
 </ul>
-
-</body></html>
+{/block}
+{block name="nav"}{/block}
+{block name="script"}
+{/block}
