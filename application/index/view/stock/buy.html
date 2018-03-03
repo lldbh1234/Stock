@@ -300,7 +300,7 @@
 		$(".beishu_options span:nth-child(1)").addClass("active");
 		calcNum();
 
-		$(".plus_btn").trigger("click");
+		// $(".plus_btn").trigger("click");
 	});
 
 	//计算
@@ -330,8 +330,7 @@
 		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() );
 
 		var maxProfit = (nowPrice * (1 + profit / 100)).toFixed(2);
-		var maxLoss = (nowPrice * (1 - profit / 100)).toFixed(2);
-
+		var maxLoss = (nowPrice * (1 - loss / 100)).toFixed(2);
 
 		var deferCount = parseFloat( $(".pattern_options").find(".active").data("defer") );
 
