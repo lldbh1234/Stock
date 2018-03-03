@@ -123,6 +123,7 @@ class UserLogic
         $user = User::with("hasManyAttention,hasManyAttention.belongsToAttention")->find($userId);
         return $user ? $user->toArray() : [];
     }
+
     public function userDetail($uid)
     {
         $result = [];
@@ -145,7 +146,24 @@ class UserLogic
 
         $result['strategy_yield'] = empty($order_income_amount) ? 0 : round($income/$order_income_amount/100, 2);
         return $result;
+    }
 
+    // $state 1委托，2抛出，3持仓
+    public function userIncOrder($userId, $state = 1)
+    {
+        $user = User::with(["hasManyOrder" => function($query) use ($state){
+            $query->where(["state" => $state]);
+        }])->find($userId);
+        return $user ? $user->toArray() : [];
+    }
 
+    // $state 1委托，2抛出，3持仓
+    public function pageUserOrder($userId, $state = 1, $pageSize = 2){
+        try{
+            $res = User::find($userId)->hasManyOrder()->where(["state" => $state])->paginate($pageSize);
+            return $res ? $res->toArray() : [];
+        } catch(\Exception $e) {
+            return [];
+        }
     }
 }

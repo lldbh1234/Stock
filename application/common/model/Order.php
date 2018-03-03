@@ -14,6 +14,7 @@ class Order extends BaseModel
     {
         return request()->time();
     }
+
     public function hasOneUser()
     {
         return $this->hasOne("\\app\\common\\model\\User", "user_id", "user_id");

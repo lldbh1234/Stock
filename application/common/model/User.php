@@ -59,4 +59,9 @@ class User extends BaseModel
     {
         return $this->hasMany("\\app\\common\\model\\UserRecord", "user_id", "user_id");
     }
+
+    public function hasManyOrder()
+    {
+        return $this->hasMany("\\app\\common\\model\\Order", "user_id", "user_id");
+    }
 }
