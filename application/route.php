@@ -39,6 +39,7 @@ Route::group("user", function () {
     Route::any('home','index/User/index'); //用户中心
     Route::any('optional','index/User/optional'); //自选
     Route::any('add-optional','index/User/createOptional'); //添加自选
+    Route::any('del-optional','index/User/removeOptional'); //添加自选
     Route::any('setting','index/User/setting'); //设置
     Route::any('password','index/User/password'); //修改密码
     Route::any('recharge','index/User/recharge'); //充值

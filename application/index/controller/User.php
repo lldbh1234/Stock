@@ -61,6 +61,25 @@ class User extends Base
         return $this->fail("系统提示：非法操作！");
     }
 
+    public function removeOptional()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Optional');
+            if(!$validate->scene('remove')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $ids = input("post.ids/a");
+                $res = $this->_logic->removeUserOptional($this->user_id, $ids);
+                if($res){
+                    return $this->ok();
+                }else{
+                    return $this->fail("删除失败！");
+                }
+            }
+        }
+        return $this->fail("系统提示：非法操作！");
+    }
+
     public function password()
     {
         if(request()->isPost()){
