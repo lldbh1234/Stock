@@ -274,7 +274,20 @@
 
     // 删除自选
     $(".zixun_delete_btn").click(function(){
-        
+        if($(".zixuan_list li+li").length > 0){
+            var code = new Array();
+            $(".zixuan_list li+li").each(function(){
+                if( $(this).find("input").is(":checked") ){
+                    var _code = $(this).find(".zi_name span+span").html();
+                    code.push(_code);
+                }
+            });
+            if(code.length == 0){
+                return false;
+            }
+            code = code.join(",");
+            console.log(code);
+        }
     });
 </script>
 {/block}
