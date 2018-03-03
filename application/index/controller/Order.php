@@ -28,26 +28,35 @@ class Order extends Base
         ];
         $user = $this->_userLogic->userIncOrder($this->user_id, $state = 3);
         $codes = array_column($user["has_many_order"], "code");
-        $quotation = (new StockLogic())->simpleData($codes);
-        array_filter($user["has_many_order"], function($item) use ($quotation, &$capital){
-            $floatPL = ($quotation[$item['code']]['last_px'] - $item['price']) * $item['hand'];
-            $marketValue = $item['hand'] * $quotation[$item['code']]['last_px'];
-            $capital['floatPL'] += $floatPL;
-            $capital['marketValue'] += $marketValue;
-        });
+        if($codes){
+            $quotation = (new StockLogic())->simpleData($codes);
+            array_filter($user["has_many_order"], function($item) use ($quotation, &$capital){
+                $floatPL = ($quotation[$item['code']]['last_px'] - $item['price']) * $item['hand'];
+                $marketValue = $item['hand'] * $quotation[$item['code']]['last_px'];
+                $capital['floatPL'] += $floatPL;
+                $capital['marketValue'] += $marketValue;
+            });
+            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3);
+            array_filter($orders['data'], function (&$item) use ($quotation){
+                $item['last_px'] = $quotation[$item['code']]['last_px']; //现价
+                $item['market_value'] = $item['last_px'] * $item['hand']; //市值
+                $item['yield_rate'] = round(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
+                $item['total_pl'] = ($item['last_px'] - $item['price']) * $item['hand']; //盈亏
+            });
+            $list = $orders['data'];
+            $last_page = $orders['last_page'];
+            $current_page = $orders['current_page'];
+        }else{
+            $list = [];
+            $last_page= 1;
+            $current_page = 1;
+        }
         $capital['expendableFund'] = $user['account']; //可用资金
         $capital['netAssets'] = $capital['expendableFund'] + $user['blocked_account'] + $capital['floatPL']; //净资产
-        $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3);
-        array_filter($orders['data'], function (&$item) use ($quotation){
-            $item['last_px'] = $quotation[$item['code']]['last_px']; //现价
-            $item['market_value'] = $item['last_px'] * $item['hand']; //市值
-            $item['yield_rate'] = round(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
-            $item['total_pl'] = ($item['last_px'] - $item['price']) * $item['hand']; //盈亏
-        });
         $this->assign("capital", $capital);
-        $this->assign("orders", $orders['data']);
-        $this->assign("totalPage", $orders['last_page']);
-        $this->assign("currentPage", $orders['current_page']);
+        $this->assign("orders", $list);
+        $this->assign("totalPage", $last_page);
+        $this->assign("currentPage", $current_page);
         return view();
     }
 
