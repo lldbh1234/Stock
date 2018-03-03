@@ -318,7 +318,7 @@
 		$(".jiangcangfei").html(jiangcang + "元").attr("data-fee", jiangcang);
 
 		//支付总价
-		var sum = (jiangcang + creditNum).toFixed(2);
+		var sum = parseFloat((jiangcang + creditNum)).toFixed(2);
 		$(".need_pay_count span").html(sum);
 
 
