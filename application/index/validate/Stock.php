@@ -83,7 +83,7 @@ class Stock extends Validate
             $stock = (new StockLogic())->simpleData($data['code']);
             $stock = $stock[$data['code']];
             $mode = (new ModeLogic())->modeById($data['mode']);
-            $max = $stock['last_px'] * (1 + $mode['profit'] / 100);
+            $max = round($stock['last_px'] * (1 + $mode['profit'] / 100), 2);
             return $value > $max ? "止盈最大可设置为" . number_format($max, 2) : true;
         }else{
             return "止盈金额不能小于策略委托价！";
@@ -96,7 +96,7 @@ class Stock extends Validate
             $stock = (new StockLogic())->simpleData($data['code']);
             $stock = $stock[$data['code']];
             $mode = (new ModeLogic())->modeById($data['mode']);
-            $min = $stock['last_px'] * (1 - $mode['profit'] / 100);
+            $min = round($stock['last_px'] * (1 - $mode['profit'] / 100), 2);
             return $value < $min ? "止损最小可设置为" . number_format($min, 2) : true;
         }else{
             return "止损金额不能大于策略委托价！";
