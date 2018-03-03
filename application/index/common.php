@@ -57,6 +57,41 @@ if(!function_exists("checkStockTradeTime"))
         if(date('G') > 15){
             return false;
         }
+        $holiday = explode(',', cfgs()['holiday']);
+        if(in_array(date("Y-m-d"), $holiday)){
+            return false;
+        }
         return true;
+    }
+}
+
+if(!function_exists("workTimestamp")){
+    function workTimestamp($length, $holiday = [])
+    {
+        $realLength = 1;
+        for($i = 1; $i <= $length;){
+            $timestamp = strtotime("+{$realLength}day");
+            $realLength++;
+            $week = date("w", $timestamp);
+            $date = date("Y-m-d", $timestamp);
+            if($week == 0 || $week == 6){
+                // 周末
+                continue;
+            }
+            if(in_array($date, $holiday)){
+                // 节假日
+                continue;
+            }
+            $i++;
+        }
+        return $timestamp;
+    }
+}
+
+if(!function_exists("cfgs"))
+{
+    function cfgs()
+    {
+        return model("System")->column("val", "alias");
     }
 }

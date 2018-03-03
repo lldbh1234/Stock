@@ -34,10 +34,12 @@ class Stock extends Base
                 $mode = (new ModeLogic())->modeIncPluginsById($modeId);
                 $deposit = (new DepositLogic())->depositById($depositId);
                 $lever = (new LeverLogic())->leverById($leverId);
+                $configs = cfgs();
                 $plugins = $mode['has_one_plugins'];
                 require_once request()->root() . "../plugins/{$plugins['type']}/{$plugins['code']}.php";
                 $obj = new $plugins['code'];
-                $trade = $obj->getTradeInfo($quotation['last_px'], 95, $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
+                $trade = $obj->getTradeInfo($quotation['last_px'], $configs['capital_usage'], $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
+                $holiday = explode(',', $configs['holiday']);
                 $order = [
                     "user_id" => $this->user_id,
                     "product_id" => $mode['product_id'],
@@ -48,7 +50,7 @@ class Stock extends Base
                     "hand"  => $trade["hand"],
                     "jiancang_fee" => $trade["jiancang"],
                     "defer" => $trade["defer"],
-                    "free_time" => workTimestamp($mode['free'], $holiday = []),
+                    "free_time" => workTimestamp($mode['free'], $holiday),
                     "is_defer" => input("post.defer/d"),
                     "stop_profit_price" => input("post.profit/f"),
                     "stop_profit_point" => (input("post.profit/f") - $quotation['last_px']) / $quotation['last_px'],
@@ -76,7 +78,7 @@ class Stock extends Base
                     $this->assign("deposits", $deposits);
                     $this->assign("levers", $levers);
                     $this->assign("user", uInfo());
-                    $this->assign("usage", 95);
+                    $this->assign("usage", cfgs()['capital_usage']);
                     return view('buy');
                 }else{
                     return view('public/error');
