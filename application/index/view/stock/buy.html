@@ -149,7 +149,7 @@
 				<p class="lf count_panel flex_nowrap">
 					<span class="minus_btn count_btn">-</span>
 					<!-- <span class="now_count">13.63</span> -->
-					<input readonly="readonly" value="13.08" class="now_count profitCount" />
+					<input  value="13.08" class="now_count profitCount" />
 					<span class="plus_btn count_btn">+</span>
 				</p>
 				<p class="rt fudong zhangfu">涨幅约 <span>+11.9%</span></p>
@@ -160,7 +160,7 @@
 				<p class="lf count_panel flex_nowrap">
 					<span class="minus_btn count_btn">-</span>
 					<!-- <span class="now_count">13.63</span> -->
-					<input readonly="readonly" value="9.07" class="now_count lossCount" />
+					<input  value="9.07" class="now_count lossCount" />
 					<span class="plus_btn count_btn">+</span>
 				</p>
 				<p class="rt fudong diefu">跌幅约 <span>+11.9%</span></p>
@@ -250,7 +250,7 @@
 
 	$(".pattern_options").on("tap" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
-		calcNum()
+		calcNum(true)
 	});
 
 	$(".x_y_options").on("tap" , "span" , function(){
@@ -298,13 +298,31 @@
 		$(".x_y_options span:nth-child(1)").addClass("active");
 		$(".pattern_options span:nth-child(1)").addClass("active");
 		$(".beishu_options span:nth-child(1)").addClass("active");
-		calcNum();
+		calcNum(true);
 
 		// $(".plus_btn").trigger("click");
 	});
 
+	$(".now_count").change(function(){
+		var context = $(this).parents(".control_point");
+		var now_count = parseFloat( context.find(".now_count").val() );
+		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
+
+		if( context.hasClass( "zhisun" ) && now_count > nowPrice){
+			return false;
+		}
+		if( context.hasClass( "zhiying" ) && now_count < nowPrice){
+			return false;
+		}
+
+
+		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+		context.find(".fudong").find("span").html( rate + "%" );
+	});
+
 	//计算
-	function calcNum(){
+	function calcNum( type ){
 		var creditNum = parseFloat( $(".x_y_options").find(".active").data("money") ); //信用金
 		var multiple = parseFloat( $(".beishu_options").find(".active").data("multiple") );//倍数
 		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
@@ -333,11 +351,13 @@
 		var maxLoss = (nowPrice * (1 - loss / 100)).toFixed(2);
 
 		var deferCount = parseFloat( $(".pattern_options").find(".active").data("defer") );
+		if( type ){
+			$(".profitCount").val(maxProfit).attr("data-initValue", maxProfit);
+			$(".lossCount").val( maxLoss ).attr("data-initValue", maxLoss);
+			$(".zhangfu span").html("+" + profit + "%");
+			$(".diefu span").html("-" + loss + "%");
+		}
 
-		$(".profitCount").val(maxProfit).attr("data-initValue", maxProfit);
-		$(".lossCount").val( maxLoss ).attr("data-initValue", maxLoss);
-		$(".zhangfu span").html("+" + profit + "%");
-		$(".diefu span").html("-" + loss + "%");
 		$(".diyanfei").html(deferCount + "元/天/万元");
 		$(".intro_diyanfei").html(deferCount);
 
