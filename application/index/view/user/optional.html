@@ -62,10 +62,10 @@
         {/volist}
     </ul>
     <div class="delete_panel clear_fl">
-        <div id="allChecked" style="display: none;float: left;height: 32px;" class="mui-input-row mui-checkbox mui-left select_btn">
+        <!-- <div id="allChecked" style="display: none;float: left;height: 32px;" class="mui-input-row mui-checkbox mui-left select_btn">
             <label></label>
             <input name="checkbox" value="Item 1" type="checkbox">
-        </div>
+        </div> -->
         <button class="rt zixun_delete_btn">删除</button>
     </div>
 {/block}
@@ -273,12 +273,8 @@
     }
 
     // 删除自选
-    $("#allChecked").change(function(){
-        console.log( $(this).attr("checked") );
-        if( $(this).is(":checked") ){
-            alert(123);
-        }
+    $(".zixun_delete_btn").click(function(){
+        
     });
-
 </script>
 {/block}
