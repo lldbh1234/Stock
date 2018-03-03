@@ -309,15 +309,31 @@
 		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
 		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
 
+
+		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+
 		if( context.hasClass( "zhisun" ) && now_count > nowPrice){
+			$(this).val( initValue );
 			return false;
 		}
 		if( context.hasClass( "zhiying" ) && now_count < nowPrice){
+			$(this).val( initValue );
+			return false;
+		}
+
+		var profit = parseFloat( $(".pattern_options").find(".active").data("profit") );
+		var loss = parseFloat( $(".pattern_options").find(".active").data("loss") );
+
+		if( context.hasClass( "zhisun" ) && (-rate - loss > 0)){
+			$(this).val( initValue );
+			return false;
+		}
+		if( context.hasClass( "zhiying" ) && ( profit - rate > 0 )){
+			$(this).val( initValue );
 			return false;
 		}
 
 
-		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
 		context.find(".fudong").find("span").html( rate + "%" );
 	});
 
