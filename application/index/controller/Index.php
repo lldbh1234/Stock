@@ -21,15 +21,28 @@ class Index extends Base
         $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
         {
-            $bestUserList[$k]['user_desc'] = $userLogic->userDetail($v['user_id']);
+            $bestUserList[$k] = array_merge($v, $userLogic->userDetail($v['user_id'], ['state' => 2]));//抛出
 
         }
+        $bestUserList = collection($bestUserList)->sort(function ($a, $b){
+            return $b['strategy_yield'] - $a['strategy_yield'];
+        })->slice(0,5)->toArray();//排序
+//        $bestUserList = collection($bestUserList)->sort(function($a,$b)
+//        {
+//            if ($a['strategy_yield']==$b['strategy_yield']) return 0;
+//            return ($a['strategy_yield']>$b['strategy_yield'])?-1:1;
+//        })->toArray();//排序
+
         $followIds = $userFollowLogic->getFansIdByUid($this->user_id);
         $bestStrategyList =  $orderLogic->getAllBy(['profit' => ['>', 0]]);
         foreach($bestStrategyList as $k => $v)
         {
-            $bestStrategyList[$k]['strategy_yield'] = empty($v['price']) ? 0 : round(($v['sell_price']-$v['price'])/$v['price']/100, 2);
+            $bestStrategyList[$k] = array_merge($v, $userLogic->userDetail($v['user_id'], ['state' => 3]));//持仓
+//            $bestStrategyList[$k]['strategy_yield'] = empty($v['price']) ? 0 : round(($v['sell_price']-$v['price'])/$v['price']/100, 2);
         }
+        $bestStrategyList = collection($bestStrategyList)->sort(function ($a, $b){
+            return $b['strategy_yield'] - $a['strategy_yield'];
+        })->slice(0,5)->toArray();//排序
 
         $this->assign('bestUserList', $bestUserList);
         $this->assign('bestStrategyList', $bestStrategyList);

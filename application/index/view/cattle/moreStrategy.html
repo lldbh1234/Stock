@@ -1,0 +1,78 @@
+{extend name="layouts/layout_user" /}
+{block name="title"}最优策略{/block}
+{block name="style"}
+<link href="__RESOURCE__/css/index.css" rel="stylesheet">
+<style type="text/css">
+    body{
+        background: #f5f5f5!important;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+{block name="content"}
+<header class="has_back_top ">
+    最优策略
+    <a href="index.html" class="back_icon">
+        <img src="img/back_icon.png">
+    </a>
+</header>
+
+<div class="more_celue_con">
+    <ul class="rink_tab_content great_strategy daren">
+        {volist name="$bestStrategyList" id="vo"}
+        <li>
+            <div class="clear_fl">
+                <a href="" class="lf">
+                    <span>{$vo.name}</span>
+                    <span class="strategy__code___VWYep">{$vo.code}</span>
+                </a>
+                <div class="rt">
+                    <img class="lf user_pic" src="{$vo.has_one_user.face | default='__RESOURCE__/img/default-user-img.png'}">
+                    <p class="lf user_name">{$vo.has_one_user.nickname | default=$vo.has_one_user.username} <img src="__RESOURCE__/img/niuren.png"></p>
+                </div>
+            </div>
+            <div class="flex_nowrap strategy_info">
+                <div>
+                    <h1>{$vo.strategy_yield | default='0'}%</h1>
+                    <p>收益率</p>
+                </div>
+                <div>
+                    <p>
+                        <span class="key">买价</span>
+                        <span class="value">{$vo.price | default='0.00'}</span>
+                    </p>
+                    <p>
+                        <span class="key">盈亏</span>
+                        <span class="value red">{$vo.profit | default='0.00'}</span>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <span class="key">卖价</span>
+                        <span class="value">{$vo.sell_price | default='0.00'}</span>
+                    </p>
+                    <p>
+                        <span class="key">数量</span>
+                        <span class="value">{$vo.sell_hand | default='0'}</span>
+                    </p>
+                </div>
+            </div>
+        </li>
+        {/volist}
+    </ul>
+</div>
+
+
+{/block}
+{block name="nav"}{/block}
+{block name="script"}
+<script type="text/javascript">
+    $(".common_nav").on("tap" , "a" , function(e){
+        e.preventDefault();
+        $(this).addClass("active").siblings(".active").removeClass("active");
+    });
+</script>
+{/block}

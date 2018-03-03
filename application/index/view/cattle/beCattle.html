@@ -15,7 +15,13 @@
         <img style="width:18%;padding: 78px 0 10px 0;" src="__RESOURCE__/img/wddsqzg.svg">
     </div>
 
-    <p style="text-align: center;font-size: 15px;color: #333;margin-bottom:20px;">{empty name="applyInfo"}——————— 您已达到申请资格 ———————{else /}——————— 您尚未达到申请资格 ———————{/empty}</p>
+    <p style="text-align: center;font-size: 15px;color: #333;margin-bottom:20px;">
+        {if condition="$applyInfo.enough eq 1"}
+            ——————— 您尚未达到申请资格 ———————
+        {else /}
+            ——————— 您已达到申请资格 ———————
+        {/if}
+    </p>
     <ul class="registMaster__list___3EQ_z">
 
         {egt name="applyInfo.pulish_strategy" value="$conf.pulish_strategy"}

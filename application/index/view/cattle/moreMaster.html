@@ -1,0 +1,110 @@
+{extend name="layouts/layout_index" /}
+{block name="title"}牛人排行榜{/block}
+{block name="style"}
+<link href="__RESOURCE__/css/person.css" rel="stylesheet">
+<style type="text/css">
+    body{
+        background: #f5f5f5!important;
+    }
+</style>
+{/block}
+
+{block name="content"}
+<header class="has_back_top ">
+    牛人排行榜
+    <a href="javascript:history.go(-1)" class="back_icon">
+        <img src="__RESOURCE__/img/back_icon.png">
+    </a>
+</header>
+<section class="more_daren_con">
+    <div class="flex_nowrap common_nav">
+        <a {if condition="$type eq 1"}class="active"{/if} href="{:url('index/Cattle/moreMaster', ['type' => 1])}">
+            <span>总排行</span>
+            <img src="__RESOURCE__/img/up-arrow.png">
+        </a>
+        <a {if condition="$type eq 2"}class="active"{/if} href="{:url('index/Cattle/moreMaster', ['type' => 2])}">
+            <span>日排行</span>
+            <img src="__RESOURCE__/img/up-arrow.png">
+        </a>
+        <a {if condition="$type eq 3"}class="active"{/if} href="{:url('index/Cattle/moreMaster', ['type' => 3])}">
+            <span>月排行</span>
+            <img src="__RESOURCE__/img/up-arrow.png">
+        </a>
+    </div>
+
+
+    <ul class="rink_tab_content daren">
+
+        {volist name="$bestUserList" id="vo"}
+        <li>
+            <div class="clear_fl">
+                <img class="lf user_pic" src="{$vo.face | default='__RESOURCE__/img/default-user-img.png'}">
+                <p class="lf user_name">{$vo.nickname | default=$vo.username} <img src="__RESOURCE__/img/niuren.png"></p>
+                <a href="javascript:void(0)" onclick="follow('{$vo.user_id}', this);" class="rt guanzhu_btn {in name='vo.user_id' value='$followIds'}active{/in}"></a>
+            </div>
+            <div class="clear_fl daren_info">
+                <p class="lf celueshu">策略数: <span>{$vo.pulish_strategy | default=0}</span></p>
+                <div class="rt celue_right">
+                    <p class="lf celueshu">胜算率 <span>{$vo.strategy_win | default=0}%</span></p>
+                    <p class="lf celueshu">收益率 <span>{$vo.strategy_yield | default=0}%</span></p>
+                </div>
+            </div>
+        </li>
+        {/volist}
+
+    </ul>
+</section>
+{/block}
+{block name="nav"}{/block}
+{block name="script"}
+<script type="text/javascript">
+    $(".common_nav").on("tap" , "a" , function(e){
+        e.preventDefault();
+        $(this).addClass("active").siblings(".active").removeClass("active");
+    });
+</script>
+<script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+    function follow(id, obj)
+    {
+        var content = '是否关注牛人？';
+        var msg = '已关注';
+        var type = 1;//关注
+        console.log(obj);
+
+
+        if($(obj).hasClass('active')){
+            content = '是否取消关注牛人？';
+            msg = '已取消关注';
+            type = 2;//取关
+        }
+        layer.open({
+            title : '',
+            content: content
+            ,btn: ['是', '否']
+            ,yes: function(index, layero){
+                var _url = '{:url("index/Cattle/follow")}',
+                    _oData = {user_id : id, type:type};
+                $ajaxCustom(_url, _oData, function(res){
+                    if(res.state){
+                        $alert(msg);
+                        setTimeout(function(){
+                            window.location.reload();
+                        }, 1000);
+                    }else{
+                        $alert(res.info);
+                    }
+                });
+            }
+
+            ,cancel: function(){
+                //右上角关闭回调
+
+                //return false 开启该代码可禁止点击该按钮关闭
+            }
+        });
+
+    }
+
+</script>
+{/block}
