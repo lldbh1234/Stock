@@ -24,3 +24,11 @@ if(!function_exists("manager")){
         return $manager;
     }
 }
+if(!function_exists("dd")){
+    function dd($array)
+    {
+        if(empty($array)) return ['code' => 1, 'msg' => '请传打印参数'];
+        echo "<pre>";
+        var_dump($array);die();
+    }
+}

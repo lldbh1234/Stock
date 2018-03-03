@@ -10,15 +10,26 @@ class UserGiveLogic
 
     public function pageUserGiveLists($filter = [], $pageSize = null)
     {
+//        $where = Admin::manager();
         $where = [];
         if(isset($filter['username']) && !empty($filter['username'])){//用户
-            $parent_ids = User::where(['username' => ["LIKE", "%{$filter['username']}%"]])->column('user_id');
-            $where['user_id'] = ['IN', $parent_ids];
+            $parent_ids_by_username = User::where(['username' => ["LIKE", "%{$filter['username']}%"]])->column('user_id');
+            $where['user_id'] = ['IN', $parent_ids_by_username];
+        }
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){//用户
+            $parent_ids_by_mobile = User::where(['mobile' => ["LIKE", "%{$filter['mobile']}%"]])->column('user_id');
+            if(isset($parent_ids_by_username)){
+                $where['user_id'] = ['IN', array_intersect($parent_ids_by_username, $parent_ids_by_mobile)];
+            }else{
+                $where['user_id'] = ['IN', $parent_ids_by_mobile];
+            }
+
         }
 
         $pageSize = $pageSize ? : config("page_size");
         //推荐人-微圈-微会员
-        $lists = UserGive::where($where)
+        $lists = UserGive::with(['hasOneUser'])
+            ->where($where)
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }

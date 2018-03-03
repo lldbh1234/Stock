@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 use app\admin\logic\UserGiveLogic;
 use app\admin\logic\UserLogic;
+use app\admin\logic\UserWithdrawLogic;
 use think\Db;
 use think\Request;
 class User extends Base
@@ -100,6 +101,7 @@ class User extends Base
         };
 
     }
+
     public function giveLog()
     {
         $_res = (new UserGiveLogic())->pageUserGiveLists(input(''));
@@ -109,6 +111,37 @@ class User extends Base
         $this->assign("search", input(""));
         return view();
 
+    }
+
+    public function withdrawLists()
+    {
+        $_res = (new UserWithdrawLogic())->pageUserWithdrawLists(input(''));
+
+        $this->assign("datas", $_res['lists']);
+        $this->assign("pages", $_res['pages']);
+        $this->assign("search", input(""));
+        return view();
+
+    }
+
+    public function withdraw()
+    {
+        if(request()->isPost())
+        {
+
+            $validate = \think\Loader::validate('UserWithdraw');
+            if(!$validate->scene('user_withdraw')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+
+                $ret = (new UserWithdrawLogic())->withdrawById(input('post.'));
+                if($ret['code'] == 0){
+                    return $this->ok();
+                } else {
+                    return $this->fail([$ret['msg']]);
+                }
+            }
+        };
     }
 
 
