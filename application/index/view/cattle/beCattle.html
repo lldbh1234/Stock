@@ -1,0 +1,96 @@
+{extend name="layouts/layout_user" /}
+{block name="title"}成为牛人{/block}
+{block name="style"}
+{/block}
+<!--个人中心-充值-支付宝-->
+{block name="body"}
+    <body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+{block name="content"}
+    <header class="bg_fff mui-bar mui-bar-nav">
+        <a href="javascript:history.go(-1)" class="color_red mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">成为牛人</h1>
+    </header>
+    <div style="text-align: center;">
+        <img style="width:18%;padding: 78px 0 10px 0;" src="__RESOURCE__/img/wddsqzg.svg">
+    </div>
+
+    <p style="text-align: center;font-size: 15px;color: #333;margin-bottom:20px;">{empty name="applyInfo"}——————— 您已达到申请资格 ———————{else /}——————— 您尚未达到申请资格 ———————{/empty}</p>
+    <ul class="registMaster__list___3EQ_z">
+
+        {egt name="applyInfo.pulish_strategy" value="$conf.pulish_strategy"}
+        <li class="">
+            <span><img src="__RESOURCE__/img/dg.svg" alt="标记"></span>
+            <span>发布策略数超过{$conf.pulish_strategy | default=0}次</span>
+        </li>
+        {else /}
+        <li class="registMaster__reject___1rzpE">
+            <span><img src="__RESOURCE__/img/wh.svg" alt="标记"></span>
+            <span>发布策略数不足{$conf.pulish_strategy | default=0}次</span>
+        </li>
+        {/egt}
+
+        {egt name="applyInfo.strategy_win" value="$conf.strategy_win"}
+        <li class="">
+            <span><img src="__RESOURCE__/img/dg.svg" alt="标记"></span>
+            <span>策略胜算率超过{$conf.strategy_win | default=0}%</span>
+        </li>
+        {else /}
+        <li class="registMaster__reject___1rzpE">
+            <span><img src="__RESOURCE__/img/wh.svg" alt="标记"></span>
+            <span>策略胜算率不足{$conf.strategy_win | default=0}%</span>
+        </li>
+        {/egt}
+
+        {egt name="applyInfo.strategy_yield" value="$conf.strategy_yield"}
+        <li class="">
+            <span><img src="__RESOURCE__/img/dg.svg" alt="标记"></span>
+            <span>策略收益率超过{$conf.strategy_yield | default=0}%</span>
+        </li>
+        {else /}
+        <li class="registMaster__reject___1rzpE">
+            <span><img src="__RESOURCE__/img/wh.svg" alt="标记"></span>
+            <span>策略收益率不足{$conf.strategy_yield | default=0}%</span>
+        </li>
+        {/egt}
+
+    </ul>
+    <div class="tip_con">
+        <div class="registMaster__title___1U70X">
+            <img src="__RESOURCE__/img/icon_tq.svg" alt="icon">
+            <span> 牛人享受以下特权</span>
+        </div>
+        <div class="registMaster__item___5YSgh">1. 发布策略用户跟单，盈利得分成</div>
+        <div class="registMaster__item___5YSgh">2. 增加粉丝关注，发展粉丝经济</div>
+    </div>
+    {if condition="$applyInfo.status eq 0"}
+        <button href="{:url('index/Strategy/index')}" class="ml_btn mui-btn mui-btn-block apply">申请牛人</button>
+    {else /}
+        <button class="ml_btn mui-btn mui-btn-block continue">继续创建策略</button>
+    {/if}
+
+{/block}
+{block name="nav"}{/block}
+{block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
+<script type="text/javascript">
+    $(".apply").click(function(){
+
+        var _url = '{:url("index/Cattle/apply")}',
+            _oData = $("form").serialize();
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ // 登录成功
+                $alert("已申请");
+                setTimeout(function(){
+                        window.location.reload();
+                }, 1000);
+            }else{
+                $alert(res.info);
+            }
+        });
+    });
+    $(".continue").click(function(){
+        window.location.href="{:url('index/Strategy/index')}";
+    });
+</script>
+{/block}

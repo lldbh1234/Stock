@@ -149,325 +149,257 @@
 					<li class="item active daren">
 						<p>最牛达人</p>
 						<ul class="rink_tab_content daren">
+							{volist name="$bestUserList" id="vo"}
 							<li>
 								<div class="clear_fl">
-									<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-									<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									<a href="" class="rt guanzhu_btn"></a>
+									<img class="lf user_pic" src="{$vo.face | default='__RESOURCE__/img/default-user-img.png'}">
+									<p class="lf user_name">{$vo.nickname | default=$vo.username} <img src="__RESOURCE__/img/niuren.png"></p>
+									<a href="javascript:void(0)" onclick="follow('{$vo.user_id}', this);" class="rt guanzhu_btn {in name='vo.user_id' value='$followIds'}active{/in}"></a>
 								</div>
 								<div class="clear_fl daren_info">
-									<p class="lf celueshu">策略数: <span>4</span></p>
+									<p class="lf celueshu">策略数: <span>{$vo.user_desc.pulish_strategy | default=0}</span></p>
 									<div class="rt celue_right">
-										<p class="lf celueshu">胜算率 <span>44%</span></p>
-										<p class="lf celueshu">收益率 <span>49%</span></p>
+										<p class="lf celueshu">胜算率 <span>{$vo.user_desc.strategy_win | default=0}%</span></p>
+										<p class="lf celueshu">收益率 <span>{$vo.user_desc.strategy_yield | default=0}%</span></p>
 									</div>
 								</div>
 							</li>
+							{/volist}
 
-							<li>
-								<div class="clear_fl">
-									<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-									<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									<a href="" class="rt guanzhu_btn"></a>
-								</div>
-								<div class="clear_fl daren_info">
-									<p class="lf celueshu">策略数: <span>4</span></p>
-									<div class="rt celue_right">
-										<p class="lf celueshu">胜算率 <span>44%</span></p>
-										<p class="lf celueshu">收益率 <span>49%</span></p>
-									</div>
-								</div>
-							</li>
-
-							<li>
-								<div class="clear_fl">
-									<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-									<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									<a href="" class="rt guanzhu_btn"></a>
-								</div>
-								<div class="clear_fl daren_info">
-									<p class="lf celueshu">策略数: <span>4</span></p>
-									<div class="rt celue_right">
-										<p class="lf celueshu">胜算率 <span>44%</span></p>
-										<p class="lf celueshu">收益率 <span>49%</span></p>
-									</div>
-								</div>
-							</li>
-
-							<li>
-								<div class="clear_fl">
-									<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-									<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									<a href="" class="rt guanzhu_btn active"></a>
-								</div>
-								<div class="clear_fl daren_info">
-									<p class="lf celueshu">策略数: <span>4</span></p>
-									<div class="rt celue_right">
-										<p class="lf celueshu">胜算率 <span>44%</span></p>
-										<p class="lf celueshu">收益率 <span>49%</span></p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="clear_fl">
-									<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-									<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									<a href="" class="rt guanzhu_btn active"></a>
-								</div>
-								<div class="clear_fl daren_info">
-									<p class="lf celueshu">策略数: <span>4</span></p>
-									<div class="rt celue_right">
-										<p class="lf celueshu">胜算率 <span>44%</span></p>
-										<p class="lf celueshu">收益率 <span>49%</span></p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="clear_fl">
-									<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-									<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									<a href="" class="rt guanzhu_btn active"></a>
-								</div>
-								<div class="clear_fl daren_info">
-									<p class="lf celueshu">策略数: <span>4</span></p>
-									<div class="rt celue_right">
-										<p class="lf celueshu">胜算率 <span>44%</span></p>
-										<p class="lf celueshu">收益率 <span>49%</span></p>
-									</div>
-								</div>
-							</li>
 						</ul>
 					</li>
 					<li  class="item celue">
 						<p>最优策略</p>
 						<ul class="rink_tab_content great_strategy daren">
+							{volist name="$bestStrategyList" id="vo"}
 							<li>
 								<div class="clear_fl">
 									<a href="" class="lf">
-										<span>冀东装备</span>
-										<span class="strategy__code___VWYep">000856</span>
+										<span>{$vo.name}</span>
+										<span class="strategy__code___VWYep">{$vo.code}</span>
 									</a>
 									<div class="rt">
-										<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-										<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
+										<img class="lf user_pic" src="{$vo.has_one_user.face | default='__RESOURCE__/img/default-user-img.png'}">
+										<p class="lf user_name">{$vo.has_one_user.nickname | default=$vo.has_one_user.username} <img src="__RESOURCE__/img/niuren.png"></p>
 									</div>
 								</div>
 								<div class="flex_nowrap strategy_info">
 									<div>
-										<h1>22.22%</h1>
+										<h1>{$vo.strategy_yield | default='0'}%</h1>
 										<p>收益率</p>
 									</div>
 									<div>
 										<p>
 											<span class="key">买价</span>
-											<span class="value">23.32</span>
+											<span class="value">{$vo.price | default='0.00'}</span>
 										</p>
 										<p>
 											<span class="key">盈亏</span>
-											<span class="value red">2332</span>
+											<span class="value red">{$vo.profit | default='0.00'}</span>
 										</p>
 									</div>
 									<div>
 										<p>
 											<span class="key">卖价</span>
-											<span class="value">23.32</span>
+											<span class="value">{$vo.sell_price | default='0.00'}</span>
 										</p>
 										<p>
 											<span class="key">数量</span>
-											<span class="value">2332</span>
+											<span class="value">{$vo.sell_hand | default='0'}</span>
 										</p>
 									</div>
 								</div>
 							</li>
-							<li>
-								<div class="clear_fl">
-									<a href="" class="lf">
-										<span>冀东装备</span>
-										<span class="strategy__code___VWYep">000856</span>
-									</a>
-									<div class="rt">
-										<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-										<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									</div>
-								</div>
-								<div class="flex_nowrap strategy_info">
-									<div>
-										<h1>22.22%</h1>
-										<p>收益率</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">买价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">盈亏</span>
-											<span class="value green">2332</span>
-										</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">卖价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">数量</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="clear_fl">
-									<a href="" class="lf">
-										<span>冀东装备</span>
-										<span class="strategy__code___VWYep">000856</span>
-									</a>
-									<div class="rt">
-										<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-										<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									</div>
-								</div>
-								<div class="flex_nowrap strategy_info">
-									<div>
-										<h1>22.22%</h1>
-										<p>收益率</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">买价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">盈亏</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">卖价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">数量</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="clear_fl">
-									<a href="" class="lf">
-										<span>冀东装备</span>
-										<span class="strategy__code___VWYep">000856</span>
-									</a>
-									<div class="rt">
-										<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-										<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									</div>
-								</div>
-								<div class="flex_nowrap strategy_info">
-									<div>
-										<h1>22.22%</h1>
-										<p>收益率</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">买价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">盈亏</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">卖价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">数量</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="clear_fl">
-									<a href="" class="lf">
-										<span>冀东装备</span>
-										<span class="strategy__code___VWYep">000856</span>
-									</a>
-									<div class="rt">
-										<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-										<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									</div>
-								</div>
-								<div class="flex_nowrap strategy_info">
-									<div>
-										<h1>22.22%</h1>
-										<p>收益率</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">买价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">盈亏</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">卖价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">数量</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="clear_fl">
-									<a href="" class="lf">
-										<span>冀东装备</span>
-										<span class="strategy__code___VWYep">000856</span>
-									</a>
-									<div class="rt">
-										<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">
-										<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>
-									</div>
-								</div>
-								<div class="flex_nowrap strategy_info">
-									<div>
-										<h1>22.22%</h1>
-										<p>收益率</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">买价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">盈亏</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-									<div>
-										<p>
-											<span class="key">卖价</span>
-											<span class="value">23.32</span>
-										</p>
-										<p>
-											<span class="key">数量</span>
-											<span class="value">2332</span>
-										</p>
-									</div>
-								</div>
+							{/volist}
+							<!--<li>-->
+								<!--<div class="clear_fl">-->
+									<!--<a href="" class="lf">-->
+										<!--<span>冀东装备</span>-->
+										<!--<span class="strategy__code___VWYep">000856</span>-->
+									<!--</a>-->
+									<!--<div class="rt">-->
+										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
+										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="flex_nowrap strategy_info">-->
+									<!--<div>-->
+										<!--<h1>22.22%</h1>-->
+										<!--<p>收益率</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">买价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">盈亏</span>-->
+											<!--<span class="value green">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">卖价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">数量</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li>-->
+								<!--<div class="clear_fl">-->
+									<!--<a href="" class="lf">-->
+										<!--<span>冀东装备</span>-->
+										<!--<span class="strategy__code___VWYep">000856</span>-->
+									<!--</a>-->
+									<!--<div class="rt">-->
+										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
+										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="flex_nowrap strategy_info">-->
+									<!--<div>-->
+										<!--<h1>22.22%</h1>-->
+										<!--<p>收益率</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">买价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">盈亏</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">卖价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">数量</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li>-->
+								<!--<div class="clear_fl">-->
+									<!--<a href="" class="lf">-->
+										<!--<span>冀东装备</span>-->
+										<!--<span class="strategy__code___VWYep">000856</span>-->
+									<!--</a>-->
+									<!--<div class="rt">-->
+										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
+										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="flex_nowrap strategy_info">-->
+									<!--<div>-->
+										<!--<h1>22.22%</h1>-->
+										<!--<p>收益率</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">买价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">盈亏</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">卖价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">数量</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li>-->
+								<!--<div class="clear_fl">-->
+									<!--<a href="" class="lf">-->
+										<!--<span>冀东装备</span>-->
+										<!--<span class="strategy__code___VWYep">000856</span>-->
+									<!--</a>-->
+									<!--<div class="rt">-->
+										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
+										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="flex_nowrap strategy_info">-->
+									<!--<div>-->
+										<!--<h1>22.22%</h1>-->
+										<!--<p>收益率</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">买价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">盈亏</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">卖价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">数量</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</li>-->
+							<!--<li>-->
+								<!--<div class="clear_fl">-->
+									<!--<a href="" class="lf">-->
+										<!--<span>冀东装备</span>-->
+										<!--<span class="strategy__code___VWYep">000856</span>-->
+									<!--</a>-->
+									<!--<div class="rt">-->
+										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
+										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<div class="flex_nowrap strategy_info">-->
+									<!--<div>-->
+										<!--<h1>22.22%</h1>-->
+										<!--<p>收益率</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">买价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">盈亏</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+									<!--<div>-->
+										<!--<p>-->
+											<!--<span class="key">卖价</span>-->
+											<!--<span class="value">23.32</span>-->
+										<!--</p>-->
+										<!--<p>-->
+											<!--<span class="key">数量</span>-->
+											<!--<span class="value">2332</span>-->
+										<!--</p>-->
+									<!--</div>-->
+								<!--</div>-->
 							</li>
 						</ul>
 					</li>
@@ -520,7 +452,7 @@
         });
 
 		//选项卡
-		 mui('body').on('tap', 'a', function() {
+		 mui('body').on('tap', 'nav a', function() {
             var data_href = this.getAttribute("data-href");
             var href = this.getAttribute("href");
             var url=data_href;
@@ -587,5 +519,49 @@
 
 
 		$alert("hello");
+	</script>
+<script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript">
+		function follow(id, obj)
+		{
+		    var content = '是否关注牛人？';
+		    var msg = '已关注';
+		    var type = 1;//关注
+			console.log(obj);
+
+
+		    if($(obj).hasClass('active')){
+                content = '是否取消关注牛人？';
+                msg = '已取消关注';
+                type = 2;//取关
+			}
+            layer.open({
+				title : '',
+                content: content
+                ,btn: ['是', '否']
+                ,yes: function(index, layero){
+                    var _url = '{:url("index/Cattle/follow")}',
+                        _oData = {user_id : id, type:type};
+                    $ajaxCustom(_url, _oData, function(res){
+                        if(res.state){
+                            $alert(msg);
+                            setTimeout(function(){
+                                window.location.reload();
+                            }, 1000);
+                        }else{
+                            $alert(res.info);
+                        }
+                    });
+                }
+
+                ,cancel: function(){
+                    //右上角关闭回调
+
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+            });
+
+		}
+
 	</script>
 {/block}

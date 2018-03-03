@@ -38,4 +38,20 @@ class OrderLogic
             return 0;
         }
     }
+
+    public function getAllBy($where=[])
+    {
+        $map = [];
+        if(!empty($where) && is_array($where))
+        {
+            foreach($where as $k => $v)
+            {
+                $map[$k] = $v;
+            }
+        }
+        $data = Order::with(['hasOneUser'])->where($map)->select();
+        return collection($data)->toArray();
+
+    }
+
 }
