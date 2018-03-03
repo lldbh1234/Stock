@@ -159,6 +159,13 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::post('del', 'admin/Lever/remove');
         });
 
+        Route::group("hot", function(){
+            Route::any('lists', 'admin/Hot/index');
+            Route::any('add', 'admin/Hot/create');
+            Route::any('edit', 'admin/Hot/modify');
+            Route::post('del', 'admin/Hot/remove');
+        });
+
         Route::group("ai", function(){
             Route::any('index', 'admin/Ai/index'); //智能推荐类型
             Route::any('add-type', 'admin/Ai/createType'); //添加推荐类型

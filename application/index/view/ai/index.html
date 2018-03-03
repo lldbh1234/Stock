@@ -45,8 +45,8 @@ AI智能推荐
 			<div class="pa14">
 				<div class="clear_fl ai_gu_options">
                     {volist name="item.has_many_ai" id="ai" length="3"}
-					<div {eq name="key" value="0"}class="active"{/eq} data-class-name="detail-{$ai.type_id}-{$ai.id}">
-						<h1 class="ai_gu_output">+17.44%</h1>
+					<div data-code="{$ai.code}" data-income="{$ai.income}" {eq name="key" value="0"}class="active"{/eq} data-class-name="detail-{$ai.type_id}-{$ai.id}">
+						<h1 class="ai_gu_output">{$ai.rate}%</h1>
 						<p class="ai_gu_o_title">{$ai.name}</p>
 						<p class="ai_gu_code">{$ai.code}</p>
 					</div>
@@ -60,9 +60,9 @@ AI智能推荐
 							<tbody>
 								<tr>
 									<td>入价</td>
-									<td>30.91</td>
+									<td>{$ai.income}</td>
 									<td class="pool-profit-table__title___2adNx">现价</td>
-									<td>36.30</td></tr><tr><td>表现</td>
+									<td>{$ai.last_px}</td></tr><tr><td>表现</td>
                                     <td colspan="2" class="pool-profit-table__revealed___3r1pm">{$ai.remark}</td>
 									<td>
 										<a href="{:url('index/Stock/stockBuy', ['code' => $ai.code])}" class="rt ai_follow_btn follow_buy_btn">跟买</a>
