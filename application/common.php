@@ -113,3 +113,26 @@ if(!function_exists("numberFormat")){
         }
     }
 }
+
+if(!function_exists("workTimestamp")){
+    function workTimestamp($length, $holiday = [])
+    {
+        $realLength = 1;
+        for($i = 1; $i <= $length;){
+            $timestamp = strtotime("+{$realLength}day");
+            $realLength++;
+            $week = date("w", $timestamp);
+            $date = date("Y-m-d", $timestamp);
+            if($week == 0 || $week == 6){
+                // 周末
+                continue;
+            }
+            if(in_array($date, $holiday)){
+                // 节假日
+                continue;
+            }
+            $i++;
+        }
+        return $timestamp;
+    }
+}
