@@ -6,6 +6,21 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
 		<link href="css/mui.min.css" rel="stylesheet">
 		<link href="css/person.css" rel="stylesheet">
+
+		<style type="text/css">
+			.postion_tab li.active>p a {
+			    border-bottom: 2px solid #fc5055;
+			    display: inline-block;
+			    color: #fc5055;
+			}
+			.postion_tab li>p a{
+				color: #8f8f94;
+				font-size: 13px;
+			}
+			.postion_tab_con{
+				display: block!important;
+			}
+		</style>
 	</head>
 <!--个人中心-充值-支付宝-->
 	<body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">  
@@ -36,256 +51,17 @@
 		</ul>
 		<ul class="postion_tab flex_nowrap">
 			<li class="active">
-				<p><span>当前持仓</span></p>
-				<ul class="postion_tab_con">
-					<li>
-						<h1 class="clear_fl">
-							<span class="lf"><span class="p_key">招商银行</span> <span class="p_value">600036</span></span>
-							<span class="rt"> <span class="p_key"></span>01-08 11:07</span>
-						</h1>
-						<div class="clear_fl p_info">
-							<p>
-								<span class="p_key">买价</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">现价</span> 
-								<span class="p_value red">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">数量</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">市值</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">收益率</span> 
-								<span class="p_value red">+29.45%</span>
-							</p>
-							<p>
-								<span class="p_key">盈亏</span> 
-								<span class="p_value red">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">保证金</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">止损</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">止盈</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">递延费</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">分红</span> 
-								<span class="p_value">29.45</span>
-							</p>
-						</div>
-						<div class="clear_fl p_control_panel">
-							<p class="rt">
-								<a class="add_money  lf" href="">补充保证金</a>
-								<a class="modify_point  lf" href="">修改止盈止损</a>
-								<a class="sell_position_btn lf" href="">平仓</a>
-							</p>
-						</div>
-					</li>
-					<li>
-						<h1 class="clear_fl">
-							<span class="lf">招商银行 600036</span>
-							<span class="rt"> <span class="p_key"></span>01-08 11:07</span>
-						</h1>
-						<div class="clear_fl p_info">
-							<p>
-								<span class="p_key">买价</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">现价</span> 
-								<span class="p_value red">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">数量</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">市值</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">收益率</span> 
-								<span class="p_value red">+29.45%</span>
-							</p>
-							<p>
-								<span class="p_key">盈亏</span> 
-								<span class="p_value red">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">保证金</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">止损</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">止盈</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">递延费</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">分红</span> 
-								<span class="p_value">29.45</span>
-							</p>
-						</div>
-						<div class="clear_fl p_control_panel">
-							<p class="rt">
-								<a class="add_money  lf" href="">补充保证金</a>
-								<a class="modify_point  lf" href="">修改止盈止损</a>
-								<a class="sell_position_btn lf" href="">平仓</a>
-							</p>
-						</div>
-					</li>
-				</ul>
+				<p><a href="">当前持仓</a></p>
 			</li>
 
 			<li>
-				<p><span>当前委托</span></p>
-				<ul class="postion_tab_con">
-					<li>
-						<h1 class="clear_fl">
-							<span class="lf">招商银行 600036</span>
-							<span class="rt"> <span class="p_key"></span>01-08 11:07</span>
-						</h1>
-						<div class="clear_fl p_info">
-							<p>
-								<span class="p_key">买价</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">现价</span> 
-								<span class="p_value red">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">数量</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">市值</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">收益率</span> 
-								<span class="p_value red">+29.45%</span>
-							</p>
-							<p>
-								<span class="p_key">盈亏</span> 
-								<span class="p_value red">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">保证金</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">止损</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">止盈</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">递延费</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">分红</span> 
-								<span class="p_value">29.45</span>
-							</p>
-						</div>
-						<div class="clear_fl p_control_panel">
-							<p class="rt">
-								<a class="add_money  lf" href="">补充保证金</a>
-								<a class="modify_point  lf" href="">修改止盈止损</a>
-								<a class="sell_position_btn lf" href="">平仓</a>
-							</p>
-						</div>
-					</li>
-					<li>
-						<h1 class="clear_fl">
-							<span class="lf">招商银行 600036</span>
-							<span class="rt"> <span class="p_key"></span>01-08 11:07</span>
-						</h1>
-						<div class="clear_fl p_info">
-							<p>
-								<span class="p_key">买价</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">现价</span> 
-								<span class="p_value red">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">数量</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">市值</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">收益率</span> 
-								<span class="p_value red">+29.45%</span>
-							</p>
-							<p>
-								<span class="p_key">盈亏</span> 
-								<span class="p_value red">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">保证金</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">止损</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">止盈</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">递延费</span> 
-								<span class="p_value">29.45</span>
-							</p>
-							<p>
-								<span class="p_key">分红</span> 
-								<span class="p_value">29.45</span>
-							</p>
-						</div>
-						<div class="clear_fl p_control_panel">
-							<p class="rt">
-								<a class="add_money  lf" href="">补充保证金</a>
-								<a class="modify_point  lf" href="">修改止盈止损</a>
-								<a class="sell_position_btn lf" href="">平仓</a>
-							</p>
-						</div>
-					</li>
-				</ul>
+				<p><a href="">当前委托</a></p>
 			</li>
 
 			<li>
-				<p><span>历史交易</span></p>
-				<ul class="postion_tab_con">
+				<p><a href="">历史交易</a></p>
+			</li>
+			<ul class="postion_tab_con">
 					<li>
 						<h1 class="clear_fl">
 							<span class="lf">招商银行 600036</span>
@@ -405,7 +181,6 @@
 						</div>
 					</li>
 				</ul>
-			</li>
 		</ul>
 
 		
