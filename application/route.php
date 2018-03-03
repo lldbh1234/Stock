@@ -122,7 +122,7 @@ Route::group("cron", function () {
 
 // www.baonastone.com.cn
 // stock.lc
-Route::group(["domain" => "stock.lc"], function() {
+Route::group(["domain" => "www.baonastone.com.cn"], function() {
 //Route::group(["domain" => "www.baonastone.com.cn"], function() {
     // Admin
     Route::group("admin", function () {
