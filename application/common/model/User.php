@@ -54,4 +54,9 @@ class User extends BaseModel
     {
         return $this->hasMany("\\app\\common\\model\\UserFollow", "follow_id", "user_id");
     }
+
+    public function hasManyRecord()
+    {
+        return $this->hasMany("\\app\\common\\model\\UserRecord", "user_id", "user_id");
+    }
 }
