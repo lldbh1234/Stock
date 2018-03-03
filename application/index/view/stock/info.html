@@ -135,6 +135,7 @@
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){ // 登录成功
                 $alert("自选添加成功！");
+                // $(this).html("取消自选");
             }else{
                 $alert(res.info);
             }

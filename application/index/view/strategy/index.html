@@ -12,6 +12,19 @@
     .zixuan_list{
         margin-bottom: 70px;
     }
+    .green{
+        font-size: 13px;
+    }
+    .remove_btn, .add_h_btn {
+        width: 10%!important;
+        float: left;
+    }
+    .search_h_list span:nth-child(1) {
+        width: 50%;
+        text-align: left;
+        font-size: 13px;
+        color: #333;
+    }
 </style>
 {/block}
 
@@ -33,44 +46,17 @@
         <div class="search_history">
             <h1 class="search_h_title clear_fl">
                 搜索历史
-                <a href="" class="rt">清空</a>
+                <span class="rt clear_btn">清空</span>
             </h1>
             <ul class="search_h_list">
-                <li>
+                <!-- <li>
                     <a  class="flex_nowrap" href="hangqing.html?code=600179">
                         <span>招商银行 600179</span>
                         <span class="red">28.17</span>
                         <span class="red">+8.17%</span>
                         <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
                         <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
-                    </a>
-                </li>
-                <li>
-                    <a  class="flex_nowrap" href="hangqing.html?code=300664">
-                        <span>鹏鹞环保 300664</span>
-                        <span class="red">28.17</span>
-                        <span class="red">+8.17%</span>
-                        <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
-                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
-                    </a>
-                </li>
-                <li>
-                    <a  class="flex_nowrap" href="hangqing.html?code=603980">
-                        <span>吉华集团 603980</span>
-                        <span class="red">28.17</span>
-                        <span class="red">+8.17%</span>
-                        <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
-                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
-                    </a>
-                </li>
-                <li>
-                    <a  class="flex_nowrap" href="hangqing.html?code=601566">
-                        <span>九牧王 601566</span>
-                        <span class="red">28.17</span>
-                        <span class="red">+8.17%</span>
-                        <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
-                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
-                    </a>
+                    </a> -->
                 </li>
             </ul>
         </div>
@@ -145,8 +131,7 @@
             var val = $(this).val();
             displayItems(val);
         });
-
-        var searchCon = $(".search_content_box").html();
+        var searchCon = "";
         function displayItems(items) {
             var code = new Array();
             var html = "";
@@ -211,6 +196,81 @@
             }
         }
 
+        $(function(){
+            var storage = window.localStorage;
+            var searchHistory = storage.searchHistory;
+            var _url = "{:url('index/Stock/simple')}",
+                    _oData = {code: searchHistory};
+
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){ // 登录成功
+                    var html = "";
+                    for( var key in res.data ){
+                        var rate = parseFloat(res.data[key].px_change_rate);
+                        var className = "";
+                        if(rate >= 0){
+                            className = "red"
+                        }else{
+                            className = "green"
+                        }
+                        html += '<li data-code="'+ res.data[key].code +'" class="clear_fl">\
+                    <a style="width:80%"  class="flex_nowrap lf" href="/stock/home.html?code='+ res.data[key].code +'">\
+                        <span>'+res.data[key].prod_name+' '+ res.data[key].code +'</span>\
+                        <span class="'+ className +'">' + res.data[key].last_px + '</span>\
+                        <span class="'+ className +'">' + res.data[key].px_change_rate + '%</span>\
+                        </a>\
+                        <span class="add_h_btn"><img  src="__RESOURCE__/img/add_btn.png"></span>\
+                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>\
+                </li>';
+                    }
+
+                    $(".search_h_list").html(html);
+                    searchCon = $(".search_content_box").html();
+                }else{
+                    // $alert(res.info);
+                }
+            });
+        });
+
+
+        $("body").on("click", ".add_h_btn", function(){
+            var _url = '{:url("index/User/createOptional")}',
+            _code = $(this).parents("li").data("code"),
+            _oData = {code:_code};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){ // 登录成功
+                    $alert("自选添加成功！");
+                    // $(this).html("取消自选");
+                }else{
+                    $alert(res.info);
+                }
+            });
+        });
+
+
+        $("body").on("click", ".remove_btn", function(){
+            var _code = $(this).parents("li").data("code") + "";
+            var storage = window.localStorage;
+            var searchHistory = storage.searchHistory.split(",");
+            var index = searchHistory.indexOf(_code);
+            if (index > -1) {
+                searchHistory.splice(index, 1);
+            }
+            searchHistory = searchHistory.join(",");
+            storage.searchHistory = searchHistory;
+            $(this).parents("li").remove();
+        });
+
+
+        $("body").on("click", ".clear_btn", function(e){
+            e.preventDefault();
+            var storage = window.localStorage;
+            storage.searchHistory = "";
+            $(".search_h_list").empty();
+        });
+
+
+
 
         //搜索历史
         $(".search_content_box").on("click", ".zixuan_list li", function(){
@@ -219,7 +279,11 @@
             if( storage.searchHistory ){
                 var searchHistory = storage.searchHistory;
                 searchHistory = searchHistory + "," + code;
+                storage.searchHistory = searchHistory;
+            }else{
+                storage.searchHistory = code;
             }
+            window.location.href = "/stock/home.html?code=" + code;
         });
 
 
