@@ -18,6 +18,26 @@
     * {
         -webkit-user-select: auto!important;
     }
+    .search_con input {
+        width: 100%;
+        height: 46px;
+        line-height: 46px;
+        padding-left: 40px;
+        background-size: 20px 20px;
+        border: none;
+        border-radius: 3px;
+        font-size: 16px;
+        color: #333;
+        padding-right: 30px;
+    }
+    body{
+        padding-bottom: 50px;
+    }
+    .edit_btn {
+        background-size: 100%;
+        top: 20px;
+        right: 18px;
+    }
 </style>
 {/block}
 
@@ -230,12 +250,9 @@ function isTradingTime(){
                                         <label></label>\
                                         <input name="checkbox" value="Item 1" type="checkbox">\
                                     </div>\
-                                    <a style="width:80%" class="flex_nowrap" href="/stock/home.html?code='+ res.data[key].code +'">\
                                         <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
                                         <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
                                         <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
-                                        \
-                                    </a>\
                                     <span style="width:20%">\
                                         <a href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>\
                                     </span>\
@@ -338,5 +355,30 @@ function isTradingTime(){
         }
         
     });
+
+
+
+    //搜索历史
+        $("body").on("click", ".zixuan_list li", function(){
+            var code = $(this).find(".zi_name span+span").html();
+            var storage = window.localStorage;
+            if( storage.searchHistory ){
+                var searchHistory = storage.searchHistory;
+                searchHistory = searchHistory.split(",");
+                var index = searchHistory.indexOf(code);
+                if (index > -1) {
+                    searchHistory.splice(index, 1);
+                }
+                if( searchHistory.length >= 10 ){
+                    searchHistory.splice(8, searchHistory.length - 9);
+                }
+                searchHistory.unshift( code );
+                searchHistory = searchHistory.join(",");
+                storage.searchHistory = searchHistory;
+            }else{
+                storage.searchHistory = code;
+            }
+            window.location.href = "/stock/home.html?code=" + code;
+        });
 </script>
 {/block}
