@@ -45,7 +45,7 @@ AI智能推荐
 			<div class="pa14">
 				<div class="clear_fl ai_gu_options">
                     {volist name="item.has_many_ai" id="ai" length="3"}
-					<div data-code="{$ai.code}" data-income="{$ai.income}" {eq name="key" value="0"}class="active"{/eq} data-class-name="detail-{$ai.type_id}-{$ai.id}">
+					<div class="aibox{$ai.code}" data-remark="{$ai.remark}" data-code="{$ai.code}" data-income="{$ai.income}" {eq name="key" value="0"}class="active"{/eq} data-class-name="detail-{$ai.type_id}-{$ai.id}">
 						<h1 class="ai_gu_output">{$ai.rate}%</h1>
 						<p class="ai_gu_o_title">{$ai.name}</p>
 						<p class="ai_gu_code">{$ai.code}</p>
@@ -54,7 +54,7 @@ AI智能推荐
 				</div>
 
                 {volist name="item.has_many_ai" id="ai" length="3"}
-				<div class="home-stock-pool__stock-pool-price___C91NS detail-{$ai.type_id}-{$ai.id}" {neq name="key" value="0"} style="display: none;"{/neq}>
+				<div class="ailabel{$ai.code} home-stock-pool__stock-pool-price___C91NS detail-{$ai.type_id}-{$ai.id}" {neq name="key" value="0"} style="display: none;"{/neq}>
 					<div class="pool-profit-table__pool-profit-table___REAP-">
 						<table class="pool-profit-table__table___V-LxU" cellspacing="0">
 							<tbody>
@@ -62,7 +62,7 @@ AI智能推荐
 									<td>入价</td>
 									<td>{$ai.income}</td>
 									<td class="pool-profit-table__title___2adNx">现价</td>
-									<td>{$ai.last_px}</td></tr><tr><td>表现</td>
+									<td class="now_price">{$ai.last_px}</td></tr><tr><td>表现</td>
                                     <td colspan="2" class="pool-profit-table__revealed___3r1pm">{$ai.remark}</td>
 									<td>
 										<a href="{:url('index/Stock/stockBuy', ['code' => $ai.code])}" class="rt ai_follow_btn follow_buy_btn">跟买</a>
@@ -105,6 +105,7 @@ AI智能推荐
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
 	$(".edit_btn").on("tap" , function(){
 		$(".select_btn").toggle();
@@ -133,5 +134,33 @@ AI智能推荐
         _that.siblings(".home-stock-pool__stock-pool-price___C91NS").hide();
         _that.show();
     });
+
+
+
+    setInterval(function(){
+    	var _code = [];
+    	$(".ai_gu_options>div").each(function(){
+    		_code.push( $(this).data("code") );
+    	});
+
+    	_code = _code.join(",");
+    	var _url = "{:url('index/Stock/simple')}",
+            _oData = {code: _code};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ 
+                for( var key in res.data ){
+                    var itemData = res.data[key];
+                    var boxContext = $(".aibox" + itemData.code);
+                    var incomePrice = parseFloat( boxContext.data("income") );
+                    var newPrice = parseFloat( itemData.last_px );
+                    var profitRate = ((newPrice - incomePrice) / incomePrice * 100).toFixed(2);
+                    boxContext.find(".ai_gu_output").html( profitRate +"%");
+                    $(".ailabel" + itemData.code).find(".now_price").html( itemData.last_px );
+                }
+            }else{
+                // $alert(res.info);
+            }
+        });
+    },6000);
 </script>
 {/block}
