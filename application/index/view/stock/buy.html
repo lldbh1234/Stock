@@ -306,8 +306,8 @@
 		var creditNum = parseFloat( $(".x_y_options").find(".active").data("money") ); //信用金
 		var multiple = parseFloat( $(".beishu_options").find(".active").data("multiple") );//倍数
 		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
-
-		var count = Math.floor(creditNum * multiple / nowPrice /100) * 100; //股数
+		var usage = parseFloat( $(".balance_count").data("usage") ); //资金使用率
+		var count = Math.floor(creditNum * multiple * usage / nowPrice /100 / 100) * 100; //股数
 		var ammount = count * nowPrice;
 		$(".baishu_detail .lf").html(count + "股").attr("data-count",count);
 		$(".baishu_detail .rt").html("市值" + ammount + "元").attr("data-ammount",ammount);
@@ -363,31 +363,29 @@
 
 		var params = {};
 		params.newPrice = $(".agent_price").html(); //委托价
-		params.pattern = $(".pattern_options").find(".active").data("id");//策略模式
-		params.pattern = $(".x_y_options").find(".active").data("id");//信用金
-		params.pattern = $(".beishu_options").find(".active").data("id");//策略匹配
-		params.stockCount = $(".baishu_detail .lf").attr("data-count"); //股数
-		params.marketPrice = $(".baishu_detail .rt").attr("data-ammount"); //市值
+		params.mode = $(".pattern_options").find(".active").data("id");//策略模式
+		params.deposit = $(".x_y_options").find(".active").data("id");//信用金
+		params.lever = $(".beishu_options").find(".active").data("id");//策略匹配
+		// params.stockCount = $(".baishu_detail .lf").attr("data-count"); //股数
+		// params.marketPrice = $(".baishu_detail .rt").attr("data-ammount"); //市值
 		params.profit = $(".profitCount").val();//止盈
 		params.loss = $(".lossCount").val();//止损
-		params.fee = $(".jiangcangfei").data("fee"); //建仓费
-		params.defer = $(".pattern_options").find(".active").data("defer");//递延费
-		params.isAutoDefaer = false; //自动递延
+		// params.fee = $(".jiangcangfei").data("fee"); //建仓费
+		// params.defer = $(".pattern_options").find(".active").data("defer");//递延费
+		params.defer = 0; //自动递延
+		params.code = $(".b_gupiao_code").html();
 		if( $("#autoDefer").is(":checked") ){
-			params.isAutoDefaer = true;
+			params.defer = 1;
 		}
 
-		console.log(params);
-		// var _url = '',
-  //           _code = $("#guName").data("code"),
-  //           _oData = {params};
-  //       $ajaxCustom(_url, _oData, function(res){
-  //           if(res.state){ 
+		var _url = "{:url('index/Stock/stockBuy')}";
+        $ajaxCustom(_url, params, function(res){
+            if(res.state){ 
                 
-  //           }else{
-  //               $alert(res.info);
-  //           }
-  //       });
+            }else{
+                $alert(res.info);
+            }
+        });
 
 
 
