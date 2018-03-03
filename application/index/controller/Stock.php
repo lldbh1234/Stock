@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\OrderLogic;
 use think\Request;
 use app\index\logic\DepositLogic;
 use app\index\logic\LeverLogic;
@@ -23,19 +24,43 @@ class Stock extends Base
             if(!$validate->scene('buy')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
+                $code = input("post.mode/s");
                 $modeId = input("post.mode/d");
                 $depositId = input("post.deposit/d");
                 $leverId = input("post.lever/d");
-                $user = uInfo();
-                $mode = (new ModeLogic())->modeById($modeId);
+                $stock = $this->_logic->stockByCode($code);
+                $quotation = $this->_logic->simpleData($code);
+                $quotation = $quotation[$code];
+                $mode = (new ModeLogic())->modeIncPluginsById($modeId);
                 $deposit = (new DepositLogic())->depositById($depositId);
                 $lever = (new LeverLogic())->leverById($leverId);
-                $jiancangTotal = ($deposit['money'] * $lever['multiple']) / 10000 * $mode['jiancang'];
-                $moneyTotal = $deposit['money'] + $jiancangTotal;
-                if($moneyTotal <= $user['account']){
-
+                $plugins = $mode['has_one_plugins'];
+                require_once request()->root() . "../plugins/{$plugins['type']}/{$plugins['code']}.php";
+                $obj = new $plugins['code'];
+                $trade = $obj->getTradeInfo($quotation['last_px'], 95, $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
+                $order = [
+                    "user_id" => $this->user_id,
+                    "product_id" => $mode['product_id'],
+                    "code"  => $code,
+                    "name"  => $stock['name'],
+                    "full_code" => $stock['full_code'],
+                    "price" => $quotation['last_px'],
+                    "hand"  => $trade["hand"],
+                    "jiancang_fee" => $trade["jiancang"],
+                    "defer" => $trade["defer"],
+                    "free_time" => workTimestamp($mode['free'], $holiday = []),
+                    "is_defer" => input("post.defer/d"),
+                    "stop_profit_price" => input("post.profit/f"),
+                    "stop_profit_point" => (input("post.profit/f") - $quotation['last_px']) / $quotation['last_px'],
+                    "stop_loss_price" => input("post.loss/f"),
+                    "stop_loss_point" => ($quotation['last_px'] - input("post.profit/f")) / $quotation['last_px'],
+                    "deposit"   => $deposit['money']
+                ];
+                $orderId = (new OrderLogic())->createOrder($order);
+                if($orderId > 0){
+                    return $this->ok();
                 }else{
-                    return $this->fail("您的余额不足，请充值！");
+                    return $this->fail("创建策略失败！");
                 }
             }
         }else{
@@ -51,6 +76,7 @@ class Stock extends Base
                     $this->assign("deposits", $deposits);
                     $this->assign("levers", $levers);
                     $this->assign("user", uInfo());
+                    $this->assign("usage", 95);
                     return view('buy');
                 }else{
                     return view('public/error');

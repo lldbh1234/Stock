@@ -16,4 +16,10 @@ class ModeLogic
         $mode = Mode::find($id);
         return $mode ? $mode->toArray() : [];
     }
+
+    public function modeIncPluginsById($id)
+    {
+        $mode = Mode::with("hasOnePlugins")->find($id);
+        return $mode ? $mode->toArray() : [];
+    }
 }
