@@ -117,7 +117,7 @@ Route::group("cron", function () {
     Route::any('defer', 'index/Cron/scanOrderDefer');
 });
 
-Route::group(["domain" => "stock.lc"], function() {
+Route::group(["domain" => "www.baonastone.com.cn"], function() {
     // Admin
     Route::group("admin", function () {
         Route::any('/$','admin/Index/index');
@@ -142,6 +142,7 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('add-ring', 'admin/Team/createRing');
             Route::any('edit-ring', 'admin/Team/modifyRing');
             Route::post('recharge', 'admin/Team/recharge');
+            Route::post('rebate', 'admin/Team/rebate');
             Route::any('create', 'admin/Team/createUser'); //添加用户
         });
 

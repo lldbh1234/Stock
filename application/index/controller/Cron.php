@@ -85,8 +85,16 @@ class Cron extends Controller
         }
     }
 
+    // 下午5-6点执行
     public function handleOrderRebate()
     {
+        if(checkSettleTime()){
+            $orders = (new OrderLogic())->todaySellOrder();
+            if($orders){
+                foreach ($orders as $order){
 
+                }
+            }
+        }
     }
 }

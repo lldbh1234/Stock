@@ -300,4 +300,26 @@ class Team extends Base
         }
         return $this->fail("系统提示：非法操作！");
     }
+
+    public function rebate()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('rebate')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "admin_id" => input("post.id/d"),
+                    "point" => input("post.point/f")
+                ];
+                $res = $this->_logic->adminUpdate($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("操作失败！");
+                }
+            }
+        }
+        return $this->fail("系统提示：非法操作！");
+    }
 }
