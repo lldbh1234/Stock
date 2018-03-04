@@ -49,8 +49,8 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="授权" href="javascript:;" onclick="role_push('角色授权','{:url("admin/permission/role-push", ['id' => $item.id])}','', '650');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-suoding"></i></a>
                 <a title="编辑" href="javascript:;" onclick="role_edit('角色编辑','{:url("admin/Admin/roleEdit", ['id' => $item.id])}','','350')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                <a title="授权" href="javascript:;" onclick="role_push('角色授权','{:url("admin/permission/role-push", ['id' => $item.id])}','', '650');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-suoding"></i></a>
                 <a title="删除" href="javascript:;" onclick="role_del(this,{$item.id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
             </td>
         </tr>
