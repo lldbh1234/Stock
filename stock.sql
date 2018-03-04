@@ -1,272 +1,267 @@
--- phpMyAdmin SQL Dump
--- version 4.4.1.1
--- http://www.phpmyadmin.net
---
--- Host: localhost:3306
--- Generation Time: 2018-03-05 04:13:25
--- 服务器版本： 5.5.42
--- PHP Version: 5.6.7
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `stock`
---
-CREATE DATABASE IF NOT EXISTS `stock` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `stock`;
-
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Server version:               5.7.14 - MySQL Community Server (GPL)
+-- Server OS:                    Win64
+-- HeidiSQL version:             7.0.0.4218
+-- Date/time:                    2018-03-05 06:25:36
 -- --------------------------------------------------------
 
---
--- 表的结构 `stock_access`
---
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- Dumping database structure for stock
+DROP DATABASE IF EXISTS `stock`;
+CREATE DATABASE IF NOT EXISTS `stock` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `stock`;
+
+
+-- Dumping structure for table stock.stock_access
 DROP TABLE IF EXISTS `stock_access`;
-CREATE TABLE `stock_access` (
-	`role_id` int(11) unsigned NOT NULL COMMENT '角色ID',
-	`node_id` int(11) unsigned NOT NULL COMMENT '节点ID'
+CREATE TABLE IF NOT EXISTS `stock_access` (
+  `role_id` int(11) unsigned NOT NULL COMMENT '角色ID',
+  `node_id` int(11) unsigned NOT NULL COMMENT '节点ID',
+  KEY `role_id` (`role_id`),
+  KEY `node_id` (`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 
---
--- 转存表中的数据 `stock_access`
---
-
+-- Dumping data for table stock.stock_access: ~76 rows (approximately)
+/*!40000 ALTER TABLE `stock_access` DISABLE KEYS */;
 INSERT INTO `stock_access` (`role_id`, `node_id`) VALUES
-	(2, 1),
-	(2, 9),
-	(2, 7),
-	(2, 6),
-	(2, 10),
-	(2, 2),
 	(1, 1),
-	(1, 20),
-	(1, 22),
-	(1, 21),
-	(1, 16),
-	(1, 19),
-	(1, 18),
-	(1, 17),
-	(1, 13),
-	(1, 15),
-	(1, 14),
 	(1, 8),
-	(1, 12),
 	(1, 9),
+	(1, 12),
+	(1, 13),
+	(1, 14),
+	(1, 15),
+	(1, 16),
+	(1, 17),
+	(1, 18),
+	(1, 19),
+	(1, 20),
+	(1, 21),
+	(1, 22),
 	(1, 7),
 	(1, 49),
-	(1, 52),
-	(1, 51),
-	(1, 53),
 	(1, 50),
-	(1, 10),
-	(1, 55),
-	(1, 54),
-	(1, 56),
-	(1, 6),
-	(1, 57),
-	(1, 48),
-	(1, 47),
-	(1, 46),
-	(1, 45),
+	(1, 51),
+	(1, 52),
+	(1, 53),
 	(1, 3),
-	(1, 24),
-	(1, 25),
-	(1, 61),
-	(1, 62),
-	(1, 63),
-	(1, 64),
-	(1, 65),
-	(1, 67),
-	(1, 66),
-	(1, 68),
 	(1, 5),
 	(1, 38),
 	(1, 39),
 	(1, 40),
 	(1, 41),
 	(1, 26),
-	(1, 34),
-	(1, 30),
-	(1, 29),
-	(1, 28),
 	(1, 27),
+	(1, 28),
+	(1, 29),
+	(1, 30),
+	(1, 34),
+	(1, 61),
+	(1, 62),
+	(1, 63),
+	(1, 64),
+	(1, 65),
+	(1, 66),
+	(1, 67),
+	(1, 68),
 	(1, 58),
 	(1, 59),
 	(1, 60),
+	(1, 69),
+	(1, 70),
+	(1, 71),
+	(1, 72),
+	(1, 73),
+	(1, 74),
+	(1, 75),
+	(1, 76),
+	(1, 77),
 	(1, 78),
 	(1, 80),
 	(1, 81),
 	(1, 79),
-	(1, 69),
-	(1, 76),
-	(1, 77),
-	(1, 75),
-	(1, 73),
-	(1, 74),
-	(1, 70),
-	(1, 72),
-	(1, 71),
-	(1, 2),
-	(1, 23);
+	(1, 82),
+	(1, 83),
+	(1, 86),
+	(1, 87),
+	(1, 88),
+	(1, 89),
+	(1, 84),
+	(1, 85),
+	(2, 1),
+	(2, 13),
+	(2, 14),
+	(2, 15),
+	(2, 16),
+	(2, 17),
+	(2, 18),
+	(2, 19),
+	(2, 20),
+	(2, 21),
+	(2, 22),
+	(2, 69),
+	(2, 70),
+	(2, 71),
+	(3, 1),
+	(3, 16),
+	(3, 17),
+	(3, 18),
+	(3, 19),
+	(3, 20),
+	(3, 21),
+	(3, 22),
+	(3, 69),
+	(3, 70),
+	(3, 71),
+	(4, 1),
+	(4, 20),
+	(4, 21),
+	(4, 22),
+	(4, 69),
+	(4, 70),
+	(4, 71);
+/*!40000 ALTER TABLE `stock_access` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_admin`
---
-
+-- Dumping structure for table stock.stock_admin
 DROP TABLE IF EXISTS `stock_admin`;
-CREATE TABLE `stock_admin` (
-	`admin_id` int(10) unsigned NOT NULL,
-	`username` varchar(32) NOT NULL COMMENT '账号',
-	`password` varchar(64) NOT NULL COMMENT '密码',
-	`nickname` varchar(32) DEFAULT NULL COMMENT '昵称',
-	`mobile` varchar(11) DEFAULT NULL,
-	`pid` int(10) NOT NULL DEFAULT '0' COMMENT '上级',
-	`role` int(10) NOT NULL DEFAULT '0' COMMENT '角色id',
-	`company` varchar(64) DEFAULT NULL COMMENT '单位名称',
-	`realname` varchar(64) DEFAULT NULL COMMENT '法人名称',
-	`point` tinyint(3) NOT NULL DEFAULT '0' COMMENT '返点百分比%',
-	`total_fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '手续费总计',
-	`deposit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '保证金',
-	`code` varchar(16) DEFAULT NULL COMMENT '邀请码',
-	`last_ip` varchar(15) NOT NULL DEFAULT '0.0.0.0' COMMENT '最后登录ip',
-	`last_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-	`status` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常1：禁用',
-	`create_at` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间'
+CREATE TABLE IF NOT EXISTS `stock_admin` (
+  `admin_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) NOT NULL COMMENT '账号',
+  `password` varchar(64) NOT NULL COMMENT '密码',
+  `nickname` varchar(32) DEFAULT NULL COMMENT '昵称',
+  `mobile` varchar(11) DEFAULT NULL,
+  `pid` int(10) NOT NULL DEFAULT '0' COMMENT '上级',
+  `role` int(10) NOT NULL DEFAULT '0' COMMENT '角色id',
+  `company` varchar(64) DEFAULT NULL COMMENT '单位名称',
+  `realname` varchar(64) DEFAULT NULL COMMENT '法人名称',
+  `point` tinyint(3) NOT NULL DEFAULT '0' COMMENT '返点百分比%',
+  `total_fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '手续费总计',
+  `deposit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '保证金',
+  `code` varchar(16) DEFAULT NULL COMMENT '邀请码',
+  `last_ip` varchar(15) NOT NULL DEFAULT '0.0.0.0' COMMENT '最后登录ip',
+  `last_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
+  `status` int(1) unsigned NOT NULL DEFAULT '0' COMMENT '0正常1：禁用',
+  `create_at` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`admin_id`),
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  UNIQUE KEY `code` (`code`),
+  KEY `pid` (`pid`),
+  KEY `role` (`role`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
 
---
--- 转存表中的数据 `stock_admin`
---
-
+-- Dumping data for table stock.stock_admin: ~15 rows (approximately)
+/*!40000 ALTER TABLE `stock_admin` DISABLE KEYS */;
 INSERT INTO `stock_admin` (`admin_id`, `username`, `password`, `nickname`, `mobile`, `pid`, `role`, `company`, `realname`, `point`, `total_fee`, `deposit`, `code`, `last_ip`, `last_time`, `status`, `create_at`) VALUES
-	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, '0.00', '0.00', 'root', '127.0.0.1', 1520054305, 0, 1518085749),
-	(2, 'admin', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 1, NULL, NULL, 0, '0.00', '0.00', 'admin', '0.0.0.0', 1520161350, 0, 1518085749),
-	(3, '结算中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 2, 2, NULL, NULL, 0, '0.00', '0.00', '111111', '127.0.0.1', 1518098557, 0, 1518085749),
-	(4, '运营中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 3, 3, NULL, NULL, 0, '0.00', '0.00', '22222222222', '0.0.0.0', 0, 0, 1518085749),
-	(5, '微会员', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 4, 4, NULL, NULL, 0, '0.00', '0.00', '333333', '0.0.0.0', 0, 0, 1518085749),
-	(6, '微圈', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 5, 5, NULL, NULL, 0, '0.00', '0.00', '31107677', '127.0.0.1', 1518097308, 0, 1518085749),
-	(7, '客服', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', '', '15900000000', 0, 6, NULL, NULL, 0, '0.00', '0.00', NULL, '0.0.0.0', 0, 1, 1518085749),
-	(8, '财务', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 7, NULL, NULL, 0, '0.00', '0.00', NULL, '0.0.0.0', 0, 1, 1518085749),
-	(11, '测试用户', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', '测试用户', '15934854815', 5, 5, NULL, NULL, 0, '0.00', '2000.00', '31107666', '0.0.0.0', 0, 0, 1519292227),
-	(12, 'S201802223001', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'S201802223001', '15934854820', 2, 2, NULL, NULL, 0, '0.00', '3000.00', '3SG9jvDq', '0.0.0.0', 0, 0, 1519367225),
-	(13, 'S201802223002', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', 'S201802223002', '15934854816', 2, 2, NULL, NULL, 0, '0.00', '0.00', 'C6Xujuzb', '127.0.0.1', 1519372882, 0, 1519368678),
-	(14, 'O20180223001', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'O20180223001', '15934854817', 13, 3, NULL, NULL, 0, '0.00', '0.00', 'yNFAC34b', '0.0.0.0', 0, 0, 1519372956),
-	(15, 'O20180223002', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'O20180223002', '15934854818', 13, 3, NULL, NULL, 0, '0.00', '0.00', 'kJ9gzUZ9', '127.0.0.1', 1519374518, 0, 1519373042),
-	(16, 'M20180223001', '###84c7d8420d542acfcdb037ac1378b1bf', 'M20180223001', '15934854819', 15, 4, NULL, NULL, 0, '0.00', '0.00', 'eNUbw7m9', '127.0.0.1', 1519375163, 0, 1519374555),
-	(17, '梁健', '###84c7d8420d542acfcdb037ac1378b1bf', '梁健', '15934854821', 16, 5, NULL, NULL, 0, '0.00', '11100.00', '91287373', '0.0.0.0', 0, 0, 1519375226);
+	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0.00, 0.00, 'root', '127.0.0.1', 1520054305, 0, 1518085749),
+	(2, 'admin', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 1, NULL, NULL, 0, 0.00, 0.00, 'admin', '0.0.0.0', 1520161350, 0, 1518085749),
+	(3, '结算中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 2, 2, NULL, NULL, 0, 0.00, 0.00, '111111', '127.0.0.1', 1518098557, 0, 1518085749),
+	(4, '运营中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 3, 3, NULL, NULL, 0, 0.00, 0.00, '22222222222', '0.0.0.0', 0, 0, 1518085749),
+	(5, '微会员', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 4, 4, NULL, NULL, 0, 0.00, 0.00, '333333', '0.0.0.0', 0, 0, 1518085749),
+	(6, '微圈', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 5, 5, NULL, NULL, 0, 0.00, 0.00, '31107677', '127.0.0.1', 1518097308, 0, 1518085749),
+	(7, '客服', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', '', '15900000000', 0, 6, NULL, NULL, 0, 0.00, 0.00, NULL, '0.0.0.0', 0, 1, 1518085749),
+	(8, '财务', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 7, NULL, NULL, 0, 0.00, 0.00, NULL, '0.0.0.0', 0, 1, 1518085749),
+	(11, '测试用户', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', '测试用户', '15934854815', 5, 5, NULL, NULL, 0, 0.00, 2000.00, '31107666', '0.0.0.0', 0, 0, 1519292227),
+	(12, 'S201802223001', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'S201802223001', '15934854820', 2, 2, NULL, NULL, 0, 0.00, 3000.00, '3SG9jvDq', '0.0.0.0', 0, 0, 1519367225),
+	(13, 'S201802223002', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', 'S201802223002', '15934854816', 2, 2, NULL, NULL, 0, 0.00, 0.00, 'C6Xujuzb', '127.0.0.1', 1519372882, 0, 1519368678),
+	(14, 'O20180223001', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'O20180223001', '15934854817', 13, 3, NULL, NULL, 0, 0.00, 0.00, 'yNFAC34b', '0.0.0.0', 0, 0, 1519372956),
+	(15, 'O20180223002', '###e2b8d1feb13c7a8c2d22d30fe813ed77', 'O20180223002', '15934854818', 13, 3, NULL, NULL, 0, 0.00, 0.00, 'kJ9gzUZ9', '127.0.0.1', 1519374518, 0, 1519373042),
+	(16, 'M20180223001', '###84c7d8420d542acfcdb037ac1378b1bf', 'M20180223001', '15934854819', 15, 4, NULL, NULL, 0, 0.00, 0.00, 'eNUbw7m9', '127.0.0.1', 1519375163, 0, 1519374555),
+	(17, '梁健', '###84c7d8420d542acfcdb037ac1378b1bf', '梁健', '15934854821', 16, 5, NULL, NULL, 0, 0.00, 11100.00, '91287373', '0.0.0.0', 0, 0, 1519375226);
+/*!40000 ALTER TABLE `stock_admin` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_admin_wechat`
---
-
+-- Dumping structure for table stock.stock_admin_wechat
 DROP TABLE IF EXISTS `stock_admin_wechat`;
-CREATE TABLE `stock_admin_wechat` (
-	`admin_id` int(10) NOT NULL,
-	`name` varchar(128) NOT NULL COMMENT '微圈名称',
-	`domain` varchar(64) NOT NULL COMMENT '域名',
-	`appid` varchar(64) NOT NULL COMMENT '公众号appid',
-	`appsecret` varchar(64) NOT NULL COMMENT '公众号秘钥',
-	`token` varchar(64) DEFAULT NULL COMMENT 'token值',
-	`sign_name` varchar(64) DEFAULT NULL COMMENT '签名',
-	`sms_username` varchar(64) DEFAULT NULL COMMENT '短信用户名',
-	`sms_password` varchar(64) DEFAULT NULL COMMENT '短信密码',
-	`create_by` int(10) NOT NULL COMMENT '添加者',
-	`create_at` int(10) NOT NULL COMMENT '添加时间'
+CREATE TABLE IF NOT EXISTS `stock_admin_wechat` (
+  `admin_id` int(10) NOT NULL,
+  `name` varchar(128) NOT NULL COMMENT '微圈名称',
+  `domain` varchar(64) NOT NULL COMMENT '域名',
+  `appid` varchar(64) NOT NULL COMMENT '公众号appid',
+  `appsecret` varchar(64) NOT NULL COMMENT '公众号秘钥',
+  `token` varchar(64) DEFAULT NULL COMMENT 'token值',
+  `sign_name` varchar(64) DEFAULT NULL COMMENT '签名',
+  `sms_username` varchar(64) DEFAULT NULL COMMENT '短信用户名',
+  `sms_password` varchar(64) DEFAULT NULL COMMENT '短信密码',
+  `create_by` int(10) NOT NULL COMMENT '添加者',
+  `create_at` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微圈公众号信息表';
 
---
--- 转存表中的数据 `stock_admin_wechat`
---
-
+-- Dumping data for table stock.stock_admin_wechat: ~1 rows (approximately)
+/*!40000 ALTER TABLE `stock_admin_wechat` DISABLE KEYS */;
 INSERT INTO `stock_admin_wechat` (`admin_id`, `name`, `domain`, `appid`, `appsecret`, `token`, `sign_name`, `sms_username`, `sms_password`, `create_by`, `create_at`) VALUES
 	(5, '微会员', 'www.iwanbar.com', '1111111', '1111111111111111', '111111111111111', '111111111111', '111111111111', '111111111111', 1, 1519464132);
+/*!40000 ALTER TABLE `stock_admin_wechat` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_ai`
---
-
+-- Dumping structure for table stock.stock_ai
 DROP TABLE IF EXISTS `stock_ai`;
-CREATE TABLE `stock_ai` (
-	`id` int(10) unsigned NOT NULL,
-	`code` varchar(16) NOT NULL COMMENT '股票代码',
-	`name` varchar(64) NOT NULL COMMENT '股票名称',
-	`full_code` varchar(32) NOT NULL COMMENT '股票完整代码（带交易所前缀）',
-	`income` decimal(10,2) NOT NULL COMMENT '买入价',
-	`remark` text COMMENT '推荐理由',
-	`type_id` int(10) NOT NULL COMMENT 'ai类型；表stock_ai_type字段type_id外键',
-	`sort` smallint(8) NOT NULL DEFAULT '50' COMMENT '排序',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
+CREATE TABLE IF NOT EXISTS `stock_ai` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(16) NOT NULL COMMENT '股票代码',
+  `name` varchar(64) NOT NULL COMMENT '股票名称',
+  `full_code` varchar(32) NOT NULL COMMENT '股票完整代码（带交易所前缀）',
+  `income` decimal(10,2) NOT NULL COMMENT '买入价',
+  `remark` text COMMENT '推荐理由',
+  `type_id` int(10) NOT NULL COMMENT 'ai类型；表stock_ai_type字段type_id外键',
+  `sort` smallint(8) NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
+  PRIMARY KEY (`id`),
+  KEY `type_id` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='ai智能推荐';
 
---
--- 转存表中的数据 `stock_ai`
---
-
+-- Dumping data for table stock.stock_ai: ~10 rows (approximately)
+/*!40000 ALTER TABLE `stock_ai` DISABLE KEYS */;
 INSERT INTO `stock_ai` (`id`, `code`, `name`, `full_code`, `income`, `remark`, `type_id`, `sort`, `status`) VALUES
-	(4, '600000', '浦发银行', 'sh600000', '11.58', '相当棒', 1, 50, 0),
-	(5, '600004', '白云机场', 'sh600004', '15.88', '推荐购买', 1, 13, 0),
-	(6, '600007', '中国国贸', 'sh600007', '14.23', '预计收益相当可观', 1, 100, 0),
-	(7, '600009', '上海机场', 'sh600009', '50.01', '不错不错', 2, 50, 0),
-	(8, '600015', '华夏银行', 'sh600015', '8.88', '推荐推荐', 2, 35, 0),
-	(9, '600016', '民生银行', 'sh600016', '8.50', '值得推荐', 2, 50, 0),
-	(10, '600018', '上港集团', 'sh600018', '7.50', '信我没错', 2, 60, 0),
-	(11, '600021', '上海电力', 'sh600021', '7.89', '疯狂买入', 3, 50, 0),
-	(12, '600022', '山东钢铁', 'sh600022', '1.80', '看涨看涨', 3, 40, 0),
-	(13, '600027', '华电国际', 'sh600027', '3.54', '前途一片光明', 3, 50, 0);
+	(4, '600000', '浦发银行', 'sh600000', 11.58, '相当棒', 1, 50, 0),
+	(5, '600004', '白云机场', 'sh600004', 15.88, '推荐购买', 1, 13, 0),
+	(6, '600007', '中国国贸', 'sh600007', 14.23, '预计收益相当可观', 1, 100, 0),
+	(7, '600009', '上海机场', 'sh600009', 50.01, '不错不错', 2, 50, 0),
+	(8, '600015', '华夏银行', 'sh600015', 8.88, '推荐推荐', 2, 35, 0),
+	(9, '600016', '民生银行', 'sh600016', 8.50, '值得推荐', 2, 50, 0),
+	(10, '600018', '上港集团', 'sh600018', 7.50, '信我没错', 2, 60, 0),
+	(11, '600021', '上海电力', 'sh600021', 7.89, '疯狂买入', 3, 50, 0),
+	(12, '600022', '山东钢铁', 'sh600022', 1.80, '看涨看涨', 3, 40, 0),
+	(13, '600027', '华电国际', 'sh600027', 3.54, '前途一片光明', 3, 50, 0);
+/*!40000 ALTER TABLE `stock_ai` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_ai_type`
---
-
+-- Dumping structure for table stock.stock_ai_type
 DROP TABLE IF EXISTS `stock_ai_type`;
-CREATE TABLE `stock_ai_type` (
-	`type_id` int(10) unsigned NOT NULL,
-	`name` varchar(64) NOT NULL COMMENT '类型名称',
-	`sort` smallint(8) NOT NULL DEFAULT '50' COMMENT '排序',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
+CREATE TABLE IF NOT EXISTS `stock_ai_type` (
+  `type_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL COMMENT '类型名称',
+  `sort` smallint(8) NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
+  PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='ai智能推荐类型';
 
---
--- 转存表中的数据 `stock_ai_type`
---
-
+-- Dumping data for table stock.stock_ai_type: ~3 rows (approximately)
+/*!40000 ALTER TABLE `stock_ai_type` DISABLE KEYS */;
 INSERT INTO `stock_ai_type` (`type_id`, `name`, `sort`, `status`) VALUES
 	(1, '稳健型', 50, 0),
 	(2, '疯狂型', 50, 0),
 	(3, '敢死队型', 50, 0);
+/*!40000 ALTER TABLE `stock_ai_type` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_bank`
---
-
+-- Dumping structure for table stock.stock_bank
 DROP TABLE IF EXISTS `stock_bank`;
-CREATE TABLE `stock_bank` (
-	`number` int(11) NOT NULL,
-	`name` varchar(255) DEFAULT NULL COMMENT '名称',
-	`state` tinyint(4) DEFAULT '0' COMMENT '0无效1有效'
+CREATE TABLE IF NOT EXISTS `stock_bank` (
+  `number` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL COMMENT '名称',
+  `state` tinyint(4) DEFAULT '0' COMMENT '0无效1有效',
+  KEY `number` (`number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='银行';
 
---
--- 转存表中的数据 `stock_bank`
---
-
+-- Dumping data for table stock.stock_bank: ~87 rows (approximately)
+/*!40000 ALTER TABLE `stock_bank` DISABLE KEYS */;
 INSERT INTO `stock_bank` (`number`, `name`, `state`) VALUES
 	(102, '中国工商银行', 1),
 	(103, '中国农业银行', 1),
@@ -355,24 +350,19 @@ INSERT INTO `stock_bank` (`number`, `name`, `state`) VALUES
 	(787, '华一银行', 0),
 	(969, '（澳门地区）银行', 0),
 	(989, '（香港地区）银行', 0);
+/*!40000 ALTER TABLE `stock_bank` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_config`
---
-
+-- Dumping structure for table stock.stock_config
 DROP TABLE IF EXISTS `stock_config`;
-CREATE TABLE `stock_config` (
-	`name` varchar(128) DEFAULT NULL COMMENT '配置名称',
-	`val` varchar(64) DEFAULT NULL COMMENT '配置值',
-	`alias` varchar(64) DEFAULT NULL COMMENT '配置别名'
+CREATE TABLE IF NOT EXISTS `stock_config` (
+  `name` varchar(128) DEFAULT NULL COMMENT '配置名称',
+  `val` varchar(64) DEFAULT NULL COMMENT '配置值',
+  `alias` varchar(64) DEFAULT NULL COMMENT '配置别名'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置表';
 
---
--- 转存表中的数据 `stock_config`
---
-
+-- Dumping data for table stock.stock_config: ~10 rows (approximately)
+/*!40000 ALTER TABLE `stock_config` DISABLE KEYS */;
 INSERT INTO `stock_config` (`name`, `val`, `alias`) VALUES
 	(NULL, '', 'website'),
 	(NULL, '', 'copyright'),
@@ -381,142 +371,136 @@ INSERT INTO `stock_config` (`name`, `val`, `alias`) VALUES
 	(NULL, '', 'close_time'),
 	(NULL, '95', 'capital_usage'),
 	(NULL, '2018-04-05,2018-04-06', 'holiday'),
-	(NULL, '', 'pulish_strategy'),
-	(NULL, '', 'strategy_win'),
-	(NULL, '', 'strategy_yield');
+	(NULL, '5', 'manager_point'),
+	(NULL, '90', 'bonus_rate'),
+	(NULL, '9.5', 'max_change_rate'),
+	(NULL, '88', 'manager_poundage'),
+	(NULL, '10', 'pulish_strategy'),
+	(NULL, '20', 'strategy_win'),
+	(NULL, '5', 'strategy_yield');
+/*!40000 ALTER TABLE `stock_config` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_coupon`
---
-
+-- Dumping structure for table stock.stock_coupon
 DROP TABLE IF EXISTS `stock_coupon`;
-CREATE TABLE `stock_coupon` (
-	`coupon_id` int(10) unsigned NOT NULL,
-	`user_id` int(10) unsigned NOT NULL COMMENT '发放者ID；表stock_user字段user_id外键',
-	`order_id` int(10) unsigned NOT NULL COMMENT '订单ID；表stock_order字段order_id外键',
-	`amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '红包金额',
-	`num` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '发放个数',
-	`create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发放时间',
-	`valid_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '过期时间'
+CREATE TABLE IF NOT EXISTS `stock_coupon` (
+  `coupon_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT '发放者ID；表stock_user字段user_id外键',
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID；表stock_order字段order_id外键',
+  `amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '红包金额',
+  `num` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '发放个数',
+  `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发放时间',
+  `valid_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '过期时间',
+  PRIMARY KEY (`coupon_id`),
+  KEY `user_id` (`user_id`),
+  KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='红包发放记录表';
 
--- --------------------------------------------------------
+-- Dumping data for table stock.stock_coupon: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_coupon` DISABLE KEYS */;
+/*!40000 ALTER TABLE `stock_coupon` ENABLE KEYS */;
 
---
--- 表的结构 `stock_deposit`
---
 
+-- Dumping structure for table stock.stock_deposit
 DROP TABLE IF EXISTS `stock_deposit`;
-CREATE TABLE `stock_deposit` (
-	`id` int(10) unsigned NOT NULL,
-	`name` varchar(64) NOT NULL COMMENT '名称',
-	`money` decimal(10,2) unsigned NOT NULL COMMENT '金额',
-	`sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
+CREATE TABLE IF NOT EXISTS `stock_deposit` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL COMMENT '名称',
+  `money` decimal(10,2) unsigned NOT NULL COMMENT '金额',
+  `sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='保证金列表';
 
---
--- 转存表中的数据 `stock_deposit`
---
-
+-- Dumping data for table stock.stock_deposit: ~8 rows (approximately)
+/*!40000 ALTER TABLE `stock_deposit` DISABLE KEYS */;
 INSERT INTO `stock_deposit` (`id`, `name`, `money`, `sort`, `status`) VALUES
-	(2, '1500', '1500.00', 50, 0),
-	(3, '3000', '3000.00', 50, 0),
-	(4, '5000', '5000.00', 50, 0),
-	(5, '10000', '10000.00', 50, 0),
-	(6, '20000', '20000.00', 50, 0),
-	(7, '30000', '30000.00', 50, 0),
-	(8, '40000', '40000.00', 50, 0),
-	(9, '50000', '50000.00', 50, 0);
+	(2, '1500', 1500.00, 50, 0),
+	(3, '3000', 3000.00, 50, 0),
+	(4, '5000', 5000.00, 50, 0),
+	(5, '10000', 10000.00, 50, 0),
+	(6, '20000', 20000.00, 50, 0),
+	(7, '30000', 30000.00, 50, 0),
+	(8, '40000', 40000.00, 50, 0),
+	(9, '50000', 50000.00, 50, 0);
+/*!40000 ALTER TABLE `stock_deposit` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_hot`
---
-
+-- Dumping structure for table stock.stock_hot
 DROP TABLE IF EXISTS `stock_hot`;
-CREATE TABLE `stock_hot` (
-	`id` int(10) unsigned NOT NULL,
-	`code` varchar(16) NOT NULL COMMENT '股票代码',
-	`name` varchar(64) NOT NULL COMMENT '股票名称',
-	`full_code` varchar(32) NOT NULL COMMENT '股票完整代码（带交易所前缀）',
-	`sort` smallint(8) NOT NULL DEFAULT '50' COMMENT '排序',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
+CREATE TABLE IF NOT EXISTS `stock_hot` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(16) NOT NULL COMMENT '股票代码',
+  `name` varchar(64) NOT NULL COMMENT '股票名称',
+  `full_code` varchar(32) NOT NULL COMMENT '股票完整代码（带交易所前缀）',
+  `sort` smallint(8) NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='热门推荐';
 
---
--- 转存表中的数据 `stock_hot`
---
-
+-- Dumping data for table stock.stock_hot: ~3 rows (approximately)
+/*!40000 ALTER TABLE `stock_hot` DISABLE KEYS */;
 INSERT INTO `stock_hot` (`id`, `code`, `name`, `full_code`, `sort`, `status`) VALUES
 	(3, '600000', '浦发银行', 'sh600000', 45, 0),
 	(5, '600004', '白云机场', 'sh600004', 50, 0),
 	(6, '600101', '明星电力', 'sh600101', 50, 0);
+/*!40000 ALTER TABLE `stock_hot` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_jobs`
---
-
+-- Dumping structure for table stock.stock_jobs
 DROP TABLE IF EXISTS `stock_jobs`;
-CREATE TABLE `stock_jobs` (
-	`id` int(11) NOT NULL,
-	`queue` varchar(255) NOT NULL,
-	`payload` longtext NOT NULL,
-	`attempts` tinyint(3) unsigned NOT NULL,
-	`reserved` tinyint(3) unsigned NOT NULL,
-	`reserved_at` int(10) unsigned DEFAULT NULL,
-	`available_at` int(10) unsigned NOT NULL,
-	`created_at` int(10) unsigned NOT NULL
+CREATE TABLE IF NOT EXISTS `stock_jobs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `attempts` tinyint(3) unsigned NOT NULL,
+  `reserved` tinyint(3) unsigned NOT NULL,
+  `reserved_at` int(10) unsigned DEFAULT NULL,
+  `available_at` int(10) unsigned NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6232 DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+-- Dumping data for table stock.stock_jobs: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `stock_jobs` ENABLE KEYS */;
 
---
--- 表的结构 `stock_lever`
---
 
+-- Dumping structure for table stock.stock_lever
 DROP TABLE IF EXISTS `stock_lever`;
-CREATE TABLE `stock_lever` (
-	`id` int(10) unsigned NOT NULL,
-	`name` varchar(64) NOT NULL COMMENT '杠杆名称',
-	`multiple` smallint(5) unsigned NOT NULL COMMENT '杠杆倍数',
-	`sort` smallint(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
+CREATE TABLE IF NOT EXISTS `stock_lever` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL COMMENT '杠杆名称',
+  `multiple` smallint(5) unsigned NOT NULL COMMENT '杠杆倍数',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='杠杆列表';
 
---
--- 转存表中的数据 `stock_lever`
---
-
+-- Dumping data for table stock.stock_lever: ~3 rows (approximately)
+/*!40000 ALTER TABLE `stock_lever` DISABLE KEYS */;
 INSERT INTO `stock_lever` (`id`, `name`, `multiple`, `sort`, `status`) VALUES
 	(3, '10倍', 10, 50, 0),
 	(4, '8倍', 8, 50, 0),
 	(5, '6倍', 6, 50, 0);
+/*!40000 ALTER TABLE `stock_lever` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_list`
---
-
+-- Dumping structure for table stock.stock_list
 DROP TABLE IF EXISTS `stock_list`;
-CREATE TABLE `stock_list` (
-	`id` int(10) NOT NULL,
-	`code` varchar(16) NOT NULL COMMENT '股票代码',
-	`name` varchar(64) NOT NULL COMMENT '股票名称',
-	`full_code` varchar(32) NOT NULL COMMENT '股票完整代码（带交易所前缀）',
-	`type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '类型：0-深沪A股'
+CREATE TABLE IF NOT EXISTS `stock_list` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `code` varchar(16) NOT NULL COMMENT '股票代码',
+  `name` varchar(64) NOT NULL COMMENT '股票名称',
+  `full_code` varchar(32) NOT NULL COMMENT '股票完整代码（带交易所前缀）',
+  `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '类型：0-深沪A股',
+  PRIMARY KEY (`id`),
+  KEY `code` (`code`),
+  KEY `full_code` (`full_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3432 DEFAULT CHARSET=utf8 COMMENT='股票列表';
 
---
--- 转存表中的数据 `stock_list`
---
-
+-- Dumping data for table stock.stock_list: ~3,431 rows (approximately)
+/*!40000 ALTER TABLE `stock_list` DISABLE KEYS */;
 INSERT INTO `stock_list` (`id`, `code`, `name`, `full_code`, `type`) VALUES
 	(1, '600000', '浦发银行', 'sh600000', 0),
 	(2, '600004', '白云机场', 'sh600004', 0),
@@ -1829,8 +1813,7 @@ INSERT INTO `stock_list` (`id`, `code`, `name`, `full_code`, `type`) VALUES
 	(1309, '603929', '亚翔集成', 'sh603929', 0),
 	(1310, '603933', '睿能科技', 'sh603933', 0),
 	(1311, '603936', '博敏电子', 'sh603936', 0),
-	(1312, '603937', '丽岛新材', 'sh603937', 0);
-INSERT INTO `stock_list` (`id`, `code`, `name`, `full_code`, `type`) VALUES
+	(1312, '603937', '丽岛新材', 'sh603937', 0),
 	(1313, '603938', '三孚股份', 'sh603938', 0),
 	(1314, '603939', '益丰药房', 'sh603939', 0),
 	(1315, '603955', '大千生态', 'sh603955', 0),
@@ -3110,8 +3093,7 @@ INSERT INTO `stock_list` (`id`, `code`, `name`, `full_code`, `type`) VALUES
 	(2589, '002793', '东音股份', 'sz002793', 0),
 	(2590, '002795', '永和智控', 'sz002795', 0),
 	(2591, '002796', '世嘉科技', 'sz002796', 0),
-	(2592, '002797', '第一创业', 'sz002797', 0);
-INSERT INTO `stock_list` (`id`, `code`, `name`, `full_code`, `type`) VALUES
+	(2592, '002797', '第一创业', 'sz002797', 0),
 	(2593, '002798', '帝王洁具', 'sz002798', 0),
 	(2594, '002799', '环球印务', 'sz002799', 0),
 	(2595, '002800', '天顺股份', 'sz002800', 0),
@@ -3951,30 +3933,27 @@ INSERT INTO `stock_list` (`id`, `code`, `name`, `full_code`, `type`) VALUES
 	(3429, '300738', '奥飞数据', 'sz300738', 0),
 	(3430, '300739', '明阳电路', 'sz300739', 0),
 	(3431, '300740', '御家汇', 'sz300740', 0);
+/*!40000 ALTER TABLE `stock_list` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_menu`
---
-
+-- Dumping structure for table stock.stock_menu
 DROP TABLE IF EXISTS `stock_menu`;
-CREATE TABLE `stock_menu` (
-	`id` int(11) unsigned NOT NULL COMMENT '节点ID自增',
-	`pid` int(11) NOT NULL DEFAULT '0' COMMENT '父级id',
-	`name` varchar(64) NOT NULL COMMENT '节点名称',
-	`act` varchar(128) NOT NULL COMMENT '操作地址',
-	`module` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0-模块；1-列表；2-操作',
-	`icon` varchar(100) DEFAULT NULL COMMENT '后台菜单栏icon',
-	`level` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '等级',
-	`status` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '状态；0-关闭，1-开启',
-	`sort` tinyint(4) unsigned NOT NULL DEFAULT '50' COMMENT '排序'
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8 COMMENT='后台节点表';
+CREATE TABLE IF NOT EXISTS `stock_menu` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '节点ID自增',
+  `pid` int(11) NOT NULL DEFAULT '0' COMMENT '父级id',
+  `name` varchar(64) NOT NULL COMMENT '节点名称',
+  `act` varchar(128) NOT NULL COMMENT '操作地址',
+  `module` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0-模块；1-列表；2-操作',
+  `icon` varchar(100) DEFAULT NULL COMMENT '后台菜单栏icon',
+  `level` smallint(4) unsigned NOT NULL DEFAULT '1' COMMENT '等级',
+  `status` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '状态；0-关闭，1-开启',
+  `sort` tinyint(4) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  PRIMARY KEY (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8 COMMENT='后台节点表';
 
---
--- 转存表中的数据 `stock_menu`
---
-
+-- Dumping data for table stock.stock_menu: ~79 rows (approximately)
+/*!40000 ALTER TABLE `stock_menu` DISABLE KEYS */;
 INSERT INTO `stock_menu` (`id`, `pid`, `name`, `act`, `module`, `icon`, `level`, `status`, `sort`) VALUES
 	(1, 0, '组织架构', '', 0, 'Hui-iconfont-user-zhanzhang', 1, 1, 1),
 	(2, 0, '插件管理', '', 0, 'Hui-iconfont-chajian', 1, 1, 50),
@@ -4054,222 +4033,202 @@ INSERT INTO `stock_menu` (`id`, `pid`, `name`, `act`, `module`, `icon`, `level`,
 	(78, 0, '经纪人管理', 'admin/Manager/lists', 1, 'Hui-iconfont-huangguan', 1, 1, 50),
 	(79, 81, '审核', 'admin/Manager/audit', 2, '', 1, 1, 50),
 	(80, 78, '经纪人列表', 'admin/Manager/lists', 1, '', 1, 1, 50),
-	(81, 78, '经纪人审核列表', 'admin/Manager/auditLists', 1, '', 1, 1, 50);
+	(81, 78, '经纪人审核列表', 'admin/Manager/auditLists', 1, '', 1, 1, 50),
+	(82, 0, '订单管理', '', 0, 'Hui-iconfont-quanbudingdan', 1, 1, 50),
+	(83, 82, '委托订单', 'admin/Order/index', 1, '', 1, 1, 50),
+	(84, 82, '平仓订单', 'admin/Order/history', 1, '', 1, 1, 50),
+	(85, 82, '持仓订单', 'admin/Order/position', 1, '', 1, 1, 50),
+	(86, 83, '建仓成功', 'admin/Order/buyOk', 2, '', 1, 1, 50),
+	(87, 83, '建仓失败', 'admin/Order/buyFail', 2, '', 1, 1, 50),
+	(88, 83, '平仓成功', 'admin/Order/sellOk', 2, '', 1, 1, 50),
+	(89, 83, '平仓失败', 'admin/Order/sellFail', 2, '', 1, 1, 50);
+/*!40000 ALTER TABLE `stock_menu` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_mode`
---
-
+-- Dumping structure for table stock.stock_mode
 DROP TABLE IF EXISTS `stock_mode`;
-CREATE TABLE `stock_mode` (
-	`mode_id` int(10) unsigned NOT NULL,
-	`product_id` int(10) unsigned NOT NULL COMMENT '产品ID',
-	`plugins_code` varchar(64) NOT NULL COMMENT '插件code',
-	`name` varchar(32) NOT NULL COMMENT '模式名称',
-	`free` smallint(8) unsigned NOT NULL COMMENT '免息期（单位：天）',
-	`jiancang` decimal(10,2) unsigned NOT NULL COMMENT '建仓费（单位：万元）',
-	`defer` decimal(10,2) unsigned NOT NULL COMMENT '递延费（单位：天/万元）',
-	`profit` decimal(5,2) unsigned NOT NULL COMMENT '最大涨幅',
-	`loss` decimal(5,2) unsigned NOT NULL COMMENT '最大跌幅',
-	`sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
-	`create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间'
+CREATE TABLE IF NOT EXISTS `stock_mode` (
+  `mode_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(10) unsigned NOT NULL COMMENT '产品ID',
+  `plugins_code` varchar(64) NOT NULL COMMENT '插件code',
+  `name` varchar(32) NOT NULL COMMENT '模式名称',
+  `free` smallint(8) unsigned NOT NULL COMMENT '免息期（单位：天）',
+  `jiancang` decimal(10,2) unsigned NOT NULL COMMENT '建仓费（单位：万元）',
+  `defer` decimal(10,2) unsigned NOT NULL COMMENT '递延费（单位：天/万元）',
+  `profit` decimal(5,2) unsigned NOT NULL COMMENT '最大涨幅',
+  `loss` decimal(5,2) unsigned NOT NULL COMMENT '最大跌幅',
+  `sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
+  `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`mode_id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `product_id` (`product_id`),
+  KEY `plugins_code` (`plugins_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='交易模式';
 
---
--- 转存表中的数据 `stock_mode`
---
-
+-- Dumping data for table stock.stock_mode: ~2 rows (approximately)
+/*!40000 ALTER TABLE `stock_mode` DISABLE KEYS */;
 INSERT INTO `stock_mode` (`mode_id`, `product_id`, `plugins_code`, `name`, `free`, `jiancang`, `defer`, `profit`, `loss`, `sort`, `status`, `create_at`) VALUES
-	(1, 1, 'Tn', 'T+5', 5, '19.00', '8.00', '11.85', '11.83', 50, 0, 0),
-	(3, 1, 'Tn', 'T+15', 15, '2.00', '2.30', '9.52', '9.64', 50, 0, 1519458658);
+	(1, 1, 'Tn', 'T+5', 5, 19.00, 8.00, 11.85, 11.83, 50, 0, 0),
+	(3, 1, 'Tn', 'T+15', 15, 2.00, 2.30, 9.52, 9.64, 50, 0, 1519458658);
+/*!40000 ALTER TABLE `stock_mode` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_mode_deposit`
---
-
+-- Dumping structure for table stock.stock_mode_deposit
 DROP TABLE IF EXISTS `stock_mode_deposit`;
-CREATE TABLE `stock_mode_deposit` (
-	`id` int(10) unsigned NOT NULL,
-	`mode_id` int(10) unsigned NOT NULL COMMENT '模式ID，表stock_mode字段mode_id字段',
-	`name` varchar(64) NOT NULL COMMENT '名称',
-	`money` decimal(10,2) unsigned NOT NULL COMMENT '金额',
-	`sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
+CREATE TABLE IF NOT EXISTS `stock_mode_deposit` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mode_id` int(10) unsigned NOT NULL COMMENT '模式ID，表stock_mode字段mode_id字段',
+  `name` varchar(64) NOT NULL COMMENT '名称',
+  `money` decimal(10,2) unsigned NOT NULL COMMENT '金额',
+  `sort` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
+  PRIMARY KEY (`id`),
+  KEY `mode_id` (`mode_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='交易模式保证金列表';
 
---
--- 转存表中的数据 `stock_mode_deposit`
---
-
+-- Dumping data for table stock.stock_mode_deposit: ~4 rows (approximately)
+/*!40000 ALTER TABLE `stock_mode_deposit` DISABLE KEYS */;
 INSERT INTO `stock_mode_deposit` (`id`, `mode_id`, `name`, `money`, `sort`, `status`) VALUES
-	(1, 1, '500元', '500.00', 50, 0),
-	(2, 3, '500元', '500.00', 30, 0),
-	(3, 3, '700元', '700.00', 50, 0),
-	(5, 3, '1500元', '1500.00', 50, 0);
+	(1, 1, '500元', 500.00, 50, 0),
+	(2, 3, '500元', 500.00, 30, 0),
+	(3, 3, '700元', 700.00, 50, 0),
+	(5, 3, '1500元', 1500.00, 50, 0);
+/*!40000 ALTER TABLE `stock_mode_deposit` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_mode_lever`
---
-
+-- Dumping structure for table stock.stock_mode_lever
 DROP TABLE IF EXISTS `stock_mode_lever`;
-CREATE TABLE `stock_mode_lever` (
-	`id` int(10) unsigned NOT NULL,
-	`mode_id` int(10) unsigned NOT NULL COMMENT '模式ID；表stock_mode字段mode_id外键',
-	`name` varchar(64) NOT NULL COMMENT '杠杆名称',
-	`multiple` smallint(5) unsigned NOT NULL COMMENT '杠杆倍数',
-	`sort` smallint(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
-	`status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
+CREATE TABLE IF NOT EXISTS `stock_mode_lever` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `mode_id` int(10) unsigned NOT NULL COMMENT '模式ID；表stock_mode字段mode_id外键',
+  `name` varchar(64) NOT NULL COMMENT '杠杆名称',
+  `multiple` smallint(5) unsigned NOT NULL COMMENT '杠杆倍数',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭',
+  PRIMARY KEY (`id`),
+  KEY `mode_id` (`mode_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='交易模式杠杆列表';
 
---
--- 转存表中的数据 `stock_mode_lever`
---
-
+-- Dumping data for table stock.stock_mode_lever: ~2 rows (approximately)
+/*!40000 ALTER TABLE `stock_mode_lever` DISABLE KEYS */;
 INSERT INTO `stock_mode_lever` (`id`, `mode_id`, `name`, `multiple`, `sort`, `status`) VALUES
 	(1, 1, '5倍', 5, 50, 0),
 	(2, 1, '8倍', 8, 50, 0);
+/*!40000 ALTER TABLE `stock_mode_lever` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_niuren`
---
-
+-- Dumping structure for table stock.stock_niuren
 DROP TABLE IF EXISTS `stock_niuren`;
-CREATE TABLE `stock_niuren` (
-	`id` int(11) unsigned NOT NULL COMMENT '主键',
-	`user_id` int(11) NOT NULL COMMENT '用户id',
-	`income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '牛人收入-已抛出单',
-	`realtime_income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '实时收入',
-	`not_income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '未结收入',
-	`sure_income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '可转收入',
-	`already_income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '已转收入',
-	`create_at` int(11) NOT NULL COMMENT '添加时间'
+CREATE TABLE IF NOT EXISTS `stock_niuren` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '牛人收入-已抛出单',
+  `realtime_income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '实时收入',
+  `not_income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '未结收入',
+  `sure_income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '可转收入',
+  `already_income` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '已转收入',
+  `create_at` int(11) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='牛人收入';
 
---
--- 转存表中的数据 `stock_niuren`
---
-
+-- Dumping data for table stock.stock_niuren: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_niuren` DISABLE KEYS */;
 INSERT INTO `stock_niuren` (`id`, `user_id`, `income`, `realtime_income`, `not_income`, `sure_income`, `already_income`, `create_at`) VALUES
-	(2, 1, '0.00', '0.00', '0.00', '0.00', '0.00', 1520136565);
+	(2, 1, 0.00, 0.00, 0.00, 0.00, 0.00, 1520136565);
+/*!40000 ALTER TABLE `stock_niuren` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_order`
---
-
+-- Dumping structure for table stock.stock_order
 DROP TABLE IF EXISTS `stock_order`;
-CREATE TABLE `stock_order` (
-	`order_id` int(10) NOT NULL,
-	`user_id` int(10) NOT NULL COMMENT '用户ID',
-	`product_id` int(10) NOT NULL COMMENT '买卖品类',
-	`code` varchar(46) DEFAULT NULL COMMENT '股票代码',
-	`name` varchar(64) DEFAULT NULL COMMENT '股票名称',
-	`full_code` varchar(32) DEFAULT NULL COMMENT '股票完整代码（带交易所前缀）',
-	`price` decimal(10,2) NOT NULL COMMENT '买入价',
-	`hand` decimal(10,2) NOT NULL COMMENT '买入手数（整百）',
-	`jiancang_fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '建仓费',
-	`defer` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '递延费',
-	`free_time` int(10) NOT NULL COMMENT '免息到期时间',
-	`is_defer` tinyint(4) NOT NULL DEFAULT '1' COMMENT '自动递延；1-是，0否',
-	`stop_profit_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止盈金额',
-	`stop_profit_point` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止盈点数',
-	`stop_loss_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止损金额',
-	`stop_loss_point` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止损点数',
-	`deposit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '保证金',
-	`sell_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '卖出价格',
-	`sell_hand` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '卖出手数',
-	`sell_deposit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '卖出总价',
-	`profit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '盈亏',
-	`state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '持仓状态，1委托建仓，2抛出，3持仓，4委托平仓，5作废',
-	`is_follow` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否跟买；0-否；1-是',
-	`follow_id` int(10) NOT NULL DEFAULT '0' COMMENT '跟买订单ID',
-	`create_at` int(10) NOT NULL DEFAULT '0' COMMENT '下单时间',
-	`update_at` int(10) NOT NULL DEFAULT '0' COMMENT '平仓时间'
+CREATE TABLE IF NOT EXISTS `stock_order` (
+  `order_id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL COMMENT '用户ID',
+  `product_id` int(10) NOT NULL COMMENT '买卖品类',
+  `code` varchar(46) DEFAULT NULL COMMENT '股票代码',
+  `name` varchar(64) DEFAULT NULL COMMENT '股票名称',
+  `full_code` varchar(32) DEFAULT NULL COMMENT '股票完整代码（带交易所前缀）',
+  `price` decimal(10,2) NOT NULL COMMENT '买入价',
+  `hand` decimal(10,2) NOT NULL COMMENT '买入手数（整百）',
+  `jiancang_fee` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '建仓费',
+  `defer` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '递延费',
+  `free_time` int(10) NOT NULL COMMENT '免息到期时间',
+  `is_defer` tinyint(4) NOT NULL DEFAULT '1' COMMENT '自动递延；1-是，0否',
+  `stop_profit_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止盈金额',
+  `stop_profit_point` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止盈点数',
+  `stop_loss_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止损金额',
+  `stop_loss_point` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '止损点数',
+  `deposit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '保证金',
+  `sell_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '卖出价格',
+  `sell_hand` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '卖出手数',
+  `sell_deposit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '卖出总价',
+  `profit` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '盈亏',
+  `state` tinyint(4) NOT NULL DEFAULT '1' COMMENT '持仓状态，1委托建仓，2抛出，3持仓，4委托平仓，5作废',
+  `is_follow` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否跟买；0-否；1-是',
+  `follow_id` int(10) NOT NULL DEFAULT '0' COMMENT '跟买订单ID',
+  `create_at` int(10) NOT NULL DEFAULT '0' COMMENT '下单时间',
+  `update_at` int(10) NOT NULL DEFAULT '0' COMMENT '平仓时间',
+  PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
---
--- 转存表中的数据 `stock_order`
---
-
+-- Dumping data for table stock.stock_order: ~3 rows (approximately)
+/*!40000 ALTER TABLE `stock_order` DISABLE KEYS */;
 INSERT INTO `stock_order` (`order_id`, `user_id`, `product_id`, `code`, `name`, `full_code`, `price`, `hand`, `jiancang_fee`, `defer`, `free_time`, `is_defer`, `stop_profit_price`, `stop_profit_point`, `stop_loss_price`, `stop_loss_point`, `deposit`, `sell_price`, `sell_hand`, `sell_deposit`, `profit`, `state`, `is_follow`, `follow_id`, `create_at`, `update_at`) VALUES
-	(1, 1, 1, '600000', '浦发银行', 'sh600000', '12.41', '1100.00', '28.50', '12.00', 1520577873, 1, '13.91', '12.09', '11.00', '11.36', '1500.00', '1800.00', '0.00', '0.00', '10.00', 2, 0, 0, 1520059473, 1520005956),
-	(4, 2, 1, '600000', '浦发银行', 'sh600000', '12.41', '1100.00', '28.50', '12.00', 1520579429, 0, '13.88', '11.85', '10.94', '11.85', '1500.00', '1900.00', '0.00', '0.00', '80.00', 2, 1, 1, 1520061028, 0),
-	(5, 4, 1, '600021', '上海电力', 'sh600021', '8.07', '1700.00', '28.50', '12.00', 1520594111, 0, '9.03', '11.90', '7.12', '11.77', '1500.00', '200.00', '0.00', '0.00', '30.00', 3, 1, 1, 1520075711, 1520005956);
+	(1, 1, 1, '600000', '浦发银行', 'sh600000', 12.41, 1100.00, 28.50, 12.00, 1520577873, 1, 13.91, 12.09, 11.00, 11.36, 1500.00, 1800.00, 0.00, 0.00, 10.00, 2, 0, 0, 1520059473, 1520005956),
+	(4, 2, 1, '600000', '浦发银行', 'sh600000', 12.41, 1100.00, 28.50, 12.00, 1520579429, 0, 13.88, 11.85, 10.94, 11.85, 1500.00, 1900.00, 0.00, 0.00, 80.00, 2, 1, 1, 1520061028, 0),
+	(5, 4, 1, '600021', '上海电力', 'sh600021', 8.07, 1700.00, 28.50, 12.00, 1520594111, 0, 9.03, 11.90, 7.12, 11.77, 1500.00, 200.00, 0.00, 0.00, 30.00, 3, 1, 1, 1520075711, 1520005956);
+/*!40000 ALTER TABLE `stock_order` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_plugins`
---
-
+-- Dumping structure for table stock.stock_plugins
 DROP TABLE IF EXISTS `stock_plugins`;
-CREATE TABLE `stock_plugins` (
-	`name` varchar(64) NOT NULL COMMENT '插件名称',
-	`type` varchar(64) NOT NULL DEFAULT 'mode' COMMENT '插件类型，mode-交易模式',
-	`code` varchar(64) NOT NULL COMMENT '插件代码',
-	`status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
+CREATE TABLE IF NOT EXISTS `stock_plugins` (
+  `name` varchar(64) NOT NULL COMMENT '插件名称',
+  `type` varchar(64) NOT NULL DEFAULT 'mode' COMMENT '插件类型，mode-交易模式',
+  `code` varchar(64) NOT NULL COMMENT '插件代码',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态；0-开启，1-关闭'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='插件表';
 
---
--- 转存表中的数据 `stock_plugins`
---
-
+-- Dumping data for table stock.stock_plugins: ~1 rows (approximately)
+/*!40000 ALTER TABLE `stock_plugins` DISABLE KEYS */;
 INSERT INTO `stock_plugins` (`name`, `type`, `code`, `status`) VALUES
 	('T+N模式', 'mode', 'Tn', 0);
+/*!40000 ALTER TABLE `stock_plugins` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_product`
---
-
+-- Dumping structure for table stock.stock_product
 DROP TABLE IF EXISTS `stock_product`;
-CREATE TABLE `stock_product` (
-	`id` int(11) NOT NULL,
-	`name` varchar(50) NOT NULL COMMENT '产品名称',
-	`desc` varchar(50) DEFAULT '' COMMENT '产品描述',
-	`is_trade` tinyint(4) DEFAULT '1' COMMENT '允许交易',
-	`currency` tinyint(4) DEFAULT '1' COMMENT '币种： 1人民币，2美元',
-	`on_sale` tinyint(4) DEFAULT '1' COMMENT '上架状态：1上架，-1下架',
-	`state` tinyint(4) DEFAULT '1' COMMENT '状态'
+CREATE TABLE IF NOT EXISTS `stock_product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL COMMENT '产品名称',
+  `desc` varchar(50) DEFAULT '' COMMENT '产品描述',
+  `is_trade` tinyint(4) DEFAULT '1' COMMENT '允许交易',
+  `currency` tinyint(4) DEFAULT '1' COMMENT '币种： 1人民币，2美元',
+  `on_sale` tinyint(4) DEFAULT '1' COMMENT '上架状态：1上架，-1下架',
+  `state` tinyint(4) DEFAULT '1' COMMENT '状态',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='交易产品表';
 
---
--- 转存表中的数据 `stock_product`
---
-
+-- Dumping data for table stock.stock_product: ~2 rows (approximately)
+/*!40000 ALTER TABLE `stock_product` DISABLE KEYS */;
 INSERT INTO `stock_product` (`id`, `name`, `desc`, `is_trade`, `currency`, `on_sale`, `state`) VALUES
 	(1, '沪深A股', '沪深A股', 1, 1, 1, 1),
 	(2, '比特币', '比特币', 1, 1, -1, 0);
+/*!40000 ALTER TABLE `stock_product` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_role`
---
-
+-- Dumping structure for table stock.stock_role
 DROP TABLE IF EXISTS `stock_role`;
-CREATE TABLE `stock_role` (
-	`id` int(11) unsigned NOT NULL COMMENT '后台角色ID自增',
-	`name` varchar(64) NOT NULL COMMENT '角色名称',
-	`remark` varchar(255) DEFAULT NULL COMMENT '角色描述',
-	`show` int(1) unsigned NOT NULL DEFAULT '1' COMMENT '1显示0隐藏'
+CREATE TABLE IF NOT EXISTS `stock_role` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '后台角色ID自增',
+  `name` varchar(64) NOT NULL COMMENT '角色名称',
+  `remark` varchar(255) DEFAULT NULL COMMENT '角色描述',
+  `show` int(1) unsigned NOT NULL DEFAULT '1' COMMENT '1显示0隐藏',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='后台用户角色';
 
---
--- 转存表中的数据 `stock_role`
---
-
+-- Dumping data for table stock.stock_role: ~7 rows (approximately)
+/*!40000 ALTER TABLE `stock_role` DISABLE KEYS */;
 INSERT INTO `stock_role` (`id`, `name`, `remark`, `show`) VALUES
 	(1, '超级管理员', '超级管理员，请勿删除', 1),
 	(2, '结算中心', '结算中心，请勿删除', 1),
@@ -4278,203 +4237,187 @@ INSERT INTO `stock_role` (`id`, `name`, `remark`, `show`) VALUES
 	(5, '微圈', '微圈，请勿删除', 1),
 	(6, '客服', '客服，请勿删除', 1),
 	(7, '财务', '财务，请勿删除', 1);
+/*!40000 ALTER TABLE `stock_role` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_test`
---
-
+-- Dumping structure for table stock.stock_test
 DROP TABLE IF EXISTS `stock_test`;
-CREATE TABLE `stock_test` (
-	`id` int(11) NOT NULL,
-	`name` varchar(255) NOT NULL
+CREATE TABLE IF NOT EXISTS `stock_test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
---
--- 转存表中的数据 `stock_test`
---
-
+-- Dumping data for table stock.stock_test: ~3 rows (approximately)
+/*!40000 ALTER TABLE `stock_test` DISABLE KEYS */;
 INSERT INTO `stock_test` (`id`, `name`) VALUES
 	(3, 'test'),
 	(4, 'test'),
 	(5, 'test');
+/*!40000 ALTER TABLE `stock_test` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_user`
---
-
+-- Dumping structure for table stock.stock_user
 DROP TABLE IF EXISTS `stock_user`;
-CREATE TABLE `stock_user` (
-	`user_id` int(10) unsigned NOT NULL,
-	`username` varchar(32) NOT NULL COMMENT '用户名',
-	`password` varchar(64) NOT NULL COMMENT '密码',
-	`mobile` char(11) DEFAULT NULL COMMENT '手机号',
-	`nickname` varchar(64) DEFAULT NULL COMMENT '昵称',
-	`face` varchar(255) DEFAULT NULL COMMENT '头像',
-	`admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '代理商ID',
-	`parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '邀请人ID',
-	`invide_code` varchar(32) DEFAULT NULL COMMENT '邀请码',
-	`account` decimal(13,2) DEFAULT '0.00' COMMENT '账户余额',
-	`blocked_account` decimal(13,2) DEFAULT '0.00' COMMENT '冻结金额',
-	`state` tinyint(4) DEFAULT '0' COMMENT '用户状态；0-正常，1-禁用',
-	`is_manager` tinyint(4) DEFAULT '-1' COMMENT '是否是经纪人',
-	`manager_state` tinyint(4) DEFAULT '0' COMMENT '申请状态：0未申请，1待审核，2审核通过，-1审核不通过',
-	`is_niuren` tinyint(4) DEFAULT '-1' COMMENT '是否是牛人',
-	`niuren_state` tinyint(4) DEFAULT '0' COMMENT '申请状态：0未申请，1待审核，2审核通过，-1审核不通过',
-	`create_at` int(10) NOT NULL DEFAULT '0' COMMENT '注册时间'
+CREATE TABLE IF NOT EXISTS `stock_user` (
+  `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) NOT NULL COMMENT '用户名',
+  `password` varchar(64) NOT NULL COMMENT '密码',
+  `mobile` char(11) DEFAULT NULL COMMENT '手机号',
+  `nickname` varchar(64) DEFAULT NULL COMMENT '昵称',
+  `face` varchar(255) DEFAULT NULL COMMENT '头像',
+  `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '代理商ID',
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '邀请人ID',
+  `invide_code` varchar(32) DEFAULT NULL COMMENT '邀请码',
+  `account` decimal(13,2) DEFAULT '0.00' COMMENT '账户余额',
+  `blocked_account` decimal(13,2) DEFAULT '0.00' COMMENT '冻结金额',
+  `state` tinyint(4) DEFAULT '0' COMMENT '用户状态；0-正常，1-禁用',
+  `is_manager` tinyint(4) DEFAULT '-1' COMMENT '是否是经纪人',
+  `manager_state` tinyint(4) DEFAULT '0' COMMENT '申请状态：0未申请，1待审核，2审核通过，-1审核不通过',
+  `is_niuren` tinyint(4) DEFAULT '-1' COMMENT '是否是牛人',
+  `niuren_state` tinyint(4) DEFAULT '0' COMMENT '申请状态：0未申请，1待审核，2审核通过，-1审核不通过',
+  `create_at` int(10) NOT NULL DEFAULT '0' COMMENT '注册时间',
+  PRIMARY KEY (`user_id`),
+  KEY `username` (`username`),
+  KEY `admin_id` (`admin_id`),
+  KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
---
--- 转存表中的数据 `stock_user`
---
-
+-- Dumping data for table stock.stock_user: ~3 rows (approximately)
+/*!40000 ALTER TABLE `stock_user` DISABLE KEYS */;
 INSERT INTO `stock_user` (`user_id`, `username`, `password`, `mobile`, `nickname`, `face`, `admin_id`, `parent_id`, `invide_code`, `account`, `blocked_account`, `state`, `is_manager`, `manager_state`, `is_niuren`, `niuren_state`, `create_at`) VALUES
-	(1, '15934854815', '###70873e8580c9900986939611618d7b1e', '15934854815', '15934854815', '/upload/avatar/user_id:1.png', 6, 0, NULL, '9753.00', '3000.00', 0, 1, 0, 1, 0, 1519716476),
-	(2, '15934854816', '###14e1b600b1fd579f47433b88e8d85291', '15934854816', '15934854816', '/resource/home/img/default-user-img.png', 11, 1, NULL, '0.00', '0.00', 0, -1, 0, 1, 0, 1519811310),
-	(4, '15934854817', '###70873e8580c9900986939611618d7b1e', '15934854817', '15934854817', '/resource/home/img/default-user-img.png', 11, 1, NULL, '0.00', '0.00', 0, -1, 0, 1, 0, 1519811999);
+	(1, '15934854815', '###70873e8580c9900986939611618d7b1e', '15934854815', '15934854815', '/upload/avatar/user_id:1.png', 6, 0, NULL, 9753.00, 3000.00, 0, 1, 0, 1, 0, 1519716476),
+	(2, '15934854816', '###14e1b600b1fd579f47433b88e8d85291', '15934854816', '15934854816', '/resource/home/img/default-user-img.png', 11, 1, NULL, 0.00, 0.00, 0, -1, 0, 1, 0, 1519811310),
+	(4, '15934854817', '###70873e8580c9900986939611618d7b1e', '15934854817', '15934854817', '/resource/home/img/default-user-img.png', 11, 1, NULL, 0.00, 0.00, 0, -1, 0, 1, 0, 1519811999);
+/*!40000 ALTER TABLE `stock_user` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_user_coupon`
---
-
+-- Dumping structure for table stock.stock_user_coupon
 DROP TABLE IF EXISTS `stock_user_coupon`;
-CREATE TABLE `stock_user_coupon` (
-	`id` int(10) unsigned NOT NULL,
-	`coupon_id` int(10) unsigned NOT NULL COMMENT '红包发放ID；表stock_coupon字段coupon_id外键',
-	`user_id` int(10) unsigned NOT NULL COMMENT '用户ID；表stock_user字段user_id外键',
-	`state` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '使用状态：0未使用，1已使用，-1已过期',
-	`amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '红包金额',
-	`valid_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '过期时间',
-	`create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '获得时间',
-	`update_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '使用时间'
+CREATE TABLE IF NOT EXISTS `stock_user_coupon` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `coupon_id` int(10) unsigned NOT NULL COMMENT '红包发放ID；表stock_coupon字段coupon_id外键',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID；表stock_user字段user_id外键',
+  `state` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '使用状态：0未使用，1已使用，-1已过期',
+  `amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '红包金额',
+  `valid_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '过期时间',
+  `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '获得时间',
+  `update_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '使用时间',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `coupon_id` (`coupon_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户红包';
 
--- --------------------------------------------------------
+-- Dumping data for table stock.stock_user_coupon: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_coupon` DISABLE KEYS */;
+/*!40000 ALTER TABLE `stock_user_coupon` ENABLE KEYS */;
 
---
--- 表的结构 `stock_user_follow`
---
 
+-- Dumping structure for table stock.stock_user_follow
 DROP TABLE IF EXISTS `stock_user_follow`;
-CREATE TABLE `stock_user_follow` (
-	`follow_id` int(10) unsigned NOT NULL COMMENT '关注uid',
-	`fans_id` int(10) unsigned NOT NULL COMMENT '粉丝uid'
+CREATE TABLE IF NOT EXISTS `stock_user_follow` (
+  `follow_id` int(10) unsigned NOT NULL COMMENT '关注uid',
+  `fans_id` int(10) unsigned NOT NULL COMMENT '粉丝uid',
+  KEY `follow_id` (`follow_id`),
+  KEY `fans_id` (`fans_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户关注表';
 
---
--- 转存表中的数据 `stock_user_follow`
---
-
+-- Dumping data for table stock.stock_user_follow: ~2 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_follow` DISABLE KEYS */;
 INSERT INTO `stock_user_follow` (`follow_id`, `fans_id`) VALUES
 	(4, 1),
 	(2, 1);
+/*!40000 ALTER TABLE `stock_user_follow` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_user_give`
---
-
+-- Dumping structure for table stock.stock_user_give
 DROP TABLE IF EXISTS `stock_user_give`;
-CREATE TABLE `stock_user_give` (
-	`id` int(10) unsigned NOT NULL,
-	`user_id` int(10) unsigned NOT NULL COMMENT '用户ID；表stock_user字段user_id外键',
-	`amount` decimal(10,2) unsigned NOT NULL COMMENT '赠送金额',
-	`create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '赠送时间',
-	`create_by` int(10) unsigned NOT NULL COMMENT '赠送人；后台管理员id'
+CREATE TABLE IF NOT EXISTS `stock_user_give` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID；表stock_user字段user_id外键',
+  `amount` decimal(10,2) unsigned NOT NULL COMMENT '赠送金额',
+  `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '赠送时间',
+  `create_by` int(10) unsigned NOT NULL COMMENT '赠送人；后台管理员id',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户赠金';
 
---
--- 转存表中的数据 `stock_user_give`
---
-
+-- Dumping data for table stock.stock_user_give: ~2 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_give` DISABLE KEYS */;
 INSERT INTO `stock_user_give` (`id`, `user_id`, `amount`, `create_at`, `create_by`) VALUES
-	(1, 1, '10.00', 1520002646, 2),
-	(2, 1, '10000.00', 1520075701, 2);
+	(1, 1, 10.00, 1520002646, 2),
+	(2, 1, 10000.00, 1520075701, 2);
+/*!40000 ALTER TABLE `stock_user_give` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_user_manager`
---
-
+-- Dumping structure for table stock.stock_user_manager
 DROP TABLE IF EXISTS `stock_user_manager`;
-CREATE TABLE `stock_user_manager` (
-	`id` int(10) unsigned NOT NULL,
-	`user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
-	`admin_id` int(11) NOT NULL,
-	`realname` varchar(32) NOT NULL COMMENT '真实姓名',
-	`mobile` varchar(11) NOT NULL COMMENT '手机号',
-	`point` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '返点百分比%',
-	`coding` varchar(16) NOT NULL COMMENT '机构编码或微圈编码',
-	`income` decimal(10,2) NOT NULL COMMENT '收入',
-	`realtime_income` decimal(10,2) NOT NULL COMMENT '实时收入',
-	`not_income` decimal(10,2) NOT NULL COMMENT '未结收入',
-	`sure_income` decimal(10,2) NOT NULL COMMENT '可转收入',
-	`already_income` decimal(10,2) NOT NULL COMMENT '已转收入',
-	`state` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态：0-待审核，1-通过，2-拒绝',
-	`create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '申请时间',
-	`update_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '审核时间',
-	`update_by` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '审核人，后台管理员UID'
+CREATE TABLE IF NOT EXISTS `stock_user_manager` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `admin_id` int(11) NOT NULL,
+  `realname` varchar(32) NOT NULL COMMENT '真实姓名',
+  `mobile` varchar(11) NOT NULL COMMENT '手机号',
+  `point` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '返点百分比%',
+  `coding` varchar(16) NOT NULL COMMENT '机构编码或微圈编码',
+  `income` decimal(10,2) NOT NULL COMMENT '收入',
+  `realtime_income` decimal(10,2) NOT NULL COMMENT '实时收入',
+  `not_income` decimal(10,2) NOT NULL COMMENT '未结收入',
+  `sure_income` decimal(10,2) NOT NULL COMMENT '可转收入',
+  `already_income` decimal(10,2) NOT NULL COMMENT '已转收入',
+  `state` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态：0-待审核，1-通过，2-拒绝',
+  `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '申请时间',
+  `update_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '审核时间',
+  `update_by` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '审核人，后台管理员UID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='经纪人';
 
---
--- 转存表中的数据 `stock_user_manager`
---
-
+-- Dumping data for table stock.stock_user_manager: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_manager` DISABLE KEYS */;
 INSERT INTO `stock_user_manager` (`id`, `user_id`, `admin_id`, `realname`, `mobile`, `point`, `coding`, `income`, `realtime_income`, `not_income`, `sure_income`, `already_income`, `state`, `create_at`, `update_at`, `update_by`) VALUES
-	(3, 1, 6, '朱亚雄', '18629395770', 0, '31107677', '0.00', '0.00', '0.00', '0.00', '0.00', 1, 1520166823, 1520175326, 2);
+	(3, 1, 6, '朱亚雄', '18629395770', 0, '31107677', 0.00, 0.00, 0.00, 0.00, 0.00, 1, 1520166823, 1520175326, 2);
+/*!40000 ALTER TABLE `stock_user_manager` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_user_notice`
---
-
+-- Dumping structure for table stock.stock_user_notice
 DROP TABLE IF EXISTS `stock_user_notice`;
-CREATE TABLE `stock_user_notice` (
-	`id` int(11) NOT NULL,
-	`user_id` int(11) NOT NULL COMMENT '用户id',
-	`type` int(1) NOT NULL COMMENT '类型',
-	`title` varchar(255) NOT NULL COMMENT '标题',
-	`content` text NOT NULL COMMENT '内容',
-	`read` int(1) NOT NULL COMMENT '1-未读2已读',
-	`remark` varchar(255) NOT NULL COMMENT '备注',
-	`create_at` int(11) NOT NULL COMMENT '添加时间'
+CREATE TABLE IF NOT EXISTS `stock_user_notice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `type` int(1) NOT NULL COMMENT '类型',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `content` text NOT NULL COMMENT '内容',
+  `read` int(1) NOT NULL COMMENT '1-未读2已读',
+  `remark` varchar(255) NOT NULL COMMENT '备注',
+  `create_at` int(11) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`,`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户消息表';
 
---
--- 转存表中的数据 `stock_user_notice`
---
-
+-- Dumping data for table stock.stock_user_notice: ~2 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_notice` DISABLE KEYS */;
 INSERT INTO `stock_user_notice` (`id`, `user_id`, `type`, `title`, `content`, `read`, `remark`, `create_at`) VALUES
 	(1, 1, 1, '房顶上的冯绍峰', '水电费是否收费', 1, '大萨达大', 1520137839),
 	(2, 1, 1, '房顶上的冯绍峰', '水电费是否收费', 2, '大萨达大', 1520137839);
+/*!40000 ALTER TABLE `stock_user_notice` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_user_optional`
---
-
+-- Dumping structure for table stock.stock_user_optional
 DROP TABLE IF EXISTS `stock_user_optional`;
-CREATE TABLE `stock_user_optional` (
-	`id` int(10) unsigned NOT NULL,
-	`user_id` int(10) unsigned NOT NULL COMMENT '用户ID，表stock_user字段user_id外键',
-	`code` varchar(16) NOT NULL COMMENT '股票代码',
-	`name` varchar(64) NOT NULL COMMENT '股票名称',
-	`full_code` varchar(32) NOT NULL COMMENT '股票完整代码（带交易所前缀）'
+CREATE TABLE IF NOT EXISTS `stock_user_optional` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID，表stock_user字段user_id外键',
+  `code` varchar(16) NOT NULL COMMENT '股票代码',
+  `name` varchar(64) NOT NULL COMMENT '股票名称',
+  `full_code` varchar(32) NOT NULL COMMENT '股票完整代码（带交易所前缀）',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `code` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='用户自选股';
 
---
--- 转存表中的数据 `stock_user_optional`
---
-
+-- Dumping data for table stock.stock_user_optional: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_optional` DISABLE KEYS */;
 INSERT INTO `stock_user_optional` (`id`, `user_id`, `code`, `name`, `full_code`) VALUES
 	(1, 1, '600000', '浦发银行', 'sh600000'),
 	(2, 1, '600004', '白云机场', 'sh600004'),
@@ -4484,446 +4427,83 @@ INSERT INTO `stock_user_optional` (`id`, `user_id`, `code`, `name`, `full_code`)
 	(18, 1, '600023', '浙能电力', 'sh600023'),
 	(19, 1, '600025', '华能水电', 'sh600025'),
 	(20, 1, '600028', '中国石化', 'sh600028');
+/*!40000 ALTER TABLE `stock_user_optional` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_user_recharge`
---
-
+-- Dumping structure for table stock.stock_user_recharge
 DROP TABLE IF EXISTS `stock_user_recharge`;
-CREATE TABLE `stock_user_recharge` (
-	`id` int(10) unsigned NOT NULL,
-	`user_id` int(10) unsigned NOT NULL COMMENT '用户ID；表stock_user字段user_id字段',
-	`trade_no` varchar(64) NOT NULL COMMENT '订单编号',
-	`amount` decimal(11,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值金额',
-	`actual` decimal(11,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '实际到账',
-	`poundage` decimal(11,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值手续费',
-	`type` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '充值方式：0支付宝，1微信',
-	`state` tinyint(4) NOT NULL DEFAULT '0' COMMENT '充值状态：0待付款，1成功，-1失败',
-	`create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '充值时间',
-	`update_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '审核时间'
+CREATE TABLE IF NOT EXISTS `stock_user_recharge` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID；表stock_user字段user_id字段',
+  `trade_no` varchar(64) NOT NULL COMMENT '订单编号',
+  `amount` decimal(11,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值金额',
+  `actual` decimal(11,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '实际到账',
+  `poundage` decimal(11,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值手续费',
+  `type` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '充值方式：0支付宝，1微信',
+  `state` tinyint(4) NOT NULL DEFAULT '0' COMMENT '充值状态：0待付款，1成功，-1失败',
+  `create_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '充值时间',
+  `update_at` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '审核时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `trade_no` (`trade_no`),
+  KEY `user_id` (`user_id`),
+  KEY `state` (`state`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='充值记录表';
 
--- --------------------------------------------------------
+-- Dumping data for table stock.stock_user_recharge: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_recharge` DISABLE KEYS */;
+/*!40000 ALTER TABLE `stock_user_recharge` ENABLE KEYS */;
 
---
--- 表的结构 `stock_user_record`
---
 
+-- Dumping structure for table stock.stock_user_record
 DROP TABLE IF EXISTS `stock_user_record`;
-CREATE TABLE `stock_user_record` (
-	`id` int(10) NOT NULL,
-	`user_id` int(10) NOT NULL COMMENT '用户ID',
-	`type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0-建仓费，1-递延费，2-牛人跟买收入，8-建仓费提成，3-递延费提成，4-保证金，5-充值，6-体现，7-分红',
-	`amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
-	`remark` varchar(255) DEFAULT NULL COMMENT '操作日志',
-	`direction` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1-收入2-支出',
-	`create_at` int(10) NOT NULL DEFAULT '0' COMMENT '操作时间'
+CREATE TABLE IF NOT EXISTS `stock_user_record` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL COMMENT '用户ID',
+  `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0-建仓费，1-递延费，2-牛人跟买收入，8-建仓费提成，3-递延费提成，4-保证金，5-充值，6-体现，7-分红',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '金额',
+  `remark` varchar(255) DEFAULT NULL COMMENT '操作日志',
+  `direction` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1-收入2-支出',
+  `create_at` int(10) NOT NULL DEFAULT '0' COMMENT '操作时间',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `type` (`type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户资金流水表';
 
---
--- 转存表中的数据 `stock_user_record`
---
-
+-- Dumping data for table stock.stock_user_record: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_record` DISABLE KEYS */;
 INSERT INTO `stock_user_record` (`id`, `user_id`, `type`, `amount`, `remark`, `direction`, `create_at`) VALUES
-	(1, 1, 2, '1500.00', '{"orderId":"4"}', 1, 1520061028),
-	(2, 1, 8, '28.50', '{"orderId":"4"}', 1, 1520061028),
-	(3, 1, 4, '1500.00', '{"orderId":"5"}', 1, 1520075711),
-	(4, 1, 0, '28.50', '{"orderId":"5"}', 1, 1520075711);
+	(1, 1, 2, 1500.00, '{"orderId":"4"}', 1, 1520061028),
+	(2, 1, 8, 28.50, '{"orderId":"4"}', 1, 1520061028),
+	(3, 1, 4, 1500.00, '{"orderId":"5"}', 1, 1520075711),
+	(4, 1, 0, 28.50, '{"orderId":"5"}', 1, 1520075711);
+/*!40000 ALTER TABLE `stock_user_record` ENABLE KEYS */;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `stock_user_withdraw`
---
-
+-- Dumping structure for table stock.stock_user_withdraw
 DROP TABLE IF EXISTS `stock_user_withdraw`;
-CREATE TABLE `stock_user_withdraw` (
-	`id` int(10) unsigned NOT NULL,
-	`user_id` int(10) unsigned NOT NULL COMMENT '用户ID；表stock_user字段user_id外键',
-	`amount` decimal(10,2) NOT NULL COMMENT '出金金额',
-	`actual` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '实际到账',
-	`poundage` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '手续费',
-	`out_sn` varchar(32) DEFAULT NULL COMMENT '订单号',
-	`type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '类型',
-	`state` tinyint(4) NOT NULL DEFAULT '0' COMMENT '操作状态：0待审核，1已操作，-1不通过',
-	`remark` varchar(255) DEFAULT NULL COMMENT '出金账户（json）',
-	`create_at` int(10) NOT NULL DEFAULT '0' COMMENT '申请时间',
-	`update_at` int(10) NOT NULL DEFAULT '0' COMMENT '审核时间',
-	`update_by` int(10) NOT NULL DEFAULT '0' COMMENT '审核人'
+CREATE TABLE IF NOT EXISTS `stock_user_withdraw` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID；表stock_user字段user_id外键',
+  `amount` decimal(10,2) NOT NULL COMMENT '出金金额',
+  `actual` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '实际到账',
+  `poundage` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '手续费',
+  `out_sn` varchar(32) DEFAULT NULL COMMENT '订单号',
+  `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '类型',
+  `state` tinyint(4) NOT NULL DEFAULT '0' COMMENT '操作状态：0待审核，1已操作，-1不通过',
+  `remark` varchar(255) DEFAULT NULL COMMENT '出金账户（json）',
+  `create_at` int(10) NOT NULL DEFAULT '0' COMMENT '申请时间',
+  `update_at` int(10) NOT NULL DEFAULT '0' COMMENT '审核时间',
+  `update_by` int(10) NOT NULL DEFAULT '0' COMMENT '审核人',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `out_sn` (`out_sn`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户出金表';
 
---
--- 转存表中的数据 `stock_user_withdraw`
---
-
+-- Dumping data for table stock.stock_user_withdraw: ~0 rows (approximately)
+/*!40000 ALTER TABLE `stock_user_withdraw` DISABLE KEYS */;
 INSERT INTO `stock_user_withdraw` (`id`, `user_id`, `amount`, `actual`, `poundage`, `out_sn`, `type`, `state`, `remark`, `create_at`, `update_at`, `update_by`) VALUES
-	(1, 1, '300.00', '298.00', '2.00', '5a96abe60c1c80620', 0, 0, '{"bank":"\\u4e2d\\u56fd\\u5de5\\u5546\\u94f6\\u884c","card":"6205882900166205","name":"\\u6881\\u5065","addr":"\\u9655\\u897f\\u7701\\u897f\\u5b89\\u5e02\\u592a\\u767d\\u8def\\u652f\\u884c"}', 1519823845, 0, 0);
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `stock_access`
---
-ALTER TABLE `stock_access`
-	ADD KEY `role_id` (`role_id`),
-	ADD KEY `node_id` (`node_id`);
-
---
--- Indexes for table `stock_admin`
---
-ALTER TABLE `stock_admin`
-	ADD PRIMARY KEY (`admin_id`),
-	ADD UNIQUE KEY `username_UNIQUE` (`username`),
-	ADD UNIQUE KEY `code` (`code`),
-	ADD KEY `pid` (`pid`),
-	ADD KEY `role` (`role`);
-
---
--- Indexes for table `stock_admin_wechat`
---
-ALTER TABLE `stock_admin_wechat`
-	ADD PRIMARY KEY (`admin_id`);
-
---
--- Indexes for table `stock_ai`
---
-ALTER TABLE `stock_ai`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `type_id` (`type_id`);
-
---
--- Indexes for table `stock_ai_type`
---
-ALTER TABLE `stock_ai_type`
-	ADD PRIMARY KEY (`type_id`);
-
---
--- Indexes for table `stock_bank`
---
-ALTER TABLE `stock_bank`
-	ADD KEY `number` (`number`);
-
---
--- Indexes for table `stock_coupon`
---
-ALTER TABLE `stock_coupon`
-	ADD PRIMARY KEY (`coupon_id`),
-	ADD KEY `user_id` (`user_id`),
-	ADD KEY `order_id` (`order_id`);
-
---
--- Indexes for table `stock_deposit`
---
-ALTER TABLE `stock_deposit`
-	ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_hot`
---
-ALTER TABLE `stock_hot`
-	ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_jobs`
---
-ALTER TABLE `stock_jobs`
-	ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_lever`
---
-ALTER TABLE `stock_lever`
-	ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_list`
---
-ALTER TABLE `stock_list`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `code` (`code`),
-	ADD KEY `full_code` (`full_code`);
-
---
--- Indexes for table `stock_menu`
---
-ALTER TABLE `stock_menu`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `pid` (`pid`);
-
---
--- Indexes for table `stock_mode`
---
-ALTER TABLE `stock_mode`
-	ADD PRIMARY KEY (`mode_id`),
-	ADD UNIQUE KEY `name` (`name`),
-	ADD KEY `product_id` (`product_id`),
-	ADD KEY `plugins_code` (`plugins_code`);
-
---
--- Indexes for table `stock_mode_deposit`
---
-ALTER TABLE `stock_mode_deposit`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `mode_id` (`mode_id`);
-
---
--- Indexes for table `stock_mode_lever`
---
-ALTER TABLE `stock_mode_lever`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `mode_id` (`mode_id`);
-
---
--- Indexes for table `stock_niuren`
---
-ALTER TABLE `stock_niuren`
-	ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_order`
---
-ALTER TABLE `stock_order`
-	ADD PRIMARY KEY (`order_id`);
-
---
--- Indexes for table `stock_product`
---
-ALTER TABLE `stock_product`
-	ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_role`
---
-ALTER TABLE `stock_role`
-	ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_test`
---
-ALTER TABLE `stock_test`
-	ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `stock_user`
---
-ALTER TABLE `stock_user`
-	ADD PRIMARY KEY (`user_id`),
-	ADD KEY `username` (`username`),
-	ADD KEY `admin_id` (`admin_id`),
-	ADD KEY `parent_id` (`parent_id`);
-
---
--- Indexes for table `stock_user_coupon`
---
-ALTER TABLE `stock_user_coupon`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `user_id` (`user_id`),
-	ADD KEY `coupon_id` (`coupon_id`);
-
---
--- Indexes for table `stock_user_follow`
---
-ALTER TABLE `stock_user_follow`
-	ADD KEY `follow_id` (`follow_id`),
-	ADD KEY `fans_id` (`fans_id`);
-
---
--- Indexes for table `stock_user_give`
---
-ALTER TABLE `stock_user_give`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `stock_user_manager`
---
-ALTER TABLE `stock_user_manager`
-	ADD PRIMARY KEY (`id`),
-	ADD UNIQUE KEY `user_id` (`user_id`);
-
---
--- Indexes for table `stock_user_notice`
---
-ALTER TABLE `stock_user_notice`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `id` (`id`,`user_id`);
-
---
--- Indexes for table `stock_user_optional`
---
-ALTER TABLE `stock_user_optional`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `user_id` (`user_id`),
-	ADD KEY `code` (`code`);
-
---
--- Indexes for table `stock_user_recharge`
---
-ALTER TABLE `stock_user_recharge`
-	ADD PRIMARY KEY (`id`),
-	ADD UNIQUE KEY `trade_no` (`trade_no`),
-	ADD KEY `user_id` (`user_id`),
-	ADD KEY `state` (`state`);
-
---
--- Indexes for table `stock_user_record`
---
-ALTER TABLE `stock_user_record`
-	ADD PRIMARY KEY (`id`),
-	ADD KEY `user_id` (`user_id`),
-	ADD KEY `type` (`type`);
-
---
--- Indexes for table `stock_user_withdraw`
---
-ALTER TABLE `stock_user_withdraw`
-	ADD PRIMARY KEY (`id`),
-	ADD UNIQUE KEY `out_sn` (`out_sn`),
-	ADD KEY `user_id` (`user_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `stock_admin`
---
-ALTER TABLE `stock_admin`
-	MODIFY `admin_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
---
--- AUTO_INCREMENT for table `stock_ai`
---
-ALTER TABLE `stock_ai`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
---
--- AUTO_INCREMENT for table `stock_ai_type`
---
-ALTER TABLE `stock_ai_type`
-	MODIFY `type_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `stock_coupon`
---
-ALTER TABLE `stock_coupon`
-	MODIFY `coupon_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `stock_deposit`
---
-ALTER TABLE `stock_deposit`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
---
--- AUTO_INCREMENT for table `stock_hot`
---
-ALTER TABLE `stock_hot`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `stock_jobs`
---
-ALTER TABLE `stock_jobs`
-	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6232;
---
--- AUTO_INCREMENT for table `stock_lever`
---
-ALTER TABLE `stock_lever`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `stock_list`
---
-ALTER TABLE `stock_list`
-	MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3432;
---
--- AUTO_INCREMENT for table `stock_menu`
---
-ALTER TABLE `stock_menu`
-	MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '节点ID自增',AUTO_INCREMENT=82;
---
--- AUTO_INCREMENT for table `stock_mode`
---
-ALTER TABLE `stock_mode`
-	MODIFY `mode_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `stock_mode_deposit`
---
-ALTER TABLE `stock_mode_deposit`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `stock_mode_lever`
---
-ALTER TABLE `stock_mode_lever`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `stock_niuren`
---
-ALTER TABLE `stock_niuren`
-	MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `stock_order`
---
-ALTER TABLE `stock_order`
-	MODIFY `order_id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `stock_product`
---
-ALTER TABLE `stock_product`
-	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `stock_role`
---
-ALTER TABLE `stock_role`
-	MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '后台角色ID自增',AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `stock_test`
---
-ALTER TABLE `stock_test`
-	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `stock_user`
---
-ALTER TABLE `stock_user`
-	MODIFY `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `stock_user_coupon`
---
-ALTER TABLE `stock_user_coupon`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `stock_user_give`
---
-ALTER TABLE `stock_user_give`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `stock_user_manager`
---
-ALTER TABLE `stock_user_manager`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `stock_user_notice`
---
-ALTER TABLE `stock_user_notice`
-	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `stock_user_optional`
---
-ALTER TABLE `stock_user_optional`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
---
--- AUTO_INCREMENT for table `stock_user_recharge`
---
-ALTER TABLE `stock_user_recharge`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `stock_user_record`
---
-ALTER TABLE `stock_user_record`
-	MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `stock_user_withdraw`
---
-ALTER TABLE `stock_user_withdraw`
-	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+	(1, 1, 300.00, 298.00, 2.00, '5a96abe60c1c80620', 0, 0, '{"bank":"\\u4e2d\\u56fd\\u5de5\\u5546\\u94f6\\u884c","card":"6205882900166205","name":"\\u6881\\u5065","addr":"\\u9655\\u897f\\u7701\\u897f\\u5b89\\u5e02\\u592a\\u767d\\u8def\\u652f\\u884c"}', 1519823845, 0, 0);
+/*!40000 ALTER TABLE `stock_user_withdraw` ENABLE KEYS */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
