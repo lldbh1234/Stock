@@ -5,6 +5,13 @@
 {/block}
 
 {block name="style"}
+<style>
+    .layui-layer .layui-layer-btn .layui-layer-btn0 {
+        padding: 0 15px;
+        border-color: #F54B4B;
+        background: #F54B4B;
+    }
+</style>
 {/block}
 
 {block name="body"}
@@ -63,6 +70,7 @@
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script>
 $(function () {
@@ -96,22 +104,33 @@ $(function () {
         if ($(this).hasClass('disabled')) {
             return false;
         }
-        var _url = '{:url("index/Manager/RegisterManager")}',
-            _oData = $("form").serialize();
-        $ajaxCustom(_url, _oData, function(res){
-            if(res.state){ // 登录成功
-                alert("申请成功！");
-                setTimeout(function(){
-                    if(res.data && res.data.url){
-                        window.location.href = res.data.url;
-                    }else{
-                        window.location.reload();
-                    }
-                }, 1000);
-            }else{
-                alert(res.info);
-            }
-        });
+        var _poundage = {$poundage|default=88};
+        layer.open({
+			title : '',
+            closeBtn : 0,
+			content: "申请经纪人需缴纳" + _poundage + "元手续费。"
+			,btn: ['同意', '拒绝']
+			,yes: function(index, layero){
+				var _url = '{:url("index/Manager/RegisterManager")}',
+					_oData = $("form").serialize();
+				$ajaxCustom(_url, _oData, function(res){
+					if(res.state){ // 登录成功
+						alert("申请成功！");
+						setTimeout(function(){
+							if(res.data && res.data.url){
+								window.location.href = res.data.url;
+							}else{
+								window.location.reload();
+							}
+						}, 1000);
+					}else{
+						alert(res.info);
+					}
+				});
+			}
+			,cancel: function(){
+			}
+		});
     });
     // 验证码
     $("#verifyCodeBtn").click(function () {
@@ -126,6 +145,7 @@ $(function () {
         }
         $.post(url, {mobile: mobile, act: "manager"}, function(msg) {
                 if (msg.state) {
+                    $("input[name='code']").val(msg.data.code);
                     time($('#verifyCodeBtn'));
                 } else {
                     alert(msg.info);

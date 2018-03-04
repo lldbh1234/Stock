@@ -11,7 +11,7 @@ class Manager extends Validate
         'mobile'    => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
         'realname'  => "require|max:32",
         'coding'    => 'require|checkCoding',
-        'code'      => 'require|checkCode',
+        'code'      => 'require|checkCode|checkUserAmount',
     ];
 
     protected $message = [
@@ -23,6 +23,7 @@ class Manager extends Validate
         'coding.checkCoding' => '机构编码不存在！',
         'code.require'      => '短信验证码不能为空！',
         'code.checkCode'    => '短信验证码错误！',
+        'code.checkUserAmount' => '账户余额不足，请充值！',
     ];
 
     protected $scene = [
@@ -39,5 +40,12 @@ class Manager extends Validate
     {
         $mobile = $data['mobile'];
         return (new SmsLogic())->verify($mobile, $value, "manager");
+    }
+
+    protected function checkUserAmount($value, $rule, $data)
+    {
+        $configs = cfgs();
+        $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+        return uInfo()['account'] >= $poundage;
     }
 }
