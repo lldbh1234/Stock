@@ -470,7 +470,7 @@
         $(".buchong_baozhengjin").val( rechargeBaozhengjin.toFixed(2));
         $(".re_banlance").html( accountBalance.toFixed(2) );
 
-        if(!saveBaozhengjin / baohzengjin < 0.5){
+        if(saveBaozhengjin / baohzengjin < 0.5){
             // 补充保证金
             $(".buchong_baozhengjin").removeAttr("readonly");
         }else{
@@ -506,9 +506,17 @@
                     _oData = {id: id,deposit : count};
                 $ajaxCustom(_url, _oData, function(res){
                     if(res.state){
-                        
+                        $(".re_banlance").html( balance - count );
+                        //保证金
+                        var baohzengjin = $(".position" + id).find(".banzhengjin").html();
+                        baohzengjin = baohzengjin.split(",");
+                        baohzengjin = baohzengjin.join("");
+                        baohzengjin = parseFloat(baohzengjin);
+                        baohzengjin = baohzengjin + parseFloat(count);
+
+                        $(".position" + id).find(".banzhengjin").html(baohzengjin.toFixed(2));
                     }else{
-                        // $alert(res.info);
+                        $alert(res.info);
                     }
                 });
             }
