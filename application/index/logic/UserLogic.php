@@ -164,4 +164,18 @@ class UserLogic
             return [];
         }
     }
+
+    // $state 1委托建仓，2抛出，3持仓，4-委托平仓
+    public function userOrderById($userId, $id, $state=null)
+    {
+        try{
+            $where = [];
+            $where['order_id'] = is_array($id) ? ["IN", $id] : $id;
+            $state ? is_array($state) ? $where['state'] = ["IN", $state]: $where['state'] = $state : null;
+            $orders = User::find($userId)->hasManyOrder()->where($where)->select();
+            return $orders ? collection($orders)->toArray() : [];
+        } catch(\Exception $e) {
+            return [];
+        }
+    }
 }

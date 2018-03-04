@@ -21,7 +21,7 @@ class Order extends Base
     public function position()
     {
         $capital = $this->_userCapital();
-        $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3);
+        $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, 1);
         if($orders['data']){
             $codes = array_column($orders['data'], "code");
             $quotation = (new StockLogic())->simpleData($codes);
@@ -46,6 +46,44 @@ class Order extends Base
         return view();
     }
 
+    public function ajaxPosition()
+    {
+        if(request()->isPost() && request()->isAjax()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('realPosition')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $lists = []; //股票列表
+                $capital = $this->_userCapital(); // 资金情况
+                $ids = input("post.ids/a");
+                array_filter($capital, function(&$item){
+                    $item = number_format($item, 2);
+                });
+                $orders = $this->_userLogic->userOrderById($this->user_id, $ids, 3);
+                if($orders){
+                    $codes = array_column($orders, "code");
+                    $quotation = (new StockLogic())->simpleData($codes);
+                    array_filter($orders, function($item) use ($quotation, &$lists){
+                        $_lastPx = $quotation[$item['code']]['last_px'];
+                        $lists[] = [
+                            "id" => $item["order_id"],
+                            "code" => $item["code"],
+                            "last_px" => number_format($_lastPx, 2), //现价
+                            "market_value" => number_format($_lastPx * $item['hand'], 2), //市值
+                            "yield_rate" => number_format(round(($_lastPx - $item['price']) / $item['price'] * 100, 2), 2), //收益率
+                            "total_pl"  => number_format(($_lastPx - $item['price']) * $item['hand'], 2), //盈亏
+                        ];
+                    });
+                }
+                $response = ["capital" => $capital, "orders" => $lists];
+                return $this->ok($response, '', 'json');
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
+
+    // 委托
     public function entrust()
     {
         $capital = $this->_userCapital();

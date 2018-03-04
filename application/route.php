@@ -50,6 +50,7 @@ Route::group("user", function () {
 // 订单
 Route::group("order", function(){
     Route::any('index','index/Order/position'); // 持仓
+    Route::any('real','index/Order/ajaxPosition'); // 实时信息
     Route::any('entrust','index/Order/entrust'); // 委托
     Route::any('history','index/Order/history'); // 历史
 });
