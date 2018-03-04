@@ -110,8 +110,10 @@ class UserLogic
         try{
             $user = User::get($userId);
             $data['admin_id'] = $user['admin_id'];
-            $data['state'] = 0;
             if($user->hasOneManager){
+                $data['state'] = 0;
+                $data['update_at'] = 0;
+                $data['update_by'] = 0;
                 $user->hasOneManager->save($data);
             }else{
                 $user->hasOneManager()->save($data);
