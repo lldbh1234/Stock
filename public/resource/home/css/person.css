@@ -2854,11 +2854,11 @@ em, i, b {
     display: inline-block;
     /*width: 5rem;*/
     background:rgba(0,0,0,.6);
-    min-height: 2rem;
-    border-radius: .2rem;
+    /*min-height: 2rem;*/
+    border-radius: 4px;
     color: #fff;
-    font-size: .28rem;
-    padding: .85rem .85rem;
+    font-size: 13px;
+    padding: 14px 20px;
     text-align: center;
 }
 /** loading */
