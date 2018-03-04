@@ -4,6 +4,7 @@ namespace app\admin\logic;
 use app\admin\model\Admin;
 use app\admin\model\User;
 use app\admin\model\UserManager;
+use think\Db;
 
 class UserManagerLogic
 {
@@ -36,11 +37,28 @@ class UserManagerLogic
 
     public function updateState($where=[])
     {
-        UserManager::update($where);
-        if($where['state'] == 1){
-            User::update(['user_id' => $where['user_id'], 'is_manager' => 1]);
+        Db::startTrans();
+        try{
+            UserManager::update($where);
+            if($where['state'] == 1){
+                User::update(['user_id' => $where['user_id'], 'is_manager' => 1]);
+            }else{
+                // 拒绝，回退申请手续费
+                $configs = cfgs();
+                $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+                $rData = [
+                    "type" => 8,
+                    "amount" => $poundage,
+                    "direction" => 1
+                ];
+                User::find($where['user_id'])->hasManyRecord()->save($rData);
+            }
+            Db::commit();
+            return true;
+        }catch (\Exception $e){
+            Db::rollback();
+            return false;
         }
-        return true;
     }
 
 }

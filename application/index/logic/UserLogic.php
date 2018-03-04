@@ -106,13 +106,29 @@ class UserLogic
 
     public function saveUserManager($userId, $data)
     {
-        $user = User::get($userId);
-        $data['admin_id'] = $user['admin_id'];
-        $data['state'] = 0;
-        if($user->hasOneManager){
-            return $user->hasOneManager->save($data);
-        }else{
-            return $user->hasOneManager()->save($data);
+        Db::startTrans();
+        try{
+            $user = User::get($userId);
+            $data['admin_id'] = $user['admin_id'];
+            $data['state'] = 0;
+            if($user->hasOneManager){
+                $user->hasOneManager->save($data);
+            }else{
+                $user->hasOneManager()->save($data);
+            }
+            $configs = cfgs();
+            $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+            $rData = [
+                "type" => 8,
+                "amount" => $poundage,
+                "direction" => 2
+            ];
+            $user->hasManyRecord()->save($rData);
+            Db::commit();
+            return true;
+        }catch (\Exception $e){
+            Db::rollback();
+            return false;
         }
     }
 
