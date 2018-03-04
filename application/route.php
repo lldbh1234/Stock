@@ -44,6 +44,7 @@ Route::group("user", function () {
     Route::any('password','index/User/password'); //修改密码
     Route::any('recharge','index/User/recharge'); //充值
     Route::any('withdraw','index/User/withdraw'); //提现
+    Route::any('record','index/User/record');  //资金明细
 });
 
 // 订单
