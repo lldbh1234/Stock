@@ -249,5 +249,14 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::post('audit', 'admin/Manager/audit'); // 审核
         });
 
+        Route::group("order", function(){
+            Route::any('lists', 'admin/Order/index'); //委托订单
+            Route::any('history', 'admin/Order/history'); //已平仓订单
+            Route::any('position', 'admin/Order/position'); //持仓订单
+            Route::any('buy-ok', 'admin/Order/buyOk'); //建仓成功
+            Route::any('buy-fail', 'admin/Order/buyFail'); //建仓失败
+            Route::any('sell-ok', 'admin/Order/sellOk'); //平仓成功
+            Route::any('sell-fail', 'admin/Order/sellFail'); //平仓失败
+        });
     });
 });

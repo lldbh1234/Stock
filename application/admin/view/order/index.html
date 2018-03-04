@@ -1,0 +1,205 @@
+﻿{extend name="layouts/layout_iframe" /}
+
+{block name="title"}委托订单{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+	<span class="c-gray en">&gt;</span> 订单管理
+	<span class="c-gray en">&gt;</span> 委托订单
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+	</a>
+</nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+			<!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
+			</a>
+			<a class="btn btn-primary radius" href="javascript:;" onclick="deposit_add('添加保证金','{:url("admin/Deposit/create")}','','350')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加保证金
+			</a> -->
+		</span>
+		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-hover table-bg">
+		<thead>
+		<tr class="text-c">
+			<th width="40">ID</th>
+			<th>类型</th>
+			<th>用户名</th>
+			<th>股票代码</th>
+			<th>股票名称</th>
+			<th>委托买入价</th>
+			<th>委托卖出价</th>
+			<th>手数</th>
+			<th>保证金</th>
+			<th>建仓费</th>
+			<th>递延费</th>
+			<th>自动递延</th>
+			<th>免息到期时间</th>
+			<th>止盈</th>
+			<th>止损</th>
+			<th>委托时间</th>
+			<th width="70">操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name="datas.data" id="item"}
+		<tr class="text-c mode-lists">
+			<td>{$item.order_id}</td>
+			<td>{$item.state_text}</td>
+			<td>{$item.has_one_user.username}</td>
+			<td>{$item.code}</td>
+			<td>{$item.name}</td>
+			<td>
+				{if condition="$item.state eq 1"}
+				{$item.price|number_format=2}
+				{else /}
+				--
+				{/if}
+			</td>
+			<td>
+				{if condition="$item.state eq 1"}
+				--
+				{else /}
+				{$item.sell_price|number_format=2}
+				{/if}
+			</td>
+			<td>{$item.hand|intval}</td>
+			<td>{$item.deposit|number_format=2}</td>
+			<td>{$item.jiancang_fee|number_format=2}</td>
+			<td>{$item.defer|number_format=2}</td>
+			<td>
+				{if condition="$item.is_defer eq 1"}
+				<span class="label label-success radius">{$item.is_defer_text}</span>
+				{else /}
+				<span class="label label-danger radius">{$item.is_defer_text}</span>
+				{/if}
+			</td>
+			<td>{$item.free_time|date="Y-m-d H:i", ###}</td>
+			<td>{$item.stop_profit_price|number_format=2}</td>
+			<td>{$item.stop_loss_price|number_format=2}</td>
+			<td>
+				{if condition="$item.state eq 1"}
+					{$item.create_at|date="Y-m-d H:i", ###}
+				{else /}
+					{$item.update_at|date="Y-m-d H:i", ###}
+				{/if}
+			</td>
+			<td>
+				{if condition="$item.state eq 1"}
+				<a title="建仓成功" href="javascript:;" onclick="buy_ok({$item.order_id}, {$item.price}, this);" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
+				<a title="建仓失败" href="javascript:;" onclick="buy_fail({$item.order_id}, this);" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
+				{else /}
+				<a title="平仓成功" href="javascript:;" onclick="sell_ok({$item.order_id}, this);" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
+				<a title="平仓失败" href="javascript:;" onclick="sell_fail({$item.order_id}, this);" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
+				{/if}
+			</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+	function buy_ok(_id, _price, _obj)
+	{
+        parent.layer.confirm('确认此订单建仓成功？',function(index){
+            parent.layer.close(index);
+            layer.prompt({
+                title: '实际买入价',
+                value: _price,
+                formType: 0,
+            }, function(_number, _prompt){
+                layer.close(_prompt);
+                var _oData = {id : _id, price : _number},
+                    _url = '{:url("admin/Order/buyOk")}',
+                    _loading = parent.layer.load(1),
+                    _func = function (_resp) {
+                        parent.layer.close(_loading);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('操作成功！', {time: 500}, function(){
+                                $(_obj).parents("tr").remove();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
+        });
+	}
+
+    function buy_fail(_id, _obj)
+    {
+        parent.layer.confirm('确认此订单建仓失败？',function(index){
+            parent.layer.close(index);
+            var _oData = {id : _id},
+                _url = '{:url("admin/Order/buyFail")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            $(_obj).parents("tr").remove();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+    function sell_ok(_id, _obj)
+    {
+        parent.layer.confirm('确认此订单平仓成功？',function(index){
+            parent.layer.close(index);
+            var _oData = {id : _id},
+                _url = '{:url("admin/Order/sellOk")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            $(_obj).parents("tr").remove();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+    function sell_fail(_id, _obj)
+    {
+        parent.layer.confirm('确认此订单平仓失败？',function(index){
+            parent.layer.close(index);
+            var _oData = {id : _id},
+                _url = '{:url("admin/Order/sellFail")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            $(_obj).parents("tr").remove();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+</script>
+{/block}

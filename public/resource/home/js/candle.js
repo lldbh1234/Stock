@@ -182,7 +182,9 @@ function refreshTimeLine(){
                 lineData[-1] = lineData[-1].concat( res.data.trend );
                 lineData[0] = splitData( lineData[-1] );
                 lineData[-2].min_time = lineData[-1][_data.length - 1].min_time;
-                drawAreaLine(lineData[0]);
+                if( $(".koptions_nav .active a").data("type") == 0 ){
+                    drawAreaLine(lineData[0]);
+                }  
             }
             lineData[-2].trend_crc = res.data.trend_crc;
 
@@ -228,6 +230,22 @@ function refreshTimeLine(){
             $(".g_section").html( html );
 
             //修改盘口
+            var html = '<ul class="sell mui-col-xs-6 mui-row clear_fl">\
+                <li class=""><em>卖⑤</em><b class="red">'+ res.data.offer_grp[12] +'</b><i>'+ res.data.offer_grp[14] +'</i></li>\
+                <li class=""><em>卖④</em><b class="red">'+ res.data.offer_grp[9] +'</b><i>'+ res.data.offer_grp[11] +'</i></li>\
+                <li class=""><em>卖③</em><b class="red">'+ res.data.offer_grp[6] +'</b><i>'+ res.data.offer_grp[8] +'</i></li>\
+                <li class=""><em>卖②</em><b class="red">'+ res.data.offer_grp[3] +'</b><i>'+ res.data.offer_grp[5] +'</i></li>\
+                <li class=""><em>卖①</em><b class="red">'+ res.data.offer_grp[0] +'</b><i>'+ res.data.offer_grp[2] +'</i></li>\
+            </ul>\
+            <ul class="buy mui-col-xs-6 mui-row clear_fl">\
+                <li><em>买①</em><b class="red">'+ res.data.bid_grp[0] +'</b><i>'+ res.data.bid_grp[2] +'</i></li>\
+                <li><em>买②</em><b class="red">'+ res.data.bid_grp[3] +'</b><i>'+ res.data.bid_grp[5] +'</i></li>\
+                <li><em>买③</em><b class="red">'+ res.data.bid_grp[8] +'</b><i>'+ res.data.bid_grp[8] +'</i></li>\
+                <li><em>买④</em><b class="red">'+ res.data.bid_grp[9] +'</b><i>'+ res.data.bid_grp[11] +'</i></li>\
+                <li><em>买⑤</em><b class="red">'+ res.data.bid_grp[12] +'</b><i>'+ res.data.bid_grp[14] +'</i></li>\
+            </ul>';
+
+            $("#stock-price").html(html);
             
         }else{
             $alert(res.info);
