@@ -140,7 +140,7 @@
         var _formData = new FormData();
         _formData.append("avatar", document.getElementById("avatar").files[0]);
         $.ajax({
-            url: "{{ URL::route('v1.0.user.avatar') }}",
+            url: "{:url('index/User/avatar')}",
             type: "POST",
             data: _formData,
             contentType: false,
