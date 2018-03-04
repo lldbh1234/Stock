@@ -362,6 +362,7 @@
 		}
 
 		var params = {};
+        params.follow_id = {$follow_id|default=0}; //更改
 		params.price = $(".agent_price").html(); //委托价
 		params.mode = $(".pattern_options").find(".active").data("id");//策略模式
 		params.deposit = $(".x_y_options").find(".active").data("id");//信用金

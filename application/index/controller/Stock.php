@@ -29,6 +29,7 @@ class Stock extends Base
                 $depositId = input("post.deposit/d");
                 $leverId = input("post.lever/d");
                 $price = input("post.price/f");
+                $followId = input("post.follow_id/d", 0);
                 $stock = $this->_logic->stockByCode($code);
                 $mode = (new ModeLogic())->modeIncPluginsById($modeId);
                 $deposit = (new DepositLogic())->depositById($depositId);
@@ -56,7 +57,9 @@ class Stock extends Base
                         "stop_profit_point" => round((input("post.profit/f") - $price) / $price * 100, 2),
                         "stop_loss_price" => input("post.loss/f"),
                         "stop_loss_point" => round(($price - input("post.loss/f")) / $price * 100, 2),
-                        "deposit"   => $deposit['money']
+                        "deposit"   => $deposit['money'],
+                        "is_follow" => $followId ? 1 : 0,
+                        "follow_id" => $followId
                     ];
                     $orderId = (new OrderLogic())->createOrder($order);
                     if($orderId > 0){
@@ -83,6 +86,7 @@ class Stock extends Base
                     $this->assign("levers", $levers);
                     $this->assign("user", uInfo());
                     $this->assign("usage", cfgs()['capital_usage']);
+                    $this->assign("follow_id", input("?follow_id") ? input("follow_id") : 0);
                     return view('buy');
                 }else{
                     return view('public/error');
