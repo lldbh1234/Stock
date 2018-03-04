@@ -52,7 +52,7 @@
 						</div>
 			            <div class="btn-sendcode" id="verifyCodeBtn" data-action="{:url('index/Home/captcha')}">获取验证码</div>
 			        </div><p id="errorMsg"></p>
-			        <div class="btn-regsubmit disabled" id="submitBtn">提交</div>
+			        <div class="btn-regsubmit disabled" id="submitBtn">{if condition="$user.has_one_manager.state eq 2"}重新提交{else /}提交{/if}</div>
 			    </div>
 			</form>
 		</div>
@@ -96,7 +96,7 @@ $(function () {
         if ($(this).hasClass('disabled')) {
             return false;
         }
-        var _url = '{:url("index/User/RegisterManager")}',
+        var _url = '{:url("index/Manager/RegisterManager")}',
             _oData = $("form").serialize();
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){ // 登录成功

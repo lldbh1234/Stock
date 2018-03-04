@@ -196,9 +196,11 @@ class Cattle extends Base
         $data = input('post.');
         $startDate = isset($data['startDate']) ? strtotime($data['startDate']) : '';
         $endDate = isset($data['endDate']) ? strtotime($data['endDate'])+86399 : '';
+        //计算牛人订单号
+        $niuOrderIds = $orderLogic->orderIdsByUid($this->user_id);
         $map = [
             'is_follow' => 1,
-            'follow_id' => $this->user_id,
+            'follow_id' => ['in', $niuOrderIds],
             'state' => 2,
         ];
         if($startDate && $endDate) $map["create_at"] = ['between', [$startDate, $endDate]];
@@ -219,9 +221,11 @@ class Cattle extends Base
         $data = input('post.');
         $startDate = isset($data['startDate']) ? strtotime($data['startDate']) : '';
         $endDate = isset($data['endDate']) ? strtotime($data['endDate'])+86399 : '';
+        //计算牛人订单号
+        $niuOrderIds = $orderLogic->orderIdsByUid($this->user_id);
         $map = [
             'is_follow' => 1,
-            'follow_id' => $this->user_id,
+            'follow_id' => ['in', $niuOrderIds],
             'state' => 3,
         ];
         if($startDate && $endDate) $map["create_at"] = ['between', [$startDate, $endDate]];
@@ -264,7 +268,7 @@ class Cattle extends Base
             $newList = $orderLogic->getLimit(['user_id' => $uid, 'state' => ['in', [2,3]]], ['limit' => '2']);
             $codes = $orderLogic->getCodesBy(['user_id' => $uid]);
             $codeInfo = [];
-//            if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
+            if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
             foreach($newList as $k => $v)
             {
                 if($v['state'] == 2)//抛出
@@ -302,7 +306,7 @@ class Cattle extends Base
         $lists = $orderLogic->getAllBy(['user_id' => $uid, 'state' => ['in', [2,3]]], ['create_at' => 'desc']);
         $codes = $orderLogic->getCodesBy(['user_id' => $uid]);
         $codeInfo = [];
-//            if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
+        if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
         foreach($lists as $k => $v)
         {
             if($v['state'] == 2)//抛出
@@ -328,7 +332,7 @@ class Cattle extends Base
         $lists = $orderLogic->getAllBy(['user_id' => $uid, 'state' => 3], ['create_at' => 'desc']);
         $codes = $orderLogic->getCodesBy(['user_id' => $uid]);
         $codeInfo = [];
-//            if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
+            if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
         foreach($lists as $k => $v)
         {
             $sell_price = isset($codeInfo[$v['code']]['last_px']) ? $codeInfo[$v['code']]['last_px'] : $v['price'];

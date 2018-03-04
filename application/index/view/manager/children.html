@@ -1,0 +1,106 @@
+{extend name="layouts/layout_manager" /}
+{block name="title"}直属客户{/block}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__RESOURCE__/css/person.css">
+<link href="__RESOURCE__/css/foundation-datepicker.min.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    body{
+        background: #f5f5f5;
+    }
+    .ml_btn{
+        margin-top: 16px!important;
+        margin-bottom: 16px;
+    }
+    .fan_key:before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background: url(__RESOURCE__/img/icons.png) no-repeat;
+        background-size: 900%;
+        background-position: -60px -52px;
+        margin-right: 4px;
+    }
+</style>
+{/block}
+<!--个人中心-充值-支付宝-->
+{block name="body"}
+<body>
+{/block}
+{block name="content"}
+<div class="manager_con">
+    <header class="header_con">
+        <a href="{:url('index/Manager/manager')}" class="lf">
+            <img src="__RESOURCE__/img/call_back.png">
+        </a>
+        <p>经纪人</p>
+    </header>
+    <div id="main">
+        <p class="income_title">
+            <span class="fan_key">总人数</span>
+            <span class="fan_count">{:count($lists)}</span>
+        </p>
+
+        <form action="" method="POST">
+        <div class="date_group clear_fl">
+            <span class="date_key lf">手机号：</span>
+            <input type="text"  class="date_value lf" value="{$search['mobile']}" name="mobile" id="phone">
+        </div>
+
+        <button type="submit" class="ml_btn mui-btn mui-btn-block">查询</button>
+        </form>
+        <ul class="search_result_list">
+            <li class="s_r_title flex_nowrap">
+                <span class="lf">手机号</span>
+                <span class="lf">余额</span>
+                <span class="lf">注册时间</span>
+            </li>
+            {volist name="$lists" id="vo"}
+            <li class="flex_nowrap">
+                <span class="lf">{$vo.mobile}</span>
+                <span class="lf">{$vo.account}</span>
+                <span class="lf">{$vo.create_at|date="Y-m-d H:i", ###}</span>
+            </li>
+            {/volist}
+            <!-- empty -->
+            <li class="empty">当前查询记录为{:count($lists)}条</li>
+        </ul>
+
+    </div>
+</div>
+{/block}
+{block name="nav"}{/block}
+{block name="script"}
+
+<script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
+<script src="__RESOURCE__/js/foundation-datepicker.js"></script>
+<script src="__RESOURCE__/js/common.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#startDate').fdatepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#endDate').fdatepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+    });
+    function check()
+    {
+        var startDate = $("#startDate").val();
+        var endDate = $("#endDate").val();
+        if(startDate=='' || endDate==''){
+            $alert('请输入完整筛选日期');
+            return false;
+        }
+        return true;
+    }
+    $(".search").click(function() {
+        if(check()){
+            $('#form').submit();
+        }
+    });
+
+</script>
+{/block}

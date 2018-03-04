@@ -107,6 +107,8 @@ class UserLogic
     public function saveUserManager($userId, $data)
     {
         $user = User::get($userId);
+        $data['admin_id'] = $user['admin_id'];
+        $data['state'] = 0;
         if($user->hasOneManager){
             return $user->hasOneManager->save($data);
         }else{
@@ -204,7 +206,9 @@ class UserLogic
         $result['commission'] = UserRecord::where(['type' => ['in', [2, 3], 'user_id' => $uid]])->sum('amount');//提成
         //推广
         //牛人
-        $result['follow'] = Order::where(['is_follow' => 1, 'follow_id' => $uid])->count();//跟单
+        $followUserOrderIds = Order::where(['user_id' => $uid])->column('order_id');//牛人订单id arr
+        $follow = Order::where(['is_follow' => 1, 'follow_id' => ['in', $followUserOrderIds]])->count();
+        $result['follow'] = $follow;
         $result['return_income'] = UserRecord::where(['type' => 2, 'user_id' => $uid])->sum('amount');//跟单
         return $result;
 
@@ -328,6 +332,10 @@ class UserLogic
         }
     }
 
+    public function getUidsByParentId($uid)
+    {
+        return User::where(['parent_id' => $uid])->column('user_id');
+    }
     //修改止盈止损
     public function userOrderModifyPl($userId, $order, $profit, $loss)
     {

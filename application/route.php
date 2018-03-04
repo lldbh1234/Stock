@@ -63,8 +63,13 @@ Route::group("order", function(){
 
 // 经纪人
 Route::group("manager", function(){
-    Route::any('home','index/User/manager'); // 经纪人首页
-    Route::post('register','index/User/RegisterManager');
+    Route::any('home','index/Manager/manager'); // 经纪人首页
+    Route::post('register','index/Manager/RegisterManager');
+    Route::any('income-lists','index/Manager/incomeLists');
+    Route::any('children','index/Manager/children');
+    Route::any('follow-evening','index/Manager/followEvening');
+    Route::any('follow-position','index/Manager/followPosition');
+
 });
 
 //关注
@@ -236,6 +241,12 @@ Route::group(["domain" => "stock.lc"], function() {
             Route::any('give-log', 'admin/User/giveLog');  // 会员赠金日志
             Route::any('withdraw-lists', 'admin/User/withdrawLists');  // 会员出金列表
             Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
+        });
+        //经纪人管理
+        Route::group("manager", function(){
+            Route::any('lists', 'admin/Manager/lists');
+            Route::any('audit-lists', 'admin/Manager/auditLists');
+            Route::post('audit', 'admin/Manager/audit'); // 审核
         });
 
         Route::group("order", function(){
