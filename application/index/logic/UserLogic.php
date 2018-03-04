@@ -145,6 +145,23 @@ class UserLogic
         $user = User::with("hasManyAttention,hasManyAttention.belongsToAttention")->find($userId);
         return $user ? $user->toArray() : [];
     }
+
+    public function userIncFans($userId)
+    {
+        $user = User::with("hasManyFans,hasManyFans.belongsToFans")->find($userId);
+        return $user ? $user->toArray() : [];
+    }
+
+    public function userFansLists($userId)
+    {
+        try{
+            $fans = User::find($userId)->hasManyFans()->select();
+            return $fans ? collection($fans)->toArray() : [];
+        }catch (\Exception $e){
+            return [];
+        }
+    }
+
     public function userDetail($uid, $orderMap=[])
     {
         $result = [];

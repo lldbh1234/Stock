@@ -11,4 +11,9 @@ class UserFollow extends BaseModel
     {
         return $this->belongsTo("\\app\\common\\model\\User", "follow_id", "user_id");
     }
+
+    public function belongsToFans()
+    {
+        return $this->belongsTo("\\app\\common\\model\\User", "fans_id", "user_id");
+    }
 }

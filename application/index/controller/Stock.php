@@ -1,8 +1,9 @@
 <?php
 namespace app\index\controller;
 
-use app\index\logic\OrderLogic;
+use think\Queue;
 use think\Request;
+use app\index\logic\OrderLogic;
 use app\index\logic\DepositLogic;
 use app\index\logic\LeverLogic;
 use app\index\logic\ModeLogic;
@@ -64,6 +65,10 @@ class Stock extends Base
                     $orderId = (new OrderLogic())->createOrder($order);
                     if($orderId > 0){
                         $url = url("index/Order/position");
+                        // 队列
+                        $smsNoticeData = $sysNoticeData = ["niurenId" => $this->user_id];
+                        Queue::push('app\index\job\UserNotice@systemNotice', $sysNoticeData, null);
+                        Queue::push('app\index\job\UserNotice@smsNotice', $smsNoticeData, null);
                         return $this->ok(["url" => $url]);
                     }else{
                         return $this->fail("创建策略失败！");
