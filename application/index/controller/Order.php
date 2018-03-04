@@ -20,9 +20,9 @@ class Order extends Base
     // 持仓
     public function position()
     {
+        $field = "order_id,code,name,price,deposit,defer,hand,stop_loss_price,stop_profit_price,create_at";
         if(request()->isPost()){
-            $field = "order_id,code,name,price,deposit,hand,stop_loss_price,stop_profit_price,create_at";
-            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, 1);
+            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, $field);
             if($orders['data']){
                 $codes = array_column($orders['data'], "code");
                 $quotation = (new StockLogic())->simpleData($codes);
@@ -31,20 +31,6 @@ class Order extends Base
                     $item['market_value'] = $item['last_px'] * $item['hand']; //市值
                     $item['yield_rate'] = round(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['last_px'] - $item['price']) * $item['hand']; //盈亏
-                    /*unset($item['user_id']);
-                    unset($item['product_id']);
-                    unset($item['full_code']);
-                    unset($item['jiancang_fee']);
-                    unset($item['defer']);
-                    unset($item['free_time']);
-                    unset($item['is_defer']);
-                    unset($item['stop_profit_point']);
-                    unset($item['stop_loss_point']);
-                    unset($item['profit']);
-                    unset($item['state']);
-                    unset($item['is_follow']);
-                    unset($item['follow_id']);
-                    unset($item['update_at']);*/
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
@@ -58,7 +44,7 @@ class Order extends Base
             return $this->ok($response);
         }else{
             $capital = $this->_userCapital();
-            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, 1);
+            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, $field);
             if($orders['data']){
                 $codes = array_column($orders['data'], "code");
                 $quotation = (new StockLogic())->simpleData($codes);

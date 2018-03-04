@@ -22,6 +22,7 @@ class Order extends Validate
 
     protected function checkDatetime($value, $rule, $data)
     {
+        return true;
         return checkStockTradeTime();
     }
 }
