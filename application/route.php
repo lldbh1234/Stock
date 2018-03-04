@@ -44,11 +44,13 @@ Route::group("user", function () {
     Route::any('password','index/User/password'); //修改密码
     Route::any('recharge','index/User/recharge'); //充值
     Route::any('withdraw','index/User/withdraw'); //提现
+    Route::any('record','index/User/record');  //资金明细
 });
 
 // 订单
 Route::group("order", function(){
     Route::any('index','index/Order/position'); // 持仓
+    Route::any('real','index/Order/ajaxPosition'); // 实时信息
     Route::any('entrust','index/Order/entrust'); // 委托
     Route::any('history','index/Order/history'); // 历史
 });

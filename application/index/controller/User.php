@@ -185,4 +185,11 @@ class User extends Base
         }
         return $this->fail("系统提示：非法操作！");
     }
+
+    public function record($type = null)
+    {
+        $user = uInfo();
+        $this->assign("user", $user);
+        return view();
+    }
 }

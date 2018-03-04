@@ -1,0 +1,197 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+资金明细
+{/block}
+
+{block name="style"}
+<style type="text/css">
+	.money_detail_list{
+		padding: 10px 14px;
+	}
+	.money_detail_list li{
+		margin-bottom: 10px;
+		border-radius: 4px;
+		background: #f8f8f8;
+		padding: 6px 10px;
+	}
+	.money_detail_list li p{
+		margin: 0;
+		line-height: 24px;
+	}
+	.order_num{
+		font-size: 10px;
+		color: #333;
+	}
+	.money_d_list p{
+		width: 50%;
+		font-size: 12px;
+	}
+	.money_d_list p .key{
+		width: 50%;
+		text-align: right;
+		padding-right: 6px;
+	}
+	.money_d_list p .value{
+		width: 50%;
+		text-align: left;
+		padding-left: 6px;
+	}
+	.order_num span{
+		display: inline-block;
+		width: 25%;
+		text-align: right;
+	}
+</style>
+{/block}
+
+{block name="body"}
+<body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+
+{block name="content"}
+	<header class="has_back_top ">
+		资金明细
+		<a href="javascript:history.go(-1)" class="back_icon">
+			<img src="__RESOURCE__/img/back_icon.png">
+		</a>
+	</header>
+	<div class="money_header">
+		<h1 class="m_balance">{$user.account|number_format=2}</h1>
+		<p class="m_balance_title">账户余额（元）</p>
+		<div class="clear_fl m_panel">
+			<a href="{:url('index/User/recharge')}" class="lf">
+				<img src="__RESOURCE__/img/recharge_icon.png"><br/>
+				充值
+			</a>
+			<a href="{:url('index/User/withdraw')}" class="rt">
+				<img src="__RESOURCE__/img/withdrew_icon.png"><br/>
+				提现
+			</a>
+		</div>
+	</div>
+
+
+	<ul class="postion_tab flex_nowrap">
+		<li class="active">
+			<p><span>全部</span></p>
+		</li>
+		<li>
+			<p><span>保证金</span></p>
+		</li>
+		<li>
+			<p><span>建仓费</span></p>
+		</li>
+		<li>
+			<p><span>递延费</span></p>
+		</li>
+	</ul>
+
+	<!-- <div class="money_tab_con" style="text-align: center;">
+		<img style="width: 30%;margin-top: 60px;" src="img/no-search-data@3x.png">
+	</div> -->
+
+	<ul class="money_detail_list">
+		<li class="clear_fl">
+			<p class="order_num"><span>订单编号：</span> HR343534234234234234234D</p>
+			<div class="clear_fl money_d_list">
+				<p class="lf clear_fl">
+					<span class="key lf">生成时间</span>
+					<span class="value lf">2018-12-01</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">金额</span>
+					<span class="value lf">10203.00</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">用途</span>
+					<span class="value lf">建仓费</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">生成时间</span>
+					<span class="value lf">2018-12-01</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">金额</span>
+					<span class="value lf">10203.00</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">用途</span>
+					<span class="value lf">建仓费</span>
+				</p>
+			</div>
+		</li>
+
+		<li class="clear_fl">
+			<p class="order_num"><span>订单编号：</span> HR343534234234234234234D</p>
+			<div class="clear_fl money_d_list">
+				<p class="lf clear_fl">
+					<span class="key lf">生成时间</span>
+					<span class="value lf">2018-12-01</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">金额</span>
+					<span class="value lf">10203.00</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">用途</span>
+					<span class="value lf">建仓费</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">生成时间</span>
+					<span class="value lf">2018-12-01</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">金额</span>
+					<span class="value lf">10203.00</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">用途</span>
+					<span class="value lf">建仓费</span>
+				</p>
+			</div>
+		</li>
+
+
+		<li class="clear_fl">
+			<p class="order_num"><span>订单编号：</span> HR343534234234234234234D</p>
+			<div class="clear_fl money_d_list">
+				<p class="lf clear_fl">
+					<span class="key lf">生成时间</span>
+					<span class="value lf">2018-12-01</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">金额</span>
+					<span class="value lf">10203.00</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">用途</span>
+					<span class="value lf">建仓费</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">生成时间</span>
+					<span class="value lf">2018-12-01</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">金额</span>
+					<span class="value lf">10203.00</span>
+				</p>
+				<p class="lf clear_fl">
+					<span class="key lf">用途</span>
+					<span class="value lf">建仓费</span>
+				</p>
+			</div>
+		</li>
+	</ul>
+{/block}
+
+{block name="nav"}
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+	$(".postion_tab").on("tap" , "li" , function(){
+		$(this).addClass("active").siblings(".active").removeClass("active");
+	});
+</script>
+{/block}

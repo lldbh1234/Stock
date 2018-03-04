@@ -156,15 +156,17 @@ class UserLogic
         return $user ? $user->toArray() : [];
     }
 
-    // $state 1委托，2抛出，3持仓
-    public function pageUserOrder($userId, $state = 1, $pageSize = 2){
+    // $state 1委托建仓，2抛出，3持仓，4-委托平仓
+    public function pageUserOrder($userId, $state = 1, $field = "*", $pageSize = 2){
         try{
-            $res = User::find($userId)->hasManyOrder()->where(["state" => $state])->paginate($pageSize);
+            $where = is_array($state) ? ["state" => ["IN", $state]] : ["state" => $state];
+            $res = User::find($userId)->hasManyOrder()->where($where)->field($field)->paginate($pageSize);
             return $res ? $res->toArray() : [];
         } catch(\Exception $e) {
             return [];
         }
     }
+
     public function getNiuStaticByUid($uid)
     {
         $data = Niuren::where(['user_id' => $uid])->find();
@@ -199,11 +201,25 @@ class UserLogic
     {
         $result = [];
         $result['children'] = User::where(['parent_id' => $uid])->count();
-        $result['commission'] = UserRecord::where(['type' => ['in', [2,3], 'user_id' => $uid]])->sum('amount');//提成
+        $result['commission'] = UserRecord::where(['type' => ['in', [2, 3], 'user_id' => $uid]])->sum('amount');//提成
         //推广
         //牛人
         $result['follow'] = Order::where(['is_follow' => 1, 'follow_id' => $uid])->count();//跟单
         $result['return_income'] = UserRecord::where(['type' => 2, 'user_id' => $uid])->sum('amount');//跟单
         return $result;
+
+    }
+    // $state 1委托建仓，2抛出，3持仓，4-委托平仓
+    public function userOrderById($userId, $id, $state=null)
+    {
+        try{
+            $where = [];
+            $where['order_id'] = is_array($id) ? ["IN", $id] : $id;
+            $state ? is_array($state) ? $where['state'] = ["IN", $state]: $where['state'] = $state : null;
+            $orders = User::find($userId)->hasManyOrder()->where($where)->select();
+            return $orders ? collection($orders)->toArray() : [];
+        } catch(\Exception $e) {
+            return [];
+        }
     }
 }

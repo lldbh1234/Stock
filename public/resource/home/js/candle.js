@@ -149,76 +149,96 @@ $(".koptions_nav").on("click", "p", function(){
     }
 });
 
+function numberFormat(number){
+    var b=1000;
+    var c=10000;
+    var d=100000000;
+    number = parseFloat(number);
+    if (number>=b && number<c){
+        return Math.round(number/b, 2) + '千';
+    }else if (number>=c && number<d){
+        return Math.round(number/c, 2) + '万';
+    }else {
+        return Math.round(number/d, 2) + '亿';
+    }
+}
 
+var freshInterval = null;
+function refreshTimeLine(){
+    if( !isTradingTime() ){
+        return false;
+    }
+    var _url = refreshUrl,
+        _code = $("#guName").data("code"),
+        _oData = {code:_code,cnc: lineData[-2].trend_crc, min: lineData[-2].min_time};
+    $ajaxCustom(_url, _oData, function(res){
+        if(res.state){ 
+            if( res.data.length <= 0 ){
+                return false;
+            }
+            // 如果有新点, 如果在分时图界面, 重新渲染分时图
+            if(res.data.trend.length > 0){
+                // 将数据添加到 lineData[-1]；
+                lineData[-1] = lineData[-1].concat( res.data.trend );
+                lineData[0] = splitData( lineData[-1] );
+                lineData[-2].min_time = lineData[-1][_data.length - 1].min_time;
+                drawAreaLine(lineData[0]);
+            }
+            lineData[-2].trend_crc = res.data.trend_crc;
+
+            
+            //更新页面数据
+            var html = '<div class="clear_fl g_info">\
+                <div class="lf">\
+                                            <p class="g_price">' + res.data.last_px + '</p>\
+                    <p class="g_rate clear_fl">\
+                        <span class="lf">' + res.data.px_change + '</span>\
+                        <span class="lf">-'+ res.data.px_change_rate +'%</span>\
+                    </p>\
+                                        </div>\
+                <ul class="rt g_price_detail clear_fl">\
+                    <li>\
+                        <p>昨收</p>\
+                        <p>'+ res.data.preclose_px +'</p>\
+                    </li>\
+                    <li>\
+                        <p>今开</p>\
+                        <p>'+ res.data.open_px +'</p>\
+                    </li>\
+                    <li>\
+                        <p>最高</p>\
+                        <p>'+ res.data.high_px +'</p>\
+                    </li>\
+                    <li>\
+                        <p>最低</p>\
+                        <p>'+ res.data.low_px +'</p>\
+                    </li>\
+                </ul>\
+            </div>  \
+            <ul class="g_detail_list clear_fl">\
+                <li>振幅 <span>'+ res.data.amplitude +'</span></li>\
+                <li>成交量 <span>'+ numberFormat(res.data.business_amount) +'手</span></li>\
+                <li>成交额 <span>'+ numberFormat(res.data.business_balance) +'元</span></li>\
+                <li>内盘 <span>'+ numberFormat(res.data.business_amount_in) +'手</span></li>\
+                <li>外盘 <span>'+ numberFormat(res.data.business_amount_out) +'手</span></li>\
+                <li>总市值 <span>'+ numberFormat(res.data.last_px * res.data.total_shares) +'</span></li>\
+                <li>市盈率 <span>'+ res.data.pe_rate +'</span></li>\
+                <li>流通市值 <span>'+ numberFormat(res.data.circulation_value) +'</span></li>\
+            </ul>';
+            $(".g_section").html( html );
+
+            //修改盘口
+            
+        }else{
+            $alert(res.info);
+        }
+    });
+}
 $(function(){
     // 页面加载完成就加载分时图
     initAreaLine();
     /*** 没两秒请求数据， 更新页面 ****/
-    setInterval(function(){
-        if( !isTradingTime() ){
-            return false;
-        }
-        var _url = refreshUrl,
-            _code = $("#guName").data("code"),
-            _oData = {code:_code,cnc: lineData[-2].trend_crc, min: lineData[-2].min_time};
-        $ajaxCustom(_url, _oData, function(res){
-            if(res.state){ 
-                // 如果有新点, 重新渲染分时图
-                if(res.data.trend.length > 0){
-                    // 将数据添加到 lineData[-1]；
-                    lineData[-1] = lineData[-1].concat( res.data.trend );
-                    lineData[0] = splitData( lineData[-1] );
-                    lineData[-2].min_time = lineData[-1][_data.length - 1].min_time;
-                    drawAreaLine(lineData[0]);
-                }
-                lineData[-2].trend_crc = res.data.trend_crc;
-                //更新页面数据
-
-                var html = '<div class="clear_fl g_info">\
-                    <div class="lf">\
-                                                <p class="g_price">12.41</p>\
-                        <p class="g_rate clear_fl">\
-                            <span class="lf">-0.06</span>\
-                            <span class="lf">-0.48%</span>\
-                        </p>\
-                                            </div>\
-                    <ul class="rt g_price_detail clear_fl">\
-                        <li>\
-                            <p>昨收</p>\
-                            <p>12.47</p>\
-                        </li>\
-                        <li>\
-                            <p>今开</p>\
-                            <p>12.40</p>\
-                        </li>\
-                        <li>\
-                            <p>最高</p>\
-                            <p>12.46</p>\
-                        </li>\
-                        <li>\
-                            <p>最低</p>\
-                            <p>12.36</p>\
-                        </li>\
-                    </ul>\
-                </div>  \
-                <ul class="g_detail_list clear_fl">\
-                    <li>振幅 <span>0.80%</span></li>\
-                    <li>成交量 <span>23.02万手</span></li>\
-                    <li>成交额 <span>2.85亿元</span></li>\
-                    <li>内盘 <span>12.4万手</span></li>\
-                    <li>外盘 <span>10.62万手</span></li>\
-                    <li>总市值 <span>3642.59亿</span></li>\
-                    <li>市盈率 <span>6.52</span></li>\
-                    <li>流通市值 <span>3487.68亿</span></li>\
-                </ul>';
-
-                $(".g_section").html( html );
-
-            }else{
-                $alert(res.info);
-            }
-        });
-    },2000);
+    freshInterval = setInterval(refreshTimeLine, 4000);
 });
 
 /*** init分时图 ****/
