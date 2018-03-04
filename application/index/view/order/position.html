@@ -68,7 +68,7 @@
             </div>
             {else /}
             {volist name="orders" id="item"}
-            <li data-id="{$item.order_id}" data-code="{$item.code}" data-price="{$item.price}" data-deposit="{$item.price}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
+            <li data-id="{$item.order_id}" data-code="{$item.code}" data-price="{$item.price}" data-deposit="{$item.deposit}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
                 <h1 class="clear_fl">
                     <span class="lf">{$item.name} {$item.code}</span>
                     <span class="rt"> <span class="p_key"></span>{$item.create_at|date='m-d H:i', ###}</span>
