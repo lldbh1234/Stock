@@ -80,4 +80,49 @@ class Order extends Base
         }
     }
 
+    public function sellOk()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('sell')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $res = $this->_logic->sellOk(input("post.id/d"));
+                if($res){
+                    return $this->ok();
+                }else{
+                    return $this->fail("操作失败！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
+
+    public function sellFail()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('sell')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "order_id" => input("post.id/d"),
+                    "sell_price" => 0,
+                    "sell_hand" => 0,
+                    "sell_deposit" => 0,
+                    "profit"    => 0,
+                    "state"     => 3
+                ];
+                $res = $this->_logic->updateOrder($data);
+                if($res){
+                    return $this->ok();
+                }else{
+                    return $this->fail("操作失败！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
 }

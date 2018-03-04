@@ -51,12 +51,12 @@
 			<td>{$item.sell_price|number_format=2}</td>
 			<td>{$item.sell_hand|intval}</td>
 			<td>
-				{if condition="$item.sell_deposit LT 0"}
-				<font style="color: #1eb83f;">-{$item.sell_deposit|number_format=2}</font>
-				{elseif condition="$item.sell_deposit EQ 0" /}
-				<font style="color: #CC0000;">{$item.sell_deposit|number_format=2}</font>
+				{if condition="$item.profit LT 0"}
+				<font style="color: #1eb83f;">-{$item.profit|number_format=2}</font>
+				{elseif condition="$item.profit EQ 0" /}
+				<font style="color: #CC0000;">{$item.profit|number_format=2}</font>
 				{else /}
-				<font style="color: #CC0000;">+{$item.sell_deposit|number_format=2}</font>
+				<font style="color: #CC0000;">+{$item.profit|number_format=2}</font>
 				{/if}
 			</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
