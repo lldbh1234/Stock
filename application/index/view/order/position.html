@@ -18,6 +18,114 @@
     .postion_tab_con{
         display: block!important;
     }
+    .postion_tab_con li h1>span {
+        width: calc(100% / 2);
+    }
+    /******  弹框  *****/
+    .read_risk_btn {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        color: #fc5155;
+        font-size: 14px;
+        left: 0;
+        bottom: 0;
+        border-top: 1px solid #ececec;
+        margin: 0;
+    }
+    .risk_text {
+        padding: 10px 18px;
+        margin-bottom: 30px;
+    }
+    .now_count {
+        width: 100%;
+        border: 1px solid #ededed;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 12px;
+        color: #333;
+    }
+    .control_point>span.lf {
+        font-size: 12px;
+        color: #333;
+        width: 18%;
+    }
+    .fudong {
+        font-size: 12px;
+        color: #999;
+        width: 90px;
+    }
+    .count_panel {
+        width: calc(80% - 100px);
+        margin-top: 10px;
+    }
+    .risk_content {
+        width: 100%;
+        background: #fff;
+        margin-top: 200px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        overflow: hidden;
+        border-radius: 8px 8px 0 0;
+    }
+    .cancel_btn{
+        width: 45%;
+        text-align: center;
+        margin-bottom: 0;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        color: #999;
+        margin-right: 0;
+    }
+    .confirm_btn{
+        width: 55%;
+        text-align: center;
+        margin-bottom: 0;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        color: #999;
+        background-color: rgb(255, 90, 90);
+        color: white;
+    }
+    .add_banzhengjin h1{
+        font-size: 15px;
+        color: #333;
+        line-height: 30px;
+        font-weight: 400;
+    }
+    .bazhengjin_count{
+        font-size: 15px;
+        color: #333;
+        line-height: 30px;
+        text-align: right;
+    }
+    .bazhengjin_count span{
+        color: #fe5859;
+    }
+    .account_balance{
+        font-size: 15px;
+        color: #999;
+        line-height: 40px;
+        text-align: right;
+    }
+    .account_balance span{
+        color: #fe5859;
+    }
+    .modify_items{
+        height: 38px;
+        line-height: 38px;
+        font-size: 14px;
+        color: #333;
+    }
+    .modify_items+.modify_items{
+        border-top: 1px solid #ededed;
+    }
 </style>
 {/block}
 
@@ -26,6 +134,83 @@
 {/block}
 
 {block name="content"}
+    <!-- 说明 - start -->
+    <div class="risk_mask recharge_mask">
+        <div class="risk_content">
+            <p class="risk_title">补充保证金</p>
+            <div class="risk_text">
+                <section class="buy_section">
+                    <div class="clear_fl modify_items">
+                        <span class="lf key">保证金</span>
+                        <span class="rt value re_baozhengjin">1250.00元</span>
+                    </div>
+
+                    <div class="clear_fl modify_items">
+                        <span class="lf key">剩余保证金</span>
+                        <span class="rt value save_baozhengjin">1250.00元</span>
+                    </div>
+
+                    <div class="clear_fl modify_items">
+                        <span class="lf key">补充保证金</span>
+                        <p class="bazhengjin_count rt"><span class="buchong_baozhengjin">0.00</span>元</p>
+                    </div>
+
+                    <p class="account_balance">账户余额 
+                        <span class="re_banlance">909998.90</span>元             
+                    </p>
+                </section>
+            </div>
+            <div class="read_risk_btn clear_fl">
+                <p class="lf cancel_btn">取消</p>
+                <p class="rt confirm_btn">确认</p>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
+    <!-- 说明 - start -->
+    <div class="risk_mask profit_loss_mask">
+        <div class="risk_content">
+            <p class="risk_title">修改止盈止损</p>
+            <div class="risk_text">
+                <section class="buy_section">
+                    <div class="control_point zhiying clear_fl">
+                        <span class="lf">止盈</span>
+                        <p class="lf count_panel flex_nowrap">
+                            <span class="minus_btn count_btn">-</span>
+                            <!-- <span class="now_count">13.63</span> -->
+                            <input readonly="readonly" value="13.08" class="now_count profitCount" data-initvalue="13.88">
+                            <span class="plus_btn count_btn">+</span>
+                        </p>
+                        <p class="rt fudong zhangfu">涨幅约 <span>+11.85%</span></p>
+                    </div>
+
+                    <div class="control_point zhisun clear_fl">
+                        <span class="lf">止损</span>
+                        <p class="lf count_panel flex_nowrap">
+                            <span class="minus_btn count_btn">-</span>
+                            <!-- <span class="now_count">13.63</span> -->
+                            <input readonly="readonly" value="9.07" class="now_count lossCount" data-initvalue="10.94">
+                            <span class="plus_btn count_btn">+</span>
+                        </p>
+                        <p class="rt fudong diefu">跌幅约 <span>-11.83%</span></p>
+                    </div>
+
+                    <div class="clear_fl add_banzhengjin">
+                        <h1 class="lf">补充保证金</h1>
+                        <div class="rt">
+                            <p class="bazhengjin_count"><span>0.00</span>元</p>
+                            <p class="account_balance">账户余额 <span>909998.90</span>元             </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="read_risk_btn clear_fl">
+                <p class="lf cancel_btn">取消</p>
+                <p class="rt confirm_btn">确认</p>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
     <header class="strategy_top">
         <p>
             <a href="{:url('index/Strategy/index')}">策略</a>
@@ -40,7 +225,7 @@
         </li>
         <li>
             <p>可用资金</p>
-            <p>￥{$capital.expendableFund|number_format=2}</p>
+            <p class="h_re_banlance" data-balance="{$capital.expendableFund|number_format=2}">￥{$capital.expendableFund|number_format=2}</p>
         </li>
         <li>
             <p>持仓市值</p>
@@ -68,7 +253,7 @@
             </div>
             {else /}
             {volist name="orders" id="item"}
-            <li class="position{$item.code}" data-id="{$item.order_id}" data-code="{$item.code}" data-price="{$item.price}" data-deposit="{$item.price}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
+            <li class="position{$item.order_id}" data-id="{$item.order_id}" data-code="{$item.code}" data-price="{$item.price}" data-deposit="{$item.price}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
                 <h1 class="clear_fl">
                     <span class="lf">{$item.name} {$item.code}</span>
                     <span class="rt"> <span class="p_key"></span>{$item.create_at|date='m-d H:i', ###}</span>
@@ -80,7 +265,7 @@
                     </p>
                     <p>
                         <span class="p_key">现价</span>
-                        <span class="p_value red">{$item.last_px|number_format=2}</span>
+                        <span class="p_value red p_now_price">{$item.last_px|number_format=2}</span>
                     </p>
                     <p>
                         <span class="p_key">数量</span>
@@ -88,31 +273,31 @@
                     </p>
                     <p>
                         <span class="p_key">市值</span>
-                        <span class="p_value">{$item.market_value|number_format=2}</span>
+                        <span class="p_value p_market_value">{$item.market_value|number_format=2}</span>
                     </p>
                     <p>
                         <span class="p_key">收益率</span>
                         {if condition="$item.yield_rate LT 0"}
-                        <span class="p_value green">-{$item.yield_rate|number_format=2}%</span>
+                        <span class="p_value green yield_rate">-{$item.yield_rate|number_format=2}%</span>
                         {elseif condition="$item.yield_rate EQ 0" /}
-                        <span class="p_value red">{$item.yield_rate|number_format=2}%</span>
+                        <span class="p_value red yield_rate">{$item.yield_rate|number_format=2}%</span>
                         {else /}
-                        <span class="p_value red">+{$item.yield_rate|number_format=2}%</span>
+                        <span class="p_value red yield_rate">+{$item.yield_rate|number_format=2}%</span>
                         {/if}
                     </p>
                     <p>
                         <span class="p_key">盈亏</span>
                         {if condition="$item.total_pl LT 0"}
-                        <span class="p_value green">-{$item.total_pl|number_format=2}</span>
+                        <span class="p_value green total_pl">-{$item.total_pl|number_format=2}</span>
                         {elseif condition="$item.total_pl EQ 0" /}
-                        <span class="p_value red">{$item.total_pl|number_format=2}</span>
+                        <span class="p_value red total_pl">{$item.total_pl|number_format=2}</span>
                         {else /}
-                        <span class="p_value red">+{$item.total_pl|number_format=2}</span>
+                        <span class="p_value red total_pl">+{$item.total_pl|number_format=2}</span>
                         {/if}
                     </p>
                     <p>
                         <span class="p_key">保证金</span>
-                        <span class="p_value">{$item.deposit|number_format=2}</span>
+                        <span class="p_value banzhengjin">{$item.deposit|number_format=2}</span>
                     </p>
                     <p>
                         <span class="p_key">止损</span>
@@ -201,22 +386,104 @@
         var _url = '{:url("index/Order/ajaxPosition")}',
             _oData = {ids: code};
         $ajaxCustom(_url, _oData, function(res){
-            if(res.state){ // 登录成功
-                for( var key in res.data ){
-                    var rate = parseFloat(res.data[key].px_change_rate);
-                    var className = "";
-                    if(rate >= 0){
-                        className = "red"
-                    }else{
-                        className = "green"
+            if(res.state){
+                if( res.data.length == 0 ){
+                    return false;
+                }
+                var capital = res.data.capital;
+                var html = '<li>\
+                                <p>净资产</p>\
+                                <p>￥'+ capital.netAssets +'</p>\
+                            </li>\
+                            <li>\
+                                <p>可用资金</p>\
+                                <p class="h_re_banlance" data-balance="'+ capital.expendableFund +'">￥'+ capital.expendableFund +'</p>\
+                            </li>\
+                            <li>\
+                                <p>持仓市值</p>\
+                                <p>￥'+ capital.marketValue +'</p>\
+                            </li>\
+                            <li>\
+                                <p>浮动盈亏</p>\
+                                <p>'+ capital.floatPL +'</p>\
+                            </li>';
+
+                $(".position_section").html( html );
+                var _data = res.data.orders;
+                for(var key in _data){
+                    var items = _data[key];
+                    var context = $(".position" + items.id);
+                    var className = "red";
+                    if( parseFloat( items.yield_rate < 0) ){
+                        className = "green";
                     }
-                    
+                    context.find(".p_now_price").html( items.last_px ).removeClass("red").removeClass("green").addClass(className);
+                    context.find(".yield_rate").html( items.yield_rate + "%").removeClass("red").removeClass("green").addClass(className);
+                    context.find(".total_pl").html( items.total_pl).removeClass("red").removeClass("green").addClass(className);
+                    context.find(".p_market_value").html( items.market_value );
                 }
             }else{
                 // $alert(res.info);
             }
         });
      }
+
+
+
+     //充值保证金
+     $("body").on("click", ".add_money", function(){
+        var context = $(this).parents("li");
+        var baohzengjin = context.find(".banzhengjin").html();
+        baohzengjin = baohzengjin.split(",");
+        baohzengjin = baohzengjin.join("");
+        baohzengjin = parseFloat(baohzengjin);
+        var profit = context.find(".total_pl").html();
+        profit = profit.split(",");
+        profit = profit.join("");
+        profit = parseFloat(profit);
+        var saveBaozhengjin = baohzengjin + profit;
+        var rechargeBaozhengjin = 0.00;
+        if( saveBaozhengjin < 0 ){
+            rechargeBaozhengjin = (0 - saveBaozhengjin).toFixed(2);
+            saveBaozhengjin = 0;
+        }
+        var accountBalance = $(".h_re_banlance").data("balance");
+        accountBalance = accountBalance.split(",");
+        accountBalance = accountBalance.join("");
+        accountBalance = parseFloat(accountBalance);
+
+
+        $(".re_baozhengjin").html( baohzengjin.toFixed(2) + "元" );
+        $(".save_baozhengjin").html( saveBaozhengjin.toFixed(2) + "元" );
+        $(".buchong_baozhengjin").html( rechargeBaozhengjin.toFixed(2));
+        $(".re_banlance").html( accountBalance.toFixed(2) );
+        $(".recharge_mask").show();
+     });
+
+     $(".risk_content").click(function(e){
+        e.stopPropagation();
+     });
+     $(".risk_mask").click(function(){
+        $(this).hide();
+     });
+     $(".cancel_btn").click(function(){
+        $(this).parents(".risk_mask").hide();
+     });
+     $(".recharge_mask .confirm_btn").click(function(){
+        var count = $(".buchong_baozhengjin").html();
+        if(count <= 0){
+            $alert("不需要充值保证金");
+        }else{
+            // 提交充值
+
+        }
+     });
+
+     //修改止盈止损
+     $("body").on("click", ".modify_point", function(){
+        
+        $(".profit_loss_mask").show();
+     });
 </script>
 {/block}
 
