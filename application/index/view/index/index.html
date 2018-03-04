@@ -27,7 +27,7 @@
 	<div class="mui-content">
 		<div class="search_container">
 			<a href="search.html" class="lf index_search_link">请输入股票代码／名称</a>
-			<a href="message_list.html" class="rt message_link has_msg"></a>
+			<a href="{:url('index/User/noticeLists')}" class="rt message_link {if condition='$userNotice gt 0'}has_msg{/if}"></a>
 		</div>
 		<!--轮播图-->
 		 <!-- <img src="img/banner.png" width="100%"> -->
@@ -286,7 +286,19 @@
         });
 
 
-		var slider = mui("#slider");		
+        mui('body').on('tap', '.search_container a', function() {
+            var data_href = this.getAttribute("data-href");
+            var href = this.getAttribute("href");
+            var url=data_href;
+            if(!url||url==''){
+                url=href;
+            }
+            window.location.href = url;
+        });
+
+
+
+        var slider = mui("#slider");
 		slider.slider({
 			interval: 3000
 		});

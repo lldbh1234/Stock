@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\UserNoticeLogic;
 use think\Request;
 use app\index\logic\UserLogic;
 use app\index\logic\BankLogic;
@@ -190,6 +191,24 @@ class User extends Base
     {
         $user = uInfo();
         $this->assign("user", $user);
+        return view();
+    }
+    public function noticeLists()
+    {
+        $userNoticeLogic = new UserNoticeLogic();
+        $lists = $userNoticeLogic->getAllByUid($this->user_id);
+        $this->assign('lists', $lists);
+        return view();
+    }
+    public function noticeDetail()
+    {
+        $id = input('id/d');
+
+        if($id <= 0) return $this->redirect('index/User/noticeLists');
+        $userNoticeLogic = new UserNoticeLogic();
+        $content = $userNoticeLogic->getContentById($this->user_id);
+        $userNoticeLogic->updateBy(['id' => $id, 'read' => 2]);
+        $this->assign('content', $content);
         return view();
     }
 }

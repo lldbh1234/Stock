@@ -1,0 +1,58 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+我的消息
+{/block}
+
+{block name="style"}
+
+{/block}
+
+<!--个人中心-充值-支付宝-->
+{block name="body"}
+<body class="quick_body msg_body mui-ios mui-ios-10 mui-ios-10-3">
+{/body}
+{block name="content"}
+<header class="has_back_top ">
+    我的消息
+    <a href="{:url('index/Index/index')}" class="back_icon">
+        <img src="__RESOURCE__/img/back_icon.png">
+    </a>
+</header>
+
+<ul class="msg_list">
+    {volist name="$lists" id="vo"}
+    <li>
+        <a href="{:url('index/User/noticeDetail', ['id' => $vo.id])}">
+            <p class="clear_fl msg_profile">
+                <span class="lf">
+                    {switch name="$vo.type"}
+                        {case value="1"}
+                            {if condition="$vo.read eq 1"}
+                                <strong>系统通知</strong>
+                            {else /}
+                                系统通知
+                            {/if}
+                        {/case}
+                        {default /}系统通知
+                    {/switch}
+                </span>
+                <span class="rt">{$vo.create_at | date="Y-m-d H:i", ###}</span>
+            </p>
+            <p class="msg_content">
+                    {$vo.title}
+            </p>
+        </a>
+    </li>
+    {/volist}
+
+</ul>
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="script"}
+
+{/block}

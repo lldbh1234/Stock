@@ -126,6 +126,11 @@
     .modify_items+.modify_items{
         border-top: 1px solid #ededed;
     }
+    .buchong_baozhengjin{
+        color: #fe5859;
+        font-size: 15px;
+        text-align: right;
+    }
 </style>
 {/block}
 
@@ -152,7 +157,10 @@
 
                     <div class="clear_fl modify_items">
                         <span class="lf key">补充保证金</span>
-                        <p class="bazhengjin_count rt"><span class="buchong_baozhengjin">0.00</span>元</p>
+                        <p class="bazhengjin_count rt">
+                            <!-- <span>0.00</span> -->
+                            <input readonly="readonly"  class="buchong_baozhengjin" value="0.0" /> 
+                        元</p>
                     </div>
 
                     <p class="account_balance">账户余额 
@@ -261,7 +269,7 @@
                 <div class="clear_fl p_info">
                     <p>
                         <span class="p_key">买价</span>
-                        <span class="p_value">{$item.price|number_format=2}</span>
+                        <span class="p_value buy_price">{$item.price|number_format=2}</span>
                     </p>
                     <p>
                         <span class="p_key">现价</span>
@@ -269,7 +277,7 @@
                     </p>
                     <p>
                         <span class="p_key">数量</span>
-                        <span class="p_value">{$item.hand|intval}</span>
+                        <span class="p_value g_count">{$item.hand|intval}</span>
                     </p>
                     <p>
                         <span class="p_key">市值</span>
@@ -453,10 +461,22 @@
         accountBalance = parseFloat(accountBalance);
 
 
+        var _id = context.data("id");
+        $(".recharge_mask").attr("data-id", _id);
+
+
         $(".re_baozhengjin").html( baohzengjin.toFixed(2) + "元" );
         $(".save_baozhengjin").html( saveBaozhengjin.toFixed(2) + "元" );
-        $(".buchong_baozhengjin").html( rechargeBaozhengjin.toFixed(2));
+        $(".buchong_baozhengjin").val( rechargeBaozhengjin.toFixed(2));
         $(".re_banlance").html( accountBalance.toFixed(2) );
+
+        if(!saveBaozhengjin / baohzengjin < 0.5){
+            // 补充保证金
+            $(".buchong_baozhengjin").removeAttr("readonly");
+        }else{
+            $(".buchong_baozhengjin").attr("readonly", "readonly");
+        }
+
         $(".recharge_mask").show();
      });
 
@@ -470,19 +490,109 @@
         $(this).parents(".risk_mask").hide();
      });
      $(".recharge_mask .confirm_btn").click(function(){
-        var count = $(".buchong_baozhengjin").html();
+        var count = $(".buchong_baozhengjin").val();
+        var balance = parseFloat( $(".re_banlance").html() );
         if(count <= 0){
             $alert("不需要充值保证金");
         }else{
-            // 提交充值
-
+            if(count > balance){
+                $alert("账户余额不足");
+                setTimeout(function(){
+                    window.location.href = "/user/recharge.html";
+                },1000);
+            }else{
+                var id = $(".recharge_mask").attr("data-id");
+                var _url = '{:url("index/Order/deposit")}',
+                    _oData = {id: id,deposit : count};
+                $ajaxCustom(_url, _oData, function(res){
+                    if(res.state){
+                        
+                    }else{
+                        // $alert(res.info);
+                    }
+                });
+            }
         }
      });
 
      //修改止盈止损
      $("body").on("click", ".modify_point", function(){
-        
-        $(".profit_loss_mask").show();
+        var context = $(this).parents("li");
+        var accountBalance = $(".h_re_banlance").data("balance"); //账户余额
+        accountBalance = accountBalance.split(",");
+        accountBalance = accountBalance.join("");
+        accountBalance = parseFloat(accountBalance);
+        //数量
+        var count = parseFloat( context.find(".g_count").html() );
+        //保证金
+        var baohzengjin = context.find(".banzhengjin").html();
+        baohzengjin = baohzengjin.split(",");
+        baohzengjin = baohzengjin.join("");
+        baohzengjin = parseFloat(baohzengjin);
+
+        //止盈止损点
+        var profit = parseFloat(context.data("profit"));
+        var loss = parseFloat(context.data("loss"));
+
+        //买入价
+        var buyPrice = context.find(".buy_price").html();
+
+        $(".profitCount").val( profit.toFixed(2) );
+        $(".lossCount").val( loss.toFixed(2) );
+        $(".account_balance span").html( accountBalance.toFixed(2) );
+
+
+        $(".profit_loss_mask").show().attr("data-baozhengjin", baohzengjin).attr("data-count", count).attr("data-buyPrice", buyPrice);
+        calcNum();
+     });
+
+     function calcNum(){
+        var context = $(".profit_loss_mask");
+
+        var profit = parseFloat( context.find(".profitCount").val() );
+        var loss = parseFloat( context.find(".lossCount").val() );
+        var buyPrice = parseFloat( context.data("buyprice") );
+        var baozhengjin = parseFloat( context.data("baozhengjin") );
+
+        var profitRate = ((profit - buyPrice) * 100 / buyPrice).toFixed(2);
+        var lossRate = ((loss - buyPrice) * 100 / buyPrice).toFixed(2);
+
+        var count = parseFloat( context.data("count") );
+
+        context.find(".zhangfu span").html( "+" + profitRate + "%" );
+        context.find(".diefu span").html( lossRate + "%" );
+
+        //补充保证金
+        var sumCount = Math.ceil( (buyPrice - loss) * count );
+        var buchong = sumCount - baozhengjin;
+        buchong = buchong < 0?0 : buchong;
+
+        $(".bazhengjin_count span").html(buchong.toFixed(2));
+     }
+
+     $(".control_point").on("click", ".count_btn", function(){
+        var context = $(this).parents(".control_point");
+        var val = parseFloat( context.find(".now_count").val() );
+        var buyPrice = parseFloat( $(".profit_loss_mask").data("buyprice"));
+        if( $(this).hasClass("minus_btn") ){ //减少
+            if( val <= 0 ){
+                return false;
+            }
+            val = (val - 0.01).toFixed(2);
+        }else{
+            if( context.hasClass("zhisun") && val >= buyPrice){
+                return false;
+            }
+            val = (val + 0.01).toFixed(2);
+        }
+        context.find(".now_count").val( val );
+        calcNum();
+     });
+
+
+     //提交
+     $(".profit_loss_mask .confirm_btn").click(function(){
+
      });
 </script>
 {/block}

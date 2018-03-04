@@ -64,4 +64,8 @@ class User extends BaseModel
     {
         return $this->hasMany("\\app\\common\\model\\Order", "user_id", "user_id");
     }
+    public function hasManyNotice()
+    {
+        return $this->hasMany("\\app\\common\\model\\UserNotice", "user_id", "user_id");
+    }
 }
