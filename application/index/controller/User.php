@@ -160,6 +160,10 @@ class User extends Base
             $last_page = 1;
             $current_page = 1;
         }
+        if(request()->isPost()){
+            $response = ["lists" => $list, "total_page" => $last_page, "current_page" => $current_page];
+            return $this->ok($response);
+        }
         $this->assign("type", $type);
         $this->assign("user", $user);
         $this->assign("records", $list);
