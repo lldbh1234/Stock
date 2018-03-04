@@ -31,6 +31,7 @@ class Order extends Base
                     $item['market_value'] = $item['last_px'] * $item['hand']; //市值
                     $item['yield_rate'] = round(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['last_px'] - $item['price']) * $item['hand']; //盈亏
+                    $item['create_at_text'] = date("m-d H:i", $item['create_at']);
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
@@ -118,6 +119,7 @@ class Order extends Base
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                    $item['create_at_text'] = date("m-d H:i", $item['create_at']);
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
@@ -165,6 +167,8 @@ class Order extends Base
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                    $item['create_at_text'] = date("m-d H:i", $item['create_at']);
+                    $item['update_at_text'] = date("m-d H:i", $item['update_at']);
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
