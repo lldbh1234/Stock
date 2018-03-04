@@ -13,7 +13,8 @@ class Order extends Validate
     protected $message = [
         'id.require'    => '系统提示：非法操作！',
         'id.gt'         => '系统提示：非法操作！',
-        'ids.canBuy'    => '系统提示：非法操作！',
+        'id.canBuy'     => '系统提示：非法操作！',
+        'id.canSell'    => '系统提示：非法操作！',
         'price.require' => '请输入实际买入价！',
         'price.float'   => '实际买入价必须为数字！',
         'price.gt'      => '实际买入价必须大于0！',
@@ -23,11 +24,19 @@ class Order extends Validate
     protected $scene = [
         "buyOk" => ["id", "price"],
         "buyFail" => ["id"],
+        "sell"  => ["id" => "require|gt:0|canSell"]
     ];
 
     protected function canBuy($value)
     {
         $where = ["order_id" => $value, "state" => 1];
+        $order = \app\admin\model\Order::where($where)->find();
+        return $order ? true : false;
+    }
+
+    protected function canSell($value)
+    {
+        $where = ["order_id" => $value, "state" => 4];
         $order = \app\admin\model\Order::where($where)->find();
         return $order ? true : false;
     }

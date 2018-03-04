@@ -159,5 +159,47 @@
             _ajaxPost(_url, _oData, _func);
         });
     }
+
+    function sell_ok(_id, _obj)
+    {
+        parent.layer.confirm('确认此订单平仓成功？',function(index){
+            parent.layer.close(index);
+            var _oData = {id : _id},
+                _url = '{:url("admin/Order/sellOk")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            $(_obj).parents("tr").remove();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+    function sell_fail(_id, _obj)
+    {
+        parent.layer.confirm('确认此订单平仓失败？',function(index){
+            parent.layer.close(index);
+            var _oData = {id : _id},
+                _url = '{:url("admin/Order/sellFail")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            $(_obj).parents("tr").remove();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
 </script>
 {/block}
