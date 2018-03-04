@@ -71,7 +71,7 @@
                     <img class="rt right_arrow" src="__RESOURCE__/img/right_arrow1.png">
                     <span class="rt setting_value"  style="position: relative;overflow: hidden;">
                         <img src="{$user.face|default='/resource/home/img/default-user-img.png'}">
-                        <input type="file" name="" style="position: absolute;width: 100%;height: 100%;z-index: 999;opacity: 0;right: 0;top: 0;">
+                        <input id="avatar" type="file" name="" style="position: absolute;width: 100%;height: 100%;z-index: 999;opacity: 0;right: 0;top: 0;">
                     </span>
                 </li>
                 <li class="clear_fl">
@@ -118,7 +118,7 @@
 {/block}
 
 {block name="script"}
-    <script src="__RESOURCE__/js/jquery.ajaxfileupload.js"></script>
+    <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
     <script type="text/javascript">
         mui.init({
             swipeBack: true //启用右滑关闭功能
@@ -133,29 +133,35 @@
             }
             window.location.href = url;
          });
-        /**
-         * 上传头像
-         */
-        $('#uploadImg').AjaxFileUpload({
-            //处理文件上传操作的服务器端地址
-            action: '/index/index/doImgUpload',
-            onComplete: function(filename, resp) { //服务器响应成功时的处理函数
-                if(resp.code == '0') {
-                    $('#headImg').attr('src', resp.data);
-                    var params = {};
-                    params['headImg'] = resp.data;
-                    $.post("/index/ucenter/savePeopleImg", params, function(data) {
-                        if(data.code == '0') {
-                            mui.toast("修改成功");
-                        } else {
-                            mui.alert(data.msg);
-                        }
-                    }, 'json');
-                } else {
-                    mui.alert(resp.msg );
+        
+
+        
+        $("input[type='file']").change(function () {
+        var _formData = new FormData();
+        _formData.append("avatar", document.getElementById("avatar").files[0]);
+        $.ajax({
+            url: "{{ URL::route('v1.0.user.avatar') }}",
+            type: "POST",
+            data: _formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (resp) {
+                hideLoading();
+                if(0 == resp.code){
+                    $(".user-pic-inp img").attr("src", resp.data.avatar);
+                    $alert("头像修改成功！");
+                }else{
+                    $alert(resp.message);
                 }
+            },
+            error: function () {
+                $alert("头像修改失败！");
             }
         });
+    });
 
         $("#payBtn").click(function(){
             window.location.href = "{:url('index/Home/logout')}";
