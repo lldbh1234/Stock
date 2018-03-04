@@ -565,6 +565,9 @@
         baohzengjin = baohzengjin.join("");
         baohzengjin = parseFloat(baohzengjin);
 
+        var _id = context.data("id");
+        $(".profit_loss_mask").attr("data-id", _id);
+
         //止盈止损点
         var profit = parseFloat(context.data("profit"));
         var loss = parseFloat(context.data("loss"));
@@ -624,12 +627,28 @@
         calcNum();
      });
 
+     //平仓
+     $("body").on("click", ".sell_position_btn", function(){
+        var context = $(this).parents("li");
+        var id = context.data("id");
+        var _url = '{:url("index/Order/selling")}',
+            _oData = {id: id};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){
+                context.remove();
+            }else{
+                $alert(res.info);
+            }
+        });
+     });
 
      //提交
      $(".profit_loss_mask .confirm_btn").click(function(){
-        var id = $(".recharge_mask").attr("data-id");
-        var _url = '{:url("index/Order/deposit")}',
-            _oData = {id: id,deposit : count};
+        var id = $(".profit_loss_mask").attr("data-id");
+        var profit = $(".profitCount").val();
+        var loss = $(".lossCount").val();
+        var _url = '{:url("index/Order/modifyPl")}',
+            _oData = {id: id,profit : profit,loss:loss};
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){
                 $alert(res.info);
