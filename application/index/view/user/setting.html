@@ -145,16 +145,13 @@
             data: _formData,
             contentType: false,
             processData: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
             success: function (resp) {
                 hideLoading();
-                if(0 == resp.code){
+                if(1 == resp.state){
                     $(".user-pic-inp img").attr("src", resp.data.avatar);
                     $alert("头像修改成功！");
                 }else{
-                    $alert(resp.message);
+                    $alert(resp.info);
                 }
             },
             error: function () {
