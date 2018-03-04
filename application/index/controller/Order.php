@@ -285,6 +285,15 @@ class Order extends Base
         }
     }
 
+    public function modifyPl()
+    {
+        if(request()->isPost()){
+
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
+
     // 平仓申请
     public function selling()
     {
