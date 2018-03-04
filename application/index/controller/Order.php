@@ -225,4 +225,41 @@ class Order extends Base
         $capital['netAssets'] = $capital['expendableFund'] + $user['blocked_account'] + $capital['floatPL']; //净资产
         return $capital;
     }
+
+    public function cancel()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('cancel')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $order = $this->_userLogic->userOrderById($this->user_id, $orderId, [1, 4]);
+                $order = reset($order);
+                if($order){
+                    if($order['state'] == 1){
+                        //建仓
+                        $res = $this->_userLogic->cancelUserBuying($order);
+                        if($res){
+                            return $this->ok();
+                        }else{
+                            return $this->fail("撤销失败！");
+                        }
+                    }else{
+                        //平仓
+                        $res = $this->_userLogic->cancelUserSelling($order);
+                        if($res){
+                            return $this->ok();
+                        }else{
+                            return $this->fail("撤销失败！");
+                        }
+                    }
+                }else{
+                    return $this->fail("系统提示：非法操作！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
 }
