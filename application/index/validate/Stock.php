@@ -4,12 +4,15 @@ namespace app\index\validate;
 use app\index\logic\DepositLogic;
 use app\index\logic\LeverLogic;
 use app\index\logic\ModeLogic;
+use app\index\logic\OrderLogic;
 use app\index\logic\StockLogic;
+use app\index\logic\UserLogic;
 use think\Validate;
 
 class Stock extends Validate
 {
     protected $rule = [
+        'follow_id' => 'number|checkFollowId',
         'price' => 'require|float|gt:0|checkTradeTime',
         'code'  => 'require|checkCode',
         'mode'  => 'require|checkMode',
@@ -21,6 +24,8 @@ class Stock extends Validate
     ];
 
     protected $message = [
+        'follow_id.number'  => '系统提示:非法操作！',
+        'follow_id.checkFollowId' => '系统提示:非法操作！',
         'price.require'     => '系统提示:非法操作！',
         'price.float'       => '系统提示:非法操作！',
         'price.gt'          => '系统提示:非法操作！',
@@ -122,5 +127,25 @@ class Stock extends Validate
         }else{
             return "止损金额不能大于策略委托价！";
         }
+    }
+
+    protected function checkFollowId($value, $rule, $data)
+    {
+        if($value){
+            $order = (new StockLogic())->orderById($value);
+            if($order){
+                if($order['user_id'] == isLogin()){
+                    return "不可跟买自己的策略！";
+                }else{
+                    if($data['code'] == $order['code']){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
     }
 }

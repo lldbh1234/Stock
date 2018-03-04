@@ -114,4 +114,9 @@ class OrderLogic
 
     }
 
+    public function orderById($orderId)
+    {
+        $order = Order::find($orderId);
+        return $order ? $order->toArray() : [];
+    }
 }
