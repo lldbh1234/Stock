@@ -114,6 +114,7 @@ Route::group("stock", function () {
 
 Route::group("cron", function () {
     Route::any('stock', 'index/Cron/grabStockLists');
+    Route::any('defer', 'index/Cron/scanOrderDefer');
 });
 
 Route::group(["domain" => "stock.lc"], function() {
