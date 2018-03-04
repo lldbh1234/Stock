@@ -285,10 +285,30 @@ class Order extends Base
         }
     }
 
+    // 修改止盈止损
     public function modifyPl()
     {
         if(request()->isPost()){
-
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('modifyPl')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $profit = input("post.profit/f");
+                $loss = input("post.loss/f");
+                $order = $this->_userLogic->userOrderById($this->user_id, $orderId, 3);
+                $order = reset($order);
+                if($order){
+                    $res = $this->_userLogic->userOrderModifyPl($this->user_id, $order, $profit, $loss);
+                    if($res){
+                        return $this->ok();
+                    }else{
+                        return $this->fail("调整失败！");
+                    }
+                }else{
+                    return $this->fail("系统提示：非法操作！");
+                }
+            }
         }else{
             return $this->fail("系统提示：非法操作！");
         }

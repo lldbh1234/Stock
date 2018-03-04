@@ -316,10 +316,57 @@ class UserLogic
             $rData = [
                 "type" => 4,
                 "amount" => $deposit,
-                "remark" => json_encode(['orderId' => $userId]),
+                "remark" => json_encode(['orderId' => $orderId]),
                 "direction" => 2
             ];
             $user->hasManyRecord()->save($rData);
+            Db::commit();
+            return true;
+        } catch(\Exception $e) {
+            Db::rollback();
+            return false;
+        }
+    }
+
+    //修改止盈止损
+    public function userOrderModifyPl($userId, $order, $profit, $loss)
+    {
+        Db::startTrans();
+        try{
+            // 修改止盈止损
+            $data = [
+                "order_id" => $order["order_id"],
+                "stop_profit_price" => $profit,
+                "stop_profit_point" => round((($profit - $order["price"]) / $order["price"] * 100), 2),
+                "stop_loss_price" => $loss,
+                "stop_loss_point" => round((($order["price"] - $loss) / $order["price"] * 100), 2)
+            ];
+            Order::update($data);
+            $deposit = $order["deposit"]; //保证金
+            $_deposit = ($order["price"] - $loss) * $order['hand']; //调整后的保证金
+            if($_deposit > $deposit){
+                $diff = $_deposit - $deposit;
+                $user = User::find($userId);
+                if($user['account'] >= $diff){
+                    Order::where(["order_id" => $order["order_id"]])->setInc("deposit", $diff);
+                    // 余额减少
+                    $user->setDec("account", $diff);
+                    // 锁定余额增加
+                    $user->setInc("blocked_account", $diff);
+                    // 资金明细
+                    $rData = [
+                        "type" => 4,
+                        "amount" => $diff,
+                        "remark" => json_encode(['orderId' => $order["order_id"]]),
+                        "direction" => 2
+                    ];
+                    $user->hasManyRecord()->save($rData);
+                }else{
+                    dump("余额不足");
+                    Db::rollback();
+                    return false;
+                }
+            }
             Db::commit();
             return true;
         } catch(\Exception $e) {

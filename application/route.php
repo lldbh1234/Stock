@@ -57,6 +57,7 @@ Route::group("order", function(){
     Route::any('history','index/Order/history'); // 历史
     Route::post('cancel','index/Order/cancel'); //撤销委托
     Route::post('deposit','index/Order/deposit'); //补充保证金
+    Route::post('edit-p-l','index/Order/modifyPl'); //修改止盈止损
     Route::post('selling','index/Order/selling'); //平仓申请
 });
 
