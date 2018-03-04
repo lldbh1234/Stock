@@ -1,0 +1,80 @@
+﻿{extend name="layouts/layout_iframe" /}
+
+{block name="title"}平仓订单{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+	<span class="c-gray en">&gt;</span> 订单管理
+	<span class="c-gray en">&gt;</span> 平仓订单
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+	</a>
+</nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+			<!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
+			</a>
+			<a class="btn btn-primary radius" href="javascript:;" onclick="deposit_add('添加保证金','{:url("admin/Deposit/create")}','','350')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加保证金
+			</a> -->
+		</span>
+		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-hover table-bg">
+		<thead>
+		<tr class="text-c">
+			<!--<th width="25"><input type="checkbox" value="" name=""></th>-->
+			<th width="40">ID</th>
+			<th>用户名</th>
+			<th>股票代码</th>
+			<th>股票名称</th>
+			<th>买入价</th>
+			<th>卖出价</th>
+			<th>卖出手数</th>
+			<th>盈亏</th>
+			<th>买入时间</th>
+			<th>卖出时间</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name="datas.data" id="item"}
+		<tr class="text-c mode-lists">
+			<!--<td><input type="checkbox" value="{$item.order_id}" name="id"></td>-->
+			<td>{$item.order_id}</td>
+			<td>{$item.has_one_user.username}</td>
+			<td>{$item.code}</td>
+			<td>{$item.name}</td>
+			<td>{$item.price|number_format=2}</td>
+			<td>{$item.sell_price|number_format=2}</td>
+			<td>{$item.sell_hand|intval}</td>
+			<td>
+				{if condition="$item.sell_deposit LT 0"}
+				<font style="color: #1eb83f;">-{$item.sell_deposit|number_format=2}</font>
+				{elseif condition="$item.sell_deposit EQ 0" /}
+				<font style="color: #CC0000;">{$item.sell_deposit|number_format=2}</font>
+				{else /}
+				<font style="color: #CC0000;">+{$item.sell_deposit|number_format=2}</font>
+				{/if}
+			</td>
+			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
+			<td>{$item.update_at|date="Y-m-d H:i", ###}</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+
+</script>
+{/block}

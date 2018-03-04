@@ -24,6 +24,15 @@ if(!function_exists("manager")){
         return $manager;
     }
 }
+
+if(!function_exists("cfgs"))
+{
+    function cfgs()
+    {
+        return model("System")->column("val", "alias");
+    }
+}
+
 if(!function_exists("dd")){
     function dd($array)
     {

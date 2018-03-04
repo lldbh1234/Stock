@@ -1,0 +1,90 @@
+﻿{extend name="layouts/layout_iframe" /}
+
+{block name="title"}持仓订单{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+	<span class="c-gray en">&gt;</span> 订单管理
+	<span class="c-gray en">&gt;</span> 持仓订单
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+	</a>
+</nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+			<!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
+			</a>
+			<a class="btn btn-primary radius" href="javascript:;" onclick="deposit_add('添加保证金','{:url("admin/Deposit/create")}','','350')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加保证金
+			</a> -->
+		</span>
+		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-hover table-bg">
+		<thead>
+		<tr class="text-c">
+			<th width="25"><input type="checkbox" value="" name=""></th>
+			<th width="40">ID</th>
+			<th>用户名</th>
+			<th>股票代码</th>
+			<th>股票名称</th>
+			<th>买入价</th>
+			<th>买入手数</th>
+			<th>建仓费</th>
+			<th>自动递延</th>
+			<th>递延费</th>
+			<th>免息到期时间</th>
+			<th>止盈</th>
+			<th>止损</th>
+			<th>保证金</th>
+			<th>是否跟买</th>
+			<th>下单时间</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name="datas.data" id="item"}
+		<tr class="text-c mode-lists">
+			<td><input type="checkbox" value="{$item.order_id}" name="id"></td>
+			<td>{$item.order_id}</td>
+			<td>{$item.has_one_user.username}</td>
+			<td>{$item.code}</td>
+			<td>{$item.name}</td>
+			<td>{$item.price|number_format=2}</td>
+			<td>{$item.hand|intval}</td>
+			<td>{$item.jiancang_fee|number_format=2}</td>
+			<td>
+				{if condition="$item.is_defer eq 1"}
+				<span class="label label-success radius">{$item.is_defer_text}</span>
+				{else /}
+				<span class="label label-danger radius">{$item.is_defer_text}</span>
+				{/if}
+			</td>
+			<td>{$item.defer|number_format=2}</td>
+			<td>{$item.free_time|date="Y-m-d H:i", ###}</td>
+			<td>{$item.stop_profit_price|number_format=2}</td>
+			<td>{$item.stop_loss_price|number_format=2}</td>
+			<td>{$item.deposit|number_format=2}</td>
+			<td>
+				{$item.is_follow_text}{if condition="$item.is_follow neq 0"} [跟单ID：{$item.follow_id}] {/if}
+			</td>
+			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+
+</script>
+{/block}
