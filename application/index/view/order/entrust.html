@@ -149,13 +149,7 @@
                 </div>
                 <div class="clear_fl p_control_panel">
                     <p class="rt">
-                        {if condition="$item.state EQ 1"}
-                        <a class="add_money  lf" data-order-id="{$item.order_id}" href="">补充保证金</a>
-                        <a class="modify_point  lf" data-order-id="{$item.order_id}" href="">修改止盈止损</a>
                         <a class="sell_position_btn lf" data-order-id="{$item.order_id}" href="">撤销</a>
-                        {elseif condition="$item.state EQ 4" /}
-                        <a class="sell_position_btn lf" href="">撤销</a>
-                        {/if}
                     </p>
                 </div>
             </li>
