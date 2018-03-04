@@ -5,7 +5,11 @@
 {/block}
 
 {block name="style"}
-
+<style type="text/css">
+	.risk_mask{
+		display: none;
+	}
+</style>
 {/block}
 
 {block name="content"}
@@ -14,7 +18,7 @@
         <div class="risk_content">
             <p class="risk_title">风险提示书</p>
             <div class="risk_text">
-                <h3>尊敬的中首上上策用户：</h3>
+                <h3>尊敬的用户：</h3>
                 <p>当您进行策略交易的时候，可能获得较高的投资收益，但同时也存在着较大的投资风险。为了使您更好地了解其中的风险，请在交易前仔细阅读以下风险揭示书。且除以下揭示的风险外还有其他的外部风险，均需要用户自行承担，平台不承担相关责任：</p>
                 <p><b>1、宏观经济风险：国家宏观经济形势的变化以及国际经济环境和其他证券市场的变化，可能引起证券市场的波动，使您存在亏损的可能，您将承担由此可能造成的损失。</b></p>
                 <p><b><b>2、政策监管风险：因宏观政策、监管导向、行业政策、地区发展政策等因素引起的无法实现交易合作的风险。</b></b></p><p><b><b><b>3、技术风险：由于本平台属于网络技术服务，其中交易通讯、交易下单、行情揭示等都是通过电子通讯技术和网络技术来实现的，这些技术存在着被网络黑客和计算机病毒攻击的可能，同时通讯技术、电脑技术和相关软件存在缺陷的可能，这些风险均有可能造成服务中断或者延迟。</b></b></b></p><p><b><b><b><b>4、不可抗力因素导致的风险：不可抗力因素包括但不限于以下情形：平台系统停机维护；平台所依赖的通讯设备出现故障不能进行数据传输；因台风、地震、海啸、洪水 、停电、战争、恐怖袭击等不可抗力之因素，造成本平台系统障碍不能执行业务。</b></b></b></b></p><p><b><b><b><b>5、其他风险：由于您密码失密、操作不当、投资决策失误等原因可能会使您发生亏损。</b></b></b></b></p><b><b><b><br><p><b>温馨提示：市场有风险，入市须谨慎！如果用户不同意本协议的任意内容，或者无法准确理解以上风险及可能存在的其他风险，请不要进行后续操作。</b></p><p><b>以上《风险揭示书》本人已阅读并完全理解，愿意自行承担投资市场的各种风险。</b></p></b></b></b>
@@ -26,7 +30,7 @@
 
 	<div class="mui-content">
 		<div class="search_container">
-			<a href="search.html" class="lf index_search_link">请输入股票代码／名称</a>
+			<a href="/strategy/home.html" class="lf index_search_link">请输入股票代码／名称</a>
 			<a href="{:url('index/User/noticeLists')}" class="rt message_link {if condition='$userNotice gt 0'}has_msg{/if}"></a>
 		</div>
 		<!--轮播图-->
@@ -76,11 +80,11 @@
 	    </div>
 
 	    <ul class="gift_box mui-row">
-			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="strategy.html" style="display: block;">
+			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="/strategy/home.html" style="display: block;">
 				<img src="__RESOURCE__/img/publish.png">
 				<p>发布策略</p>
 			</a></li>
-			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="payment.html" style="display: block;">
+			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="/user/recharge.html" style="display: block;">
 				<img src="__RESOURCE__/img/recharge.png">
 				<p>充值中心</p>
 			</a></li>
@@ -250,6 +254,15 @@
 
 {block name="script"}
 	<script type="text/javascript">
+		var storage = window.localStorage;
+		if( storage.isVisited ){
+			$(".risk_mask").remove();
+		}else{
+			$(".risk_mask").show();
+			storage.isVisited = true;
+		}
+
+
 		mui.init({
 			swipeBack: true //启用右滑关闭功能
 		})
@@ -276,6 +289,16 @@
 
 
         mui('body').on('tap', '.more_dongtai', function() {
+            var data_href = this.getAttribute("data-href");
+            var href = this.getAttribute("href");
+            var url=data_href;
+            if(!url||url==''){
+                url=href;
+            }
+            window.location.href = url;
+        });
+
+        mui('body').on('tap', '.gift_box a', function() {
             var data_href = this.getAttribute("data-href");
             var href = this.getAttribute("href");
             var url=data_href;
@@ -354,7 +377,7 @@
 		});
 
 
-		$alert("hello");
+		// $alert("hello");
 	</script>
 <script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
 	<script type="text/javascript">
