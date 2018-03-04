@@ -80,6 +80,12 @@ Route::group("cattle", function () {
     Route::post('follow','index/Cattle/follow');//关注
     Route::any('more-master','index/Cattle/moreMaster');
     Route::any('more-strategy','index/Cattle/moreStrategy');
+    Route::any('my-income','index/Cattle/myIncome');
+    Route::any('follow-evening','index/Cattle/strategyEvening');//跟单平仓
+    Route::any('follow-position','index/Cattle/strategyPosition');//跟单持仓
+    Route::any('niuren-detail','index/Cattle/niurenDetail');
+    Route::any('more-evening','index/Cattle/moreEvening');
+    Route::any('more-position','index/Cattle/morePosition');
 });
 
 Route::group("stock", function () {

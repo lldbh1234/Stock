@@ -7,9 +7,15 @@ use think\Db;
 class UserFollowLogic
 {
 
-    public function getFansIdByUid($uid)
+    public function getFollowIdByUid($uid)
     {
         return UserFollow::where(['fans_id' => $uid])->column('follow_id');
+
+    }
+
+    public function getFansIdByUid($uid)
+    {
+        return UserFollow::where(['follow_id' => $uid])->column('fans_id');
 
     }
     public function add($addArr)

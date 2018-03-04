@@ -12,7 +12,7 @@
 {block name="content"}
 <header class="has_back_top ">
     牛人排行榜
-    <a href="javascript:history.go(-1)" class="back_icon">
+    <a href="{:url('index/Index/index')}" class="back_icon">
         <img src="__RESOURCE__/img/back_icon.png">
     </a>
 </header>
@@ -67,22 +67,22 @@
 <script type="text/javascript">
     function follow(id, obj)
     {
-        var content = '是否关注牛人？';
+//        var content = '是否关注牛人？';
         var msg = '已关注';
         var type = 1;//关注
-        console.log(obj);
+//        console.log(obj);
 
 
         if($(obj).hasClass('active')){
-            content = '是否取消关注牛人？';
+//            content = '是否取消关注牛人？';
             msg = '已取消关注';
             type = 2;//取关
         }
-        layer.open({
-            title : '',
-            content: content
-            ,btn: ['是', '否']
-            ,yes: function(index, layero){
+//        layer.open({
+//            title : '',
+//            content: content
+//            ,btn: ['是', '否']
+//            ,yes: function(index, layero){
                 var _url = '{:url("index/Cattle/follow")}',
                     _oData = {user_id : id, type:type};
                 $ajaxCustom(_url, _oData, function(res){
@@ -95,14 +95,14 @@
                         $alert(res.info);
                     }
                 });
-            }
-
-            ,cancel: function(){
-                //右上角关闭回调
-
-                //return false 开启该代码可禁止点击该按钮关闭
-            }
-        });
+//            }
+//
+//            ,cancel: function(){
+                右上角关闭回调
+//
+//                return false 开启该代码可禁止点击该按钮关闭
+//            }
+//        });
 
     }
 
