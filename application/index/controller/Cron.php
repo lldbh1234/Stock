@@ -84,4 +84,9 @@ class Cron extends Controller
             }
         }
     }
+
+    public function handleOrderRebate()
+    {
+
+    }
 }

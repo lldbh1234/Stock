@@ -108,8 +108,11 @@ class UserLogic
     {
         Db::startTrans();
         try{
+            $configs = cfgs();
             $user = User::get($userId);
+
             $data['admin_id'] = $user['admin_id'];
+            $data['point'] = isset($configs['manager_point']) && $configs['manager_point'] ? $configs['manager_point'] : 5;
             if($user->hasOneManager){
                 $data['state'] = 0;
                 $data['update_at'] = 0;
@@ -118,7 +121,7 @@ class UserLogic
             }else{
                 $user->hasOneManager()->save($data);
             }
-            $configs = cfgs();
+
             $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
             $rData = [
                 "type" => 8,
