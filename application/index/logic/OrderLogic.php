@@ -119,4 +119,56 @@ class OrderLogic
         $order = Order::find($orderId);
         return $order ? $order->toArray() : [];
     }
+
+    public function orderByState($state = 1)
+    {
+        $where["state"] = is_array($state) ? ["IN", $state] : $state;
+        $orders = Order::where($where)->select();
+        return $orders ? collection($orders)->toArray() : [];
+    }
+
+    public function allDeferOrders()
+    {
+        $where["state"] = 3;
+        $where["free_time"] = ["LT", time()];
+        $orders = Order::where($where)->select();
+        return $orders ? collection($orders)->toArray() : [];
+    }
+
+    // 处理订单自动递延费用
+    public function reduceOrderDefer($order)
+    {
+        Db::startTrans();
+        try{
+            // 订单过期时间增加
+            $data = [
+                "order_id"  => $order['order_id'],
+                "free_time" => $order["free_time"] + 86400
+            ];
+            Order::update($data);
+            // 用户余额减少
+            $user = User::find($order["user_id"]);
+            if($user['account'] >= $order['defer']){
+                // 余额充足
+                $user->setDec("account", $order['defer']);
+            }else{
+                // 余额不足
+                Order::where(["order_id" => $order["user_id"]])->setDec("deposit", $order['defer']);
+                $user->setDec("blocked_account", $order['defer']);
+            }
+            // 资金明细
+            $rData = [
+                "type" => 1,
+                "amount" => $order['defer'],
+                "remark" => json_encode(['orderId' => $order['order_id']]),
+                "direction" => 2
+            ];
+            $user->hasManyRecord()->save($rData);
+            Db::commit();
+            return true;
+        }catch (\Exception $e){
+            Db::rollback();
+            return false;
+        }
+    }
 }
