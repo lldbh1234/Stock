@@ -9,4 +9,9 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-return [];
+return [
+    'app\common\command\Test',
+    'app\common\command\HandBond',
+    'app\common\command\TargetProfit',
+];
+///usr/local/bin/php think Date

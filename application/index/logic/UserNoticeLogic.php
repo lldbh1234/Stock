@@ -29,5 +29,9 @@ class UserNoticeLogic
     {
         return UserNotice::update($map);
     }
+    public function add($data)
+    {
+        return model('UserNotice')->saveAll($data);
+    }
 
 }

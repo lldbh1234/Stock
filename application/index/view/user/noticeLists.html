@@ -34,7 +34,12 @@
                                 系统通知
                             {/if}
                         {/case}
-                        {default /}系统通知
+                        {default /}
+                        {if condition="$vo.read eq 1"}
+                            <strong>系统通知</strong>
+                        {else /}
+                            系统通知
+                        {/if}
                     {/switch}
                 </span>
                 <span class="rt">{$vo.create_at | date="Y-m-d H:i", ###}</span>
