@@ -189,14 +189,14 @@ class User extends Base
         if(request()->isPost()){
             $file = request()->file('avatar');
             if(empty($file)) return $this->fail('系统提示:非法操作');
-            $path = ROOT_PATH . 'public' . DS . '/upload/avatar/';
+            $path = './upload/avatar/';
             $res = $file->move($path);
             if($res){
                 $file_name = $res->getFilename();
                 $ret = $this->_logic->updateUser(['user_id' => $this->user_id, 'face' => $path.$file_name]);
                 if($ret)
                 {
-                    return $this->ok();
+                    return $this->ok(['url' => $path.$file_name]);
                 }
                 return $this->fail('系统提示:头像上传失败');
 

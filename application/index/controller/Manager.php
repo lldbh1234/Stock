@@ -27,6 +27,9 @@ class Manager extends Base
                     return view("manager/wait");
                 }elseif ($user['has_one_manager']['state'] == 1){
                     // 审核通过
+                    if(!file_exists('./upload/manager_qrcode/' . $this->user_id . '.png')){
+                        self::createManagerQrcode($this->user_id);
+                    }
                 }elseif ($user['has_one_manager']['state'] == 2){
                     //审核未通过
                     $configs = cfgs();

@@ -33,7 +33,7 @@ class Base extends Controller
                 ->setLogoPath($_SERVER['DOCUMENT_ROOT'] . trim(uInfo()['face']))
                 ->setWriterByName('png');
 
-            $qrCode->writeFile('./manager_qrcode/' . $this->user_id . '.png');
+            $qrCode->writeFile('./upload/manager_qrcode/' . $this->user_id . '.png');
         }
     }
 }
