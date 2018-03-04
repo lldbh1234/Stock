@@ -9,6 +9,12 @@
 	.risk_mask{
 		display: none;
 	}
+	.Ashare .Ashare_top li{
+	    border-right: 1px solid #dadada!important;
+	}
+	.Ashare_top li+li {
+	    border-left: 0!important;
+	}
 </style>
 {/block}
 
@@ -105,19 +111,21 @@
 				<div class="slid-container swiper-container swiper-container-horizontal swiper-container-free-mode">
 		            <ul class="swiper-wrapper">
 						{volist name="stocks" id="item"}
-		                <li class="swiper-slide mui-text-center">
-		                    <p class="Ashare_t">{$item.quotation.prod_name}</p>
-							<p class="Ashare_num  color color_red">{$item.quotation.last_px|number_format=2}</p>
+		                <li data-code="{$item.quotation.code}"  class="share_item swiper-slide mui-text-center share_item_{$item.quotation.code}">
+		                	<a href="{:url('index/Stock/info',['code' => $item.quotation.code])}">
+			                    <p class="Ashare_t">{$item.quotation.prod_name}</p>
+								<p class="Ashare_num  color color_red">{$item.quotation.last_px|number_format=2}</p>
 
-							<div class="per mui-clearfix">
-							{if condition="$item.quotation.px_change EGT 0"}
-								<span class="mui-pull-left color color_red">{$item.quotation.px_change|number_format=2}</span>
-								<span class="mui-pull-right color color_red">{$item.quotation.px_change_rate|number_format=2}%</span>
-							{else /}
-								<span class="mui-pull-left color color_green">{$item.quotation.px_change|number_format=2}</span>
-								<span class="mui-pull-right color color_green">{$item.quotation.px_change_rate|number_format=2}%</span>
-							{/if}
-							</div>
+								<div class="per mui-clearfix">
+								{if condition="$item.quotation.px_change EGT 0"}
+									<span class="mui-pull-left color color_red">{$item.quotation.px_change|number_format=2}</span>
+									<span class="mui-pull-right color color_red">{$item.quotation.px_change_rate|number_format=2}%</span>
+								{else /}
+									<span class="mui-pull-left color color_green">{$item.quotation.px_change|number_format=2}</span>
+									<span class="mui-pull-right color color_green">{$item.quotation.px_change_rate|number_format=2}%</span>
+								{/if}
+								</div>
+							</a>
 		                </li>
 						{/volist}
 		                <!--<li class="swiper-slide mui-text-center">-->
@@ -306,6 +314,16 @@
             window.location.href = url;
         });
 
+        mui('body').on('tap', '.Ashare a', function() {
+            var data_href = this.getAttribute("data-href");
+            var href = this.getAttribute("href");
+            var url=data_href;
+            if(!url||url==''){
+                url=href;
+            }
+            window.location.href = url;
+        });
+
         mui('body').on('tap', '.gift_box a', function() {
             var data_href = this.getAttribute("data-href");
             var href = this.getAttribute("href");
@@ -429,6 +447,44 @@
 //            });
 
 		}
+
+
+		//定时刷新
+		setInterval(function(){
+        	var code = new Array();
+        	if( $(".share_item").length <= 0 ){
+        		return false;
+        	}
+        	$(".share_item").each(function(){
+        		code.push( $(this).data("code") );
+        	});
+        	
+        	code = code.join(",");
+            var _url = "{:url('index/Stock/simple')}",
+                _oData = {code: code};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){
+                    for( var key in res.data ){
+                        var rate = parseFloat(res.data[key].px_change_rate);
+                        var className = "";
+                        if(rate >= 0){
+                            className = "color_red"
+                        }else{
+                            className = "color_green"
+                        }
+                        var code = key;
+                        var context = $(".share_item_" + code);
+                        context.find(".Ashare_num").html(res.data[key].last_px).removeClass("color_red color_green").addClass(className);
+                        context.find(".per .mui-pull-left").html(res.data[key].px_change).removeClass("color_red color_green").addClass(className);
+
+                        context.find(".per .mui-pull-right").html(res.data[key].px_change_rate + "%").removeClass("color_red color_green").addClass(className);
+
+                    }
+                }else{
+                    // $alert(res.info);
+                }
+            });
+		},4000);
 
 	</script>
 {/block}
