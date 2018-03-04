@@ -110,53 +110,95 @@ class Order extends Base
     // 委托
     public function entrust()
     {
-        $capital = $this->_userCapital();
-        $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [1, 4]);
-        if($orders['data']){
-            array_filter($orders['data'], function (&$item){
-                $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
-                $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
-                $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
-            });
-            $list = $orders['data'];
-            $last_page = $orders['last_page'];
-            $current_page = $orders['current_page'];
+        $field = "order_id,code,name,deposit,defer,price,sell_price,sell_hand,stop_loss_price,stop_profit_price,state,create_at";
+        if(request()->isPost()){
+            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [1, 4], $field);
+            if($orders['data']){
+                array_filter($orders['data'], function (&$item){
+                    $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
+                    $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
+                    $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                });
+                $list = $orders['data'];
+                $last_page = $orders['last_page'];
+                $current_page = $orders['current_page'];
+            }else{
+                $list = [];
+                $last_page= 1;
+                $current_page = 1;
+            }
+            $response = ["orders" => $list, "total_page" => $last_page, "current_page" => $current_page];
+            return $this->ok($response);
         }else{
-            $list = [];
-            $last_page= 1;
-            $current_page = 1;
+            $capital = $this->_userCapital();
+            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [1, 4], $field);
+            if($orders['data']){
+                array_filter($orders['data'], function (&$item){
+                    $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
+                    $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
+                    $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                });
+                $list = $orders['data'];
+                $last_page = $orders['last_page'];
+                $current_page = $orders['current_page'];
+            }else{
+                $list = [];
+                $last_page= 1;
+                $current_page = 1;
+            }
+            $this->assign("capital", $capital);
+            $this->assign("orders", $list);
+            $this->assign("totalPage", $last_page);
+            $this->assign("currentPage", $current_page);
+            return view();
         }
-        $this->assign("capital", $capital);
-        $this->assign("orders", $list);
-        $this->assign("totalPage", $last_page);
-        $this->assign("currentPage", $current_page);
-        return view();
     }
 
     // 平仓
     public function history()
     {
-        $capital = $this->_userCapital();
-        $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 2);
-        if($orders['data']){
-            array_filter($orders['data'], function (&$item){
-                $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
-                $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
-                $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
-            });
-            $list = $orders['data'];
-            $last_page = $orders['last_page'];
-            $current_page = $orders['current_page'];
+        $field = "order_id,code,name,price,sell_price,sell_hand,create_at,update_at";
+        if(request()->isPost()){
+            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 2, $field);
+            if($orders['data']){
+                array_filter($orders['data'], function (&$item){
+                    $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
+                    $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
+                    $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                });
+                $list = $orders['data'];
+                $last_page = $orders['last_page'];
+                $current_page = $orders['current_page'];
+            }else{
+                $list = [];
+                $last_page= 1;
+                $current_page = 1;
+            }
+            $response = ["orders" => $list, "total_page" => $last_page, "current_page" => $current_page];
+            return $this->ok($response);
         }else{
-            $list = [];
-            $last_page= 1;
-            $current_page = 1;
+            $capital = $this->_userCapital();
+            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 2, $field);
+            if($orders['data']){
+                array_filter($orders['data'], function (&$item){
+                    $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
+                    $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
+                    $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                });
+                $list = $orders['data'];
+                $last_page = $orders['last_page'];
+                $current_page = $orders['current_page'];
+            }else{
+                $list = [];
+                $last_page= 1;
+                $current_page = 1;
+            }
+            $this->assign("capital", $capital);
+            $this->assign("orders", $list);
+            $this->assign("totalPage", $last_page);
+            $this->assign("currentPage", $current_page);
+            return view();
         }
-        $this->assign("capital", $capital);
-        $this->assign("orders", $list);
-        $this->assign("totalPage", $last_page);
-        $this->assign("currentPage", $current_page);
-        return view();
     }
 
     // 资金详情
