@@ -55,10 +55,20 @@ class Index extends Base
         $userNotice = $userNoticeLogic->getAllBy(['user_id' => $this->user_id, 'read' => 1]);
         $userNotice = count($userNotice);
 
+        $stocks = $userLogic->userOptional($this->user_id);
+        if($stocks){
+            $codes = array_column($stocks, "code");
+            $lists = (new StockLogic())->simpleData($codes);
+            array_filter($stocks, function(&$item) use ($lists){
+                $item['quotation'] = $lists[$item['code']];
+            });
+        }
+
         $this->assign('bestUserList', $bestUserList);
         $this->assign('bestStrategyList', $bestStrategyList);
         $this->assign('followIds', $followIds);
         $this->assign('userNotice', $userNotice);
+        $this->assign("stocks", $stocks);
         return view();
     }
 }

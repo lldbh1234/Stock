@@ -104,42 +104,50 @@
 			<div class="Ashare_top">
 				<div class="slid-container swiper-container swiper-container-horizontal swiper-container-free-mode">
 		            <ul class="swiper-wrapper">
+						{volist name="stocks" id="item"}
 		                <li class="swiper-slide mui-text-center">
-		                    <p class="Ashare_t">上证指数</p>
-							<p class="Ashare_num  color color_red">3391.75</p>
+		                    <p class="Ashare_t">{$item.quotation.prod_name}</p>
+							<p class="Ashare_num  color color_red">{$item.quotation.last_px|number_format=2}</p>
+
 							<div class="per mui-clearfix">
-								<span class="mui-pull-left color color_red">6.04</span>
-								<span class="mui-pull-right color color_red">0.18%</span>
+							{if condition="$item.quotation.px_change EGT 0"}
+								<span class="mui-pull-left color color_red">{$item.quotation.px_change|number_format=2}</span>
+								<span class="mui-pull-right color color_red">{$item.quotation.px_change_rate|number_format=2}%</span>
+							{else /}
+								<span class="mui-pull-left color color_green">{$item.quotation.px_change|number_format=2}</span>
+								<span class="mui-pull-right color color_green">{$item.quotation.px_change_rate|number_format=2}%</span>
+							{/if}
 							</div>
 		                </li>
+						{/volist}
+		                <!--<li class="swiper-slide mui-text-center">-->
+		                    <!--<p class="Ashare_t">深证成指</p>-->
+							<!--<p class="Ashare_num color color_red">11342.85</p>-->
+							<!--<div class="per mui-clearfix">-->
+								<!--<span class="mui-pull-left color color_red">1.5</span>-->
+								<!--<span class="mui-pull-right color color_red">0.01%</span>-->
+							<!--</div>-->
+		                <!--</li>-->
+		                <!--<li class="swiper-slide mui-text-center">-->
+		                    <!--<p class="Ashare_t">创业板指</p>-->
+							<!--<p class="Ashare_num color color_red">1801.42</p>-->
+							<!--<div class="per mui-clearfix">-->
+								<!--<span class="mui-pull-left color color_red">6.81</span>-->
+								<!--<span class="mui-pull-right color color_red">0.38%</span>-->
+							<!--</div>-->
+		                <!--</li>-->
+		                <!--<li class="swiper-slide mui-text-center">-->
+		                	<!--<a href="">-->
+		                		<!--<p class="Ashare_t">创业板指</p>-->
+								<!--<p class="Ashare_num color color_red">1801.42</p>-->
+								<!--<div class="per mui-clearfix">-->
+									<!--<span class="mui-pull-left color color_red">6.81</span>-->
+									<!--<span class="mui-pull-right color color_red">0.38%</span>-->
+								<!--</div>-->
+		                	<!--</a>-->
+		                <!--</li>-->
 		                <li class="swiper-slide mui-text-center">
-		                    <p class="Ashare_t">深证成指</p>
-							<p class="Ashare_num color color_red">11342.85</p>
-							<div class="per mui-clearfix">
-								<span class="mui-pull-left color color_red">1.5</span>
-								<span class="mui-pull-right color color_red">0.01%</span>
-							</div>
-		                </li>
-		                <li class="swiper-slide mui-text-center">
-		                    <p class="Ashare_t">创业板指</p>
-							<p class="Ashare_num color color_red">1801.42</p>
-							<div class="per mui-clearfix">
-								<span class="mui-pull-left color color_red">6.81</span>
-								<span class="mui-pull-right color color_red">0.38%</span>
-							</div>
-		                </li>
-		                <li class="swiper-slide mui-text-center">
-		                	<a href="">
-		                		<p class="Ashare_t">创业板指</p>
-								<p class="Ashare_num color color_red">1801.42</p>
-								<div class="per mui-clearfix">
-									<span class="mui-pull-left color color_red">6.81</span>
-									<span class="mui-pull-right color color_red">0.38%</span>
-								</div>
-		                	</a>
-		                </li>
-		                <li class="swiper-slide mui-text-center">
-		                    <a class="add_item" href="zixuan.html">
+		                    <a class="add_item" href="{:url('index/User/optional')}">
 		                    	
 		                    </a>
 		                </li>

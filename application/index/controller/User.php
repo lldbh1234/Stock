@@ -161,6 +161,10 @@ class User extends Base
             $current_page = 1;
         }
         if(request()->isPost()){
+            foreach ($list as $k => $v)
+            {
+                $list[$k]['create_at'] = date('Y-m-d H:i', $v['create_at']);
+            }
             $response = ["lists" => $list, "total_page" => $last_page, "current_page" => $current_page];
             return $this->ok($response);
         }
