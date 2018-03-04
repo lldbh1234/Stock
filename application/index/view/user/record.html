@@ -36,6 +36,7 @@
 		width: 50%;
 		text-align: left;
 		padding-left: 6px;
+		white-space: nowrap;
 	}
 	.order_num span{
 		display: inline-block;
@@ -51,7 +52,11 @@
 	    color: #8f8f94;;
 	    font-size: 13px;
 	}
+	.dropload-noData,.dropload-refresh,.dropload-load{
+        color: #999;
+    }
 </style>
+<link rel="stylesheet" type="text/css" href="__RESOURCE__/css/dropload.css">
 {/block}
 
 {block name="body"}
@@ -99,63 +104,165 @@
 	<!-- <div class="money_tab_con" style="text-align: center;">
 		<img style="width: 30%;margin-top: 60px;" src="img/no-search-data@3x.png">
 	</div> -->
+	<div class="dropload_container">
+		<ul class="money_detail_list">
+			{volist name="$records" id="vo"}
+			<li class="clear_fl">
+				<!--<p class="order_num"><span>订单编号：</span> HR343534234234234234234D</p>-->
+				<div class="clear_fl money_d_list">
+					<p class="lf clear_fl">
+						<span class="key lf">生成时间</span>
+						<span class="value lf">{$vo.create_at|date="Y-m-d H:i", ###}</span>
+					</p>
+					<p class="lf clear_fl">
+						<span class="key lf">金额</span>
+						<span class="value lf">{$vo.amount|default=0.00}</span>
+					</p>
+					<p class="lf clear_fl">
+						<span class="key lf">用途</span>
+						<span class="value lf">
+							{switch name="$vo.type"}
+								{case value="0"}建仓费{/case}
+								{case value="1"}递延费{/case}
+								{case value="2"}牛人跟买收入{/case}
+								{case value="3"}递延费提成{/case}
+								{case value="4"}保证金{/case}
+								{case value="5"}充值{/case}
+								{case value="6"}提现{/case}
+								{case value="7"}分红{/case}
+								{case value="8"}建仓费提成{/case}
+							{/switch}
+						</span>
+					</p>
+					<!--<p class="lf clear_fl">-->
+						<!--<span class="key lf">生成时间</span>-->
+						<!--<span class="value lf">2018-12-01</span>-->
+					<!--</p>-->
+					<p class="lf clear_fl">
+						<span class="key lf">金额</span>
+						<span class="value lf">{if condition="$vo.direction eq 1"}+{elseif condition="$vo.direction eq 2" /}-{/if}{$vo.amount|default=0.00}</span>
+					</p>
+					<!--<p class="lf clear_fl">-->
+						<!--<span class="key lf">用途</span>-->
+						<!--<span class="value lf">建仓费</span>-->
+					<!--</p>-->
+				</div>
+			</li>
+			{/volist}
 
-	<ul class="money_detail_list">
-		{volist name="$records" id="vo"}
-		<li class="clear_fl">
-			<!--<p class="order_num"><span>订单编号：</span> HR343534234234234234234D</p>-->
-			<div class="clear_fl money_d_list">
-				<p class="lf clear_fl">
-					<span class="key lf">生成时间</span>
-					<span class="value lf">{$vo.create_at|date="Y-m-d H:i", ###}</span>
-				</p>
-				<p class="lf clear_fl">
-					<span class="key lf">金额</span>
-					<span class="value lf">{$vo.amount|default=0.00}</span>
-				</p>
-				<p class="lf clear_fl">
-					<span class="key lf">用途</span>
-					<span class="value lf">
-						{switch name="$vo.type"}
-							{case value="0"}建仓费{/case}
-							{case value="1"}递延费{/case}
-							{case value="2"}牛人跟买收入{/case}
-							{case value="3"}递延费提成{/case}
-							{case value="4"}保证金{/case}
-							{case value="5"}充值{/case}
-							{case value="6"}提现{/case}
-							{case value="7"}分红{/case}
-							{case value="8"}建仓费提成{/case}
-						{/switch}
-					</span>
-				</p>
-				<!--<p class="lf clear_fl">-->
-					<!--<span class="key lf">生成时间</span>-->
-					<!--<span class="value lf">2018-12-01</span>-->
-				<!--</p>-->
-				<p class="lf clear_fl">
-					<span class="key lf">金额</span>
-					<span class="value lf">{if condition="$vo.direction eq 1"}+{elseif condition="$vo.direction eq 2" /}-{/if}{$vo.amount|default=0.00}</span>
-				</p>
-				<!--<p class="lf clear_fl">-->
-					<!--<span class="key lf">用途</span>-->
-					<!--<span class="value lf">建仓费</span>-->
-				<!--</p>-->
-			</div>
-		</li>
-		{/volist}
 
-
-	</ul>
+		</ul>
+	</div>
 {/block}
 
 {block name="nav"}
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
+<script type="text/javascript" src="__RESOURCE__/js/dropload.min.js"></script>
 <script type="text/javascript">
 	$(".postion_tab").on("tap" , "li" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
 	});
+
+	//分页
+    var size = 5;
+    var now = 1;
+    var total = 1;
+
+    function initData(me){
+        var id = $(".recharge_mask").attr("data-id");
+        var _url = "{:url('index/User/record')}",
+            _oData = {page: now};
+        $ajaxCustom(_url, _oData, function(res){
+          if(res.state == 1){ // 成功
+            now ++;
+            total = res.data.total_page;
+            var data = res.data;
+            var html = "";
+            for(var key in data.lists){
+            	var type = data.lists[key].type;
+            	use_type = "";
+            	switch( type ){
+            		case 0: use_type = "建仓费";break;
+            		case 1: use_type = "递延费";break;
+            		case 2: use_type = "牛人跟买收入";break;
+            		case 3: use_type = "递延费提成";break;
+            		case 4: use_type = "保证金";break;
+            		case 5: use_type = "充值";break;
+            		case 6: use_type = "提现";break;
+            		case 7: use_type = "分红";break;
+            		case 8: use_type = "建仓费提成";break;
+            	}
+              html += '<li class="clear_fl">\
+				<!--<p class="order_num"><span>订单编号：</span> HR343534234234234234234D</p>-->\
+				<div class="clear_fl money_d_list">\
+					<p class="lf clear_fl">\
+						<span class="key lf">生成时间</span>\
+						<span class="value lf">' + data.lists[key].create_at + '</span>\
+					</p>\
+					<p class="lf clear_fl">\
+						<span class="key lf">金额</span>\
+						<span class="value lf">' + data.lists[key].amount + '</span>\
+					</p>\
+					<p class="lf clear_fl">\
+						<span class="key lf">用途</span>\
+						<span class="value lf">\
+							' + use_type + '						</span>\
+					</p>\
+					<!--<p class="lf clear_fl">-->\
+						<!--<span class="key lf">生成时间</span>-->\
+						<!--<span class="value lf">2018-12-01</span>-->\
+					<!--</p>-->\
+					<p class="lf clear_fl">\
+						<span class="key lf">金额</span>\
+						<span class="value lf">' + data.lists[key].amount + '</span>\
+					</p>\
+					<!--<p class="lf clear_fl">-->\
+						<!--<span class="key lf">用途</span>-->\
+						<!--<span class="value lf">建仓费</span>-->\
+					<!--</p>-->\
+				</div>\
+			</li>';
+            }
+            $(".money_detail_list").append(html);
+            // hideLoading();
+          }else{
+            $alert(res.info);
+          }
+          me.resetload();
+        });
+    }
+
+    $(function(){
+        // dropload
+        $('.dropload_container').dropload({
+            scrollArea : window,
+            domDown : {
+                domClass   : 'dropload-down',
+                domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+                domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+                domNoData  : '<div class="dropload-noData">暂无更多数据</div>'
+            },
+            loadDownFn : function(me){
+                if(total >= now){
+                    initData(me);
+                }else{
+                    // 锁定
+                    me.lock();
+                    // 无数据
+                    me.noData();
+                    me.resetload();
+                    return false;
+                }
+            },
+            threshold : 50
+        });
+    });
+
+
+
+
 </script>
 {/block}
