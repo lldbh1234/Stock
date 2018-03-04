@@ -149,7 +149,7 @@
                 </div>
                 <div class="clear_fl p_control_panel">
                     <p class="rt">
-                        <a class="sell_position_btn lf" data-order-id="{$item.order_id}" href="">撤销</a>
+                        <span class="sell_position_btn lf" data-id="{$item.order_id}">撤销</span>
                     </p>
                 </div>
             </li>
@@ -185,6 +185,7 @@
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
 	mui.init({
 		swipeBack: true //启用右滑关闭功能
@@ -198,6 +199,23 @@
             url=href;
         }
         window.location.href = url;
+     });
+
+
+
+     //撤销委托
+     $("body").on("click", ".sell_position_btn", function(){
+        var id = $(this).data("id");
+        var _url = '{:url("index/Order/cancel")}',
+            _oData = {id: id};
+        var that = this;
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){
+                $(this).remove();
+            }else{
+                $alert(res.info);
+            }
+        });
      });
 </script>
 {/block}
