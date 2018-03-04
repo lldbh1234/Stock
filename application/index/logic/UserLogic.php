@@ -234,10 +234,10 @@ class UserLogic
                 "state" => 5
             ];
             Order::update($data);
-            // 冻结资金
+            // 用户资金
             $user = User::find($order['user_id']);
             $user->setInc("account", $order['jiancang_fee'] + $order['deposit']);
-            // 用户资金
+            // 冻结资金
             $user->setDec("blocked_account", $order['deposit']);
             // 资金明细(保证金)
             $rData = [
@@ -278,6 +278,52 @@ class UserLogic
             ];
             return Order::update($data);
         }else{
+            return false;
+        }
+    }
+
+    // 平仓申请
+    public function userOrderSelling($order)
+    {
+        if($order){
+            $data = [
+                "order_id" => $order["order_id"],
+                "sell_price" => $order["last_px"],
+                "sell_hand" => $order["hand"],
+                "sell_deposit" => $order["hand"] * $order["last_px"],
+                "profit" => ($order["last_px"] - $order["price"]) * $order["hand"],
+                "state" => 4
+            ];
+            return Order::update($data);
+        }else{
+            return false;
+        }
+    }
+
+    //补充保证金
+    public function userOrderDepositSupply($userId, $orderId, $deposit)
+    {
+        Db::startTrans();
+        try{
+            // 订单保证金增加
+            Order::where(["order_id" => $orderId, "user_id" => $userId])->setInc("deposit", $deposit);
+            // 余额减少
+            $user = User::find($userId);
+            $user->setDec("account", $deposit);
+            // 锁定余额增加
+            $user->setInc("blocked_account", $deposit);
+            // 资金明细
+            $rData = [
+                "type" => 4,
+                "amount" => $deposit,
+                "remark" => json_encode(['orderId' => $userId]),
+                "direction" => 2
+            ];
+            $user->hasManyRecord()->save($rData);
+            Db::commit();
+            return true;
+        } catch(\Exception $e) {
+            Db::rollback();
             return false;
         }
     }

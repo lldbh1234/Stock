@@ -262,4 +262,53 @@ class Order extends Base
             return $this->fail("系统提示：非法操作！");
         }
     }
+
+    // 补充保证金
+    public function deposit()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('deposit')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $deposit = input("post.deposit/f");
+                $res = $this->_userLogic->userOrderDepositSupply($this->user_id, $orderId, $deposit);
+                if($res){
+                    return $this->ok();
+                }else{
+                    return $this->fail("保证金补充失败！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
+
+    // 平仓申请
+    public function selling()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('selling')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $order = $this->_userLogic->userOrderById($this->user_id, $orderId, 3);
+                $order = reset($order);
+                if($order){
+                    $res = $this->_userLogic->userOrderSelling($order);
+                    if($res){
+                        return $this->ok();
+                    }else{
+                        return $this->fail("平仓申请提交失败！");
+                    }
+                }else{
+                    return $this->fail("系统提示：非法操作！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
 }

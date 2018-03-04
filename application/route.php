@@ -55,7 +55,9 @@ Route::group("order", function(){
     Route::any('real','index/Order/ajaxPosition'); // 实时信息
     Route::any('entrust','index/Order/entrust'); // 委托
     Route::any('history','index/Order/history'); // 历史
-    Route::any('cancel','index/Order/cancel'); //撤销委托
+    Route::post('cancel','index/Order/cancel'); //撤销委托
+    Route::post('deposit','index/Order/deposit'); //补充保证金
+    Route::post('selling','index/Order/selling'); //平仓申请
 });
 
 // 经纪人
