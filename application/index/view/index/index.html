@@ -157,10 +157,10 @@
 									<a href="javascript:void(0)" onclick="follow('{$vo.user_id}', this);" class="rt guanzhu_btn {in name='vo.user_id' value='$followIds'}active{/in}"></a>
 								</div>
 								<div class="clear_fl daren_info">
-									<p class="lf celueshu">策略数: <span>{$vo.user_desc.pulish_strategy | default=0}</span></p>
+									<p class="lf celueshu">策略数: <span>{$vo.pulish_strategy | default=0}</span></p>
 									<div class="rt celue_right">
-										<p class="lf celueshu">胜算率 <span>{$vo.user_desc.strategy_win | default=0}%</span></p>
-										<p class="lf celueshu">收益率 <span>{$vo.user_desc.strategy_yield | default=0}%</span></p>
+										<p class="lf celueshu">胜算率 <span>{$vo.strategy_win | default=0}%</span></p>
+										<p class="lf celueshu">收益率 <span>{$vo.strategy_yield | default=0}%</span></p>
 									</div>
 								</div>
 							</li>
@@ -211,200 +211,12 @@
 								</div>
 							</li>
 							{/volist}
-							<!--<li>-->
-								<!--<div class="clear_fl">-->
-									<!--<a href="" class="lf">-->
-										<!--<span>冀东装备</span>-->
-										<!--<span class="strategy__code___VWYep">000856</span>-->
-									<!--</a>-->
-									<!--<div class="rt">-->
-										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
-										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
-									<!--</div>-->
-								<!--</div>-->
-								<!--<div class="flex_nowrap strategy_info">-->
-									<!--<div>-->
-										<!--<h1>22.22%</h1>-->
-										<!--<p>收益率</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">买价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">盈亏</span>-->
-											<!--<span class="value green">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">卖价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">数量</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-								<!--</div>-->
-							<!--</li>-->
-							<!--<li>-->
-								<!--<div class="clear_fl">-->
-									<!--<a href="" class="lf">-->
-										<!--<span>冀东装备</span>-->
-										<!--<span class="strategy__code___VWYep">000856</span>-->
-									<!--</a>-->
-									<!--<div class="rt">-->
-										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
-										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
-									<!--</div>-->
-								<!--</div>-->
-								<!--<div class="flex_nowrap strategy_info">-->
-									<!--<div>-->
-										<!--<h1>22.22%</h1>-->
-										<!--<p>收益率</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">买价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">盈亏</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">卖价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">数量</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-								<!--</div>-->
-							<!--</li>-->
-							<!--<li>-->
-								<!--<div class="clear_fl">-->
-									<!--<a href="" class="lf">-->
-										<!--<span>冀东装备</span>-->
-										<!--<span class="strategy__code___VWYep">000856</span>-->
-									<!--</a>-->
-									<!--<div class="rt">-->
-										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
-										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
-									<!--</div>-->
-								<!--</div>-->
-								<!--<div class="flex_nowrap strategy_info">-->
-									<!--<div>-->
-										<!--<h1>22.22%</h1>-->
-										<!--<p>收益率</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">买价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">盈亏</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">卖价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">数量</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-								<!--</div>-->
-							<!--</li>-->
-							<!--<li>-->
-								<!--<div class="clear_fl">-->
-									<!--<a href="" class="lf">-->
-										<!--<span>冀东装备</span>-->
-										<!--<span class="strategy__code___VWYep">000856</span>-->
-									<!--</a>-->
-									<!--<div class="rt">-->
-										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
-										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
-									<!--</div>-->
-								<!--</div>-->
-								<!--<div class="flex_nowrap strategy_info">-->
-									<!--<div>-->
-										<!--<h1>22.22%</h1>-->
-										<!--<p>收益率</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">买价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">盈亏</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">卖价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">数量</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-								<!--</div>-->
-							<!--</li>-->
-							<!--<li>-->
-								<!--<div class="clear_fl">-->
-									<!--<a href="" class="lf">-->
-										<!--<span>冀东装备</span>-->
-										<!--<span class="strategy__code___VWYep">000856</span>-->
-									<!--</a>-->
-									<!--<div class="rt">-->
-										<!--<img class="lf user_pic" src="__RESOURCE__/img/default-user-img.png">-->
-										<!--<p class="lf user_name">王思聪大大 <img src="__RESOURCE__/img/niuren.png"></p>-->
-									<!--</div>-->
-								<!--</div>-->
-								<!--<div class="flex_nowrap strategy_info">-->
-									<!--<div>-->
-										<!--<h1>22.22%</h1>-->
-										<!--<p>收益率</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">买价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">盈亏</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-									<!--<div>-->
-										<!--<p>-->
-											<!--<span class="key">卖价</span>-->
-											<!--<span class="value">23.32</span>-->
-										<!--</p>-->
-										<!--<p>-->
-											<!--<span class="key">数量</span>-->
-											<!--<span class="value">2332</span>-->
-										<!--</p>-->
-									<!--</div>-->
-								<!--</div>-->
+
 							</li>
 						</ul>
 					</li>
 				</ul>
-				<a href="more_daren.html" class="rt more_dongtai">更多达人</a>
+				<a href="{:url('index/Cattle/moreMaster')}" class="rt more_dongtai">更多达人</a>
 			</div>
 		</section>
 	</div>
@@ -462,6 +274,18 @@
             window.location.href = url;
          });
 
+
+        mui('body').on('tap', '.more_dongtai', function() {
+            var data_href = this.getAttribute("data-href");
+            var href = this.getAttribute("href");
+            var url=data_href;
+            if(!url||url==''){
+                url=href;
+            }
+            window.location.href = url;
+        });
+
+
 		var slider = mui("#slider");		
 		slider.slider({
 			interval: 3000
@@ -480,9 +304,9 @@
 		$(".rink_tab_list").on("tap" , "li.item" , function(){
 			$(this).addClass("active").siblings(".active").removeClass("active");
 			if( $(this).hasClass("daren") ){
-				$(".more_dongtai").html("更多达人").attr("href" , "more_daren.html");
+				$(".more_dongtai").html("更多达人").attr("href" , "{:url('index/Cattle/moreMaster')}");
 			}else if( $(this).hasClass("celue") ){
-				$(".more_dongtai").html("更多策略").attr("href" , "more_culue.html");;
+				$(".more_dongtai").html("更多策略").attr("href" , "{:url('index/Cattle/moreStrategy')}");;
 			}
 
 		});

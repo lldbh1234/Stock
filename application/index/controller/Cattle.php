@@ -1,8 +1,8 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\OrderLogic;
 use app\index\logic\UserFollowLogic;
-use app\index\model\UserFollow;
 use think\Request;
 use app\index\logic\UserLogic;
 
@@ -37,19 +37,23 @@ class Cattle extends Base
             'strategy_win' => $strategy_win,
             'strategy_yield' => $strategy_yield,
             'status' => 0,
+            'enough' => 0,
         ];
         //策略数不达标
         if($userDetail['pulish_strategy'] < $pulish_strategy) {
             $applyInfo['pulish_strategy'] = $userDetail['pulish_strategy'];
             $applyInfo['status'] = 1;
+            $applyInfo['enough'] = 1;
         }
         if($userDetail['strategy_win'] < $strategy_win) {
             $applyInfo['strategy_win'] = $userDetail['strategy_win'];
             $applyInfo['status'] = 1;
+            $applyInfo['enough'] = 1;
         }
         if($userDetail['strategy_yield'] < $strategy_yield) {
             $applyInfo['strategy_yield'] = $userDetail['strategy_yield'];
             $applyInfo['status'] = 1;
+            $applyInfo['enough'] = 1;
         }
 
         $this->assign('applyInfo', $applyInfo);
@@ -107,5 +111,55 @@ class Cattle extends Base
 
         }
         return $this->fail('系统提示：非法操作');
+    }
+    public function moreMaster()
+    {
+        $userLogic = new UserLogic();
+        $userFollowLogic = new UserFollowLogic();
+
+        $map = ['is_niuren' => 1];
+        $orderMap = ['state' => 2];//抛出
+        $type = !empty(input('type') && in_array(input('type'), [1,2,3])) ? input('type'): 1;
+//        if($type == 1){
+//
+//        }
+        if($type == 2){
+            $orderMap['update_at'] = ['between', [strtotime(date('Y-m-d')), strtotime(date('Y-m-d'))+86399]];
+        }
+        if($type == 3){
+            $endDay = strtotime(date('Y-m') . "+1 month -1 day") + 86399;
+            $orderMap['update_at'] = ['between', [strtotime(date('Y-m')), $endDay]];
+        }
+        $bestUserList =  $userLogic->getAllBy($map);
+        foreach($bestUserList as $k => $v)
+        {
+            $bestUserList[$k] = array_merge($v, $userLogic->userDetail($v['user_id'], $orderMap));
+        }
+        $bestUserList = collection($bestUserList)->sort(function ($a, $b){
+            return $b['strategy_yield'] - $a['strategy_yield'];
+        })->toArray();//排序
+        $followIds = $userFollowLogic->getFansIdByUid($this->user_id);
+        $this->assign('type', $type);
+        $this->assign('followIds', $followIds);
+        $this->assign('bestUserList', $bestUserList);
+        return view();
+    }
+    public function moreStrategy()
+    {
+        $orderLogic = new OrderLogic();
+        $userLogic = new UserLogic();
+
+        $bestStrategyList =  $orderLogic->getAllBy(['profit' => ['>', 0]]);
+        foreach($bestStrategyList as $k => $v)
+        {
+            $bestStrategyList[$k]['strategy_yield'] = array_merge($v, $userLogic->userDetail($v['user_id'], ['state' => 3]));//持仓
+//            $bestStrategyList[$k]['strategy_yield'] = empty($v['price']) ? 0 : round(($v['sell_price']-$v['price'])/$v['price']/100, 2);
+        }
+
+        $bestStrategyList = collection($bestStrategyList)->sort(function ($a, $b){
+            return $b['strategy_yield'] - $a['strategy_yield'];
+        })->toArray();//排序
+        $this->assign('bestStrategyList', $bestStrategyList);
+        return view();
     }
 }
