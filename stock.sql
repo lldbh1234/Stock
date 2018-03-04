@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: 2018-03-04 22:01:23
+-- Generation Time: 2018-03-05 04:13:25
 -- 服务器版本： 5.5.42
 -- PHP Version: 5.6.7
 
@@ -455,6 +455,24 @@ INSERT INTO `stock_hot` (`id`, `code`, `name`, `full_code`, `sort`, `status`) VA
 	(3, '600000', '浦发银行', 'sh600000', 45, 0),
 	(5, '600004', '白云机场', 'sh600004', 50, 0),
 	(6, '600101', '明星电力', 'sh600101', 50, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `stock_jobs`
+--
+
+DROP TABLE IF EXISTS `stock_jobs`;
+CREATE TABLE `stock_jobs` (
+	`id` int(11) NOT NULL,
+	`queue` varchar(255) NOT NULL,
+	`payload` longtext NOT NULL,
+	`attempts` tinyint(3) unsigned NOT NULL,
+	`reserved` tinyint(3) unsigned NOT NULL,
+	`reserved_at` int(10) unsigned DEFAULT NULL,
+	`available_at` int(10) unsigned NOT NULL,
+	`created_at` int(10) unsigned NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6232 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -4264,6 +4282,27 @@ INSERT INTO `stock_role` (`id`, `name`, `remark`, `show`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `stock_test`
+--
+
+DROP TABLE IF EXISTS `stock_test`;
+CREATE TABLE `stock_test` (
+	`id` int(11) NOT NULL,
+	`name` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `stock_test`
+--
+
+INSERT INTO `stock_test` (`id`, `name`) VALUES
+	(3, 'test'),
+	(4, 'test'),
+	(5, 'test');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `stock_user`
 --
 
@@ -4293,7 +4332,7 @@ CREATE TABLE `stock_user` (
 --
 
 INSERT INTO `stock_user` (`user_id`, `username`, `password`, `mobile`, `nickname`, `face`, `admin_id`, `parent_id`, `invide_code`, `account`, `blocked_account`, `state`, `is_manager`, `manager_state`, `is_niuren`, `niuren_state`, `create_at`) VALUES
-	(1, '15934854815', '###70873e8580c9900986939611618d7b1e', '15934854815', '15934854815', '/resource/home/img/default-user-img.png', 6, 0, NULL, '9753.00', '3000.00', 0, 1, 0, 1, 0, 1519716476),
+	(1, '15934854815', '###70873e8580c9900986939611618d7b1e', '15934854815', '15934854815', '/upload/avatar/user_id:1.png', 6, 0, NULL, '9753.00', '3000.00', 0, 1, 0, 1, 0, 1519716476),
 	(2, '15934854816', '###14e1b600b1fd579f47433b88e8d85291', '15934854816', '15934854816', '/resource/home/img/default-user-img.png', 11, 1, NULL, '0.00', '0.00', 0, -1, 0, 1, 0, 1519811310),
 	(4, '15934854817', '###70873e8580c9900986939611618d7b1e', '15934854817', '15934854817', '/resource/home/img/default-user-img.png', 11, 1, NULL, '0.00', '0.00', 0, -1, 0, 1, 0, 1519811999);
 
@@ -4389,7 +4428,7 @@ CREATE TABLE `stock_user_manager` (
 --
 
 INSERT INTO `stock_user_manager` (`id`, `user_id`, `admin_id`, `realname`, `mobile`, `point`, `coding`, `income`, `realtime_income`, `not_income`, `sure_income`, `already_income`, `state`, `create_at`, `update_at`, `update_by`) VALUES
-	(3, 1, 6, 'zyx', '18629395770', 0, '31107677', '0.00', '0.00', '0.00', '0.00', '0.00', 1, 1520166823, 1520166947, 2);
+	(3, 1, 6, '朱亚雄', '18629395770', 0, '31107677', '0.00', '0.00', '0.00', '0.00', '0.00', 1, 1520166823, 1520175326, 2);
 
 -- --------------------------------------------------------
 
@@ -4589,6 +4628,12 @@ ALTER TABLE `stock_hot`
 	ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `stock_jobs`
+--
+ALTER TABLE `stock_jobs`
+	ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `stock_lever`
 --
 ALTER TABLE `stock_lever`
@@ -4654,6 +4699,12 @@ ALTER TABLE `stock_product`
 -- Indexes for table `stock_role`
 --
 ALTER TABLE `stock_role`
+	ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stock_test`
+--
+ALTER TABLE `stock_test`
 	ADD PRIMARY KEY (`id`);
 
 --
@@ -4769,6 +4820,11 @@ ALTER TABLE `stock_deposit`
 ALTER TABLE `stock_hot`
 	MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
+-- AUTO_INCREMENT for table `stock_jobs`
+--
+ALTER TABLE `stock_jobs`
+	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6232;
+--
 -- AUTO_INCREMENT for table `stock_lever`
 --
 ALTER TABLE `stock_lever`
@@ -4818,6 +4874,11 @@ ALTER TABLE `stock_product`
 --
 ALTER TABLE `stock_role`
 	MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '后台角色ID自增',AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `stock_test`
+--
+ALTER TABLE `stock_test`
+	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `stock_user`
 --
