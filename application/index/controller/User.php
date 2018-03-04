@@ -164,7 +164,7 @@ class User extends Base
             $response = ["lists" => $list, "total_page" => $last_page, "current_page" => $current_page];
             return $this->ok($response);
         }
-        $this->assign("type", $type);
+        $this->assign("type", $type ? $type : '-1');
         $this->assign("user", $user);
         $this->assign("records", $list);
         $this->assign("totalPage", $last_page);
