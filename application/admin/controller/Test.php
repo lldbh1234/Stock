@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+use app\admin\logic\OrderLogic;
 use think\Queue;
 use think\Request;
 
@@ -13,6 +14,22 @@ class Test extends Base
 
     public function test()
     {
+        $order = (new OrderLogic())->getAllBy();
+        $c70 = [];
+        $c50 = [];
+        foreach($order as $k => $v)
+        {
+            if(cache($v['order_id'].'_70'))
+            {
+                $c70[] = cache($v['order_id'].'_70');
+            }
+            if(cache($v['order_id'].'_50'))
+            {
+                $c50[] = cache($v['order_id'].'_50');
+            }
+        }
+        dump($c70);
+        dump($c50);die();
         //两个方法，前者是立即执行，后者是在$delay秒后执行
         //php think queue:listen
         //php think queue:work --daemon（不加--daemon为执行单个任务）

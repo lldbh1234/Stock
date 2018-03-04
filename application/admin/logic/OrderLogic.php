@@ -127,4 +127,29 @@ class OrderLogic
             return false;
         }
     }
+    public function getAllBy($where=[])
+    {
+        $map = [];
+        if(!empty($where) && is_array($where))
+        {
+            foreach($where as $k => $v)
+            {
+                $map[$k] = $v;
+            }
+        }
+        $data = Order::where($map)->select();
+        return collection($data)->toArray();
+    }
+    public function getCodeBy($where=[])
+    {
+        $map = [];
+        if(!empty($where) && is_array($where))
+        {
+            foreach($where as $k => $v)
+            {
+                $map[$k] = $v;
+            }
+        }
+        return Order::where($map)->column('code');
+    }
 }
