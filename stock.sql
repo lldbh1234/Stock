@@ -3,7 +3,7 @@
 -- Server version:               5.7.14 - MySQL Community Server (GPL)
 -- Server OS:                    Win64
 -- HeidiSQL version:             7.0.0.4218
--- Date/time:                    2018-03-05 06:25:36
+-- Date/time:                    2018-03-05 06:40:22
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `stock_access` (
   KEY `node_id` (`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 
--- Dumping data for table stock.stock_access: ~76 rows (approximately)
+-- Dumping data for table stock.stock_access: ~96 rows (approximately)
 /*!40000 ALTER TABLE `stock_access` DISABLE KEYS */;
 INSERT INTO `stock_access` (`role_id`, `node_id`) VALUES
 	(1, 1),
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `stock_admin` (
 /*!40000 ALTER TABLE `stock_admin` DISABLE KEYS */;
 INSERT INTO `stock_admin` (`admin_id`, `username`, `password`, `nickname`, `mobile`, `pid`, `role`, `company`, `realname`, `point`, `total_fee`, `deposit`, `code`, `last_ip`, `last_time`, `status`, `create_at`) VALUES
 	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0.00, 0.00, 'root', '127.0.0.1', 1520054305, 0, 1518085749),
-	(2, 'admin', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 1, NULL, NULL, 0, 0.00, 0.00, 'admin', '0.0.0.0', 1520161350, 0, 1518085749),
+	(2, 'admin', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 1, NULL, NULL, 0, 0.00, 0.00, 'admin', '127.0.0.1', 1520202604, 0, 1518085749),
 	(3, '结算中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 2, 2, NULL, NULL, 0, 0.00, 0.00, '111111', '127.0.0.1', 1518098557, 0, 1518085749),
 	(4, '运营中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 3, 3, NULL, NULL, 0, 0.00, 0.00, '22222222222', '0.0.0.0', 0, 0, 1518085749),
 	(5, '微会员', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 4, 4, NULL, NULL, 0, 0.00, 0.00, '333333', '0.0.0.0', 0, 0, 1518085749),
@@ -361,7 +361,7 @@ CREATE TABLE IF NOT EXISTS `stock_config` (
   `alias` varchar(64) DEFAULT NULL COMMENT '配置别名'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置表';
 
--- Dumping data for table stock.stock_config: ~10 rows (approximately)
+-- Dumping data for table stock.stock_config: ~14 rows (approximately)
 /*!40000 ALTER TABLE `stock_config` DISABLE KEYS */;
 INSERT INTO `stock_config` (`name`, `val`, `alias`) VALUES
 	(NULL, '', 'website'),
@@ -375,6 +375,7 @@ INSERT INTO `stock_config` (`name`, `val`, `alias`) VALUES
 	(NULL, '90', 'bonus_rate'),
 	(NULL, '9.5', 'max_change_rate'),
 	(NULL, '88', 'manager_poundage'),
+	(NULL, '5', 'niuren_point'),
 	(NULL, '10', 'pulish_strategy'),
 	(NULL, '20', 'strategy_win'),
 	(NULL, '5', 'strategy_yield');
@@ -3952,7 +3953,7 @@ CREATE TABLE IF NOT EXISTS `stock_menu` (
   KEY `pid` (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8 COMMENT='后台节点表';
 
--- Dumping data for table stock.stock_menu: ~79 rows (approximately)
+-- Dumping data for table stock.stock_menu: ~87 rows (approximately)
 /*!40000 ALTER TABLE `stock_menu` DISABLE KEYS */;
 INSERT INTO `stock_menu` (`id`, `pid`, `name`, `act`, `module`, `icon`, `level`, `status`, `sort`) VALUES
 	(1, 0, '组织架构', '', 0, 'Hui-iconfont-user-zhanzhang', 1, 1, 1),
@@ -4132,7 +4133,7 @@ CREATE TABLE IF NOT EXISTS `stock_niuren` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='牛人收入';
 
--- Dumping data for table stock.stock_niuren: ~0 rows (approximately)
+-- Dumping data for table stock.stock_niuren: ~1 rows (approximately)
 /*!40000 ALTER TABLE `stock_niuren` DISABLE KEYS */;
 INSERT INTO `stock_niuren` (`id`, `user_id`, `income`, `realtime_income`, `not_income`, `sure_income`, `already_income`, `create_at`) VALUES
 	(2, 1, 0.00, 0.00, 0.00, 0.00, 0.00, 1520136565);
@@ -4373,7 +4374,7 @@ CREATE TABLE IF NOT EXISTS `stock_user_manager` (
   UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='经纪人';
 
--- Dumping data for table stock.stock_user_manager: ~0 rows (approximately)
+-- Dumping data for table stock.stock_user_manager: ~1 rows (approximately)
 /*!40000 ALTER TABLE `stock_user_manager` DISABLE KEYS */;
 INSERT INTO `stock_user_manager` (`id`, `user_id`, `admin_id`, `realname`, `mobile`, `point`, `coding`, `income`, `realtime_income`, `not_income`, `sure_income`, `already_income`, `state`, `create_at`, `update_at`, `update_by`) VALUES
 	(3, 1, 6, '朱亚雄', '18629395770', 0, '31107677', 0.00, 0.00, 0.00, 0.00, 0.00, 1, 1520166823, 1520175326, 2);
@@ -4416,7 +4417,7 @@ CREATE TABLE IF NOT EXISTS `stock_user_optional` (
   KEY `code` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='用户自选股';
 
--- Dumping data for table stock.stock_user_optional: ~0 rows (approximately)
+-- Dumping data for table stock.stock_user_optional: ~8 rows (approximately)
 /*!40000 ALTER TABLE `stock_user_optional` DISABLE KEYS */;
 INSERT INTO `stock_user_optional` (`id`, `user_id`, `code`, `name`, `full_code`) VALUES
 	(1, 1, '600000', '浦发银行', 'sh600000'),
@@ -4469,7 +4470,7 @@ CREATE TABLE IF NOT EXISTS `stock_user_record` (
   KEY `type` (`type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户资金流水表';
 
--- Dumping data for table stock.stock_user_record: ~0 rows (approximately)
+-- Dumping data for table stock.stock_user_record: ~4 rows (approximately)
 /*!40000 ALTER TABLE `stock_user_record` DISABLE KEYS */;
 INSERT INTO `stock_user_record` (`id`, `user_id`, `type`, `amount`, `remark`, `direction`, `create_at`) VALUES
 	(1, 1, 2, 1500.00, '{"orderId":"4"}', 1, 1520061028),
@@ -4499,7 +4500,7 @@ CREATE TABLE IF NOT EXISTS `stock_user_withdraw` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户出金表';
 
--- Dumping data for table stock.stock_user_withdraw: ~0 rows (approximately)
+-- Dumping data for table stock.stock_user_withdraw: ~1 rows (approximately)
 /*!40000 ALTER TABLE `stock_user_withdraw` DISABLE KEYS */;
 INSERT INTO `stock_user_withdraw` (`id`, `user_id`, `amount`, `actual`, `poundage`, `out_sn`, `type`, `state`, `remark`, `create_at`, `update_at`, `update_by`) VALUES
 	(1, 1, 300.00, 298.00, 2.00, '5a96abe60c1c80620', 0, 0, '{"bank":"\\u4e2d\\u56fd\\u5de5\\u5546\\u94f6\\u884c","card":"6205882900166205","name":"\\u6881\\u5065","addr":"\\u9655\\u897f\\u7701\\u897f\\u5b89\\u5e02\\u592a\\u767d\\u8def\\u652f\\u884c"}', 1519823845, 0, 0);
