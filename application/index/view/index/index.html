@@ -178,7 +178,7 @@
 							{volist name="$bestStrategyList" id="vo"}
 							<li>
 								<div class="clear_fl">
-									<a href="" class="lf">
+									<a href="{:url('index/Stock/info',['code' => $vo.code])}" class="lf">
 										<span>{$vo.name}</span>
 										<span class="strategy__code___VWYep">{$vo.code}</span>
 									</a>

@@ -184,5 +184,27 @@ class User extends Base
         $this->assign('content', $content);
         return view();
     }
+    public function avatar()
+    {
+        if(request()->isPost()){
+            $file = request()->file('avatar');
+            if(empty($file)) return $this->fail('系统提示:非法操作');
+            $path = ROOT_PATH . 'public' . DS . '/upload/avatar/';
+            $res = $file->move($path);
+            if($res){
+                $file_name = $res->getFilename();
+                $ret = $this->_logic->updateUser(['user_id' => $this->user_id, 'face' => $path.$file_name]);
+                if($ret)
+                {
+                    return $this->ok();
+                }
+                return $this->fail('系统提示:头像上传失败');
+
+            }else{
+                return $this->fail($file->getError());
+            }
+        }
+
+    }
 
 }

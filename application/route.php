@@ -47,6 +47,7 @@ Route::group("user", function () {
     Route::any('record','index/User/record');  //资金明细
     Route::any('notice-lists','index/User/noticeLists');
     Route::any('notice-detail','index/User/noticeDetail');
+    Route::post('avatar','index/User/avatar'); //用户中心
 });
 
 // 订单

@@ -153,12 +153,19 @@ class Cattle extends Base
     public function moreStrategy()
     {
         $orderLogic = new OrderLogic();
-        $userLogic = new UserLogic();
 
-        $bestStrategyList =  $orderLogic->getAllBy(['state' => 3, 'profit' => ['>', 0]]);
+        $bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
+
+        $codes = $orderLogic->getCodesBy(['state' => 3]);
+        $codeInfo = [];
+        if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
         foreach($bestStrategyList as $k => $v)
         {
-            $bestStrategyList[$k] = array_merge($v, $userLogic->userDetail($v['user_id'], ['state' => 3]));//持仓
+
+            $sell_price = isset($codeInfo[$v['code']]['last_px']) ? $codeInfo[$v['code']]['last_px'] : $v['price'];
+            $bestStrategyList[$k]['strategy_yield'] = round(($sell_price-$v['price'])/$v['price']*100, 2);
+            $bestStrategyList[$k]['profit'] = round(($sell_price-$v['price'])*$v['hand'], 2);
+
         }
 
         $bestStrategyList = collection($bestStrategyList)->sort(function ($a, $b){

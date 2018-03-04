@@ -675,13 +675,13 @@ nav.ml_tab .mui-icon-celue:before {
 }
 .alert-mask span{
     display: inline-block;
-    width: 5rem;
+    /*width: 5rem;*/
     background:rgba(0,0,0,.6);
-    min-height: 2rem;
-    border-radius: .2rem;
+    /*min-height: 2rem;*/
+    border-radius: 4px;
     color: #fff;
-    font-size: .28rem;
-    padding: .68rem .2rem;
+    font-size: 12px;
+    padding: 12px 20px;
     text-align: center;
 }
 /** loading */
