@@ -20,14 +20,14 @@ class OrderLogic
                 "type" => 4,
                 "amount" => $data['deposit'],
                 "remark" => json_encode(['orderId' => $res->$pk]),
-                "direction" => 1
+                "direction" => 2
             ];
             $user->hasManyRecord()->save($rData);
             $rData = [
                 "type" => 0,
                 "amount" => $data['jiancang_fee'],
                 "remark" => json_encode(['orderId' => $res->$pk]),
-                "direction" => 1
+                "direction" => 2
             ];
             $user->hasManyRecord()->save($rData);
             Db::commit();

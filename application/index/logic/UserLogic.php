@@ -222,4 +222,63 @@ class UserLogic
             return [];
         }
     }
+
+    //撤销建仓
+    public function cancelUserBuying($order)
+    {
+        Db::startTrans();
+        try{
+            // 订单作废
+            $data = [
+                "order_id" => $order["order_id"],
+                "state" => 5
+            ];
+            Order::update($data);
+            // 冻结资金
+            $user = User::find($order['user_id']);
+            $user->setInc("account", $order['jiancang_fee'] + $order['deposit']);
+            // 用户资金
+            $user->setDec("blocked_account", $order['deposit']);
+            // 资金明细(保证金)
+            $rData = [
+                "type" => 4,
+                "amount" => $order['deposit'],
+                "remark" => json_encode(['orderId' => $order["order_id"]]),
+                "direction" => 1
+            ];
+            $user->hasManyRecord()->save($rData);
+            // 资金明细(建仓费)
+            $rData = [
+                "type" => 0,
+                "amount" => $order['jiancang_fee'],
+                "remark" => json_encode(['orderId' => $order["order_id"]]),
+                "direction" => 1
+            ];
+            $user->hasManyRecord()->save($rData);
+            Db::commit();
+            return true;
+        } catch(\Exception $e) {
+            Db::rollback();
+            return false;
+        }
+    }
+
+    // 撤销平仓
+    public function cancelUserSelling($order)
+    {
+        if($order){
+            // 更改订单状态 委托平仓=》持仓
+            $data = [
+                "order_id" => $order["order_id"],
+                "sell_price" => 0,
+                "sell_hand" => 0,
+                "sell_deposit" => 0,
+                "profit"    => 0,
+                "state"     => 3
+            ];
+            return Order::update($data);
+        }else{
+            return false;
+        }
+    }
 }
