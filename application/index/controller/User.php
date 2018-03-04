@@ -150,6 +150,7 @@ class User extends Base
     {
         $user = uInfo();
         $record = $this->_logic->pageUserRecords($this->user_id, $type);
+
         if($record['data']){
             $list = $record['data'];
             $last_page = $record['last_page'];
@@ -159,6 +160,7 @@ class User extends Base
             $last_page = 1;
             $current_page = 1;
         }
+        $this->assign("type", $type);
         $this->assign("user", $user);
         $this->assign("records", $list);
         $this->assign("totalPage", $last_page);
