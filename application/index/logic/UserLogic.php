@@ -362,7 +362,6 @@ class UserLogic
                     ];
                     $user->hasManyRecord()->save($rData);
                 }else{
-                    dump("余额不足");
                     Db::rollback();
                     return false;
                 }
