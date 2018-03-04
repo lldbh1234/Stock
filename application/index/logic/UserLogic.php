@@ -373,4 +373,15 @@ class UserLogic
             return false;
         }
     }
+
+    public function pageUserRecords($userId, $type = null, $pageSize = 4){
+        try{
+            $where = [];
+            $type ? is_array($type) ? ["type" => ["IN", $type]] : ["type" => $type] : null;
+            $res = User::find($userId)->hasManyRecord()->where($where)->paginate($pageSize);
+            return $res ? $res->toArray() : [];
+        } catch(\Exception $e) {
+            return [];
+        }
+    }
 }
