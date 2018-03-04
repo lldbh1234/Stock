@@ -2,6 +2,7 @@
 namespace app\index\validate;
 
 use app\index\logic\SmsLogic;
+use app\index\logic\UserLogic;
 use think\Validate;
 use app\index\model\Admin;
 
@@ -10,6 +11,7 @@ class User extends Validate
     protected $rule = [
         'oldPassword' => "require|checkOldPassword",
         'username'  => 'require',
+        'parent_id' => 'number|checkParentId',
         'orgCode'   => 'require|checkOrgCode',
         'mobile'    => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/|checkMobile',
         'password'	=> 'require|length:6,16',
@@ -24,6 +26,8 @@ class User extends Validate
     protected $message = [
         'oldPassword.require' => '旧密码不能为空！',
         'oldPassword.checkOldPassword' => '旧密码输入错误！',
+        'parent_id.number'  => '系统提示：非法操作！',
+        'parent_id.checkParentId' => '系统提示：非法操作！',
         'orgCode.require'   => '机构编码不能为空！',
         'orgCode.checkOrgCode' => '机构编码填写错误！',
         'mobile.require'    => '手机号码不能为空！',
@@ -119,5 +123,17 @@ class User extends Validate
     {
         $_array = ['register', 'forget', 'withdraw', 'manager'];
         return in_array($value, $_array);
+    }
+
+    protected function checkParentId($value)
+    {
+        if($value){
+            $parent = (new UserLogic())->userById($value);
+            if($parent && $parent['is_manager'] == 1){
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 }

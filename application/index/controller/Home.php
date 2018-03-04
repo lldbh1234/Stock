@@ -77,6 +77,13 @@ class Home extends Controller
                 }
             }
             $pid = input("?pid") ? input("pid") : 0;
+            if($pid){
+                $parent = (new UserLogic())->userIncAdmin($pid);
+                if($parent['is_manager'] == 1){
+                    $this->assign("ring_code", $parent['has_one_admin']['code']);
+                    $this->assign("pid", $pid);
+                }
+            }
             return view();
         }
     }
