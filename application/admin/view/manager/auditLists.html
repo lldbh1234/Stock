@@ -1,12 +1,12 @@
 {extend name="layouts/layout_iframe" /}
 
-{block name="title"}会员出金{/block}
+{block name="title"}经纪人审核{/block}
 
 {block name="body"}
 <nav class="breadcrumb">
     <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
-    <span class="c-gray en">&gt;</span> 会员管理
-    <span class="c-gray en">&gt;</span> 会员出金列表
+    <span class="c-gray en">&gt;</span> 经纪人管理
+    <span class="c-gray en">&gt;</span> 经纪人审核列表
     <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
         <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
     </a>
@@ -14,15 +14,15 @@
 <div class="page-container">
     <form action="" method="get">
     <div class="text-c">
-        <input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="真实姓名" name="realname" value="{$search.realname|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
 
         <span class="select-box" style="width:70px;height: 31px;">
             <select class="select" name="state" size="1">
                 <option value="">状态</option>
                 <option value="0" {if condition="isset($search.state) AND $search.state heq '0'"}selected{/if}>待审核</option>
-                <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>审核通过</option>
-                <option value="-1" {if condition="isset($search.state) AND $search.state heq '-1'"}selected{/if}>审核失败</option>
+                <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>通过</option>
+                <option value="2" {if condition="isset($search.state) AND $search.state heq '2'"}selected{/if}>拒绝</option>
             </select>
         </span>
         <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
@@ -39,10 +39,8 @@
             <th width="40">ID</th>
             <th>登录名</th>
             <th>昵称</th>
+            <th>真实姓名</th>
             <th>手机号</th>
-            <th>出金金额</th>
-            <th>手续费</th>
-            <th>实际到账</th>
             <th>申请时间</th>
             <th>审核时间</th>
             <th>审核人</th>
@@ -53,36 +51,33 @@
         <tbody>
         {empty name="datas.data"}
         <tr class="text-c admin-lists">
-            <td colspan="13">暂时没有匹配到数据</td>
+            <td colspan="12">暂时没有匹配到数据</td>
         </tr>
         {/empty}
-
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
             <td width="25"><input type="checkbox" value="{$item.id}" name=""></td>
             <td width="40">{$item.id}</td>
             <td>{$item.has_one_user.username}</td>
             <td>{$item.has_one_user.nickname}</td>
-            <td>{$item.has_one_user.mobile}</td>
-            <td>{$item.amount | default='0.00'}</td>
-            <td>{$item.poundage | default='0.00'}</td>
-            <td>{$item.actual | default='0.00'}</td>
-            <td>{$item.create_at | date='Y-m-d H:i:s', ###}</td>
-            <td>{if condition="$item.update_at eq 0"}{else /}{$item.update_at | date='Y-m-d H:i:s', ###}{/if}</td>
-            <td>{$item.has_one_admin.username | default=''}</td>
+            <td>{$item.realname}</td>
+            <td>{$item.mobile}</td>
+            <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
+            <td>{if condition="$item.update_at gt 0"}{$item.update_at|date='Y-m-d H:i:s', ###}{/if}</td>
+            <td>{$item.has_one_admin.username}</td>
             <td>
                 {if condition="$item.state eq 0"}
-                    <span class="label label-warning radius">待审核</span>
-                {elseif condition="$item.state eq 1"}
+                    <span class="label label-success radius">待审核</span>
+                {elseif condition="$item.state eq 1" /}
                     <span class="label label-success radius">审核通过</span>
-                {elseif condition="$item.state eq -1"}
-                    <span class="label label-danger radius">审核失败</span>
+                {elseif condition="$item.state eq 2" /}
+                    <span class="label label-danger radius">拒绝</span>
                 {/if}
             </td>
             <td class="f-14">
                 {if condition='$item.state eq 0'}
-                <a title="通过" href="javascript:;" onclick="admin_success('{$item.id}', '1')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
-                <a title="拒绝" href="javascript:;" onclick="admin_refuse('{$item.id}', '-1')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
+                    <a title="通过" href="javascript:;" onclick="admin_success('{$item.id}', '1', '{$item.user_id}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
+                    <a title="拒绝" href="javascript:;" onclick="admin_refuse('{$item.id}', '2', '{$item.user_id}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
                 {/if}
             </td>
         </tr>
@@ -99,13 +94,12 @@
 
 {block name="script"}
 <script>
-
-    function admin_success(_id, state)
+    function admin_success(_id, state, uid)
     {
-        layer.confirm('是否确认本次出金?', {icon: 1, title:'提示'}, function(index){
+        layer.confirm('是否通过审核?', {icon: 1, title:'提示'}, function(index){
 
-            var _oData = {id : _id, state:state},
-                _url = '{:url("admin/User/withdraw")}',
+            var _oData = {id : _id, state:state, user_id:uid},
+                _url = '{:url("admin/Manager/audit")}',
                 _loading = parent.layer.load(1),
                 _func = function (_resp) {
                     parent.layer.close(_loading);
@@ -122,12 +116,12 @@
         });
 
     }
-    function admin_refuse(_id, state)
+    function admin_refuse(_id, state, uid)
     {
-        layer.confirm('是否拒绝本次出金?', {icon: 5, title:'提示'}, function(index){
+        layer.confirm('是否拒绝本次审核?', {icon: 5, title:'提示'}, function(index){
 
-            var _oData = {id : _id, state:state},
-                _url = '{:url("admin/User/withdraw")}',
+            var _oData = {id : _id, state:state,user_id:uid},
+                _url = '{:url("admin/Manager/audit")}',
                 _loading = parent.layer.load(1),
                 _func = function (_resp) {
                     parent.layer.close(_loading);

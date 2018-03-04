@@ -108,5 +108,10 @@ class OrderLogic
         return Order::where($map)->count();
 
     }
+    public function orderIdsByUid($uid)
+    {
+        return Order::where(['user_id' => $uid])->column('order_id');
+
+    }
 
 }
