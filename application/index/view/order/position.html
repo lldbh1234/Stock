@@ -68,7 +68,7 @@
             </div>
             {else /}
             {volist name="orders" id="item"}
-            <li data-id="{$item.order_id}" data-code="{$item.code}" data-price="{$item.price}" data-deposit="{$item.deposit}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
+            <li class="position{$item.code}" data-id="{$item.order_id}" data-code="{$item.code}" data-price="{$item.price}" data-deposit="{$item.price}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
                 <h1 class="clear_fl">
                     <span class="lf">{$item.name} {$item.code}</span>
                     <span class="rt"> <span class="p_key"></span>{$item.create_at|date='m-d H:i', ###}</span>
@@ -133,9 +133,9 @@
                 </div>
                 <div class="clear_fl p_control_panel">
                     <p class="rt">
-                        <a class="add_money lf" data-order-id="{$item.order_id}" href="">补充保证金</a>
-                        <a class="modify_point lf" data-order-id="{$item.order_id}" href="">修改止盈止损</a>
-                        <a class="sell_position_btn lf" data-order-id="{$item.order_id}" href="">平仓</a>
+                        <span class="add_money lf" data-order-id="{$item.order_id}">补充保证金</span>
+                        <span class="modify_point lf" data-order-id="{$item.order_id}">修改止盈止损</span>
+                        <span class="sell_position_btn lf" data-order-id="{$item.order_id}">平仓</span>
                     </p>
                 </div>
             </li>
@@ -171,6 +171,7 @@
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
 	mui.init({
 		swipeBack: true //启用右滑关闭功能
@@ -185,5 +186,43 @@
         }
         window.location.href = url;
      });
+
+     var refreshIntervel = setInterval(refreshPrice,4000);
+
+     function refreshPrice(){
+        if($(".postion_tab_con li").length == 0){
+            return false;
+        }
+        var code = new Array();
+        $(".postion_tab_con li").each(function(){
+            code.push( $(this).data("id") );
+        });
+        // code = code.join(",");
+        var _url = '{:url("index/Order/ajaxPosition")}',
+            _oData = {ids: code};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ // 登录成功
+                for( var key in res.data ){
+                    var rate = parseFloat(res.data[key].px_change_rate);
+                    var className = "";
+                    if(rate >= 0){
+                        className = "red"
+                    }else{
+                        className = "green"
+                    }
+                    
+                }
+            }else{
+                // $alert(res.info);
+            }
+        });
+     }
 </script>
 {/block}
+
+
+
+
+
+
+
