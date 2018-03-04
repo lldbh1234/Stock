@@ -16,8 +16,9 @@
 		</header>
 
 		<form class="my_from">
+			<input name="parent_id" type="hidden" value="{$pid|default=0}" />
 			<div class="my_form_group">
-				<input type="text" placeholder="请填写机构编码" id="orgCode" name="orgCode" />
+				<input type="text" placeholder="请填写机构编码" id="orgCode" value="{$ring_code|default=''}" name="orgCode" />
 			</div>
 			<div class="my_form_group">
 				<input type="text" placeholder="请输入手机号码" id="mobile" name="mobile" />
