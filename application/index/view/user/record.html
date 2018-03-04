@@ -82,7 +82,7 @@
 
 
 	<ul class="postion_tab flex_nowrap">
-		<li {if condition="$type eq ''"}class="active"{/if}>
+		<li {eq name="type" value=""}class="active"{/eq}>
 			<p><a href="{:url('index/User/record')}">全部</a></p>
 		</li>
 		<li {if condition="$type eq 4"}class="active"{/if}>
