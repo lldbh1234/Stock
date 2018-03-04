@@ -665,7 +665,7 @@
 
     function initData(me){
         var id = $(".recharge_mask").attr("data-id");
-        var _url = '/order/index.html',
+        var _url = "{:url('index/Order/position')}",
             _oData = {page: now};
         $ajaxCustom(_url, _oData, function(res){
           if(res.state == 1){ // 成功

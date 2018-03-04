@@ -150,6 +150,7 @@ class User extends Base
     {
         $user = uInfo();
         $record = $this->_logic->pageUserRecords($this->user_id, $type);
+
         if($record['data']){
             $list = $record['data'];
             $last_page = $record['last_page'];
@@ -159,6 +160,15 @@ class User extends Base
             $last_page = 1;
             $current_page = 1;
         }
+        if(request()->isPost()){
+            foreach ($list as $k => $v)
+            {
+                $list[$k]['create_at'] = date('Y-m-d H:i', $v['create_at']);
+            }
+            $response = ["lists" => $list, "total_page" => $last_page, "current_page" => $current_page];
+            return $this->ok($response);
+        }
+        $this->assign("type", isset($type) ? $type : '-1');
         $this->assign("user", $user);
         $this->assign("records", $list);
         $this->assign("totalPage", $last_page);

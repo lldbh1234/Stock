@@ -21,6 +21,16 @@ class Index extends Base
         $orderLogic = new OrderLogic();
         $userFollowLogic = new UserFollowLogic();
         $userNoticeLogic = new UserNoticeLogic();
+
+        $stocks = $userLogic->userOptional($this->user_id);
+        if($stocks){
+            $codes = array_column($stocks, "code");
+            $lists = (new StockLogic())->simpleData($codes);
+            array_filter($stocks, function(&$item) use ($lists){
+                $item['quotation'] = $lists[$item['code']];
+            });
+        }
+
         $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
         {
@@ -37,9 +47,10 @@ class Index extends Base
 
         $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
         $bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
-        $codes = $orderLogic->getCodesBy(['state' => 3]);//持仓
-        $codeInfo = [];
-        if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
+//        $codes = $orderLogic->getCodesBy(['state' => 3]);//持仓
+//        $codeInfo = [];
+//        if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
+        $codeInfo = $lists;
         foreach($bestStrategyList as $k => $v)
         {
 
@@ -55,10 +66,12 @@ class Index extends Base
         $userNotice = $userNoticeLogic->getAllBy(['user_id' => $this->user_id, 'read' => 1]);
         $userNotice = count($userNotice);
 
+
         $this->assign('bestUserList', $bestUserList);
         $this->assign('bestStrategyList', $bestStrategyList);
         $this->assign('followIds', $followIds);
         $this->assign('userNotice', $userNotice);
+        $this->assign("stocks", $stocks);
         return view();
     }
 }
