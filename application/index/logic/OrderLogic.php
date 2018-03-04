@@ -171,4 +171,13 @@ class OrderLogic
             return false;
         }
     }
+
+    public function todaySellOrder(){
+        $todayBegin = strtotime(date("Y-m-d 00:00:00"));
+        $todayEnd = strtotime(date("Y-m-d 23:59:59"));
+        $where["state"] = 2;
+        $where["update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
+        $orders = Order::where($where)->select();
+        return $orders ? collection($orders)->toArray() : [];
+    }
 }
