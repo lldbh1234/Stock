@@ -42,6 +42,15 @@
 		width: 25%;
 		text-align: right;
 	}
+	.postion_tab li.active>p a {
+	    border-bottom: 2px solid #fc5055;
+	    display: inline-block;
+	    color: #fc5055;
+	}
+	.postion_tab li>p a {
+	    color: #8f8f94;;
+	    font-size: 13px;
+	}
 </style>
 {/block}
 
@@ -74,16 +83,16 @@
 
 	<ul class="postion_tab flex_nowrap">
 		<li class="active">
-			<p><span>全部</span></p>
+			<p><a>全部</a></p>
 		</li>
 		<li>
-			<p><span>保证金</span></p>
+			<p><a>保证金</a></p>
 		</li>
 		<li>
-			<p><span>建仓费</span></p>
+			<p><a>建仓费</a></p>
 		</li>
 		<li>
-			<p><span>递延费</span></p>
+			<p><a>递延费</a></p>
 		</li>
 	</ul>
 

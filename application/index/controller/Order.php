@@ -31,6 +31,7 @@ class Order extends Base
                     $item['market_value'] = $item['last_px'] * $item['hand']; //市值
                     $item['yield_rate'] = round(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['last_px'] - $item['price']) * $item['hand']; //盈亏
+                    $item['create_at_text'] = date("m-d H:i", $item['create_at']);
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
@@ -118,6 +119,7 @@ class Order extends Base
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                    $item['create_at_text'] = date("m-d H:i", $item['create_at']);
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
@@ -165,6 +167,8 @@ class Order extends Base
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                    $item['create_at_text'] = date("m-d H:i", $item['create_at']);
+                    $item['update_at_text'] = date("m-d H:i", $item['update_at']);
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
@@ -278,6 +282,35 @@ class Order extends Base
                     return $this->ok();
                 }else{
                     return $this->fail("保证金补充失败！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
+
+    // 修改止盈止损
+    public function modifyPl()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('modifyPl')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $profit = input("post.profit/f");
+                $loss = input("post.loss/f");
+                $order = $this->_userLogic->userOrderById($this->user_id, $orderId, 3);
+                $order = reset($order);
+                if($order){
+                    $res = $this->_userLogic->userOrderModifyPl($this->user_id, $order, $profit, $loss);
+                    if($res){
+                        return $this->ok();
+                    }else{
+                        return $this->fail("调整失败！");
+                    }
+                }else{
+                    return $this->fail("系统提示：非法操作！");
                 }
             }
         }else{
