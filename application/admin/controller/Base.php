@@ -93,7 +93,7 @@ class Base extends Controller
             $userInfo = (new UserLogic())->getOne($uid);
             $qrCode = new QrCode();
             //想显示在二维码中的文字内容，这里设置了一个查看文章的地址
-            $url = url('index/Manager/followEvening', '', true, true);
+            $url = url('index/Home/register', ["pid" => $uid], true, true);
             $qrCode->setText($url)
                 ->setSize(300)
                 ->setForegroundColor(array('r' => 0, 'g' => 0, 'b' => 0, 'a' => 0))
@@ -104,7 +104,7 @@ class Base extends Controller
                 ->setLogoPath($_SERVER['DOCUMENT_ROOT'] . trim($userInfo['face']))
                 ->setWriterByName('png');
 
-            $qrCode->writeFile('./manager_qrcode/' . $uid . '.png');
+            $qrCode->writeFile('./upload/manager_qrcode/' . $uid . '.png');
         }
     }
 }
