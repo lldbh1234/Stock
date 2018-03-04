@@ -157,10 +157,11 @@ class UserLogic
         return $user ? $user->toArray() : [];
     }
 
-    // $state 1委托，2抛出，3持仓
+    // $state 1委托建仓，2抛出，3持仓，4-委托平仓
     public function pageUserOrder($userId, $state = 1, $pageSize = 2){
         try{
-            $res = User::find($userId)->hasManyOrder()->where(["state" => $state])->paginate($pageSize);
+            $where = is_array($state) ? ["state" => ["IN", $state]] : ["state" => $state];
+            $res = User::find($userId)->hasManyOrder()->where($where)->paginate($pageSize);
             return $res ? $res->toArray() : [];
         } catch(\Exception $e) {
             return [];

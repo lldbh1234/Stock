@@ -36,150 +36,131 @@
     <ul class="position_section clear_fl">
         <li>
             <p>净资产</p>
-            <p>￥12313.23</p>
+            <p>￥{$capital.netAssets|number_format=2}</p>
         </li>
         <li>
             <p>可用资金</p>
-            <p>￥12313.23</p>
+            <p>￥{$capital.expendableFund|number_format=2}</p>
         </li>
         <li>
             <p>持仓市值</p>
-            <p>￥12313.23</p>
+            <p>￥{$capital.marketValue|number_format=2}</p>
         </li>
         <li>
             <p>浮动盈亏</p>
-            <p>+12313.23</p>
+            <p>{$capital.floatPL|number_format=2}</p>
         </li>
     </ul>
     <ul class="postion_tab flex_nowrap">
         <li>
             <p><a href="{:url('index/Order/position')}">当前持仓</a></p>
         </li>
-        <li class="active">
+        <li class="active" data-total-page="{$totalPage}" data-current-page="{$currentPage}">
             <p><a href="javascript:void(0);">当前委托</a></p>
         </li>
         <li>
             <p><a href="{:url('index/Order/history')}">历史交易</a></p>
         </li>
         <ul class="postion_tab_con">
+            {empty name="orders"}
+            <div class="money_tab_con" style="text-align: center;">
+                <img style="width: 30%;margin-top: 60px;" src="__RESOURCE__/img/no-search-data@3x.png">
+            </div>
+            {else /}
+            {volist name="orders" id="item"}
             <li>
                 <h1 class="clear_fl">
-                    <span class="lf">招商银行 600036</span>
-                    <span class="rt"> <span class="p_key"></span>01-08 11:07</span>
+                    <span class="lf">{$item.name} {$item.code}</span>
+                    <span class="rt"> <span class="p_key"></span>{$item.create_at|date='m-d H:i', ###}</span>
                 </h1>
                 <div class="clear_fl p_info">
                     <p>
                         <span class="p_key">买价</span>
-                        <span class="p_value">29.45</span>
+                        <span class="p_value">{$item.price|number_format=2}</span>
                     </p>
+                    {if condition="$item.state EQ 4"}
                     <p>
-                        <span class="p_key">现价</span>
-                        <span class="p_value red">29.45</span>
+                        <span class="p_key">卖价</span>
+                        <span class="p_value red">{$item.sell_price|number_format=2}</span>
                     </p>
+                    {/if}
                     <p>
                         <span class="p_key">数量</span>
-                        <span class="p_value">29.45</span>
+                        <span class="p_value">{$item.sell_hand|intval}</span>
                     </p>
+                    {if condition="$item.state EQ 4"}
                     <p>
                         <span class="p_key">市值</span>
-                        <span class="p_value">29.45</span>
+                        <span class="p_value">{$item.market_value|number_format=2}</span>
                     </p>
                     <p>
                         <span class="p_key">收益率</span>
-                        <span class="p_value red">+29.45%</span>
+                        {if condition="$item.yield_rate LT 0"}
+                        <span class="p_value green">-{$item.yield_rate|number_format=2}%</span>
+                        {elseif condition="$item.yield_rate EQ 0" /}
+                        <span class="p_value red">{$item.yield_rate|number_format=2}%</span>
+                        {else /}
+                        <span class="p_value red">+{$item.yield_rate|number_format=2}%</span>
+                        {/if}
                     </p>
                     <p>
                         <span class="p_key">盈亏</span>
-                        <span class="p_value red">29.45</span>
+                        {if condition="$item.total_pl LT 0"}
+                        <span class="p_value green">-{$item.total_pl|number_format=2}</span>
+                        {elseif condition="$item.total_pl EQ 0" /}
+                        <span class="p_value red">{$item.total_pl|number_format=2}</span>
+                        {else /}
+                        <span class="p_value red">+{$item.total_pl|number_format=2}</span>
+                        {/if}
                     </p>
+                    {/if}
                     <p>
                         <span class="p_key">保证金</span>
-                        <span class="p_value">29.45</span>
+                        <span class="p_value">{$item.deposit|number_format=2}</span>
                     </p>
                     <p>
                         <span class="p_key">止损</span>
-                        <span class="p_value">29.45</span>
+                        <span class="p_value">{$item.stop_loss_price|number_format=2}</span>
                     </p>
                     <p>
                         <span class="p_key">止盈</span>
-                        <span class="p_value">29.45</span>
+                        <span class="p_value">{$item.stop_profit_price|number_format=2}</span>
                     </p>
                     <p>
+                        <span class="p_key">方向</span>
+                        <span class="p_value">
+                            {if condition="$item.state EQ 1"}
+                            委托建仓
+                            {elseif condition="$item.state EQ 4" /}
+                            委托平仓
+                            {else /}
+                            未知
+                            {/if}
+                        </span>
+                    </p>
+                    <!--<p>
                         <span class="p_key">递延费</span>
                         <span class="p_value">29.45</span>
                     </p>
                     <p>
                         <span class="p_key">分红</span>
                         <span class="p_value">29.45</span>
-                    </p>
+                    </p>-->
                 </div>
                 <div class="clear_fl p_control_panel">
                     <p class="rt">
-                        <a class="add_money  lf" href="">补充保证金</a>
-                        <a class="modify_point  lf" href="">修改止盈止损</a>
-                        <a class="sell_position_btn lf" href="">平仓</a>
+                        {if condition="$item.state EQ 1"}
+                        <a class="add_money  lf" data-order-id="{$item.order_id}" href="">补充保证金</a>
+                        <a class="modify_point  lf" data-order-id="{$item.order_id}" href="">修改止盈止损</a>
+                        <a class="sell_position_btn lf" data-order-id="{$item.order_id}" href="">撤销</a>
+                        {elseif condition="$item.state EQ 4" /}
+                        <a class="sell_position_btn lf" href="">撤销</a>
+                        {/if}
                     </p>
                 </div>
             </li>
-            <li>
-                <h1 class="clear_fl">
-                    <span class="lf">招商银行 600036</span>
-                    <span class="rt"> <span class="p_key"></span>01-08 11:07</span>
-                </h1>
-                <div class="clear_fl p_info">
-                    <p>
-                        <span class="p_key">买价</span>
-                        <span class="p_value">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">现价</span>
-                        <span class="p_value red">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">数量</span>
-                        <span class="p_value">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">市值</span>
-                        <span class="p_value">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">收益率</span>
-                        <span class="p_value red">+29.45%</span>
-                    </p>
-                    <p>
-                        <span class="p_key">盈亏</span>
-                        <span class="p_value red">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">保证金</span>
-                        <span class="p_value">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">止损</span>
-                        <span class="p_value">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">止盈</span>
-                        <span class="p_value">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">递延费</span>
-                        <span class="p_value">29.45</span>
-                    </p>
-                    <p>
-                        <span class="p_key">分红</span>
-                        <span class="p_value">29.45</span>
-                    </p>
-                </div>
-                <div class="clear_fl p_control_panel">
-                    <p class="rt">
-                        <a class="add_money  lf" href="">补充保证金</a>
-                        <a class="modify_point  lf" href="">修改止盈止损</a>
-                        <a class="sell_position_btn lf" href="">平仓</a>
-                    </p>
-                </div>
-            </li>
+            {/volist}
+            {/empty}
         </ul>
     </ul>
 {/block}
