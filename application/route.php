@@ -117,7 +117,7 @@ Route::group("cron", function () {
     Route::any('defer', 'index/Cron/scanOrderDefer');
 });
 
-Route::group(["domain" => "stock.lc"], function() {
+Route::group(["domain" => "www.baonastone.com.cn"], function() {
     // Admin
     Route::group("admin", function () {
         Route::any('/$','admin/Index/index');
