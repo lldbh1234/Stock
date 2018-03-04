@@ -190,13 +190,14 @@ class User extends Base
             $file = request()->file('avatar');
             if(empty($file)) return $this->fail('系统提示:非法操作');
             $path = './upload/avatar/';
-            $res = $file->move($path);
+            $res = $file->move($path, 'user_id_'.$this->user_id.'.png');
             if($res){
                 $file_name = $res->getFilename();
+                $path = trim($path, '.');
                 $ret = $this->_logic->updateUser(['user_id' => $this->user_id, 'face' => $path.$file_name]);
                 if($ret)
                 {
-                    return $this->ok(['url' => $path.$file_name]);
+                    return $this->ok(['avatar' => $path.$file_name]);
                 }
                 return $this->fail('系统提示:头像上传失败');
 
@@ -205,6 +206,20 @@ class User extends Base
             }
         }
 
+    }
+    public function nickEdit()
+    {
+        if(request()->isPost()){
+            $data = input('post.');
+            $updateArr = ['user_id' => $this->user_id];
+            isset($data['nickname']) ? $updateArr['nickname'] = $data['nickname'] : '';
+            $userLogic = new UserLogic();
+            if($userLogic->updateUser($updateArr))
+            {
+                return $this->ok();
+            }
+            return $this->fail('系统提示:操作失败');
+        }
     }
 
 }

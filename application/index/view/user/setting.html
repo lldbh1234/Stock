@@ -145,16 +145,14 @@
             data: _formData,
             contentType: false,
             processData: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
             success: function (resp) {
                 hideLoading();
-                if(0 == resp.code){
+                if(1 == resp.state){
                     $(".user-pic-inp img").attr("src", resp.data.avatar);
                     $alert("头像修改成功！");
+                    window.location.reload();
                 }else{
-                    $alert(resp.message);
+                    $alert(resp.info);
                 }
             },
             error: function () {
@@ -177,7 +175,19 @@
 
         $(".confirm_btn").click(function(){
             // 提交修改名字
-
+            var nickname = $(".modify_name_con textarea").val();
+            var _url = '{:url("index/User/nickEdit")}',
+                _oData = {nickname : nickname};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state == 1){
+                    $alert("修改成功");
+                    $(".modify_name_btn").html( nickname );
+                    $(".modify_name_con textarea").val()
+                    $(".modify_name_mask").hide();
+                }else{
+                    $alert(res.info);
+                }
+            });
 
         });
     </script>

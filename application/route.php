@@ -48,6 +48,7 @@ Route::group("user", function () {
     Route::any('notice-lists','index/User/noticeLists');
     Route::any('notice-detail','index/User/noticeDetail');
     Route::post('avatar','index/User/avatar'); //用户中心
+    Route::post('nick-edit','index/User/nickEdit');
 });
 
 // 订单
