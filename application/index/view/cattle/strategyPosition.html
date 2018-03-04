@@ -1,0 +1,120 @@
+{extend name="layouts/layout_manager" /}
+{block name="title"}跟单持仓{/block}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__RESOURCE__/css/person.css">
+<link href="__RESOURCE__/css/foundation-datepicker.min.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    body{
+        background: #f5f5f5;
+    }
+    .ml_btn{
+        margin-top: 16px!important;
+        margin-bottom: 16px;
+    }
+    .fan_key:before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: 24px;
+        background: url(__RESOURCE__/img/icons.png) no-repeat;
+        background-size: 900%;
+        background-position: -60px -52px;
+        margin-right: 4px;
+    }
+    .yingli_key:before{
+        background-position: -32px -52px;
+    }
+</style>
+{/block}
+<!--个人中心-充值-支付宝-->
+{block name="body"}
+<body>
+{/block}
+{block name="content"}
+
+<div class="manager_con">
+    <header class="header_con">
+        <a href="{:url('index/Cattle/index')}" class="lf">
+            <img src="__RESOURCE__/img/call_back.png">
+        </a>
+        <p>跟单持仓</p>
+    </header>
+    <div id="main">
+        <p class="income_title">
+            <span class="fan_key">总笔数</span>
+            <span class="fan_count">{:count($lists)}笔</span>
+            <span class="fan_key yingli_key">总盈利</span>
+            <span class="fan_count">{$profit | default='0.00'}</span>
+        </p>
+
+        <form action="{:url('index/Cattle/strategyPosition')}" id="form" method="POST">
+            <div class="date_group clear_fl">
+                <span class="date_key lf">日期：</span>
+                <input type="text"  class="date_value lf" name="startDate" value="{$search['startDate']}" id="startDate">
+            </div>
+            <div class="date_group clear_fl">
+                <span class="date_key lf">至：</span>
+                <input type="text"  class="date_value lf" name="endDate" value="{$search['endDate']}" id="endDate">
+            </div>
+
+            <button type="button" class="ml_btn mui-btn mui-btn-block search">查询</button>
+        </form>
+
+        <ul class="search_result_list">
+            <li class="s_r_title flex_nowrap">
+                <span class="lf">客户</span>
+                <span class="lf">股票简称</span>
+                <span class="lf">保证金</span>
+                <span class="lf">建仓费</span>
+                <span class="lf">递延费</span>
+            </li>
+            {volist name="lists" id="vo"}
+            <li class="flex_nowrap">
+                <span class="lf">{$vo.has_one_user.nickname | default=$vo.has_one_user.username}</span>
+                <span class="lf">{$vo.name}</span>
+                <span class="lf">{$vo.deposit}</span>
+                <span class="lf">{$vo.jiancang_fee}</span>
+                <span class="lf">{$vo.defer}</span>
+            </li>
+            {/volist}
+
+            <!-- empty -->
+            <li class="empty">当前查询记录为{:count($lists)}条</li>
+        </ul>
+
+    </div>
+</div>
+{/block}
+{block name="nav"}{/block}
+{block name="script"}
+
+<script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
+<script src="__RESOURCE__/js/foundation-datepicker.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#startDate').fdatepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#endDate').fdatepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+    });
+    function check()
+    {
+        var startDate = $("#startDate").val();
+        var endDate = $("#endDate").val();
+        if(startDate=='' || endDate==''){
+            $alert('请输入完整筛选日期');return false;
+        }
+        return true;
+    }
+    $(".search").click(function() {
+        if(check()){
+            $('#form').submit();
+        }
+    });
+
+</script>
+{/block}

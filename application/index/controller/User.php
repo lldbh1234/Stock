@@ -17,7 +17,8 @@ class User extends Base
 
     public function index()
     {
-        $this->assign("user", uInfo());
+        $userStatic = $this->_logic->userStatic($this->user_id);
+        $this->assign("user", array_merge(uInfo(), $userStatic));
         return view();
     }
 

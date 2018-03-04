@@ -36,13 +36,13 @@
                 <li class="mui-table-view-cell">
                     <a href="{:url('index/User/manager')}" class="mui-navigate-right">
                         我的推广
-                        <span class="rt">推广：0人 / 返佣：0元</span>
+                        <span class="rt">推广：{$user.children}人 / 返佣：{$user.commission}元</span>
                     </a>
                 </li>
                 <li class="mui-table-view-cell mar_top8">
-                    <a href="牛人.html" class="mui-navigate-right">
+                    <a href="{:url('index/Cattle/index')}" class="mui-navigate-right">
                         牛人收益
-                        <span class="rt">跟单：0笔 / 返佣：0元</span>
+                        <span class="rt">跟单：{$user.follow}笔 / 返佣：{$user.return_income}元</span>
                     </a>
                 </li>
                 <li class="mui-table-view-cell">

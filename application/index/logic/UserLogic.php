@@ -1,8 +1,10 @@
 <?php
 namespace app\index\logic;
 
+use app\index\model\Niuren;
 use app\index\model\Order;
 use app\index\model\User;
+use app\index\model\UserRecord;
 use think\Db;
 
 class UserLogic
@@ -165,6 +167,48 @@ class UserLogic
         }
     }
 
+    public function getNiuStaticByUid($uid)
+    {
+        $data = Niuren::where(['user_id' => $uid])->find();
+        return $data->toArray();
+    }
+    public function recordList($where=[])
+    {
+        $map = [];
+        if(!empty($where) && is_array($where))
+        {
+            foreach($where as $k => $v)
+            {
+                $map[$k] = $v;
+            }
+        }
+        $data = UserRecord::where($map)->select();
+        return collection($data)->toArray();
+    }
+    public function recordAmount($where=[])
+    {
+        $map = [];
+        if(!empty($where) && is_array($where))
+        {
+            foreach($where as $k => $v)
+            {
+                $map[$k] = $v;
+            }
+        }
+        return UserRecord::where($map)->sum('amount');
+    }
+    public function userStatic($uid)
+    {
+        $result = [];
+        $result['children'] = User::where(['parent_id' => $uid])->count();
+        $result['commission'] = UserRecord::where(['type' => ['in', [2, 3], 'user_id' => $uid]])->sum('amount');//提成
+        //推广
+        //牛人
+        $result['follow'] = Order::where(['is_follow' => 1, 'follow_id' => $uid])->count();//跟单
+        $result['return_income'] = UserRecord::where(['type' => 2, 'user_id' => $uid])->sum('amount');//跟单
+        return $result;
+
+    }
     // $state 1委托建仓，2抛出，3持仓，4-委托平仓
     public function userOrderById($userId, $id, $state=null)
     {

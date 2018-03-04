@@ -6,17 +6,16 @@
 <body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">
 {/block}
 {block name="content"}
-<body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">
 <header class="has_back_top ">
     关注的牛人
-    <a href="javascript:history.go(-1)" class="back_icon">
+    <a href="{:url('index/User/index')}" class="back_icon">
         <img src="__RESOURCE__/img/back_icon.png">
     </a>
 </header>
 <ul class="nieren_list">
     {volist name="res.has_many_attention" id="vo"}
     <li>
-        <a href="#niuren_detail.html" class="clear_fl">
+        <a href="{:url('index/Cattle/niurenDetail', ['uid' => $vo.follow_id])}" class="clear_fl">
             <div class="lf niu_profile">
                 <img class="lf" src="{$vo.belongs_to_attention.face}">
                 <div class="lf">
@@ -29,149 +28,19 @@
         <div class="flex_nowrap niu_info">
             <div>
                 <p class="key">策略数</p>
-                <p class="value">4</p>
+                <p class="value">{$vo.belongs_to_attention.pulish_strategy}</p>
             </div>
             <div>
                 <p class="key">胜算率</p>
-                <p class="value red">34%</p>
+                <p class="value red">{$vo.belongs_to_attention.strategy_win}%</p>
             </div>
             <div>
                 <p class="key">收益率</p>
-                <p class="value red">34%</p>
+                <p class="value red">{$vo.belongs_to_attention.strategy_yield}%</p>
             </div>
         </div>
     </li>
     {/volist}
-    <!--<li>-->
-        <!--<a href="niuren_detail.html" class="clear_fl">-->
-            <!--<div class="lf niu_profile">-->
-                <!--<img class="lf" src="img/wxpay.png">-->
-                <!--<div class="lf">-->
-                    <!--<h1>我是股神</h1>-->
-                    <!--<p class="niu_name">简介：策划达人</p>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<span class="rt">查看动态</span>-->
-        <!--</a>-->
-        <!--<div class="flex_nowrap niu_info">-->
-            <!--<div>-->
-                <!--<p class="key">策略数</p>-->
-                <!--<p class="value">4</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">胜算率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">收益率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</li>-->
-    <!--<li>-->
-        <!--<a href="niuren_detail.html" class="clear_fl">-->
-            <!--<div class="lf niu_profile">-->
-                <!--<img class="lf" src="img/wxpay.png">-->
-                <!--<div class="lf">-->
-                    <!--<h1>我是股神</h1>-->
-                    <!--<p class="niu_name">简介：策划达人</p>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<span class="rt">查看动态</span>-->
-        <!--</a>-->
-        <!--<div class="flex_nowrap niu_info">-->
-            <!--<div>-->
-                <!--<p class="key">策略数</p>-->
-                <!--<p class="value">4</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">胜算率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">收益率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</li>-->
-    <!--<li>-->
-        <!--<a href="niuren_detail.html" class="clear_fl">-->
-            <!--<div class="lf niu_profile">-->
-                <!--<img class="lf" src="img/wxpay.png">-->
-                <!--<div class="lf">-->
-                    <!--<h1>我是股神</h1>-->
-                    <!--<p class="niu_name">简介：策划达人</p>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<span class="rt">查看动态</span>-->
-        <!--</a>-->
-        <!--<div class="flex_nowrap niu_info">-->
-            <!--<div>-->
-                <!--<p class="key">策略数</p>-->
-                <!--<p class="value">4</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">胜算率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">收益率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</li>-->
-    <!--<li>-->
-        <!--<a href="niuren_detail.html" class="clear_fl">-->
-            <!--<div class="lf niu_profile">-->
-                <!--<img class="lf" src="img/wxpay.png">-->
-                <!--<div class="lf">-->
-                    <!--<h1>我是股神</h1>-->
-                    <!--<p class="niu_name">简介：策划达人</p>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<span class="rt">查看动态</span>-->
-        <!--</a>-->
-        <!--<div class="flex_nowrap niu_info">-->
-            <!--<div>-->
-                <!--<p class="key">策略数</p>-->
-                <!--<p class="value">4</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">胜算率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">收益率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</li>-->
-    <!--<li>-->
-        <!--<a href="niuren_detail.html" class="clear_fl">-->
-            <!--<div class="lf niu_profile">-->
-                <!--<img class="lf" src="img/wxpay.png">-->
-                <!--<div class="lf">-->
-                    <!--<h1>我是股神</h1>-->
-                    <!--<p class="niu_name">简介：策划达人</p>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<span class="rt">查看动态</span>-->
-        <!--</a>-->
-        <!--<div class="flex_nowrap niu_info">-->
-            <!--<div>-->
-                <!--<p class="key">策略数</p>-->
-                <!--<p class="value">4</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">胜算率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<p class="key">收益率</p>-->
-                <!--<p class="value red">34%</p>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</li>-->
 </ul>
 {/block}
 {block name="nav"}{/block}

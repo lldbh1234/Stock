@@ -1,0 +1,149 @@
+{extend name="layouts/layout_user" /}
+{block name="title"}我关注的牛人{/block}
+{block name="style"}
+<style type="text/css">
+    body{
+        background: #f5f5f5!important;
+    }
+</style>{/block}
+<!--个人中心-充值-支付宝-->
+{block name="body"}
+<body class="mui-ios mui-ios-10 mui-ios-10-3">{/block}
+{block name="content"}
+<div class="niuren_header">
+    <header class="has_back_top">
+        <a href="{:url('index/Attention/index')}" class="back_icon">
+            <img src="__RESOURCE__/img/back_icon.png">
+        </a>
+    </header>
+    <ul class="nieren_list">
+        <li>
+            <a href="javascript:void(0)" class="clear_fl">
+                <div class="lf niu_profile">
+                    <img class="lf" src="__RESOURCE__/img/wxpay.png">
+                    <div class="lf">
+                        <h1>{$userInfo.nickname|default=$userInfo.username}</h1>
+                        <p class="niu_name">简介：策划达人</p>
+                    </div>
+                </div>
+
+                <span class="rt guanzhu_btn {if condition='$follow eq 1'}active{/if}" onclick="follow('{$userInfo.user_id}', this);"></span>
+            </a>
+            <div class="flex_nowrap niu_info">
+                <div>
+                    <p class="key">策略数</p>
+                    <p class="value white">{$userInfo.pulish_strategy}</p>
+                </div>
+                <div>
+                    <p class="key">胜算率</p>
+                    <p class="value white">{$userInfo.strategy_win}%</p>
+                </div>
+                <div>
+                    <p class="key">收益率</p>
+                    <p class="value white">{$userInfo.strategy_yield}%</p>
+                </div>
+                <div>
+                    <p class="key">粉丝数</p>
+                    <p class="value white">{:count($fansIds)}</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="niu_detail_con">
+    <div class="niu_dongtai">
+        <div class="pa14">
+            <h1 class="search_h_title clear_fl">
+                最新动态
+                <a href="{:url('index/Cattle/moreEvening', ['uid' => $userInfo.user_id])}" class="rt">查看更多 <img src="__RESOURCE__/img/right_arrow.png"></a>
+            </h1>
+        </div>
+        {volist name="$newList" id="vo"}
+        <div class="pa14">
+            <h1 class="clear_fl niu_d_title">
+                <span class="lf niu_d_name">{$vo.name}({$vo.code})</span>
+                {if condition="$vo.state eq 2"}
+                    <a href="{:url('index/Order/position')}" class="rt follow_sell_btn">跟卖</a>
+                {else if condition="$vo.state eq 3"}
+                    <a href="{:url('index/Stock/stockBuy', ['follow_id' => $vo.order_id])}" class="rt follow_buy_btn">跟买</a>
+                {/if}
+
+            </h1>
+            <div class="niu_d_detail clear_fl">
+                <p>
+                    {if condition="$vo.state eq 2"}
+                    <span class="green">卖出:</span>
+                    {else if condition="$vo.state eq 3"}
+                    <span class="red">买入:</span>
+                    {/if}
+                    <span>{$vo.hand}股</span></p>
+                <p>价格: <span>{$vo.price}元</span></p>
+                <p>单笔收益: <span>{$vo.shouyi}%</span></p>
+                <p>操作时间: <span>{$vo.create_at|date="Y-m-d H:i", ###}</span></p>
+            </div>
+        </div>
+        {/volist}
+
+    </div>
+</div>
+
+
+<div class="niu_detail_con nomar">
+    <div class="niu_dongtai">
+        <div class="pa14">
+            <h1 class="search_h_title clear_fl">
+                当前持仓
+                <a href="{:url('index/Cattle/morePosition', ['uid' => $userInfo.user_id])}" class="rt">历史收益 <img src="__RESOURCE__/img/right_arrow.png"></a>
+            </h1>
+        </div>
+
+        {volist name="$currentList" id="vo"}
+        <div class="pa14">
+            <h1 class="clear_fl niu_d_title">
+                <span class="lf niu_d_name">{$vo.name}({$vo.code})</span>
+                <a href="buy.html" class="rt follow_buy_btn">跟买</a>
+            </h1>
+            <div class="niu_d_detail clear_fl">
+                <p>数量: <span>{$vo.hand}股</span></p>
+                <p>当前收益: <span class="red">{$vo.shouyi}%</span></p>
+            </div>
+        </div>
+        {/volist}
+    </div>
+</div>
+{/block}
+{block name="nav"}{/block}
+{block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
+<script type="text/javascript">
+    function follow(id, obj)
+    {
+        var msg = '已关注';
+        var type = 1;//关注
+        if($(obj).hasClass('active')){
+            type = 2;//取关
+            msg = '已取消关注';
+        }
+        var _url = '{:url("index/Cattle/follow")}',
+            _oData = {user_id : id, type:type};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){
+                $alert(msg);
+                setTimeout(function(){
+                    window.location.reload();
+                }, 1000);
+            }else{
+                $alert(res.info);
+            }
+        });
+    }
+
+</script>
+{/block}
+
+
+
+
+
+
+

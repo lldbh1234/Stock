@@ -15,6 +15,18 @@ class Attention extends Base
 
     public function index(){
         $res = $this->_logic->userIncAttention($this->user_id);
+        if($res['has_many_attention'])
+        {
+            foreach($res['has_many_attention'] as $k => $v)
+            {
+                if(!empty($v['belongs_to_attention']))
+                {
+                    $res['has_many_attention'][$k]['belongs_to_attention']
+                        = array_merge($v['belongs_to_attention'], $this->_logic->userDetail($v['follow_id'], ['state' => 2]));//抛出
+                }
+            }
+
+        }
         $this->assign('res', $res);
         return view();
     }

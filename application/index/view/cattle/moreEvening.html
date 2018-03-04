@@ -1,0 +1,58 @@
+{extend name="layouts/layout_manager" /}
+{block name="title"}最新动态{/block}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__RESOURCE__/css/person.css">
+{/block}
+<!--个人中心-充值-支付宝-->
+{block name="body"}
+<body>
+{/block}
+{block name="content"}
+<div class="manager_con">
+    <header class="header_con">
+        <a href="{:url('index/Cattle/niurenDetail', ['uid' => $uid])}" class="lf">
+            <img src="__RESOURCE__/img/call_back.png">
+        </a>
+        <p>最新动态</p>
+    </header>
+
+    <div class="niu_dongtai">
+
+        {volist name="$lists" id="vo"}
+        <div class="pa14">
+            <h1 class="clear_fl niu_d_title">
+                <span class="lf niu_d_name">{$vo.name}({$vo.code})</span>
+                {if condition="$vo.state eq 2"}
+                <a href="{:url('index/Order/position')}" class="rt follow_sell_btn">跟卖</a>
+                {else if condition="$vo.state eq 3"}
+                <a href="buy.html" class="rt follow_buy_btn">跟买</a>
+                {/if}
+
+            </h1>
+            <div class="niu_d_detail clear_fl">
+                <p>
+                    {if condition="$vo.state eq 2"}
+                    <span class="green">卖出:</span>
+                    {else if condition="$vo.state eq 3"}
+                    <span class="red">买入:</span>
+                    {/if}
+                    <span>{$vo.hand}股</span></p>
+                <p>价格: <span>{$vo.price}元</span></p>
+                <p>单笔收益: <span>{$vo.shouyi}%</span></p>
+                <p>操作时间: <span>{$vo.create_at|date="Y-m-d H:i", ###}</span></p>
+            </div>
+        </div>
+        {/volist}
+
+    </div>
+</div>
+
+{/block}
+{block name="nav"}{/block}
+{block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
+<script type="text/javascript">
+
+
+</script>
+{/block}

@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\index\logic\OrderLogic;
+use app\index\logic\StockLogic;
 use app\index\logic\UserFollowLogic;
 use think\Request;
 use app\index\logic\UserLogic;
@@ -21,10 +22,14 @@ class Cattle extends Base
         $userInfo = $this->_logic->userById($this->user_id);
         if($userInfo['is_niuren'] == 1)
         {
-            $children = $this->_logic->getAllBy(['parent_id' => $this->user_id]);
-            $children = count($children);
+            $orderLogic = new OrderLogic();
+            $niurenInfo = $this->_logic->getNiuStaticByUid($this->user_id);
+            $userInfo = array_merge($niurenInfo, $userInfo);
+            //跟单平仓
+            $userInfo['evening'] = $orderLogic->countBy(['is_follow' => 1, 'follow_id' => $this->user_id, 'state' => 2]);
+            //跟单持仓
+            $userInfo['position'] = $orderLogic->countBy(['is_follow' => 1, 'follow_id' => $this->user_id, 'state' => 3]);
             $this->assign('userInfo', $userInfo);
-            $this->assign('children', $children);
             return view();
         }
 
@@ -85,6 +90,7 @@ class Cattle extends Base
         {
             $id = input('post.user_id/d');
             $type = input('post.type/d');
+            if($id == $this->user_id) return $this->fail('系统提示：无法关注自己');
             $userFollowLogic = new UserFollowLogic();
             if(intval($id) > 0 && $type > 0){
                 $user = $this->_logic->userById($id);
@@ -138,7 +144,7 @@ class Cattle extends Base
         $bestUserList = collection($bestUserList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
         })->toArray();//排序
-        $followIds = $userFollowLogic->getFansIdByUid($this->user_id);
+        $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
         $this->assign('type', $type);
         $this->assign('followIds', $followIds);
         $this->assign('bestUserList', $bestUserList);
@@ -149,17 +155,187 @@ class Cattle extends Base
         $orderLogic = new OrderLogic();
         $userLogic = new UserLogic();
 
-        $bestStrategyList =  $orderLogic->getAllBy(['profit' => ['>', 0]]);
+        $bestStrategyList =  $orderLogic->getAllBy(['state' => 3, 'profit' => ['>', 0]]);
         foreach($bestStrategyList as $k => $v)
         {
-            $bestStrategyList[$k]['strategy_yield'] = array_merge($v, $userLogic->userDetail($v['user_id'], ['state' => 3]));//持仓
-//            $bestStrategyList[$k]['strategy_yield'] = empty($v['price']) ? 0 : round(($v['sell_price']-$v['price'])/$v['price']/100, 2);
+            $bestStrategyList[$k] = array_merge($v, $userLogic->userDetail($v['user_id'], ['state' => 3]));//持仓
         }
 
         $bestStrategyList = collection($bestStrategyList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
         })->toArray();//排序
         $this->assign('bestStrategyList', $bestStrategyList);
+        return view();
+    }
+    public function myIncome()
+    {
+        $data = input('post.');
+        $startDate = isset($data['startDate']) ? strtotime($data['startDate']) : '';
+        $endDate = isset($data['endDate']) ? strtotime($data['endDate'])+86399 : '';
+        $map = [
+            'user_id' => $this->user_id,
+            'type' => 2,
+        ];
+        if($startDate && $endDate) $map["create_at"] = ['between', [$startDate, $endDate]];
+        $lists = $this->_logic->recordList($map);
+        $amount = $this->_logic->recordAmount($map);
+        $search = [
+            'startDate' => $startDate ? date('Y-m-d', $startDate) : date('Y-m-d'),
+            'endDate' => $endDate ? date('Y-m-d', $endDate) : date('Y-m-d'),
+        ];
+
+        $this->assign('search', $search);
+        $this->assign('amount', $amount);
+        $this->assign('lists', $lists);
+        return view();
+    }
+    public function strategyEvening()
+    {
+        $orderLogic = new OrderLogic();
+
+        $data = input('post.');
+        $startDate = isset($data['startDate']) ? strtotime($data['startDate']) : '';
+        $endDate = isset($data['endDate']) ? strtotime($data['endDate'])+86399 : '';
+        $map = [
+            'is_follow' => 1,
+            'follow_id' => $this->user_id,
+            'state' => 2,
+        ];
+        if($startDate && $endDate) $map["create_at"] = ['between', [$startDate, $endDate]];
+
+        $lists =  $orderLogic->getAllBy($map, ['create_at' => 'desc']);//抛出
+        $search = [
+            'startDate' => $startDate ? date('Y-m-d', $startDate) : date('Y-m-d'),
+            'endDate' => $endDate ? date('Y-m-d', $endDate) : date('Y-m-d'),
+        ];
+        $this->assign('search', $search);
+        $this->assign('lists', $lists);
+        return view();
+    }
+    public function strategyPosition()
+    {
+        $orderLogic = new OrderLogic();
+
+        $data = input('post.');
+        $startDate = isset($data['startDate']) ? strtotime($data['startDate']) : '';
+        $endDate = isset($data['endDate']) ? strtotime($data['endDate'])+86399 : '';
+        $map = [
+            'is_follow' => 1,
+            'follow_id' => $this->user_id,
+            'state' => 3,
+        ];
+        if($startDate && $endDate) $map["create_at"] = ['between', [$startDate, $endDate]];
+
+        $lists =  $orderLogic->getAllBy($map, ['create_at' => 'desc']);//持仓
+        $profit = 0.00;
+        foreach($lists as $v)
+        {
+            $profit += $v['profit'];
+        }
+        $search = [
+            'startDate' => $startDate ? date('Y-m-d', $startDate) : date('Y-m-d'),
+            'endDate' => $endDate ? date('Y-m-d', $endDate) : date('Y-m-d'),
+        ];
+        $this->assign('profit', $profit);
+        $this->assign('search', $search);
+        $this->assign('lists', $lists);
+        return view();
+    }
+    public function niurenDetail()
+    {
+        $userFollowLogic = new UserFollowLogic();
+        $uid = input('uid/d');
+        if(!$uid) return $this->redirect('index/Attention/index');
+
+        $userInfo = $this->_logic->userById($uid);
+        if($userInfo && $userInfo['is_niuren'] == 1)
+        {
+            $orderLogic = new OrderLogic();
+            $userDetail = $this->_logic->userDetail($uid);
+            $userStatic = $this->_logic->userStatic($uid);
+            $userInfo = array_merge($userStatic, $userInfo, $userDetail);
+            $fansIds = $userFollowLogic->getFansIdByUid($uid);
+            $follow = 0;
+            if(in_array($this->user_id, $fansIds)){
+                $follow = 1;
+            }
+
+            //最新
+            $newList = $orderLogic->getLimit(['user_id' => $uid, 'state' => ['in', [2,3]]], ['limit' => '2']);
+            $codes = $orderLogic->getCodesBy(['user_id' => $uid]);
+            $codeInfo = [];
+//            if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
+            foreach($newList as $k => $v)
+            {
+                if($v['state'] == 2)//抛出
+                {
+                    $newList[$k]['shouyi'] = round(($v['sell_price']-$v['price'])/$v['price']*100, 2);
+                }else{
+                    $sell_price = isset($codeInfo[$v['code']]['last_px']) ? $codeInfo[$v['code']]['last_px'] : $v['price'];
+                    $newList[$k]['shouyi'] = round(($sell_price-$v['price'])/$v['price']*100, 2);
+                }
+
+            }
+            //当前持仓
+            $currentList = $orderLogic->getLimit(['user_id' => $uid, 'state' => 3], ['limit' => '2']);
+            foreach($currentList as $k => $v)
+            {
+                $sell_price = isset($codeInfo[$v['code']]['last_px']) ? $codeInfo[$v['code']]['last_px'] : $v['price'];
+                $currentList[$k]['shouyi'] = round(($sell_price-$v['price'])/$v['price']*100, 2);
+            }
+            $this->assign('userInfo', $userInfo);
+            $this->assign('follow', $follow);
+            $this->assign('fansIds', $fansIds);
+            $this->assign('newList', $newList);
+            $this->assign('currentList', $currentList);
+//            dump($userInfo);die();
+            return view();
+        }else{
+            return $this->redirect('index/Attention/index');
+        }
+    }
+    public function moreEvening()
+    {
+        $uid = input('uid/d');
+        if(!$uid) return $this->redirect('index/Attention/index');
+        $orderLogic = new OrderLogic();
+        $lists = $orderLogic->getAllBy(['user_id' => $uid, 'state' => ['in', [2,3]]], ['create_at' => 'desc']);
+        $codes = $orderLogic->getCodesBy(['user_id' => $uid]);
+        $codeInfo = [];
+//            if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
+        foreach($lists as $k => $v)
+        {
+            if($v['state'] == 2)//抛出
+            {
+                $lists[$k]['shouyi'] = round(($v['sell_price']-$v['price'])/$v['price']*100, 2);
+            }else{
+                $sell_price = isset($codeInfo[$v['code']]['last_px']) ? $codeInfo[$v['code']]['last_px'] : $v['price'];
+                $lists[$k]['shouyi'] = round(($sell_price-$v['price'])/$v['price']*100, 2);
+            }
+
+        }
+        $this->assign('uid', $uid);
+        $this->assign('lists', $lists);
+        return view();
+
+    }
+    public function morePosition()
+    {
+        $uid = input('uid/d');
+        if(!$uid) return $this->redirect('index/Attention/index');
+        $orderLogic = new OrderLogic();
+        //当前持仓
+        $lists = $orderLogic->getAllBy(['user_id' => $uid, 'state' => 3], ['create_at' => 'desc']);
+        $codes = $orderLogic->getCodesBy(['user_id' => $uid]);
+        $codeInfo = [];
+//            if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
+        foreach($lists as $k => $v)
+        {
+            $sell_price = isset($codeInfo[$v['code']]['last_px']) ? $codeInfo[$v['code']]['last_px'] : $v['price'];
+            $lists[$k]['shouyi'] = round(($sell_price-$v['price'])/$v['price']*100, 2);
+        }
+        $this->assign('uid', $uid);
+        $this->assign('lists', $lists);
         return view();
     }
 }
