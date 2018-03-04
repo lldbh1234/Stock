@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\index\logic\OrderLogic;
 use app\index\logic\UserFollowLogic;
 use app\index\logic\UserLogic;
+use app\index\logic\UserNoticeLogic;
 use think\Request;
 
 class Index extends Base
@@ -18,6 +19,7 @@ class Index extends Base
         $userLogic = new UserLogic();
         $orderLogic = new OrderLogic();
         $userFollowLogic = new UserFollowLogic();
+        $userNoticeLogic = new UserNoticeLogic();
         $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
         {
@@ -41,10 +43,13 @@ class Index extends Base
         $bestStrategyList = collection($bestStrategyList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
         })->slice(0,5)->toArray();//排序
+        $userNotice = $userNoticeLogic->getAllBy(['user_id' => $this->user_id, 'read' => 1]);
+        $userNotice = count($userNotice);
 
         $this->assign('bestUserList', $bestUserList);
         $this->assign('bestStrategyList', $bestStrategyList);
         $this->assign('followIds', $followIds);
+        $this->assign('userNotice', $userNotice);
         return view();
     }
 }

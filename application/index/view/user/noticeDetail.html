@@ -1,0 +1,34 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+{$content.title | default="消息内容"}
+{/block}
+
+{block name="style"}
+
+{/block}
+
+<!--个人中心-充值-支付宝-->
+{block name="body"}
+<body class="quick_body msg_body mui-ios mui-ios-10 mui-ios-10-3">
+{/body}
+{block name="content"}
+<header class="has_back_top ">
+    消息详情
+    <a href="{:url('index/User/noticeLists')}" class="back_icon">
+        <img src="__RESOURCE__/img/back_icon.png">
+    </a>
+</header>
+<div class="msg_con">
+    <p class="msg_detail_context">{$content.content | default=""}</p>
+    <p class="msg_date">{$content.create_at|date="Y-m-d H:i", ###}</p>
+</div>
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+{block name="script"}
+
+{/block}
