@@ -96,7 +96,7 @@ $(function () {
         if ($(this).hasClass('disabled')) {
             return false;
         }
-        var _url = '{:url("index/User/RegisterManager")}',
+        var _url = '{:url("index/Manager/RegisterManager")}',
             _oData = $("form").serialize();
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){ // 登录成功

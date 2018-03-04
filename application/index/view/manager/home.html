@@ -27,13 +27,14 @@
 		</header>
         <div id="main">
             <div class="index-box">
-                <a href="erweima.html" class="client_profile clear_fl">
+                <a href="javascript:void(0)" class="client_profile clear_fl">
                     <div class="lf">
                         <p class="client_p_name">{$user.nickname|default=$user.username}</p>
                         <p class="client_p_phone">{$user.mobile}</p>
                     </div>
                     <i class="earrow earrow-right rt"></i>
                     <span class="rt">分享二维码</span>
+                    <img src="__MANAGERQRCODE__/{$user.user_id}.png" alt="">
                 </a>
 
                 <a href="{:url('index/Manager/incomeLists')}" class="client_profile my_input_con clear_fl">

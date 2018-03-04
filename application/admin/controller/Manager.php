@@ -56,6 +56,7 @@ class Manager extends Base
                 $map['update_at'] = time();
                 $map['update_by'] = isLogin();
                 if($this->userManageLogic->updateState($map)){
+                    if($map['state'] == 1) self::createManagerQrcode($map['user_id']);
                     return $this->ok();
                 } else {
                     return $this->fail("系统提示：操作失败，请联系管理员");

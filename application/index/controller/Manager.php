@@ -2,11 +2,8 @@
 namespace app\index\controller;
 
 use app\index\logic\OrderLogic;
-use app\index\logic\UserNoticeLogic;
 use think\Request;
 use app\index\logic\UserLogic;
-use app\index\logic\BankLogic;
-use app\index\logic\StockLogic;
 
 class Manager extends Base
 {
@@ -49,6 +46,9 @@ class Manager extends Base
             $this->assign("user", $user);
             return view("manager/home");
         }
+        //异常
+        $this->assign("user", $user);
+        return view("manager/register");
     }
 
     public function RegisterManager()
