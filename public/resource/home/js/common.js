@@ -49,7 +49,7 @@ function $ajaxCustom(_url, _data, _succ) {
                 var resp = JSON.parse(xhr.responseText);
                 $alert(resp.message);
             }else{
-                $alert("系统错误！");
+                // $alert("系统错误！");
             }
             return false;
         }
