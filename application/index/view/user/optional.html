@@ -99,6 +99,39 @@
 <script type="text/javascript" src="__STATIC__/js/stock.js"></script>
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
+    /**
+ * 判断当前时间是否在9:30-11:30, 13:00-15:00（交易时间）
+ */
+function isTradingTime(){
+    var date = new Date();
+    //判断是不是周末
+    var dt=date.getDay();
+    if(dt=='6'||dt=='7'){
+        return false;
+    }
+    //判断当前时间是否在9:30-11:30, 13:00-15:00
+    var h = date.getHours();
+    var mi = date.getMinutes();
+    var s = date.getSeconds();
+    if(h < 10){
+        h = "0" + h;
+    }
+    if(mi < 10){
+        mi = "0"+ mi;
+    }
+    if(s < 10){
+        s = "0" + s;
+    }
+    var curTime = h + ":" + mi + ":" + s;
+//  console.log(curTime);
+    if( curTime >= "09:30:00" && curTime <= "11:30:00" || curTime >= "13:00:00" && curTime <= "15:00:00" ){
+        return true;
+    }
+    return false;
+}
+
+
+
     var refreshTimer = null;
 	$(".edit_btn").on("tap" , function(){
         if( $("#searchInput").val() != "" || $(".zixuan_list li").length == 1 ){
@@ -216,6 +249,9 @@
     //实时更新
     refreshTimer =setInterval(refreshPrice,2000);
     function refreshPrice(){
+        if( !isTradingTime() ){
+            return false;
+        }
         var code = new Array();
         if( $(".zixuan_list li+li").length > 0 ){
             var html='<li class="list_header flex_nowrap">\
