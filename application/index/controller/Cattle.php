@@ -20,6 +20,7 @@ class Cattle extends Base
 
     public function index(){
         $userInfo = $this->_logic->userById($this->user_id);
+        $userDetail = $this->_logic->userDetail($this->user_id);
         if($userInfo['is_niuren'] == 1)
         {
             $orderLogic = new OrderLogic();
@@ -29,11 +30,10 @@ class Cattle extends Base
             $userInfo['evening'] = $orderLogic->countBy(['is_follow' => 1, 'follow_id' => $this->user_id, 'state' => 2]);
             //跟单持仓
             $userInfo['position'] = $orderLogic->countBy(['is_follow' => 1, 'follow_id' => $this->user_id, 'state' => 3]);
-            $this->assign('userInfo', $userInfo);
+            $this->assign('userInfo', array_merge($userDetail, $userInfo));
             return view();
         }
 
-        $userDetail = $this->_logic->userDetail($this->user_id);
         $pulish_strategy = $this->conf['pulish_strategy'];//发布策略次数
         $strategy_win = $this->conf['strategy_win'];//策略胜算
         $strategy_yield = $this->conf['strategy_yield'];//策略收益
