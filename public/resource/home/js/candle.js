@@ -181,7 +181,7 @@ function refreshTimeLine(){
                 // 将数据添加到 lineData[-1]；
                 lineData[-1] = lineData[-1].concat( res.data.trend );
                 lineData[0] = splitData( lineData[-1] );
-                lineData[-2].min_time = lineData[-1][_data.length - 1].min_time;
+                lineData[-2].min_time = lineData[-1][lineData[-1].length - 1].min_time;
                 if( $(".koptions_nav .active a").data("type") == 0 ){
                     drawAreaLine(lineData[0]);
                 }  
@@ -195,7 +195,7 @@ function refreshTimeLine(){
                                             <p class="g_price">' + res.data.last_px + '</p>\
                     <p class="g_rate clear_fl">\
                         <span class="lf">' + res.data.px_change + '</span>\
-                        <span class="lf">-'+ res.data.px_change_rate +'%</span>\
+                        <span class="lf">'+ res.data.px_change_rate +'%</span>\
                     </p>\
                                         </div>\
                 <ul class="rt g_price_detail clear_fl">\
