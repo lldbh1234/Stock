@@ -270,6 +270,39 @@
 
 {block name="script"}
 	<script type="text/javascript">
+		/**
+		 * 判断当前时间是否在9:30-11:30, 13:00-15:00（交易时间）
+		 */
+		function isTradingTime(){
+		    var date = new Date();
+		    //判断是不是周末
+		    var dt=date.getDay();
+		    if(dt=='6'||dt=='7'){
+		        return false;
+		    }
+		    //判断当前时间是否在9:30-11:30, 13:00-15:00
+		    var h = date.getHours();
+		    var mi = date.getMinutes();
+		    var s = date.getSeconds();
+		    if(h < 10){
+		        h = "0" + h;
+		    }
+		    if(mi < 10){
+		        mi = "0"+ mi;
+		    }
+		    if(s < 10){
+		        s = "0" + s;
+		    }
+		    var curTime = h + ":" + mi + ":" + s;
+		//  console.log(curTime);
+		    if( curTime >= "09:30:00" && curTime <= "11:30:00" || curTime >= "13:00:00" && curTime <= "15:00:00" ){
+		        return true;
+		    }
+		    return false;
+		}
+
+
+
 		var storage = window.localStorage;
 		if( storage.isVisited ){
 			$(".risk_mask").remove();
@@ -451,6 +484,9 @@
 
 		//定时刷新
 		setInterval(function(){
+			if( !isTradingTime() ){
+				return false;
+			}
         	var code = new Array();
         	if( $(".share_item").length <= 0 ){
         		return false;
