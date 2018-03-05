@@ -11,6 +11,7 @@ class User extends Validate
     protected $rule = [
         'oldPassword' => "require|checkOldPassword",
         'username'  => 'require',
+        'nickname'  => 'require',
         'parent_id' => 'number|checkParentId',
         'orgCode'   => 'require|checkOrgCode',
         'mobile'    => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/|checkMobile',
@@ -41,7 +42,8 @@ class User extends Validate
         'password.length'   => '密码为6-16位字符！',
         'rePassword.confirm' => '俩次输入密码不一致！',
         'act.checkAct'      => '系统提示：非法操作！',
-        'username.require'  => '手机号码不能为空！',
+        'username.require'  => '用户名不能为空！',
+        'nickname.require' => '系统提示:昵称不能为空',
         'institution.require' => '请选择机构！',
         'institution.checkInstitution' => '机构不正确！',
         'newPassword.require'   => '新密码不能为空！',
@@ -63,6 +65,7 @@ class User extends Validate
             'password',
             'institution',
         ],
+        'update_nick' => [''],
     ];
 
     protected function checkOrgCode($value)
