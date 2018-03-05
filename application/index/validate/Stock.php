@@ -6,7 +6,6 @@ use app\index\logic\LeverLogic;
 use app\index\logic\ModeLogic;
 use app\index\logic\OrderLogic;
 use app\index\logic\StockLogic;
-use app\index\logic\UserLogic;
 use think\Validate;
 
 class Stock extends Validate
@@ -56,7 +55,7 @@ class Stock extends Validate
     {
         $stock = (new StockLogic())->stockByCode($value);
         if($stock){
-            $quotation = $this->_logic->simpleData($value);
+            $quotation = (new StockLogic())->simpleData($value);
             if(isset($quotation[$value]) && !empty($quotation[$value])){
                 $configs = cfgs();
                 $changeRate = $quotation[$value]["px_change_rate"];
@@ -120,9 +119,10 @@ class Stock extends Validate
             if($value < $min){
                 return "止损金额最小可设置为" . number_format($min, 2);
             }else{
-                $mode = (new ModeLogic())->modeById($data['mode']);
-                $max = round($data['price'] * (1 - $mode['loss'] / 100), 2);
-                return $value > $max ? "止损最大可设置为" . number_format($max, 2) : true;
+                return true;
+//                $mode = (new ModeLogic())->modeById($data['mode']);
+//                $max = round($data['price'] * (1 - $mode['loss'] / 100), 2);
+//                return $value > $max ? "止损最大可设置为" . number_format($max, 2) : true;
             }
         }else{
             return "止损金额不能大于策略委托价！";

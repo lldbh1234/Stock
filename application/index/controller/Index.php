@@ -28,9 +28,10 @@ class Index extends Base
             $codes = array_column($stocks, "code");
             $lists = (new StockLogic())->simpleData($codes);
             array_filter($stocks, function(&$item) use ($lists){
-                $item['quotation'] = $lists[$item['code']];
+                $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
             });
         }
+//        dump($stocks);
 
         $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
