@@ -6,7 +6,6 @@ use app\index\logic\LeverLogic;
 use app\index\logic\ModeLogic;
 use app\index\logic\OrderLogic;
 use app\index\logic\StockLogic;
-use app\index\logic\UserLogic;
 use think\Validate;
 
 class Stock extends Validate
@@ -56,7 +55,7 @@ class Stock extends Validate
     {
         $stock = (new StockLogic())->stockByCode($value);
         if($stock){
-            $quotation = $this->_logic->simpleData($value);
+            $quotation = (new StockLogic())->simpleData($value);
             if(isset($quotation[$value]) && !empty($quotation[$value])){
                 $configs = cfgs();
                 $changeRate = $quotation[$value]["px_change_rate"];

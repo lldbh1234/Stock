@@ -31,6 +31,7 @@ class Index extends Base
                 $item['quotation'] = $lists[$item['code']];
             });
         }
+//        dump($stocks);
 
         $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
