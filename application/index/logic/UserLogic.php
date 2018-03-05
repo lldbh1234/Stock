@@ -210,7 +210,7 @@ class UserLogic
     public function getNiuStaticByUid($uid)
     {
         $data = Niuren::where(['user_id' => $uid])->find();
-        return $data->toArray();
+        return collection($data)->toArray();
     }
     public function recordList($where=[])
     {
