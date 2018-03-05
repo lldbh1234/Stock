@@ -241,7 +241,7 @@ class UserLogic
     {
         $result = [];
         $result['children'] = User::where(['parent_id' => $uid])->count();
-        $result['commission'] = UserRecord::where(['type' => ['in', [2, 3], 'user_id' => $uid]])->sum('amount');//提成
+        $result['commission'] = UserRecord::where(['type' => ['in', [2, 3]], 'user_id' => $uid])->sum('amount');//提成
         //推广
         //牛人
         $followUserOrderIds = Order::where(['user_id' => $uid])->column('order_id');//牛人订单id arr
