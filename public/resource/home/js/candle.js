@@ -181,7 +181,7 @@ function refreshTimeLine(){
                 // 将数据添加到 lineData[-1]；
                 lineData[-1] = lineData[-1].concat( res.data.trend );
                 lineData[0] = splitData( lineData[-1] );
-                lineData[-2].min_time = lineData[-1][_data.length - 1].min_time;
+                lineData[-2].min_time = lineData[-1][lineData[-1].length - 1].min_time;
                 if( $(".koptions_nav .active a").data("type") == 0 ){
                     drawAreaLine(lineData[0]);
                 }  
