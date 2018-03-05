@@ -195,7 +195,7 @@ function refreshTimeLine(){
                                             <p class="g_price">' + res.data.last_px + '</p>\
                     <p class="g_rate clear_fl">\
                         <span class="lf">' + res.data.px_change + '</span>\
-                        <span class="lf">-'+ res.data.px_change_rate +'%</span>\
+                        <span class="lf">'+ res.data.px_change_rate +'%</span>\
                     </p>\
                                         </div>\
                 <ul class="rt g_price_detail clear_fl">\
