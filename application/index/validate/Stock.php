@@ -119,9 +119,10 @@ class Stock extends Validate
             if($value < $min){
                 return "止损金额最小可设置为" . number_format($min, 2);
             }else{
-                $mode = (new ModeLogic())->modeById($data['mode']);
-                $max = round($data['price'] * (1 - $mode['loss'] / 100), 2);
-                return $value > $max ? "止损最大可设置为" . number_format($max, 2) : true;
+                return true;
+//                $mode = (new ModeLogic())->modeById($data['mode']);
+//                $max = round($data['price'] * (1 - $mode['loss'] / 100), 2);
+//                return $value > $max ? "止损最大可设置为" . number_format($max, 2) : true;
             }
         }else{
             return "止损金额不能大于策略委托价！";
