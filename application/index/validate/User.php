@@ -65,7 +65,7 @@ class User extends Validate
             'password',
             'institution',
         ],
-        'update_nick' => [''],
+        'update_nick' => ['nickname'],
     ];
 
     protected function checkOrgCode($value)
