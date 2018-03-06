@@ -1,7 +1,7 @@
 <?php
 namespace app\index\logic;
 
-use app\index\model\Niuren;
+use app\index\model\UserNiuren;
 use app\index\model\Order;
 use app\index\model\User;
 use app\index\model\UserRecord;
@@ -209,9 +209,10 @@ class UserLogic
 
     public function getNiuStaticByUid($uid)
     {
-        $data = Niuren::where(['user_id' => $uid])->find();
+        $data = UserNiuren::where(['user_id' => $uid])->find();
         return $data ? $data->toArray() : [];
     }
+
     public function recordList($where=[])
     {
         $map = [];

@@ -67,6 +67,7 @@ if(!function_exists("checkStockTradeTime"))
 
 if(!function_exists("checkSettleTime"))
 {
+    // 结算时间 工作日 17-23点
     function checkSettleTime()
     {
         if(date('w') == 0){
@@ -78,7 +79,7 @@ if(!function_exists("checkSettleTime"))
         if(date('G') < 17){
             return false;
         }
-        if(date('G') > 18){
+        if(date('G') > 23){
             return false;
         }
         $holiday = explode(',', cfgs()['holiday']);

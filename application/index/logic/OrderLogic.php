@@ -173,12 +173,25 @@ class OrderLogic
         }
     }
 
-    // 所有需返点的订单（平仓并盈利的）
-    public function todaySellOrder(){
+    // 今天需给牛人返点的所有订单（平仓并盈利的）
+    public function todayNiurenRebateOrder(){
         $todayBegin = strtotime(date("Y-m-d 00:00:00"));
         $todayEnd = strtotime(date("Y-m-d 23:59:59"));
         $where["state"] = 2;
         $where["profit"] = ["GT", 0];
+        $where["niuren_rebate"] = 0;
+        $where["update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
+        $orders = Order::where($where)->select();
+        return $orders ? collection($orders)->toArray() : [];
+    }
+
+    // 今天需给代理商返点的所有订单（平仓并盈利的）
+    public function todayProxyRebateOrder(){
+        $todayBegin = strtotime(date("Y-m-d 00:00:00"));
+        $todayEnd = strtotime(date("Y-m-d 23:59:59"));
+        $where["state"] = 2;
+        $where["profit"] = ["GT", 0];
+        $where["proxy_rebate"] = 0;
         $where["update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
         $orders = Order::where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
