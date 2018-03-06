@@ -11,7 +11,8 @@ class Cron extends Controller
     // 半小时
     public function grabStockLists()
     {
-        if(checkStockTradeTime()){
+        set_time_limit(0);
+        //if(checkStockTradeTime()){
             $_arrays = [];
             $_jsTextIndex = 0;
             $_jsTextArrays = [];
@@ -27,7 +28,7 @@ class Cron extends Controller
                 $_arrays[] = [
                     "full_code"	=> $item[0],
                     "code"  => $item[1],
-                    "name"  => $item[2],
+                    "name"  => str_replace(' ', '', $item[2]),
                 ];
                 $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $item[1] . "','" . $item[2] . "','" . $item[0] . "'); ";
                 $_jsTextIndex++;
@@ -41,7 +42,7 @@ class Cron extends Controller
                     $_arrays[] = [
                         "full_code"	=> $_item[0],
                         "code"  => $_item[1],
-                        "name"  => $_item[2],
+                        "name"  => str_replace(' ', '', $_item[2]),
                     ];
                     $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $_item[1] . "','" . $_item[2] . "','" . $_item[0] . "'); ";
                     $_jsTextIndex++;
@@ -61,7 +62,7 @@ class Cron extends Controller
                 Db::rollback();
                 echo "false";
             }
-        }
+        //}
     }
 
     // 5分钟一次
