@@ -127,6 +127,7 @@ class OrderLogic
         return $orders ? collection($orders)->toArray() : [];
     }
 
+    // 所有需处理递延的订单（持仓并且过期的）
     public function allDeferOrders()
     {
         $where["state"] = 3;
@@ -172,10 +173,12 @@ class OrderLogic
         }
     }
 
+    // 所有需返点的订单（平仓并盈利的）
     public function todaySellOrder(){
         $todayBegin = strtotime(date("Y-m-d 00:00:00"));
         $todayEnd = strtotime(date("Y-m-d 23:59:59"));
         $where["state"] = 2;
+        $where["profit"] = ["GT", 0];
         $where["update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
         $orders = Order::where($where)->select();
         return $orders ? collection($orders)->toArray() : [];

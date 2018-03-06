@@ -30,7 +30,7 @@ class Cron extends Controller
                     "code"  => $item[1],
                     "name"  => str_replace(' ', '', $item[2]),
                 ];
-                $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $item[1] . "','" . $item[2] . "','" . $item[0] . "'); ";
+                $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $item[1] . "','" . str_replace(' ', '', $item[2]) . "','" . $item[0] . "'); ";
                 $_jsTextIndex++;
             }
             for ($i = 2; $i <= $count; $i++){
@@ -44,7 +44,7 @@ class Cron extends Controller
                         "code"  => $_item[1],
                         "name"  => str_replace(' ', '', $_item[2]),
                     ];
-                    $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $_item[1] . "','" . $_item[2] . "','" . $_item[0] . "'); ";
+                    $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $_item[1] . "','" . str_replace(' ', '', $_item[2]) . "','" . $_item[0] . "'); ";
                     $_jsTextIndex++;
                 }
             }
@@ -53,7 +53,7 @@ class Cron extends Controller
             try{
                 model("Lists")->query("truncate table stock_list");
                 model("Lists")->saveAll($_arrays);
-                @file_put_contents($_jsPath, $_jsText);
+                //@file_put_contents($_jsPath, $_jsText);
                 // 提交事务
                 Db::commit();
                 echo "ok";
