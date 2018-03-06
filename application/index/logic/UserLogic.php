@@ -197,7 +197,7 @@ class UserLogic
     }
 
     // $state 1委托建仓，2抛出，3持仓，4-委托平仓
-    public function pageUserOrder($userId, $state = 1, $field = "*", $pageSize = 2){
+    public function pageUserOrder($userId, $state = 1, $field = "*", $pageSize = 4){
         try{
             $where = is_array($state) ? ["state" => ["IN", $state]] : ["state" => $state];
             $res = User::find($userId)->hasManyOrder()->where($where)->field($field)->paginate($pageSize);
