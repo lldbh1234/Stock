@@ -12,7 +12,7 @@ class Cron extends Controller
     public function grabStockLists()
     {
         set_time_limit(0);
-        if(checkStockTradeTime()){
+        //if(checkStockTradeTime()){
             $_arrays = [];
             $_jsTextIndex = 0;
             $_jsTextArrays = [];
@@ -62,7 +62,7 @@ class Cron extends Controller
                 Db::rollback();
                 echo "false";
             }
-        }
+        //}
     }
 
     // 5分钟一次
