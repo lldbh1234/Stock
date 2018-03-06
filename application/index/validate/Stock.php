@@ -108,19 +108,19 @@ class Stock extends Validate
     protected function checkLoss($value, $rule, $data)
     {
         if($value < $data['price']){
-            $configs = cfgs();
-            $usage = isset($configs["capital_usage"]) && !$configs["capital_usage"] ? $configs["capital_usage"] : 95;
-            $deposit = (new DepositLogic())->depositById($data["deposit"]);
-            $lever = (new LeverLogic())->leverById($data["lever"]);
-            $total = $deposit["money"] * $lever["multiple"]; // 申请总配资款 = 保证金 * 杠杆倍数
-            $realTotal = $total * $usage / 100; // 实际可使用最大配资款(95%)
-            $hand = floor($realTotal / $data['price'] / 100) * 100; // 买入股数(整百)
-            $min = round($data['price'] - ($deposit["money"] / $hand), 2); //最小止损价
+            $mode = (new ModeLogic())->modeById($data['mode']);
+            $min = round($data['price'] * (1 - $mode['loss'] / 100), 2);
             if($value < $min){
                 return "止损金额最小可设置为" . number_format($min, 2);
             }else{
-                $mode = (new ModeLogic())->modeById($data['mode']);
-                $max = round($data['price'] * (1 - $mode['loss'] / 100), 2);
+                $configs = cfgs();
+                $usage = isset($configs["capital_usage"]) && !$configs["capital_usage"] ? $configs["capital_usage"] : 95;
+                $deposit = (new DepositLogic())->depositById($data["deposit"]);
+                $lever = (new LeverLogic())->leverById($data["lever"]);
+                $total = $deposit["money"] * $lever["multiple"]; // 申请总配资款 = 保证金 * 杠杆倍数
+                $realTotal = $total * $usage / 100; // 实际可使用最大配资款(95%)
+                $hand = floor($realTotal / $data['price'] / 100) * 100; // 买入股数(整百)
+                $max = $data['price'] - ($deposit["money"] / $hand); // (买入价-止损价)*买入手数=损失总金额 so====> 最大止损价=买入价-(保证金/买入手数)
                 return $value > $max ? "止损金额最大可设置为" . number_format($max, 2) : true;
             }
         }else{

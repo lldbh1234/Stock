@@ -330,9 +330,15 @@ class Order extends Base
                 $order = $this->_userLogic->userOrderById($this->user_id, $orderId, 3);
                 $order = reset($order);
                 if($order){
-                    $res = $this->_userLogic->userOrderSelling($order);
-                    if($res){
-                        return $this->ok();
+                    $quotation = (new StockLogic())->simpleData($order['code']);
+                    if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
+                        $order['last_px'] = $quotation[$order['code']]['last_px'];
+                        $res = $this->_userLogic->userOrderSelling($order);
+                        if($res){
+                            return $this->ok();
+                        }else{
+                            return $this->fail("平仓申请提交失败！");
+                        }
                     }else{
                         return $this->fail("平仓申请提交失败！");
                     }
