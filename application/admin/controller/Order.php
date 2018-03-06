@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 use think\Request;
 use app\admin\logic\OrderLogic;
+use app\admin\logic\StockLogic;
 
 class Order extends Base
 {
@@ -119,6 +120,33 @@ class Order extends Base
                     return $this->ok();
                 }else{
                     return $this->fail("操作失败！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
+
+    // 强制平仓
+    public function forceSell()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('force')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $code = input("post.code/s");
+                $quotation = (new StockLogic())->stockQuotation($code);
+                if($quotation && isset($quotation['last_px'])){
+                    $res = $this->_logic->forceSell($orderId, $quotation['last_px']);
+                    if($res){
+                        return $this->ok("平仓成功！");
+                    }else{
+                        return $this->fail("强制平仓失败，请稍后重试！");
+                    }
+                }else{
+                    return $this->fail("强制平仓失败，请稍后重试！");
                 }
             }
         }else{

@@ -42,6 +42,7 @@
 			<th>保证金</th>
 			<th>是否跟买</th>
 			<th>下单时间</th>
+			<th>操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -71,6 +72,9 @@
 				{$item.is_follow_text}{if condition="$item.is_follow neq 0"} [跟单ID：{$item.follow_id}] {/if}
 			</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
+			<td>
+				<input class="btn btn-danger radius" type="button" onclick="force_sell('{$item.order_id}', '{$item.code}', this)" value="平仓">
+			</td>
 		</tr>
 		{/volist}
 		</tbody>
@@ -85,6 +89,25 @@
 
 {block name="script"}
 <script>
-
+    function force_sell(_id, _code, _obj)
+    {
+        parent.layer.confirm('确认此订单强制平仓？', function(index){
+            parent.layer.close(index);
+			var _oData = {id : _id, code : _code},
+				_url = '{:url("admin/Order/forceSell")}',
+				_loading = parent.layer.load(1),
+				_func = function (_resp) {
+					parent.layer.close(_loading);
+					if (!_resp.state) {
+						layer.msg(_resp.info);
+					} else {
+						layer.msg('操作成功！', {time: 500}, function(){
+							$(_obj).parents("tr").remove();
+						});
+					}
+				};
+			_ajaxPost(_url, _oData, _func);
+		});
+    }
 </script>
 {/block}
