@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use app\admin\logic\OrderLogic;
 use app\index\logic\AdminLogic;
 use app\index\logic\RebateLogic;
+use app\index\logic\UserLogic;
 use think\Controller;
 use think\Queue;
 use think\Request;
@@ -17,10 +18,16 @@ class Test extends Controller
 
     public function test()
     {
+        $order = (new UserLogic())->userOrderById(1, 7, [1,4]);
+        $order = reset($order);
+        dump($order);
+        exit;
+
         $adminIds = (new AdminLogic())->ringFamilyTree(6);
         $res = (new RebateLogic())->handleProxyRebate(1, $adminIds, 4, 80);
         dump($res);
         exit;
+
         $order = (new OrderLogic())->getAllBy();
         $c70 = [];
         $c50 = [];
