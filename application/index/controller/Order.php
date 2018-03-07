@@ -111,7 +111,7 @@ class Order extends Base
     // 委托
     public function entrust()
     {
-        $field = "order_id,code,name,deposit,defer,price,sell_price,sell_hand,stop_loss_price,stop_profit_price,state,create_at";
+        $field = "order_id,code,name,deposit,defer,price,hand,sell_price,sell_hand,stop_loss_price,stop_profit_price,state,create_at";
         if(request()->isPost()){
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [1, 4], $field);
             if($orders['data']){

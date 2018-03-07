@@ -86,7 +86,13 @@
                     {/if}
                     <p>
                         <span class="p_key">数量</span>
-                        <span class="p_value">{$item.sell_hand|intval}</span>
+                        <span class="p_value">
+                            {if condition="$item.state EQ 1"}
+                            {$item.hand|intval}
+                            {elseif condition="$item.state EQ 4" /}
+                            {$item.sell_hand|intval}
+                            {/if}
+                        </span>
                     </p>
                     {if condition="$item.state EQ 4"}
                     <p>
