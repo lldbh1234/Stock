@@ -250,6 +250,7 @@ Route::group([], function() {
             Route::any('give-account', 'admin/User/giveAccount');  // 会员赠金
             Route::any('give-log', 'admin/User/giveLog');  // 会员赠金日志
             Route::any('withdraw-lists', 'admin/User/withdrawLists');  // 会员出金列表
+            Route::any('withdraw-detail', 'admin/User/withdrawDetail');  // 会员出金列表
             Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
         });
         //经纪人管理

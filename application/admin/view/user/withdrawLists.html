@@ -80,9 +80,10 @@
                 {/if}
             </td>
             <td class="f-14">
+                <a title="查看详情" href="javascript:;" onclick="show_detail('出金详情', '{:url("admin/User/withdrawDetail", ['id' => $item.id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-yanjing"></i></a>
                 {if condition='$item.state eq 0'}
-                <a title="通过" href="javascript:;" onclick="admin_success('{$item.id}', '1')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
-                <a title="拒绝" href="javascript:;" onclick="admin_refuse('{$item.id}', '-1')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
+                <a title="通过" href="javascript:;" onclick="admin_success('{$item.id}', '1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
+                <a title="拒绝" href="javascript:;" onclick="admin_refuse('{$item.id}', '-1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
                 {/if}
             </td>
         </tr>
@@ -99,6 +100,9 @@
 
 {block name="script"}
 <script>
+    function show_detail(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
 
     function admin_success(_id, state)
     {
