@@ -462,10 +462,18 @@
                         _oData = {user_id : id, type:type};
                     $ajaxCustom(_url, _oData, function(res){
                         if(res.state){
+                            if(type == 2){
+                                $(obj).removeClass('active');
+							}
+                            if(type == 1){
+                                $(obj).addClass('active');
+                            }
+
+
                             $alert(msg);
-                            setTimeout(function(){
-                                window.location.reload();
-                            }, 1000);
+//                            setTimeout(function(){
+//                                window.location.reload();
+//                            }, 1000);
                         }else{
                             $alert(res.info);
                         }
@@ -526,7 +534,7 @@
 		},4000);
 		loadZhiPrice();
 		function loadZhiPrice(){
-            var _url = "http://www.baonastone.com.cn/plate.json?" + Math.random(),
+            var _url = "/plate.json?" + Math.random(),
                 _oData = {};
             $.get(_url,function(data,status){
             	var _data = JSON.parse( data );
