@@ -8,7 +8,42 @@ use think\Queue;
 
 class Cron extends Controller
 {
-    // 半小时
+    // 抓取板块行情指数
+    public function grabPlateIndex()
+    {
+        set_time_limit(0);
+        if(checkStockTradeTime()){
+            $jsonArray = [];
+            $jsonPath = "./plate.json";
+            $url = 'http://hq.sinajs.cn/rn=1520407404627&list=s_sh000001,s_sz399001,s_sz399006';
+            $html = file_get_contents($url);
+            $html = str_replace(["\r\n", "\n", "\r", " "], "", $html);
+            $plates = explode(';', $html);
+            if($plates){
+                foreach ($plates as $plate){
+                    if($plate){
+                        $plate = iconv("GB2312", "UTF-8", $plate);
+                        preg_match('/^varhq_str_s_([sh|sz]{2})(\d{6})="(.*)"/i', $plate, $match);
+                        if($match[3]){
+                            $_data = explode(",", $match[3]);
+                            $jsonArray[] = [
+                                "plate_name" => $_data[0],
+                                "last_px"   => $_data[1],
+                                "px_change" => $_data[2],
+                                "px_change_rate" => $_data[3]
+                            ];
+                        }
+                    }
+                }
+            }
+            if($jsonArray){
+                @file_put_contents($jsonPath, json_encode($jsonArray, JSON_UNESCAPED_UNICODE));
+                echo "ok";
+            }
+        }
+    }
+
+    // 半小时 股票列表
     public function grabStockLists()
     {
         set_time_limit(0);
@@ -53,7 +88,7 @@ class Cron extends Controller
             try{
                 model("Lists")->query("truncate table stock_list");
                 model("Lists")->saveAll($_arrays);
-                //@file_put_contents($_jsPath, $_jsText);
+                @file_put_contents($_jsPath, $_jsText);
                 // 提交事务
                 Db::commit();
                 echo "ok";

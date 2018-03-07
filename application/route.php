@@ -113,8 +113,11 @@ Route::group("stock", function () {
 });
 
 Route::group("cron", function () {
-    Route::any('stock', 'index/Cron/grabStockLists'); //股票列表
+    Route::any('plate', 'index/Cron/grabPlateIndex'); // 板块指数
+    Route::any('stock', 'index/Cron/grabStockLists'); // 股票列表
     Route::any('defer', 'index/Cron/scanOrderDefer'); // 订单递延
+    Route::any('niuren-rebate', 'index/Cron/handleNiurenRebate'); // 牛人返点
+    Route::any('proxy-rebate', 'index/Cron/handleProxyRebate'); // 代理商返点
 });
 
 // www.baonastone.com.cn

@@ -3,3 +3,4 @@ composer.lock
 *.log
 runtime
 .DS_Store
+/public/plate.json
