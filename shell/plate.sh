@@ -1,5 +1,5 @@
 #!/bin/bash
-#* * * * * sh /home_path/shell/plate.sh
+#* * * * * www /home_path/shell/plate.sh >> /dev/null 2>&1
 
 step=3 #间隔的秒数，不能大于60    
     

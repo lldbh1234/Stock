@@ -12,7 +12,7 @@ class Cron extends Controller
     public function grabPlateIndex()
     {
         set_time_limit(0);
-        if(checkStockTradeTime()){
+        //if(checkStockTradeTime()){
             $jsonArray = [];
             $jsonPath = "./plate.json";
             $url = 'http://hq.sinajs.cn/rn=1520407404627&list=s_sh000001,s_sz399001,s_sz399006';
@@ -40,7 +40,7 @@ class Cron extends Controller
                 @file_put_contents($jsonPath, json_encode($jsonArray, JSON_UNESCAPED_UNICODE));
                 echo "ok";
             }
-        }
+        //}
     }
 
     // 半小时 股票列表
