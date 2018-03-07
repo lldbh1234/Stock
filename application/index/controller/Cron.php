@@ -116,6 +116,7 @@ class Cron extends Controller
                 foreach ($orders as $order){
                     $rebateData = [
                         "money" => $order["profit"],
+                        "order_id" => $order["order_id"], //订单ID
                         "user_id" => $order["user_id"]
                     ];
                     Queue::push('app\index\job\RebateJob@handleProxyRebate', $rebateData, null);

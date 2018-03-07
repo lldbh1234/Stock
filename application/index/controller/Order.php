@@ -47,7 +47,7 @@ class Order extends Base
             $capital = $this->_userCapital();
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, $field);
             if($orders['data']){
-                $codes = array_column($orders['data'], "code");
+                /*$codes = array_column($orders['data'], "code");
                 $quotation = (new StockLogic())->simpleData($codes);
                 array_filter($orders['data'], function (&$item) use ($quotation){
                     $item['last_px'] = $quotation[$item['code']]['last_px']; //现价
@@ -55,16 +55,16 @@ class Order extends Base
                     $item['yield_rate'] = round(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['last_px'] - $item['price']) * $item['hand']; //盈亏
                 });
-                $list = $orders['data'];
+                $list = $orders['data'];*/
                 $last_page = $orders['last_page'];
                 $current_page = $orders['current_page'];
             }else{
-                $list = [];
+                //$list = [];
                 $last_page= 1;
                 $current_page = 1;
             }
             $this->assign("capital", $capital);
-            $this->assign("orders", $list);
+            //$this->assign("orders", $list);
             $this->assign("totalPage", $last_page);
             $this->assign("currentPage", $current_page);
             return view();
@@ -135,21 +135,21 @@ class Order extends Base
             $capital = $this->_userCapital();
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [1, 4], $field);
             if($orders['data']){
-                array_filter($orders['data'], function (&$item){
+                /*array_filter($orders['data'], function (&$item){
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
                 });
-                $list = $orders['data'];
+                $list = $orders['data'];*/
                 $last_page = $orders['last_page'];
                 $current_page = $orders['current_page'];
             }else{
-                $list = [];
+                //$list = [];
                 $last_page= 1;
                 $current_page = 1;
             }
             $this->assign("capital", $capital);
-            $this->assign("orders", $list);
+            //$this->assign("orders", $list);
             $this->assign("totalPage", $last_page);
             $this->assign("currentPage", $current_page);
             return view();
@@ -184,21 +184,21 @@ class Order extends Base
             $capital = $this->_userCapital();
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 2, $field);
             if($orders['data']){
-                array_filter($orders['data'], function (&$item){
+                /*array_filter($orders['data'], function (&$item){
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
                 });
-                $list = $orders['data'];
+                $list = $orders['data'];*/
                 $last_page = $orders['last_page'];
                 $current_page = $orders['current_page'];
             }else{
-                $list = [];
+                //$list = [];
                 $last_page= 1;
                 $current_page = 1;
             }
             $this->assign("capital", $capital);
-            $this->assign("orders", $list);
+            //$this->assign("orders", $list);
             $this->assign("totalPage", $last_page);
             $this->assign("currentPage", $current_page);
             return view();
