@@ -38,8 +38,10 @@
         {volist name="$bestUserList" id="vo"}
         <li>
             <div class="clear_fl">
+                <a href="{:url('index/Cattle/niurenDetail', ['uid' => $vo.user_id])}" class="lf">
                 <img class="lf user_pic" src="{$vo.face | default='__RESOURCE__/img/default-user-img.png'}">
                 <p class="lf user_name">{$vo.nickname | default=$vo.username} <img src="__RESOURCE__/img/niuren.png"></p>
+                </a>
                 <a href="javascript:void(0)" onclick="follow('{$vo.user_id}', this);" class="rt guanzhu_btn {in name='vo.user_id' value='$followIds'}active{/in}"></a>
             </div>
             <div class="clear_fl daren_info">
@@ -87,10 +89,13 @@
                     _oData = {user_id : id, type:type};
                 $ajaxCustom(_url, _oData, function(res){
                     if(res.state){
+                        if(type == 2){
+                            $(obj).removeClass('active');
+                        }
+                        if(type == 1){
+                            $(obj).addClass('active');
+                        }
                         $alert(msg);
-                        setTimeout(function(){
-                            window.location.reload();
-                        }, 1000);
                     }else{
                         $alert(res.info);
                     }
@@ -98,7 +103,6 @@
 //            }
 //
 //            ,cancel: function(){
-                右上角关闭回调
 //
 //                return false 开启该代码可禁止点击该按钮关闭
 //            }
