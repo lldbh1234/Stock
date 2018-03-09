@@ -20,6 +20,7 @@ class Cattle extends Base
 
     public function index(){
         $userInfo = $this->_logic->userById($this->user_id);
+
         if($userInfo['is_niuren'] == 1)
         {
             $orderLogic = new OrderLogic();
@@ -49,8 +50,7 @@ class Cattle extends Base
             $userInfo['realtime_income']   = 0;//实时收入
             $userInfo['not_income']   = 0;//未结收入
             $niuren_point = $this->conf['niuren_point']/100;//牛人返点
-//            sprintf("%.2f", substr(sprintf("%.3f", $money * $point / 100), 0, -1));
-            $codes = [];
+
             foreach($childOrderLists as $v)
             {
                 if($v['state'] == 2 && $v['niuren_rebate'] == 0) {
