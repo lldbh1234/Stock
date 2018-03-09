@@ -236,11 +236,13 @@ Route::group([], function() {
             Route::post('del', 'admin/Permission/del'); // 删除权限资源
             Route::any('role-push', 'admin/Permission/rolePush'); // 角色授权
         });
+
         //系统管理
         Route::group("system", function(){
             Route::any('lists', 'admin/System/lists');  // 系统设置
             Route::post('modify', 'admin/System/modify'); // 修改
         });
+
         //会员管理
         Route::group("user", function(){
             Route::any('lists', 'admin/User/lists');  // 会员列表
@@ -250,8 +252,10 @@ Route::group([], function() {
             Route::any('give-account', 'admin/User/giveAccount');  // 会员赠金
             Route::any('give-log', 'admin/User/giveLog');  // 会员赠金日志
             Route::any('withdraw-lists', 'admin/User/withdrawLists');  // 会员出金列表
+            Route::any('withdraw-detail', 'admin/User/withdrawDetail');  // 会员出金列表
             Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
         });
+
         //经纪人管理
         Route::group("manager", function(){
             Route::any('lists', 'admin/Manager/lists');
@@ -259,6 +263,7 @@ Route::group([], function() {
             Route::post('audit', 'admin/Manager/audit'); // 审核
         });
 
+        // 订单管理
         Route::group("order", function(){
             Route::any('lists', 'admin/Order/index'); //委托订单
             Route::any('history', 'admin/Order/history'); //已平仓订单
@@ -268,6 +273,15 @@ Route::group([], function() {
             Route::post('sell-ok', 'admin/Order/sellOk'); //平仓成功
             Route::post('sell-fail', 'admin/Order/sellFail'); //平仓失败
             Route::post('force-sell', 'admin/Order/forceSell'); //强制平仓
+        });
+
+        // 记录
+        Route::group("record", function(){
+            Route::any('recharge', 'admin/Record/recharge'); //充值
+            Route::any('niuren', 'admin/Record/niuren'); //牛人
+            Route::any('manager', 'admin/Record/manager'); // 经纪人返点
+            Route::any('proxy', 'admin/Record/proxy'); // 后台代理商
+            Route::any('defer', 'admin/Record/defer'); // 递延费自动扣除
         });
     });
 });
