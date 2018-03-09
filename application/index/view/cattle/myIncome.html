@@ -52,7 +52,7 @@
             </li>
             {volist name="lists" id="vo"}
             <li class="flex_nowrap">
-                <span class="lf">{$vo.amount | default='0.00'}</span>
+                <span class="lf">{$vo.money | default='0.00'}</span>
                 <span class="lf">{$vo.create_at|date="Y-m-d H:i",###}</span>
             </li>
             {/volist}

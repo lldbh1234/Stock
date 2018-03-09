@@ -232,7 +232,7 @@ class Cattle extends Base
         $endDate = isset($data['endDate']) ? strtotime($data['endDate'])+86399 : '';
         $map = [
             'user_id' => $this->user_id,
-            'type' => 2,
+            'type' => 0,
         ];
         if($startDate && $endDate) $map["create_at"] = ['between', [$startDate, $endDate]];
         $lists = $this->_logic->recordList($map);

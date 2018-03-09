@@ -139,11 +139,11 @@ class Manager extends Base
         $endDate = isset($data['endDate']) ? strtotime($data['endDate'])+86399 : '';
         $map = [
             'user_id' => $this->user_id,
-            'type' => ['in', [3,8]],
+            'type' => 0,
         ];
         if($startDate && $endDate) $map["create_at"] = ['between', [$startDate, $endDate]];
-        $lists = $this->_logic->recordList($map);
-        $amount = $this->_logic->recordAmount($map);
+        $lists = $this->_logic->manageRecordList($map);
+        $amount = $this->_logic->manageRecordAmount($map);
         $search = [
             'startDate' => $startDate ? date('Y-m-d', $startDate) : date('Y-m-d'),
             'endDate' => $endDate ? date('Y-m-d', $endDate) : date('Y-m-d'),
@@ -167,6 +167,11 @@ class Manager extends Base
         return view();
 
     }
+
+    /**
+     * 直属平仓
+     * @return \think\response\View
+     */
     public function followEvening()
     {
         $orderLogic = new OrderLogic();
@@ -189,6 +194,11 @@ class Manager extends Base
         $this->assign('lists', $lists);
         return view();
     }
+
+    /**
+     * 直属持仓
+     * @return \think\response\View
+     */
     public function followPosition()
     {
         $orderLogic = new OrderLogic();
