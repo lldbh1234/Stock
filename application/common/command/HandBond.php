@@ -58,16 +58,19 @@ class HandBond extends Command
             if($current_price && $current_price < $v['price'])
             {
                 $kuisun[] = [
-                    'user_id' => $v['user_id'],
-                    'order_id' => $v['order_id'],
-                    'kui' => ($v['price']-$current_price)*$v['hand'],
-                    'deposit' => $v['deposit'],
-                    'name' => $v['name'],
+                    'user_id'   => $v['user_id'],
+                    'order_id'  => $v['order_id'],
+                    'kui'       => ($v['price']-$current_price)*$v['hand'],
+                    'current'   => $current_price,
+                    'hand'      => $v['hand'],
+                    'price'     => $v['price'],
+                    'deposit'   => $v['deposit'],
+                    'name'      => $v['name'],
                 ];
             }
         }
         //计算亏损订单与保证金比例的差值
-        if(empty($kuisun)) return true;
+        if(empty($kuisun)) return false;
 
         $pingcang = [];
         $buchongbaozhengjin = [];
@@ -81,32 +84,41 @@ class HandBond extends Command
             {
                 //强制平仓
                 $pingcang[] = [
-                    'user_id' => $v['user_id'],
-                    'order_id' => $v['order_id'],
-                    'title' => '订单ID【'. $v['order_id'] .'】的保证金已用完,需强制平仓',
-                    'content' => '订单ID【'. $v['order_id'] .'】的保证金已用完,需强制平仓',
+                    'user_id'   => $v['user_id'],
+                    'order_id'  => $v['order_id'],
+                    'current'   => $v['current'],
+                    'hand'      => $v['hand'],
+                    'price'     => $v['price'],
+                    'title'     => '订单ID【'. $v['order_id'] .'】的保证金已用完,需强制平仓',
+                    'content'   => '订单ID【'. $v['order_id'] .'】的保证金已用完,需强制平仓',
                 ];
             }
             if($kui >= $deposit50 && $kui < $deposit70)//保证金不足50%
             {
                 //补充保证金
                 $buchongbaozhengjin[] = [
-                    'user_id' => $v['user_id'],
-                    'order_id' => $v['order_id'],
-                    'type' => '50',
-                    'title' => '持仓股票【'. $v['name'] .'】的保证金已经不足50%,请及时补充保证金，以防强制平仓',
-                    'content' => '持仓股票【'. $v['name'] .'】的保证金已经不足50%,请及时补充保证金，以防强制平仓',
+                    'user_id'   => $v['user_id'],
+                    'order_id'  => $v['order_id'],
+                    'current'   => $v['current'],
+                    'hand'      => $v['hand'],
+                    'price'     => $v['price'],
+                    'type'      => '50',
+                    'title'     => '持仓股票【'. $v['name'] .'】的保证金已经不足50%,请及时补充保证金，以防强制平仓',
+                    'content'   => '持仓股票【'. $v['name'] .'】的保证金已经不足50%,请及时补充保证金，以防强制平仓',
                 ];
             }
             if($kui >= $deposit70 && $kui < $deposit)//保证金不足30%
             {
                 //补充保证金
                 $buchongbaozhengjin[] = [
-                    'user_id' => $v['user_id'],
-                    'order_id' => $v['order_id'],
-                    'type' => '70',
-                    'title' => '持仓股票【'. $v['name'] .'】的保证金已经不足30%,请及时补充保证金，以防强制平仓',
-                    'content' => '持仓股票【'. $v['name'] .'】的保证金已经不足30%,请及时补充保证金，以防强制平仓',
+                    'user_id'   => $v['user_id'],
+                    'order_id'  => $v['order_id'],
+                    'current'   => $v['current'],
+                    'hand'      => $v['hand'],
+                    'price'     => $v['price'],
+                    'type'      => '70',
+                    'title'     => '持仓股票【'. $v['name'] .'】的保证金已经不足30%,请及时补充保证金，以防强制平仓',
+                    'content'   => '持仓股票【'. $v['name'] .'】的保证金已经不足30%,请及时补充保证金，以防强制平仓',
                 ];
             }
 
@@ -119,24 +131,41 @@ class HandBond extends Command
 
     private function doHandle($pingcang=[], $buchongbaozhengjin=[])
     {
-        !empty($pingcang) ? cache('pingcang', json_encode($pingcang)) : '';
-        $data = [];
-        foreach ($buchongbaozhengjin as $v)
+        if(!empty($pingcang))
         {
-            $readyKey = $v['order_id'].'_'.$v['type'];
-            if(!cache($readyKey))//通知过的不再通知
+            $orderLogic = new OrderLogic();
+            cache('pingcang', json_encode($pingcang));
+            foreach ($pingcang as $v)
             {
-                $data[] = [
-                    'user_id' => $v['user_id'],
-                    'title' => $v['title'],
-                    'content' => $v['content'],
-                    'create_at' => time(),
-                ];
-                cache($readyKey, 1, ['expire' => 86400]);
-            }
 
+                $orderLogic->updateOrder([
+                    'order_id' => $v['order_id'],
+                    'state' => 6,
+                    'sell_price'   => $v['current'],
+                    'sell_hand' => $v['hand'],
+                    'sell_deposit' => $v['current']*$v['hand'],
+                    'profit' => ($v['current']-$v['price'])*$v['hand'],
+                ]);
+
+            }
         }
-        self::sendNotice($data);
+//        $data = [];
+//        foreach ($buchongbaozhengjin as $v)
+//        {
+//            $readyKey = $v['order_id'].'_'.$v['type'];
+//            if(!cache($readyKey))//通知过的不再通知
+//            {
+//                $data[] = [
+//                    'user_id'   => $v['user_id'],
+//                    'title'     => $v['title'],
+//                    'content'   => $v['content'],
+//                    'create_at' => time(),
+//                ];
+//                cache($readyKey, 1, ['expire' => 86400]);
+//            }
+//
+//        }
+//        self::sendNotice($data);
 
     }
     private function sendNotice($data)

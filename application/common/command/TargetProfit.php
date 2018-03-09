@@ -65,6 +65,9 @@ class TargetProfit extends Command
                         'order_id' => $v['order_id'],
                         'kui' => ($v['price']-$current_price)*$v['hand'],
                         'deposit' => $v['deposit'],
+                        'current'   => $current_price,
+                        'hand'      => $v['hand'],
+                        'price'     => $v['price'],
                         'name' => $v['name'],
                         'type' => 1,
                         'title' => '订单ID【'. $v['order_id'] .'】需止盈强制平仓',
@@ -79,6 +82,9 @@ class TargetProfit extends Command
                         'order_id' => $v['order_id'],
                         'kui' => ($v['price']-$current_price)*$v['hand'],
                         'deposit' => $v['deposit'],
+                        'current'   => $current_price,
+                        'hand'      => $v['hand'],
+                        'price'     => $v['price'],
                         'name' => $v['name'],
                         'type' => 2,
                         'title' => '订单ID【'. $v['order_id'] .'】需止损强制平仓',
@@ -95,7 +101,25 @@ class TargetProfit extends Command
 
     private function doHandle($data = [])
     {
-        !empty($data) ? cache('pingcang', json_encode($data)) : '';
+//        !empty($data) ? cache('pingcang', json_encode($data)) : '';
+        if(!empty($data))
+        {
+            $orderLogic = new OrderLogic();
+            cache('pingcang', json_encode($data));
+            foreach ($data as $v)
+            {
+
+                $orderLogic->updateOrder([
+                    'order_id' => $v['order_id'],
+                    'state' => 6,
+                    'sell_price'   => $v['current'],
+                    'sell_hand' => $v['hand'],
+                    'sell_deposit' => $v['current']*$v['hand'],
+                    'profit' => ($v['current']-$v['price'])*$v['hand'],
+                ]);
+
+            }
+        }
 
     }
 
