@@ -27,9 +27,9 @@
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
-            <span class="c-blue">充值总计： ￥{$totalAmount|number_format=2}</span>
-            <span class="c-green ml-15">到账总计：￥{$totalActual|number_format=2}</span>
-            <span class="c-orange ml-15">手续费总计：￥{$totalPoundage|number_format=2}</span>
+            <span class="c-blue">充值总计： <strong>￥{$totalAmount|number_format=2}</strong></span>
+            <span class="c-green ml-15">到账总计：<strong>￥{$totalActual|number_format=2}</strong></span>
+            <span class="c-orange ml-15">手续费总计：<strong>￥{$totalPoundage|number_format=2}</strong></span>
         </span>
         <span class="r">共充值：<strong>{$datas.total}</strong> 笔</span>
     </div>
@@ -63,6 +63,20 @@
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
         </tr>
         {/volist}
+        {gt name="datas.total" value="0"}
+        <tr class="text-c admin-lists">
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td><strong>{$pageAmount|number_format=2}</strong></td>
+            <td><strong>{$pageActual|number_format=2}</strong></td>
+            <td><strong>{$pagePoundage|number_format=2}</strong></td>
+            <td>-</td>
+        </tr>
+        {/gt}
         </tbody>
     </table>
     {$pages}

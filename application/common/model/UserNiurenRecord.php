@@ -11,4 +11,14 @@ class UserNiurenRecord extends BaseModel
     {
         return request()->time();
     }
+
+    public function belongsToNiuren()
+    {
+        return $this->belongsTo("\\app\\common\\model\\User", "user_id", "user_id");
+    }
+
+    public function belongsToOrder()
+    {
+        return $this->belongsTo("\\app\\common\\model\\Order", "order_id", "order_id");
+    }
 }
