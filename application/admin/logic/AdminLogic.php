@@ -147,7 +147,9 @@ class AdminLogic
         while (true){
             if($roleId == Admin::RING_ROLE_ID){
                 // 微圈
-                $code = randomString("8", true);
+                // $length = rand(4, 6);
+                $length = 6;
+                $code = randomString($length, true);
             }else{
                 $code = randomString("8");
             }
