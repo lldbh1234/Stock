@@ -91,11 +91,12 @@ if(!function_exists("checkSettleTime"))
 }
 
 if(!function_exists("workTimestamp")){
-    function workTimestamp($length, $holiday = [])
+    function workTimestamp($length, $holiday = [], $time = null)
     {
         $realLength = 1;
+        $time = $time ? : time();
         for($i = 1; $i <= $length;){
-            $timestamp = strtotime("+{$realLength}day");
+            $timestamp = strtotime("+{$realLength}day", $time);
             $realLength++;
             $week = date("w", $timestamp);
             $date = date("Y-m-d", $timestamp);

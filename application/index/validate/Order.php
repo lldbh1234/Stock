@@ -67,7 +67,12 @@ class Order extends Validate
 
     protected function canSelling($value, $rule, $data){
         $order = (new UserLogic())->userOrderById(isLogin(), $value, 3);
-        return $order ? true : false;
+        if($order){
+            $holiday = explode(',', cfgs()['holiday']);
+            $timestamp = workTimestamp(1, $holiday, $order['create_at']);
+            return $timestamp > request()->time() ? "建仓未满1个交易日，无法平仓！" : true;
+        }
+        return false;
     }
 
     protected function canModifyPl($value, $rule, $data){
