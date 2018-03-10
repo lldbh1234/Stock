@@ -16,8 +16,8 @@
     <form class="form form-horizontal" id="form-article-add">
         <div id="tab-system" class="HuiTab">
             <div class="tabBar cl">
+                <span>系统设置</span>
                 <span>基本设置</span>
-                <span>配置设置</span>
                 <span>交易配置</span>
                 <span>牛人申请条件设置</span>
             </div>
@@ -47,15 +47,9 @@
             </div>
             <div class="tabCon">
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">开盘时间：</label>
+                    <label class="form-label col-xs-4 col-sm-2">用户昵称前缀：</label>
                     <div class="formControls col-xs-2 col-sm-4">
-                        <input type="text" id="open_time" name="open_time" placeholder="输入时间晚上23点即23" value="{$lists.open_time.val | default=''}" class="input-text">
-                    </div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">开盘时间：</label>
-                    <div class="formControls col-xs-2 col-sm-4">
-                        <input type="text" id="close_time" name="close_time" placeholder="输入时间晚上23点即23" value="{$lists.close_time.val | default=''}" class="input-text">
+                        <input type="text" id="nickname_prefix" name="nickname_prefix" placeholder="用户注册时默认昵称前缀" value="{$lists.nickname_prefix.val | default=''}" class="input-text">
                     </div>
                 </div>
             </div>
