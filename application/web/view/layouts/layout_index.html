@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<head>
+    <html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>{block name="title"}标题{/block}</title>
+        <meta name="keywords" content=" ">
+        <meta name="description" content="">
+        <link rel="stylesheet" type="text/css" href="__RESOURCEWEB__/css/common.css">
+        <link rel="stylesheet" type="text/css" href="__RESOURCEWEB__/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="__RESOURCEWEB__/css/index.css">
+        <link rel="stylesheet" type="text/css" href="__RESOURCEWEB__/css/buy.css">
+        {block name="style"}样式{/block}
+    </head>
+{block name="body"}
+    <body class="index_body">
+{/block}
+<!--头部-->
+<header class="ml_header br-w100">
+    <div class="h_top br-w100">
+        <div class="w1024 br-clearfix">
+            <div class="h_topL br-fl">
+                服务热线：0571-86718052
+                <a id="qqicon" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=369072666&amp;site=qq&amp;menu=yes"></a>
+            </div>
+            <div id="page_shared_layout_login" class="h_topR br-fr">
+                <a class="login" href="{:url('web/Home/login')}">登录</a>
+                <a class="register" href="{:url('web/Home/register')}">注册</a>
+            </div>
+
+            <ul id="page_shared_layout_unlogin" class="top-links f-right" style="display: none;">
+                <li class="show-login" style="display: block;">您好，&nbsp;</li>
+                <li class="show-login top-user-wrapper" style="display: block;">
+                    <span class="top-username">
+                    	<a id="page_shared_layout_login_name" href="{:url('web/User/index')}"></a>
+                    	<i class="icon icon-arrow-drop-down"></i>
+                    </span>
+                    <div class="overlay-account">
+                        <div class="group account-group">
+                            <span class="f-left">可用<b class="account-val" id="shared_header_mb"></b></span>
+                            <a name="realnameAuth" class="f-right" href="{:url('web/User/payMent')}">充值</a>
+                        </div>
+                        <div class="account-links group">
+                            <a class="f-left" href="{:url('web/User/index')}">个人中心</a>
+                            <span class="f-left sep">|</span>
+                            <a class="f-right js-logout" href="{:url('web/Home/logout')}">安全退出</a>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+    <div class="h_bot br-w100">
+        <div class="w1024 br-clearfix">
+            <div class="h_botL br-fl">
+                <a href="{:url('web/Index/index')}"><img src="__RESOURCEWEB__/images/logo.png" style="height:60px; "></a>
+            </div>
+            <div class="h_botR br-fr">
+                <ul class="br-clearfix" id="menu-ul">
+                    <li class="br-fl"><a href="{:url('web/Index/index')}" class="active">首页</a></li>
+                    <li class="br-fl"><a href="{:url('web/Stock/stockBuy')}">A股点买</a></li>
+                    <!-- <li class="br-fl"><a href="freetrial.html">免费体验</a></li> -->
+                    <li class="br-fl"><a href="{:url('web/home/mobile')}">手机版</a></li>
+                    <!-- <li class="br-fl help_box">
+                        <a href="http://www.fcml888.com/guild.html">帮助中心</a>
+                        <ul class="new-sub-nav hide">
+                            <li class=""><a href="http://www.fcml888.com/guild.html">新手教学</a></li>
+                            <li class=""><a href="http://www.fcml888.com/help.html">常见问题</a></li>
+                        </ul>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+{block name="content"}{/block}
+
+<!--底部-->
+{block name="footer"}
+<footer class="br-w100">
+    <!-- <div class="footer_top">
+        <a href="http://www.fcml888.com/company.html">关于我们</a>
+        <a href="http://www.fcml888.com/contact.html">联系我们</a>
+    </div> -->
+    <div class="footer_bot">
+        <div class="w1024 br-clearfix">
+            <div class="bot_l br-fl">
+                <p>浙江省杭州市上城区外海西湖国贸21层<br>全国统一服务热线 ：0571-86718052<br>客服服务时间工作日：9:00-18:00</p></div>
+            <div class="bot_r br-fr br-text-center">
+                <div class="bot_r_img br-clearfix ">
+                    <span class="br-fl"><img src="__RESOURCEWEB__/images/f1.png"></span>
+                    <span class="br-fr"><img src="__RESOURCEWEB__/images/f2.png"></span>
+                </div>
+                <p>版权所有 © 杭州鼎蓝商贸有限公司  </p>
+                <p>浙ICP备17030011号  投资有风险 入市需谨慎</p>
+            </div>
+        </div>
+    </div>
+</footer>
+{/block}
+</body>
+</html>
+<script type="text/javascript" src="__RESOURCEWEB__/js/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="__RESOURCEWEB__/js/mui.min.js"></script>
+<script type="text/javascript" src="__RESOURCEWEB__/js/common.js"></script>
+<script type="text/javascript" src="__RESOURCEWEB__/js/config.js"></script>
+<script type="text/javascript" src="__RESOURCEWEB__/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="__RESOURCEWEB__/js/index.js"></script>
+<script type="text/javascript" src="__RESOURCEWEB__/js/general.js"></script>
+{block name="script"}{/block}

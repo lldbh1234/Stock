@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<head>
+    <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>history</title>
+    <meta name="keywords" content=" ">
+    <meta name="description" content="">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+</head>
+<body class="index_body">
+<!--头部-->
+<header class="ml_header br-w100">
+    <div class="h_top br-w100">
+        <div class="w1024 br-clearfix">
+            <div class="h_topL br-fl">
+                服务热线：0571-86718052                
+                <a id="qqicon" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=369072666&amp;site=qq&amp;menu=yes"></a>
+            </div>
+
+
+            <div id="page_shared_layout_login" class="h_topR br-fr" style="display: none;">
+                <a class="login" href="login.html">登录</a>
+                <a class="register" href="register.html">注册</a>
+            </div>
+
+            <ul id="page_shared_layout_unlogin" class="top-links f-right">
+                <li class="show-login" style="display: block;">您好，&nbsp;</li>
+                <li class="show-login top-user-wrapper" style="display: block;">
+                    <span class="top-username">
+                    	<a id="page_shared_layout_login_name" href="http://www.fcml888.com/ucenter/index">linzihuan</a>
+                    	<i class="icon icon-arrow-drop-down"></i>
+                    </span>
+                    <div class="overlay-account">
+                        <div class="group account-group">
+                            <span class="f-left">可用<b class="account-val" id="shared_header_mb">928290.2</b></span>
+                            <a name="realnameAuth" class="f-right" href="http://www.fcml888.com/ucenter/payment.html">充值</a>
+                        </div>
+                        <div class="account-links group">
+                            <a class="f-left" href="http://www.fcml888.com/ucenter/index.html">个人中心</a>
+                            <span class="f-left sep">|</span>
+
+
+                            <a class="f-right js-logout" href="http://www.fcml888.com/index/index/logout.html">安全退出</a>
+                        </div>
+                    </div>
+                    <!--/.overlay-account-->
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+    <div class="h_bot br-w100">
+        <div class="w1024 br-clearfix">
+            <div class="h_botL br-fl">
+                <a href="index.html"><img src="images/logo.png" style="height:60px; "></a>
+            </div>
+            <div class="h_botR br-fr">
+                <ul class="br-clearfix" id="menu-ul">
+                    <li class="br-fl"><a href="index.html" class="">首页</a></li>
+                    <li class="br-fl"><a href="buy.html" class="active">A股点买</a></li>
+                    <!-- <li class="br-fl"><a href="freetrial.html">免费体验</a></li> -->
+                    <li class="br-fl"><a href="mobile.html">手机版</a></li>
+                    <!-- <li class="br-fl help_box">
+                    	<a href="guild.html">帮助中心</a>
+                    	<ul class="new-sub-nav hide">
+                            <li class=""><a href="guild.html">新手教学</a></li>
+                            <li class=""><a href="help.html">常见问题</a></li>
+                        </ul>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<script src="js/jquery-2.2.0.min.js"></script>
+<script src="js/general.js"></script>
+<link rel="stylesheet" type="text/css" href="css/buy.css">
+
+<!--结算区-->
+<div class="br-content">
+<div class="w1024">
+<div class="stock-sell stock-buy stock-settle">
+    <section class="play-area">
+        <nav>
+            <ul class="clearfix">
+                <li class=""><a href="buy.html"><em> 01 </em>| 点买区</a></li>
+                <li class=""><a href="sell.html"><em>02 </em>| 点卖区</a></li>
+                <li class="active"><a href="history.html"><em>03 </em> | 结算区</a></li>
+            </ul>
+        </nav>
+       <section>
+            <nav class="row" style="position: relative;">
+                <div class="select">
+                    <span>时间：</span>
+                    <a href="http://www.fcml888.com/history.html?recent=7" id="recent7" class="">最近7个交易日</a>
+                    <a href="http://www.fcml888.com/history.html?recent=30" id="recent30">最近30个交易日</a>
+                    <a id="selectByDate">按时间选择<span class="sanj"></span></a>
+                </div>
+                <div class="jiesuan-deal pa" style="top:200px;left:300px" id="JchooseDate" data-val="0">
+                    <h4 class=" pb5 f14 db lh18" style="height:30px;">
+                        <span class="left_gray fl">&lt;</span>
+                        <span class="cen fl"><span id="yearSpan">2018</span>年</span>
+                        <span class="right_gray fr ">&gt;</span>
+                    </h4>
+                    <div style=" width: 224px; height: 110px; overflow: hidden;margin: 0 auto;">
+                        <div style=" width: 224px; height: 110px;margin-left:0px" id="JyearContent">
+                            <ul class="jiesuan-dea2 tc"><li><a href="javascript:void(0);" data-m="1" class="JchooseMonth ">1月</a></li><li><span>2月</span></li><li><span>3月</span></li><li><span>4月</span></li><li><span>5月</span></li><li><span>6月</span></li><li><span>7月</span></li><li><span>8月</span></li><li><span>9月</span></li><li><span>10月</span></li><li><span>11月</span></li><li><span>12月</span></li></ul>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </nav>
+            <ul id="settle-list" class="history-list">
+
+                            	<li>
+            		<label class="w175"><em>2018-01-18 11:03:48</em><em>单号：5807</em></label>
+            		<label class="w130"><em><strong>科大讯飞(002230)</strong></em><em><b>4600股</b></em></label>
+            		<label class="w136"><em><strong class="c-green">-15732</strong></em><em>交易盈亏</em></label>
+            		<label class="w136"><em class="ft16 c-green"> -15732</em><em>盈利分配</em></label>
+            		<label class="w120 "><a class="detail_a" href="detail.html">查看详情</a></label>
+            		<label class="w120 hide-important"></label>
+                </li>
+                            	<li>
+            		<label class="w175"><em>2018-01-15 15:01:03</em><em>单号：5330</em></label>
+            		<label class="w130"><em><strong>重庆建工(600939)</strong></em><em><b>1300股</b></em></label>
+            		<label class="w136"><em><strong class="c-green">-858</strong></em><em>交易盈亏</em></label>
+            		<label class="w136"><em class="ft16 c-green"> -858</em><em>盈利分配</em></label>
+            		<label class="w120 "><a class="detail_a" href="detail.html">查看详情</a></label>
+            		<label class="w120 hide-important"></label>
+                </li>
+                            	<li>
+            		<label class="w175"><em>2018-01-11 13:10:24</em><em>单号：5718</em></label>
+            		<label class="w130"><em><strong>招商银行(600036)</strong></em><em><b>1600股</b></em></label>
+            		<label class="w136"><em><strong class="c-red">1680</strong></em><em>交易盈亏</em></label>
+            		<label class="w136"><em class="ft16 c-red"> 1512</em><em>盈利分配</em></label>
+            		<label class="w120 "><a class="detail_a" href="detail.html">查看详情</a></label>
+            		<label class="w120 hide-important"></label>
+                </li>
+                            	<li>
+            		<label class="w175"><em>2018-01-05 15:01:06</em><em>单号：5085</em></label>
+            		<label class="w130"><em><strong>大连电瓷(002606)</strong></em><em><b>8000股</b></em></label>
+            		<label class="w136"><em><strong class="c-green">-7840</strong></em><em>交易盈亏</em></label>
+            		<label class="w136"><em class="ft16 c-green"> -7840</em><em>盈利分配</em></label>
+            		<label class="w120 "><a class="detail_a" href="detail.html">查看详情</a></label>
+            		<label class="w120 hide-important"></label>
+                </li>
+                            	<li>
+            		<label class="w175"><em>2018-01-04 10:51:26</em><em>单号：5304</em></label>
+            		<label class="w130"><em><strong>浙江美大(002677)</strong></em><em><b>17500股</b></em></label>
+            		<label class="w136"><em><strong class="c-red">10500</strong></em><em>交易盈亏</em></label>
+            		<label class="w136"><em class="ft16 c-red"> 9450</em><em>盈利分配</em></label>
+            		<label class="w120 "><a class="detail_a" href="detail.html">查看详情</a></label>
+            		<label class="w120 hide-important"></label>
+                </li>
+                            </ul>
+           
+           <ul class="pagination"><li class="disabled"><span>«</span></li> <li class="active"><span>1</span></li><li><a href="http://www.fcml888.com/history.html?page=2">2</a></li><li><a href="http://www.fcml888.com/history.html?page=3">3</a></li><li><a href="http://www.fcml888.com/history.html?page=4">4</a></li><li><a href="http://www.fcml888.com/history.html?page=5">5</a></li><li><a href="http://www.fcml888.com/history.html?page=6">6</a></li><li><a href="http://www.fcml888.com/history.html?page=7">7</a></li><li><a href="http://www.fcml888.com/history.html?page=8">8</a></li><li class="disabled"><span>...</span></li><li><a href="http://www.fcml888.com/history.html?page=17">17</a></li><li><a href="http://www.fcml888.com/history.html?page=18">18</a></li> <li><a href="http://www.fcml888.com/history.html?page=2">»</a></li></ul>        </section>
+    </section>
+</div>
+
+</div>
+</div>
+<script src="js/history.js"></script>
+
+
+</body></html>

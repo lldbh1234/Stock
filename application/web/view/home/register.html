@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<head>
+    <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>register</title>
+        <meta name="keywords" content=" ">
+        <meta name="description" content="">
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+    </head>
+<body class="index_body">
+
+<!--头部-->
+<header class="ml_header br-w100">
+    <div class="h_top br-w100">
+        <div class="w1024 br-clearfix">
+            <div class="h_topL br-fl">
+                服务热线：0571-86718052
+                <a id="qqicon" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=369072666&amp;site=qq&amp;menu=yes"></a>
+            </div>
+            <div id="page_shared_layout_login" class="h_topR br-fr">
+                <a class="login" href="login.html">登录</a>
+                <a class="register" href="register.html">注册</a>
+            </div>
+
+            <ul id="page_shared_layout_unlogin" class="top-links f-right" style="display: none;">
+                <li class="show-login" style="display: block;">您好，&nbsp;</li>
+                <li class="show-login top-user-wrapper" style="display: block;">
+                    <span class="top-username">
+                    	<a id="page_shared_layout_login_name" href="http://www.fcml888.com/ucenter/index"></a>
+                    	<i class="icon icon-arrow-drop-down"></i>
+                    </span>
+                    <div class="overlay-account">
+                        <div class="group account-group">
+                            <span class="f-left">可用<b class="account-val" id="shared_header_mb"></b></span>
+                            <a name="realnameAuth" class="f-right" href="http://www.fcml888.com/ucenter/payment.html">充值</a>
+                        </div>
+                        <div class="account-links group">
+                            <a class="f-left" href="http://www.fcml888.com/ucenter/index.html">个人中心</a>
+                            <span class="f-left sep">|</span>
+
+
+                            <a class="f-right js-logout" href="http://www.fcml888.com/index/index/logout.html">安全退出</a>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+    <div class="h_bot br-w100">
+        <div class="w1024 br-clearfix">
+            <div class="h_botL br-fl">
+                <a href="http://www.fcml888.com/"><img src="images/logo.png" style="height:60px; "></a>
+            </div>
+            <div class="h_botR br-fr">
+                <ul class="br-clearfix" id="menu-ul">
+                    <li class="br-fl"><a href="index.html" class="active">首页</a></li>
+                    <li class="br-fl"><a href="buy.html">A股点买</a></li>
+                    <!-- <li class="br-fl"><a href="freetrial.html">免费体验</a></li> -->
+                    <li class="br-fl"><a href="mobile.html">手机版</a></li>
+                    <!-- <li class="br-fl help_box">
+                    	<a href="http://www.fcml888.com/guild.html">帮助中心</a>
+                    	<ul class="new-sub-nav hide">
+                            <li class=""><a href="http://www.fcml888.com/guild.html">新手教学</a></li>
+                            <li class=""><a href="http://www.fcml888.com/help.html">常见问题</a></li>
+                        </ul>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<script src="js/jquery-2.2.0.min.js"></script>
+<script src="js/general.js"></script>
+<link rel="stylesheet" type="text/css" href="css/buy.css">
+<link rel="stylesheet" type="text/css" href="css/reg.css">
+
+<!--注册区-->
+<div class="br-content login_reg_cont">
+    <section class="section section-form " id="section-reg">
+        <div class="container ">
+            <div class="container-reg">
+                <h2>注册</h2>
+                <div class="form">
+                    <!--用户名-->
+                    <div id="mobileno3" class="field-wrapper">
+                        <input type="tel" class="text" placeholder="请输入用户名，长度不小于6位" name="mobile" id="mobile" data-error-msg="请输入用户名">
+                    </div>
+                    <div id="pwd_errName" class="error-wrapper" style="display:none"><div><!--<i class="icon icon-x-altx-alt"></i>-->用户名长度不能少于6位</div></div>
+                    <!--密码-->
+                    <div id="mobileno4" class="field-wrapper">
+                        <input type="password" class="text" placeholder="请输入登录密码，长度不小于6位" name="pwd" id="pwd">
+                    </div>
+                    <div id="pwd_err1" class="error-wrapper" style="display:none"><div><!--<i class="icon icon-x-altx-alt"></i>-->密码长度不能少于6位</div></div>
+                    <div id="mobileno5" class="field-wrapper">
+                        <input type="password" class="text" placeholder="请再次输入登录密码" name="mobile_code" id="mobile_code">
+                    </div>
+                    <div id="mobile_code_err1" class="error-wrapper" style="display:none"><div><!--<i class="icon icon-x-altx-alt"></i>-->两次密码不一致</div></div>
+                    <!--机构推荐码-->
+                    <div id="mobileno6" class="field-wrapper">
+                        <input type="text" class="text" placeholder="请输入机构推荐码" name="recommend_code" id="recommend_code">
+                    </div>
+                    <div id="recommend_code_err1" class="error-wrapper" style="display:none"><div><!--<i class="icon icon-x-altx-alt"></i>-->请输入4位数机构码</div></div>
+                    <!--手机号-->
+                    <div id="mobileno1" class="field-wrapper" style="display:none">
+                        <input type="tel" class="text" placeholder="请输入11位手机号" name="mobileno" id="mobileno" data-error-msg="请输入正确手机号" onkeyup="this.value=this.value.replace(/\D/g,&#39;&#39;)" onafterpaste="this.value=this.value.replace(/\D/g,&#39;&#39;)">
+                    </div>
+                    <!--验证码-->
+                    <div id="mobileno2" class="field-wrapper capcha-wrapper capcha-count-down" style="display:none">
+                        <input type="text" class="text" placeholder="请输入短信校验码" name="mobileno_code" id="mobileno_code" data-error-msg="校验码未填" onkeyup="this.value=this.value.replace(/\D/g,&#39;&#39;)" onafterpaste="this.value=this.value.replace(/\D/g,&#39;&#39;)">
+                        <a id="auth_reg_smsA" href="javascript:void(0)" class="btn-get-capcha">获取校验码</a>
+                        <div id="auth_reg_timerD" class="time-counter" style="display: none;"><!--<i class="icon icon-caret-left"></i>--><span>10</span></div>
+                    </div>
+                    <div class="agree-wrapper group">
+                        <input type="checkbox" name="agree" id="agree" checked="checked"><label for="agree">我已阅读并同意</label> <a href="javascript:;" id="reg_agree">《系统服务协议》</a>
+                    </div>
+                    <div class="btn-wrapper">
+                        <a id="auth_regA" href="javascript:void(0)" class="btn btn-pri js-reg-next">下一步</a>
+                    </div>
+                    <div class="quick-link-wrapper group">
+                        已有帐号? 直接&nbsp;<a href="login.html">登录</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+<!--底部-->
+<footer class="br-w100">
+    <!-- <div class="footer_top">
+        <a href="http://www.fcml888.com/company.html">关于我们</a>
+        <a href="http://www.fcml888.com/contact.html">联系我们</a>
+    </div> -->
+    <div class="footer_bot">
+        <div class="w1024 br-clearfix">
+            <div class="bot_l br-fl">
+                <p>浙江省杭州市上城区外海西湖国贸21层<br>全国统一服务热线 ：0571-86718052<br>客服服务时间工作日：9:00-18:00</p></div>
+            <div class="bot_r br-fr br-text-center">
+                <div class="bot_r_img br-clearfix ">
+                    <span class="br-fl"><img src="images/f1.png"></span>
+                    <span class="br-fr"><img src="images/f2.png"></span>
+                </div>
+                <p>版权所有 © 杭州鼎蓝商贸有限公司  </p>
+                <p>浙ICP备17030011号  投资有风险 入市需谨慎</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="js/reg.js"></script>
+
+
+
+
+</body></html>

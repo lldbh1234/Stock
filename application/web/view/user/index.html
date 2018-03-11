@@ -1,0 +1,204 @@
+{extend name="layouts/layout_index" /}
+
+{block name="title"}
+首页
+{/block}
+
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__RESOURCEWEB__/css/member.css">
+{/block}
+
+{block name="body"}
+<body class="membercenter logged-in">
+{/block}
+{block name="content"}
+
+<!--个人中心-充值-->
+<div class="br-content">
+    <div class="w1200">
+        <!--主体-->
+        <section class="page-main page-personal">
+            <div class="container clearfix">
+                <!--public左边-->
+                <aside class="col-left">
+                    <div class="userinfo">
+                        <form name="user_head" id="user_head">
+                            <input type="file" name="myfile222" id="img_upload">
+                            <div class="img_download">
+                                <img class="user-pic" id="headImg" src="__RESOURCEWEB__/images/user.png">
+                            </div>
+                        </form>
+                        <p class="user-info">Hi，<strong id="shared_layout_mem_lnm">linzihuan</strong></p>
+                    </div>
+                    <h4 class="new-head-line"><span class="user-5"></span>会员中心</h4>
+                    <nav id="personal-nav" class="left-nav">
+                        <ul>
+                            <li class="active"><a href="{:url('web/User/index')}">我的首页&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class=""><a href="{:url('web/User/bankCards')}">银行卡管理&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class=""><a href="{:url('web/User/payMent')}">充值&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class=""><a href="{:url('web/User/withdraw')}">提现&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <!-- <li class=""><a href="" style="display: none;">推广赚钱&nbsp;<span class="mem_gt">&gt;</span></a></li> -->
+                        </ul>
+                    </nav>
+                </aside>
+                <!--右边-->
+                <div id="page_member_index" class="col-main">
+                    <section class="personal-section">
+                        <h1 class="per_h1">我的首页</h1>
+                        <div class="new-section-sub-title">
+                            <p class="inner-sub-title"><span style="display: block;">账户余额</span><strong class="p-unit" id="账户余额">888211.6</strong>元</p>
+                        </div>
+                        <div class="p-money clearfix">
+                            <p class="diyongquan br-fl"><span class="ticket">我的抵用券</span><span id="diyongquan">0.00</span>元</p>
+                        </div>
+                        <div class="money_box p-money br-fr">
+                            <a id="recharge2" class="btn-1" href="{:url('web/User/payMent')}">充值</a>
+                            <a id="withdraw2" class="btn-2" href="{:url('web/User/withdraw')}">提现</a>
+                        </div>
+                    </section>
+                    <div class="mid-gap">
+                        <h4>资金明细</h4>
+                    </div>
+                    <section class="moneydetails">
+                        <div class="table-control-bar clearfix">
+                            <label class="f-left">资金流向：</label>
+                            <ul class="f-left filter" id="money-flow">
+                                <li><a href="" class="active">全部</a></li>
+                                <li><a href="">收入</a></li>
+                                <li><a href="">支出</a></li>
+                            </ul>
+                            <div class="f-right">
+                                <select id="search-times">
+                                    <option value="" selected="selected">全部</option>
+                                    <option value="-7">最近一周</option>
+                                    <option value="-30">最近一月</option>
+                                    <option value="-90">最近三月</option>
+                                    <option value="-180">最近半年</option>
+                                    <option value="-360">最近一年</option>
+                                </select>
+                            </div>
+                        </div>
+                        <table id="asset-details-tbl" class="std-tbl">
+                            <colgroup>
+                                <col class="col1">
+                                <col class="col2">
+                                <col class="col3">
+                                <col class="col4">
+                                <col class="col5">
+                                <col class="col6">
+                                <col class="col7">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>时间</th>
+                                <th>流向</th>
+                                <th>收入/支出(元)</th>
+                                <th>余额(元)</th>
+                                <th>说明</th>
+                            </tr>
+                            <tr><td class="a-center">1</td><td class="a-center">2018-03-08 13:04:47</td>
+                                <td class="a-center">支出</td>
+                                <td class="a-center">
+                                    <span class="green">-64750</span>
+                                </td>
+                                <td class="a-center">888211.6</td>
+                                <td class="a-center">点买股票扣款</td>
+                            </tr>
+                            <tr><td class="a-center">2</td><td class="a-center">2018-03-08 11:05:14</td>
+                                <td class="a-center">收入</td>
+                                <td class="a-center">
+                                    <span class="red">10000</span>
+                                </td>
+                                <td class="a-center">942961.6</td>
+                                <td class="a-center">提现申请审核未通过，退还10000元</td>
+                            </tr>
+                            <tr><td class="a-center">3</td><td class="a-center">2018-03-08 11:03:21</td>
+                                <td class="a-center">支出</td>
+                                <td class="a-center">
+                                    <span class="green">-10000</span>
+                                </td>
+                                <td class="a-center">942961.6</td>
+                                <td class="a-center">申请提现10000元</td>
+                            </tr>
+                            <tr><td class="a-center">4</td><td class="a-center">2018-03-08 10:55:22</td>
+                                <td class="a-center">收入</td>
+                                <td class="a-center">
+                                    <span class="red">1547</span>
+                                </td>
+                                <td class="a-center">952961.6</td>
+                                <td class="a-center">卖出股票,退还保证金1250元，盈利分配297元 </td>
+                            </tr>
+                            <tr><td class="a-center">5</td><td class="a-center">2018-03-08 10:55:06</td>
+                                <td class="a-center">支出</td>
+                                <td class="a-center">
+                                    <span class="green">-49210</span>
+                                </td>
+                                <td class="a-center">951414.6</td>
+                                <td class="a-center">点买股票扣款</td>
+                            </tr>
+                            <tr><td class="a-center">6</td><td class="a-center">2018-03-08 10:52:07</td>
+                                <td class="a-center">支出</td>
+                                <td class="a-center">
+                                    <span class="green">-64750</span>
+                                </td>
+                                <td class="a-center">1000624.6</td>
+                                <td class="a-center">点买股票扣款</td>
+                            </tr>
+                            <tr><td class="a-center">7</td><td class="a-center">2018-03-08 10:50:10</td>
+                                <td class="a-center">支出</td>
+                                <td class="a-center">
+                                    <span class="green">-1</span>
+                                </td>
+                                <td class="a-center">1065374.6</td>
+                                <td class="a-center">点买股票扣款(一元模拟)</td>
+                            </tr>
+                            <tr><td class="a-center">8</td><td class="a-center">2018-03-08 10:24:52</td>
+                                <td class="a-center">支出</td>
+                                <td class="a-center">
+                                    <span class="green">-64750</span>
+                                </td>
+                                <td class="a-center">1065375.6</td>
+                                <td class="a-center">点买股票扣款</td>
+                            </tr>
+                            <tr><td class="a-center">9</td><td class="a-center">2018-03-08 09:58:06</td>
+                                <td class="a-center">收入</td>
+                                <td class="a-center">
+                                    <span class="red">70866.4</span>
+                                </td>
+                                <td class="a-center">1130125.6</td>
+                                <td class="a-center">卖出股票,退还保证金62500元，盈利分配8366.4元 </td>
+                            </tr>
+                            <tr><td class="a-center">10</td><td class="a-center">2018-03-08 09:48:23</td>
+                                <td class="a-center">支出</td>
+                                <td class="a-center">
+                                    <span class="green">-64750</span>
+                                </td>
+                                <td class="a-center">1059259.2</td>
+                                <td class="a-center">点买股票扣款</td>
+                            </tr>
+
+                            </thead>
+                            <tbody id="member_bh_list" class="std-tbl-tbody"></tbody>
+                        </table>
+                    </section>
+                    <section id="noPlanSection" class="group personal-section personal-empty hide">
+                        <p><a href="javascript:void(0);" class="btn btn-pri">我要交易</a>
+                        </p>
+                        <p><a href="http://www.fcml888.com/freetrial.html">免费体验</a>
+                        </p>
+                        <p><a href="http://www.fcml888.com/help.html">了解交易</a>
+                        </p>
+                    </section>
+                    <!--/ 交易列表start-->
+                    <div id="member_index_plan_list">
+                    </div>
+                    <!--/交易列表end-->
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{/block}
+{block name="script"}
+{/block}
