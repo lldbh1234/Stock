@@ -31,7 +31,11 @@ class Order extends Validate
         "force" => [
             "id" => "require|gt:0",
             "code"
-        ]
+        ],
+        "hedging" => [
+            "id" => "require|gt:0|canHedging",
+            "price"
+        ],
     ];
 
     protected function canBuy($value)
@@ -48,12 +52,24 @@ class Order extends Validate
         return $order ? true : false;
     }
 
+    protected function canHedging($value)
+    {
+        $myUserIds = \app\admin\model\Admin::userIds();
+        $where = ["order_id" => $value, "state" => 3, "is_hedging" => 0];
+        $myUserIds ? $where['user_id'] = ["IN", $myUserIds] : null;
+        $order = \app\admin\model\Order::where($where)->find();
+        return $order ? true : false;
+    }
+
     protected function checkPrice($value, $rule, $data)
     {
-        $where = ["order_id" => $data['id'], "state" => 1];
+        $where = ["order_id" => $data['id'], "state" => 3];
         $order = \app\admin\model\Order::where($where)->find();
-        $order = $order->toArray();
-        return abs($value - $order['price']) > 0.02 ? false : true;
+        if($order){
+            $order = $order->toArray();
+            return abs($value - $order['price']) > 0.02 ? false : true;
+        }
+        return false;
     }
 
     protected function forceSell($value, $rule, $data)

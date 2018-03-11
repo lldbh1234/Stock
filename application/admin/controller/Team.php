@@ -301,7 +301,127 @@ class Team extends Base
         return $this->fail("系统提示：非法操作！");
     }
 
-    public function rebate()
+    public function settlePoint($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('point')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "admin_id" => input("post.id/d"),
+                    "point" => input("post.point/f"),
+                    "jiancang_point" => input("post.jiancang_point/f"),
+                    "defer_point" => input("post.defer_point/f")
+                ];
+                $res = $this->_logic->adminUpdate($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("操作失败！");
+                }
+            }
+        }
+        $admin = $this->_logic->teamAdminById($id, "settle");
+        if($admin){
+            $this->assign("admin", $admin);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function operatePoint($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('point')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "admin_id" => input("post.id/d"),
+                    "point" => input("post.point/f"),
+                    "jiancang_point" => input("post.jiancang_point/f"),
+                    "defer_point" => input("post.defer_point/f")
+                ];
+                $res = $this->_logic->adminUpdate($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("操作失败！");
+                }
+            }
+        }
+        $admin = $this->_logic->teamAdminById($id, "operate");
+        if($admin){
+            $this->assign("admin", $admin);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function memberPoint($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('point')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "admin_id" => input("post.id/d"),
+                    "point" => input("post.point/f"),
+                    "jiancang_point" => input("post.jiancang_point/f"),
+                    "defer_point" => input("post.defer_point/f")
+                ];
+                $res = $this->_logic->adminUpdate($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("操作失败！");
+                }
+            }
+        }
+        $admin = $this->_logic->teamAdminById($id, "member");
+        if($admin){
+            $this->assign("admin", $admin);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function ringPoint($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('point')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "admin_id" => input("post.id/d"),
+                    "point" => input("post.point/f"),
+                    "jiancang_point" => input("post.jiancang_point/f"),
+                    "defer_point" => input("post.defer_point/f")
+                ];
+                $res = $this->_logic->adminUpdate($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("操作失败！");
+                }
+            }
+        }
+        $admin = $this->_logic->teamAdminById($id, "ring");
+        if($admin){
+            $this->assign("admin", $admin);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    /*public function rebate()
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Team');
@@ -321,5 +441,5 @@ class Team extends Base
             }
         }
         return $this->fail("系统提示：非法操作！");
-    }
+    }*/
 }

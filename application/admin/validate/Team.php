@@ -18,7 +18,9 @@ class Team extends Validate
         'status'    => 'require|in:0,1',
         'id'        => 'require|min:1|checkId',
         'number'    => 'require|float|gt:0',
-        'point'     => 'require|float|gt:0|max:100',
+        'point'     => 'require|float|max:100',
+        'jiancang_point' => 'require|float|max:100',
+        'defer_point' => 'require|float|max:100',
         'name'      => 'require|max:64',
         'domain'    => [
             'require',
@@ -56,10 +58,15 @@ class Team extends Validate
         'number.require'    => '请输入充值金额！',
         'number.float'      => '充值金额为数字！',
         'number.gt'         => '充值金额必须大于0！',
-        'point.require'     => '请输入返点百分比！',
-        'point.float'       => '返点百分比为数字！',
-        'point.gt'          => '返点百分比必须大于0！',
-        'point.max'         => '返点百分比最大为100！',
+        'point.require'     => '请输入盈利返点比率！',
+        'point.float'       => '盈利返点比率为数字！',
+        'point.max'         => '盈利返点比率最大为100！',
+        'jiancang_point.require' => '请输入建仓费返点比率！',
+        'jiancang_point.float' => '建仓费返点比率为数字！',
+        'jiancang_point.max' => '建仓费返点比率最大为100！',
+        'defer_point.require' => '请输入递延费返点比率！',
+        'defer_point.float' => '递延费返点比率为数字！',
+        'defer_point.max'   => '递延费返点比率最大为100！',
         'name.require'      => '微圈名不能为空！',
         'name.max'          => '微圈名最大64个字符！',
         'domain.require'    => '域名不能为空！',
@@ -93,6 +100,7 @@ class Team extends Validate
         'recharge' => ['id', 'number'],
         'wechat' => ['id', 'name', 'domain', 'appid', 'appsecret', 'token', 'sign_name', 'sms_username', 'sms_password'],
         'rebate' => ['id', 'point'],
+        'point' => ['id', 'point', 'jiancang_point', 'defer_point'],
     ];
 
     public function checkRole($value)
