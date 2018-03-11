@@ -38,6 +38,13 @@ if(!function_exists("createOrderSn")){
     }
 }
 
+if(!function_exists("createStrategySn")){
+    function createStrategySn()
+    {
+        return date("YmdHis") . isLogin() . randomString(6, true);
+    }
+}
+
 if(!function_exists("checkStockTradeTime"))
 {
     function checkStockTradeTime()

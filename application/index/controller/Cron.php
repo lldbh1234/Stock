@@ -1,10 +1,10 @@
 <?php
 namespace app\index\controller;
 
-use app\index\logic\OrderLogic;
 use think\Controller;
 use think\Db;
 use think\Queue;
+use app\index\logic\OrderLogic;
 
 class Cron extends Controller
 {

@@ -43,6 +43,7 @@ class Stock extends Base
                 if(uInfo()['account'] > $deposit['money'] + $trade["jiancang"]){
                     $holiday = explode(',', $configs['holiday']);
                     $order = [
+                        "order_sn" => createStrategySn(),
                         "user_id" => $this->user_id,
                         "product_id" => $mode['product_id'],
                         "code"  => $code,
@@ -59,12 +60,14 @@ class Stock extends Base
                         "stop_loss_price" => input("post.loss/f"),
                         "stop_loss_point" => round(($price - input("post.loss/f")) / $price * 100, 2),
                         "deposit"   => $deposit['money'],
+                        "state"     => 3, // 下单即持仓
                         "is_follow" => $followId ? 1 : 0,
-                        "follow_id" => $followId
+                        "follow_id" => $followId,
+                        "is_hedging" => 0, // 持仓单默认未对冲
                     ];
                     $orderId = (new OrderLogic())->createOrder($order);
                     if($orderId > 0){
-                        $url = url("index/Order/entrust");
+                        $url = url("index/Order/position");
                         // 队列
                         $smsNoticeData = $sysNoticeData = ["niurenId" => $this->user_id];
                         Queue::push('app\index\job\UserNotice@systemNotice', $sysNoticeData, null);
@@ -80,7 +83,8 @@ class Stock extends Base
         }else{
             $stock = $this->_logic->stockByCode($code);
             if($stock){
-                $quotation = $this->_logic->simpleData($code);
+                //$quotation = $this->_logic->simpleData($code);
+                $quotation = $this->_logic->quotationBySina($code);
                 if(isset($quotation[$code]) && !empty($quotation[$code])){
                     $modes = (new ModeLogic())->productModes();
                     $deposits = (new DepositLogic())->allDeposits();

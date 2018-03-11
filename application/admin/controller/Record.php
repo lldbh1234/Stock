@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+use app\admin\logic\StockLogic;
 use think\Request;
 use app\admin\logic\RecordLogic;
 
@@ -35,6 +36,14 @@ class Record extends Base
     // 牛人返点
     public function niuren()
     {
+        $codes = [
+            "600000",
+            "600004",
+            "600007",
+        ];
+        $res = (new StockLogic())->stockQuotationBySina($codes);
+        dump($res);
+        exit;
         $res = $this->_logic->pageNiurenRecord(input(""));
     }
 

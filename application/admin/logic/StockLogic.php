@@ -3,13 +3,24 @@ namespace app\admin\logic;
 
 use app\admin\model\Stock;
 use app\common\libraries\api51;
+use app\common\quotation\sina;
 
 class StockLogic
 {
     protected $_library;
+    protected $_sinaQuotation;
     public function __construct()
     {
         $this->_library = new api51();
+        $this->_sinaQuotation = new sina();
+    }
+
+    // 新浪财经行情
+    public function stockQuotationBySina($code)
+    {
+        $codes = $this->_fullCodeByCodes($code);
+        $response = $this->_sinaQuotation->real($codes);
+        return $response;
     }
 
     public function stockByCode($code)
@@ -39,5 +50,10 @@ class StockLogic
             }
         }
         return $quotation;
+    }
+
+    private function _fullCodeByCodes($codes)
+    {
+        return Stock::where(["code" => ["IN", $codes]])->column("full_code");
     }
 }
