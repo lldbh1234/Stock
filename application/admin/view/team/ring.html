@@ -48,7 +48,9 @@
             <th>真名</th>
             <th>手机号</th>
             <th>上级微会员</th>
-            <th>返点百分比（%）</th>
+            <th>盈利返点（%）</th>
+            <th>建仓费返点（%）</th>
+            <th>递延费返点（%）</th>
             <th>保证金</th>
             <th>手续费总计</th>
             <th>邀请码</th>
@@ -67,6 +69,8 @@
             <td>{$item.mobile}</td>
             <td>{$item.has_one_parent.username}</td>
             <td>{$item.point}</td>
+            <td>{$item.jiancang_point}</td>
+            <td>{$item.defer_point}</td>
             <td>{$item.deposit|number_format=2}</td>
             <td>{$item.total_fee|number_format=2}</td>
             <td>{$item.code}</td>
@@ -80,7 +84,7 @@
             </td>
             <td class="f-14">
                 <a title="编辑" href="javascript:;" onclick="admin_edit('用户编辑','{:url("admin/Team/modifyRing", ['id' => $item.admin_id])}','','380')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-                <a title="返点修改" href="javascript:;" onclick="admin_point(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-arrow1-left"></i></a>
+                <a title="返点修改" href="javascript:;" onclick="admin_edit('返点修改','{:url("admin/Team/ringPoint", ['id' => $item.admin_id])}','','340');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-arrow1-left"></i></a>
                 <a title="保证金充值" href="javascript:;" onclick="admin_recharge(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
             </td>
         </tr>
@@ -139,7 +143,7 @@
         });
     }
 
-    function admin_point(_obj, _id)
+    /*function admin_point(_obj, _id)
     {
         layer.prompt({
             title: '修改返点百分比',
@@ -165,6 +169,6 @@
                 };
             _ajaxPost(_url, _oData, _func);
         });
-    }
+    }*/
 </script>
 {/block}

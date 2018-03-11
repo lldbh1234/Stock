@@ -173,8 +173,12 @@ Route::group([], function() {
             Route::any('add-ring', 'admin/Team/createRing');
             Route::any('edit-ring', 'admin/Team/modifyRing');
             Route::post('recharge', 'admin/Team/recharge');
-            Route::post('rebate', 'admin/Team/rebate');
-            Route::any('create', 'admin/Team/createUser'); //添加用户
+            Route::any('member-point', 'admin/Team/memberPoint');
+            Route::any('settle-point', 'admin/Team/settlePoint');
+            Route::any('operate-point', 'admin/Team/operatePoint');
+            Route::any('ring-point', 'admin/Team/ringPoint');// 返点修改
+            //Route::post('rebate', 'admin/Team/rebate');
+            //Route::any('create', 'admin/Team/createUser'); //添加用户
         });
 
         // 插件管理
@@ -194,14 +198,14 @@ Route::group([], function() {
             Route::any('add', 'admin/Mode/create');
             Route::any('edit', 'admin/Mode/modify');
             Route::post('delete', 'admin/Mode/remove');
-            Route::any('deposit', 'admin/Mode/deposit'); //保证金列表
-            Route::any('add-deposit', 'admin/Mode/createDeposit');
-            Route::any('edit-deposit', 'admin/Mode/modifyDeposit');
-            Route::post('del-deposit', 'admin/Mode/removeDeposit');
-            Route::any('lever', 'admin/Mode/lever'); //保证金列表
-            Route::any('add-lever', 'admin/Mode/createLever');
-            Route::any('edit-lever', 'admin/Mode/modifyLever');
-            Route::post('del-lever', 'admin/Mode/removeLever');
+            //Route::any('deposit', 'admin/Mode/deposit'); //保证金列表
+            //Route::any('add-deposit', 'admin/Mode/createDeposit');
+            //Route::any('edit-deposit', 'admin/Mode/modifyDeposit');
+            //Route::post('del-deposit', 'admin/Mode/removeDeposit');
+            //Route::any('lever', 'admin/Mode/lever'); //保证金列表
+            //Route::any('add-lever', 'admin/Mode/createLever');
+            //Route::any('edit-lever', 'admin/Mode/modifyLever');
+            //Route::post('del-lever', 'admin/Mode/removeLever');
         });
 
         Route::group("deposit", function(){
