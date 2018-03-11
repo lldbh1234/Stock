@@ -92,7 +92,10 @@ class Cron extends Controller
             $orders = (new OrderLogic())->todaySellOrder();
             if($orders){
                 foreach ($orders as $order){
-
+                    if($order['profit'] > 0){
+                        // 盈利
+                        Queue::push('app\index\job\RebateJob@handleSellOrder', $order["order_id"], null);
+                    }
                 }
             }
         }
