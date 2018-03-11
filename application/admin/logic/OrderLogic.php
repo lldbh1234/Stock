@@ -122,6 +122,17 @@ class OrderLogic
         return ["lists" => $records, "pages" => $lists->render()];
     }
 
+    public function orderById($orderId)
+    {
+        $myUserIds = Admin::userIds();
+        $where = ["order_id" => $orderId];
+        $myUserIds ? $where["user_id"] = ["IN", $myUserIds] : null;
+        $order = Order::with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator"])
+                    ->where($where)
+                    ->find();
+        return $order ? $order->toArray() : [];
+    }
+
     public function updateOrder($data)
     {
         return Order::update($data);

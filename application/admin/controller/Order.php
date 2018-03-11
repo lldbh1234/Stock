@@ -47,6 +47,16 @@ class Order extends Base
         return view();
     }
 
+    public function positionDetail($id = null)
+    {
+        $order = $this->_logic->orderById($id);
+        if($order){
+            $this->assign("order", $order);
+            return view();
+        }
+        return "非法操作！";
+    }
+
     public function buyOk()
     {
         if(request()->isPost()){
