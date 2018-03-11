@@ -122,12 +122,13 @@ Route::group("cron", function () {
 //web
 Route::group([], function() {
     Route::group("web", function () {
-        Route::any('/$', 'web/Index/index');//首页
+        Route::any('/$', 'web/Stock/stockBuy');//首页
         Route::any('index', 'web/Index/index');//首页
         Route::any('login', 'web/Home/login');//登陆
         Route::any('logout', 'web/Home/logout');//登出
         Route::any('register', 'web/Home/register');//注册
         Route::any('mobile', 'web/Home/mobile');
+        Route::any('send-code', 'web/Home/sendMobileCode');
         //A股购买
         Route::group("stock", function () {
             Route::any('buy', 'web/Stock/stockBuy'); //点买

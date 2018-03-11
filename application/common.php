@@ -113,3 +113,22 @@ if(!function_exists("numberFormat")){
         }
     }
 }
+if(!function_exists("timeAgo")) {
+    /**
+     * @param $the_time
+     * @return false|string
+     * 时间标签
+     */
+    function timeAgo($the_time)
+    {
+        $now_time = time();
+        $show_time = $the_time;
+        $dur = $now_time - $show_time;
+        if ($dur < 0) return $the_time;
+        if ($dur < 60) return $dur . '秒前';
+        if ($dur < 3600) return floor($dur / 60) . '分钟前';
+        if ($dur < 86400) return floor($dur / 3600) . '小时前';
+        if ($dur < 604800) return floor($dur / 86400) . '天前';//7天前
+        return date('Y-m-d', $the_time);
+    }
+}

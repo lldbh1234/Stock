@@ -17,6 +17,16 @@ class Index extends Base
 
     public function index()
     {
+        $orderLogic = new OrderLogic();
+        //最新购买记录
+        $orderLists = $orderLogic->getLimit([/*'state' => 3*/], 10);
+        foreach($orderLists as $k => $v)
+        {
+            $orderLists[$k]['has_one_user']['mobile'] = mobileHide($v['has_one_user']['mobile']);
+            $orderLists[$k]['time'] = timeAgo($v['create_at']);
+        }
+        $this->assign('orderLists', $orderLists);
+        $this->assign('type', 1);
         return view();
     }
 }

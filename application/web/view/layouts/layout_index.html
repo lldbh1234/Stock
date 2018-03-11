@@ -23,13 +23,15 @@
                 服务热线：0571-86718052
                 <a id="qqicon" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=369072666&amp;site=qq&amp;menu=yes"></a>
             </div>
+            {empty name="userInfo"}
             <div id="page_shared_layout_login" class="h_topR br-fr">
                 <a class="login" href="{:url('web/Home/login')}">登录</a>
                 <a class="register" href="{:url('web/Home/register')}">注册</a>
             </div>
+            {else /}
 
-            <ul id="page_shared_layout_unlogin" class="top-links f-right" style="display: none;">
-                <li class="show-login" style="display: block;">您好，&nbsp;</li>
+            <ul id="page_shared_layout_unlogin" class="top-links f-right">
+                <li class="show-login" style="display: block;">您好，&nbsp;{$userInfo.nickname | default=$userInfo.username}</li>
                 <li class="show-login top-user-wrapper" style="display: block;">
                     <span class="top-username">
                     	<a id="page_shared_layout_login_name" href="{:url('web/User/index')}"></a>
@@ -49,6 +51,7 @@
                 </li>
 
             </ul>
+            {/empty}
 
         </div>
     </div>
@@ -59,10 +62,10 @@
             </div>
             <div class="h_botR br-fr">
                 <ul class="br-clearfix" id="menu-ul">
-                    <li class="br-fl"><a href="{:url('web/Index/index')}" class="active">首页</a></li>
-                    <li class="br-fl"><a href="{:url('web/Stock/stockBuy')}">A股点买</a></li>
+                    <li class="br-fl"><a href="{:url('web/Index/index')}" {eq name="type" value="1"}class="active"{/eq} >首页</a></li>
+                    <li class="br-fl"><a href="{:url('web/Stock/stockBuy')}" {eq name="type" value="2"}class="active"{/eq} >A股点买</a></li>
                     <!-- <li class="br-fl"><a href="freetrial.html">免费体验</a></li> -->
-                    <li class="br-fl"><a href="{:url('web/home/mobile')}">手机版</a></li>
+                    <li class="br-fl"><a href="{:url('web/home/mobile')}" {eq name="type" value="3"}class="active"{/eq} >手机版</a></li>
                     <!-- <li class="br-fl help_box">
                         <a href="http://www.fcml888.com/guild.html">帮助中心</a>
                         <ul class="new-sub-nav hide">
@@ -104,6 +107,7 @@
 </html>
 <script type="text/javascript" src="__RESOURCEWEB__/js/jquery-2.2.0.min.js"></script>
 <script type="text/javascript" src="__RESOURCEWEB__/js/mui.min.js"></script>
+<script type="text/javascript" src="/resource/admin/lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="__RESOURCEWEB__/js/common.js"></script>
 <script type="text/javascript" src="__RESOURCEWEB__/js/config.js"></script>
 <script type="text/javascript" src="__RESOURCEWEB__/js/bootstrap.min.js"></script>

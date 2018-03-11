@@ -134,7 +134,7 @@ var reg={
                     //如果长度=4
                     if (_val.length == 4) {
 						$.ajax({
-							url:'/index/index/sendMobileCode',
+							url:"{:url('web/Home/sendMobileCode')}",
 							data:{
 								mobile: $("#mobileno").val(), 
 								imgCode:_val,
@@ -260,7 +260,7 @@ var reg={
 
 //          var refId = store.getCookie("refId", 1);
             $.ajax({
-            	url:'/index/index/doReg',
+            	url:'web/Home/register',
                 type:"post",
                 dataType:"json",
             	data:{

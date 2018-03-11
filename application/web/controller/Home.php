@@ -4,11 +4,16 @@ namespace app\web\controller;
 use app\index\logic\AdminLogic;
 use app\web\logic\LoginLogic;
 use app\web\logic\UserLogic;
-use think\Controller;
 use app\web\logic\SmsLogic;
+use think\Request;
 
-class Home extends Controller
+class Home extends Base
 {
+    public function __construct(Request $request = null)
+    {
+        parent::__construct($request);
+    }
+
     public function login()
     {
         if(isLogin()){
@@ -46,7 +51,7 @@ class Home extends Controller
     public function register()
     {
         if(isLogin()){
-            return $this->redirect(url("web/Index/index"));
+            return $this->redirect(url("web"));
             exit;
         }else{
             if(request()->isPost()){
@@ -154,6 +159,7 @@ class Home extends Controller
     }
     public function mobile()
     {
+        $this->assign('type', 3);
         return view('public/phone');
     }
 }

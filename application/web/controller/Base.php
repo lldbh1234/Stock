@@ -11,11 +11,9 @@ class Base extends Controller
     public function __construct(Request $request = null)
     {
         parent::__construct($request);
-        $this->user_id = isLogin();
-        if(!$this->user_id){// 还没登录 跳转到登录页面
-            return $this->redirect(url("web/Home/login"));
-            exit;
-        }
+        $this->assign('type', 1);
+        $this->assign('userInfo', uInfo() ? uInfo() : []);
+
     }
     public function createManagerQrcode($uid)
     {
@@ -35,5 +33,13 @@ class Base extends Controller
 
             $qrCode->writeFile('./upload/manager_qrcode/' . $this->user_id . '.png');
         }
+    }
+    public function checkUserLogin()
+    {
+        $this->user_id = isLogin();
+        if(!$this->user_id){// 还没登录 跳转到登录页面
+            return false;
+        }
+        return true;
     }
 }

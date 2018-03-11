@@ -20,6 +20,7 @@ class Stock extends Base
 
     public function stockBuy()
     {
+        $this->assign('type', 2);
         return view();
     }
     public function stockSell()

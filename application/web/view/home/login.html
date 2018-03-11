@@ -1,7 +1,7 @@
 {extend name="layouts/layout_index" /}
 
 {block name="title"}
-注册
+用户登录
 {/block}
 
 {block name="style"}
@@ -18,12 +18,20 @@
                 <h2 style="padding:0;" class="login_h2">账户登录</h2>
                 <div class="form">
                     <div class="field-wrapper">
-                        <input type="text" class="text" placeholder="请输入用户名" name="phone" id="用户名i" data-error-msg="请输入用户名">
+                        <input type="text" class="text" placeholder="请输入手机号码" id="phone" name="phone" data-error-msg="请输入用户名">
                         <label class="name-err1 hide">用户名不能为空</label>
                     </div>
                     <div class="field-wrapper">
-                        <input type="password" class="text" placeholder="请输入密码" name="pwd" id="登录密码i" onkeydown="if (event.keyCode == 13) { user_Login() }">
+                        <input type="password" class="text" placeholder="请输入6~12位密码" id="password" name="password">
                         <label class="psw-err1 hide">密码不能为空</label>
+                    </div>
+                    <div class="field-wrapper">
+                        <select name="institution" id="institution">
+                            <option value="0">请选择机构</option>
+                            {volist name="members" id="item"}
+                                <option value="{$item.admin_id}">{$item.nickname|default=$item.username}</option>
+                            {/volist}
+                        </select>
                     </div>
                     <div class="link-wrapper group login_forgot">
                         <!-- <a href="http://www.fcml888.com/forgot_pass.html">忘记密码</a> -->
@@ -44,6 +52,62 @@
 
 
 {/block}
-{block name="script"}、
-<script src="__RESOURCEWEB__/js/login.js"></script>
+{block name="script"}
+
+<script type="text/javascript">
+    // 登录逻辑
+    var storage = window.localStorage;
+    var token = storage.token;
+    // 如果登录直接返回到上一个页面
+    if(token){
+        window.history.go(-1);
+    }
+
+    // 提交登录
+    $("#login-btn").click(function(e){
+        e.preventDefault();
+        var mobile = $("#phone").val();
+        var password = $("#password").val();
+        var institution = $("#institution").val();
+
+        // 验证输入
+        if(mobile == "" || password == ""){
+            layer.alert("请输入手机号和密码");
+            return false;
+        }
+
+        if( !(/^1[34578]\d{9}$/.test(mobile)) ){
+            layer.alert("输入手机号码有误！");
+            return false;
+        }
+
+        if(institution == ""){
+            layer.alert("请选择机构");
+            return false;
+        }
+
+        var url = '{:url("web/Home/login")}';
+        var data = {
+            username: mobile,
+            password: password,
+            institution: institution
+        };
+        $ajaxCustom(url, data, function(res){
+            if(res.state){ // 登录成功
+
+                layer.alert("登录成功");
+                setTimeout(function(){
+                    if(res.data.url){
+                        window.location.href = res.data.url;
+                    }else{
+                        window.location.href = "/";
+                    }
+                }, 1000);
+            }else{
+                layer.alert(res.info);
+            }
+        })
+
+    });
+</script>
 {/block}

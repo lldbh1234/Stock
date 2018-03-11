@@ -12,7 +12,7 @@ class Home extends Controller
     public function login()
     {
         if(isLogin()){
-            return $this->redirect(url("index/Index/index"));
+            return $this->redirect(url("web"));
             exit;
         }else{
             if(request()->isPost()){

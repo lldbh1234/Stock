@@ -11,21 +11,21 @@
 <!--banner-->
 <div class="banner_login br-w100">
 	<div class="bBanner br-w100">
-		<div class="w1024">
-			<div class="login_main">
-				<p>用户登录</p>
-				<from>
-					<input type="text" name="" id="username" placeholder="用户名">
-					<div id="err1" class="err">请输入正确用户名</div>
-					<input type="password" name="" id="password" placeholder="密码">
-					<div id="err2" class="err">请输入正确密码</div>
-					<div class="login_box">
-						<a href="javascript:;" class="btn_login">登录</a>
-						<a href="register.html" class="btn_reg">注册</a>
-					</div>
-				</from>
-			</div>
-		</div>
+		<!--<div class="w1024">-->
+			<!--<div class="login_main">-->
+				<!--<p>用户登录</p>-->
+				<!--<from>-->
+					<!--<input type="text" name="" id="username" placeholder="用户名">-->
+					<!--<div id="err1" class="err">请输入正确用户名</div>-->
+					<!--<input type="password" name="" id="password" placeholder="密码">-->
+					<!--<div id="err2" class="err">请输入正确密码</div>-->
+					<!--<div class="login_box">-->
+						<!--<a href="javascript:;" class="btn_login">登录</a>-->
+						<!--<a href="register.html" class="btn_reg">注册</a>-->
+					<!--</div>-->
+				<!--</from>-->
+			<!--</div>-->
+		<!--</div>-->
 		<!--轮播图-->
 		<div class="home_banner">
 			<div id="myCarousel" class="carousel slide">
@@ -103,52 +103,55 @@
 		<div class="high_l br-fl ">
 			<h1>获得更高收益</h1>
 			<p>提供投资谋略金和投资人分享高额回报</p>
-			<a href="http://www.fcml888.com/buy.html" class="">进入点买A股</a>
+			<a href="{:url('web/Stock/stockBuy')}" class="">进入点买A股</a>
 		</div>
 		<div class="high_r br-fr ">
 			<table>
-				<tbody><tr>
-					<td class="nickname">152****4268</td>
-					<td class="time">21分钟前</td>
-					<td class="celue">谋略</td>
-					<td class="stockNumber">中文在线[300364]</td>
-				</tr>
+				<tbody>
+				{volist name="$orderLists" id="vo"}
 				<tr>
-					<td class="nickname">156****9885</td>
-					<td class="time">25分钟前</td>
+					<td class="nickname">{$vo.has_one_user.mobile}</td>
+					<td class="time">{$vo.time}</td>
 					<td class="celue">谋略</td>
-					<td class="stockNumber">大理药业[603963]</td>
+					<td class="stockNumber">{$vo.name}[{$vo.code}]</td>
 				</tr>
-				<tr>
-					<td class="nickname">138****4888</td>
-					<td class="time">27分钟前</td>
-					<td class="celue">谋略</td>
-					<td class="stockNumber">美芝股份[002856]</td>
-				</tr>
-				<tr>
-					<td class="nickname">156****9885</td>
-					<td class="time">27分钟前</td>
-					<td class="celue">谋略</td>
-					<td class="stockNumber">招商银行[600036]</td>
-				</tr>
-				<tr>
-					<td class="nickname">187****0111</td>
-					<td class="time">47分钟前</td>
-					<td class="celue">谋略</td>
-					<td class="stockNumber">招商银行[600036]</td>
-				</tr>
-				<tr>
-					<td class="nickname">133****9808</td>
-					<td class="time">48分钟前</td>
-					<td class="celue">谋略</td>
-					<td class="stockNumber">华统股份[002840]</td>
-				</tr>
-				<tr>
-					<td class="nickname">159****7346</td>
-					<td class="time">48分钟前</td>
-					<td class="celue">谋略</td>
-					<td class="stockNumber">风华高科[000636]</td>
-				</tr>
+				{/volist}
+				<!--<tr>-->
+					<!--<td class="nickname">156****9885</td>-->
+					<!--<td class="time">25分钟前</td>-->
+					<!--<td class="celue">谋略</td>-->
+					<!--<td class="stockNumber">大理药业[603963]</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td class="nickname">138****4888</td>-->
+					<!--<td class="time">27分钟前</td>-->
+					<!--<td class="celue">谋略</td>-->
+					<!--<td class="stockNumber">美芝股份[002856]</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td class="nickname">156****9885</td>-->
+					<!--<td class="time">27分钟前</td>-->
+					<!--<td class="celue">谋略</td>-->
+					<!--<td class="stockNumber">招商银行[600036]</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td class="nickname">187****0111</td>-->
+					<!--<td class="time">47分钟前</td>-->
+					<!--<td class="celue">谋略</td>-->
+					<!--<td class="stockNumber">招商银行[600036]</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td class="nickname">133****9808</td>-->
+					<!--<td class="time">48分钟前</td>-->
+					<!--<td class="celue">谋略</td>-->
+					<!--<td class="stockNumber">华统股份[002840]</td>-->
+				<!--</tr>-->
+				<!--<tr>-->
+					<!--<td class="nickname">159****7346</td>-->
+					<!--<td class="time">48分钟前</td>-->
+					<!--<td class="celue">谋略</td>-->
+					<!--<td class="stockNumber">风华高科[000636]</td>-->
+				<!--</tr>-->
 				</tbody></table>
 		</div>
 	</div>
@@ -192,7 +195,7 @@
 			<h1>A股点买去<span>非常谋略</span></h1>
 			<p class="sp1">“股票点买最安全平台”</p>
 			<p class="sp2">急速撮合<br>仅需填写简单资料<br>提交谋略<br>就能马上提交投资人赚钱</p>
-			<a href="register.html">立即注册</a>
+			<a href="{:url('web/Home/register')}">立即注册</a>
 		</div>
 	</div>
 </div>
