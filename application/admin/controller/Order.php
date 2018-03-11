@@ -51,6 +51,11 @@ class Order extends Base
     {
         $order = $this->_logic->orderById($id);
         if($order){
+            $hedging = [1 => '是', 0 => '否'];
+            $quotation = (new StockLogic())->stockQuotationBySina($order['code']);
+            $order['is_hedging_text'] = $hedging[$order['is_hedging']];
+            $order['last_px'] = isset($quotation[$order['code']]['last_px']) ? number_format($quotation[$order['code']]['last_px'], 2) : '-';
+            $order['pl'] = isset($quotation[$order['code']]['last_px']) ? number_format(($order['last_px'] - $order['price']) * $order['hand'], 2) : "-";
             $this->assign("order", $order);
             return view();
         }
@@ -68,6 +73,33 @@ class Order extends Base
                     "order_id" => input("post.id/d"),
                     "price" => input("post.price/f"),
                     "state" => 3
+                ];
+                $res = $this->_logic->updateOrder($data);
+                if($res){
+                    return $this->ok();
+                }else{
+                    return $this->fail("操作失败！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
+
+    // 持仓订单对冲
+    public function hedging()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('hedging')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "order_id" => input("post.id/d"),
+                    "price" => input("post.price/f"),
+                    "state" => 3,
+                    "is_hedging" => 1,
+                    "update_by" => isLogin()
                 ];
                 $res = $this->_logic->updateOrder($data);
                 if($res){

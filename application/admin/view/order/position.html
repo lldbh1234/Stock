@@ -14,27 +14,27 @@
 <div class="page-container">
 	<form action="" method="get">
 		<div class="text-l">
-			<input type="text" class="input-text" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
-			<input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
-			<input type="text" class="input-text" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
-			<input type="text" class="input-text" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
 		</div>
-		<div class="text-l mt-20">
-			<input type="text" class="input-text" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
-			<input type="text" class="input-text" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
-			<input type="text" class="input-text" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
+		<div class="text-l mt-5">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
 		</div>
-		<div class="text-l mt-20">
-			<input type="text" class="input-text" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
-			<input type="text" class="input-text" style="width:170px;" placeholder="提交结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-			<span class="select-box" style="width:100px;height: 31px;">
-				<select class="select" name="is_hedging" size="1">
+		<div class="text-l mt-5">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+			<span class="select-box radius" style="width:100px;height: 31px;">
+				<select class="select radius" name="is_hedging" size="1">
 					<option value="">是否对冲</option>
 					<option value="1" {if condition="isset($search.is_hedging) AND $search.is_hedging heq '1'"}selected{/if}>是</option>
 					<option value="0" {if condition="isset($search.is_hedging) AND $search.is_hedging heq '0'"}selected{/if}>否</option>
 				</select>
 			</span>
-			<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
 		</div>
 	</form>
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -98,7 +98,7 @@
 			<td>
 				<a title="持仓详情" href="javascript:;" onclick="show_detail('持仓详情', '{:url("admin/Order/positionDetail", ['id' => $item.order_id])}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-yanjing"></i></a>
 				{eq name="$item.is_hedging" value="0"}
-				<a title="对冲" href="javascript:;" class="ml-5" onclick="hedging_ok({$item.order_id}, {$item.price}, this)" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-cart2-man"></i></a>
+				<a title="对冲" href="javascript:;" class="ml-5" onclick="hedging_ok({$item.order_id}, {$item.price})" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-cart2-man"></i></a>
 				{/eq}
 			</td>
 		</tr>
@@ -125,7 +125,7 @@
         layer.full(index);
     }
 
-    function hedging_ok(_id, _price, _obj)
+    function hedging_ok(_id, _price)
     {
         parent.layer.confirm('确认此订单已对冲？',function(index){
             parent.layer.close(index);

@@ -40,11 +40,13 @@
                 <th class="text-r">委托市值：</th>
                 <td class="text-l">{$order.price * $order.hand|number_format=2}</td>
                 <th class="text-r">现价：</th>
-                <td class="text-l">现价</td>
+                <td class="text-l">{$order.last_px}</td>
             </tr>
             <tr>
                 <th class="text-r">盈亏：</th>
-                <td class="text-l">盈亏</td>
+                <td class="text-l {if condition='$order.pl LT 0'}c-green{else /}c-red{/if}">
+                    {$order.pl}
+                </td>
                 <th class="text-r">止盈：</th>
                 <td class="text-l">{$order.stop_profit_price|number_format=2}</td>
             </tr>
@@ -74,9 +76,17 @@
             </tr>
             <tr>
                 <th class="text-r">是否对冲：</th>
-                <td class="text-l">{$order.is_hedging}</td>
+                <td class="text-l {if condition='$order.is_hedging neq 0'}c-green{else /}c-red{/if}">
+                    {$order.is_hedging_text}
+                </td>
                 <th class="text-r">操作员：</th>
-                <td class="text-l">{$order.has_one_operator.username|default='-'}</td>
+                <td class="text-l">
+                    {if condition="$order.has_one_operator"}
+                    {$order.has_one_operator.nickname|default=$order.has_one_operator.username}
+                    {else /}
+                    -
+                    {/if}
+                </td>
             </tr>
             <tr>
                 <th class="text-r">买入时间：</th>
