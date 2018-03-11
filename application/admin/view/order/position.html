@@ -12,68 +12,107 @@
 	</a>
 </nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray">
+	<form action="" method="get">
+		<div class="text-l">
+			<input type="text" class="input-text" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
+			<input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+			<input type="text" class="input-text" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
+			<input type="text" class="input-text" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
+		</div>
+		<div class="text-l mt-20">
+			<input type="text" class="input-text" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+			<input type="text" class="input-text" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+			<input type="text" class="input-text" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
+		</div>
+		<div class="text-l mt-20">
+			<input type="text" class="input-text" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+			<input type="text" class="input-text" style="width:170px;" placeholder="提交结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+			<span class="select-box" style="width:100px;height: 31px;">
+				<select class="select" name="is_hedging" size="1">
+					<option value="">是否对冲</option>
+					<option value="0" {if condition="isset($search.is_hedging) AND $search.is_hedging heq '0'"}selected{/if}>否</option>
+					<option value="1" {if condition="isset($search.is_hedging) AND $search.is_hedging heq '1'"}selected{/if}>是</option>
+				</select>
+			</span>
+			<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+		</div>
+	</form>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
-			<!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
-				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
-			</a>
-			<a class="btn btn-primary radius" href="javascript:;" onclick="deposit_add('添加保证金','{:url("admin/Deposit/create")}','','350')">
-				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加保证金
-			</a> -->
 		</span>
 		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
 	</div>
 	<table class="table table-border table-bordered table-hover table-bg">
 		<thead>
 		<tr class="text-c">
-			<th width="25"><input type="checkbox" value="" name=""></th>
-			<th width="40">ID</th>
-			<th>用户名</th>
+			<th>策略ID</th>
+			<!--<th>流水号</th>-->
+			<th>昵称</th>
+			<th>手机号</th>
 			<th>股票代码</th>
 			<th>股票名称</th>
-			<th>买入价</th>
-			<th>买入手数</th>
-			<th>建仓费</th>
-			<th>自动递延</th>
-			<th>递延费</th>
-			<th>免息到期时间</th>
-			<th>止盈</th>
-			<th>止损</th>
+			<th width="40">委托价</th>
+			<th>委托数量</th>
+			<!--<th>委托市值</th>-->
+			<th width="32">现价</th>
+			<th>盈亏</th>
+			<th width="32">止盈</th>
+			<th width="32">止损</th>
 			<th>保证金</th>
-			<th>是否跟买</th>
-			<th>下单时间</th>
+			<th>建仓费</th>
+			<th>递延费</th>
+			<th>微会员</th>
+			<th>微圈</th>
+			<th>经纪人</th>
+			<th width="70">下单时间</th>
+			<th>是否对冲</th>
+			<!--<th>操作人</th>
+			<th width="70">买入时间</th>-->
 			<th>操作</th>
 		</tr>
 		</thead>
 		<tbody>
 		{volist name="datas.data" id="item"}
 		<tr class="text-c mode-lists">
-			<td><input type="checkbox" value="{$item.order_id}" name="id"></td>
 			<td>{$item.order_id}</td>
-			<td>{$item.has_one_user.username}</td>
+			<!--<td>{$item.order_sn}</td>-->
+			<td>{$item.has_one_user.nickname|default='-'}</td>
+			<td>{$item.has_one_user.mobile|default='-'}</td>
 			<td>{$item.code}</td>
 			<td>{$item.name}</td>
 			<td>{$item.price|number_format=2}</td>
 			<td>{$item.hand|intval}</td>
-			<td>{$item.jiancang_fee|number_format=2}</td>
-			<td>
-				{if condition="$item.is_defer eq 1"}
-				<span class="label label-success radius">{$item.is_defer_text}</span>
-				{else /}
-				<span class="label label-danger radius">{$item.is_defer_text}</span>
-				{/if}
-			</td>
-			<td>{$item.defer|number_format=2}</td>
-			<td>{$item.free_time|date="Y-m-d H:i", ###}</td>
+			<!--<td>{$item.price * $item.hand|number_format=2}</td>-->
+			<td>{$item.last_px}</td>
+			<td>{$item.pl}</td>
 			<td>{$item.stop_profit_price|number_format=2}</td>
 			<td>{$item.stop_loss_price|number_format=2}</td>
 			<td>{$item.deposit|number_format=2}</td>
-			<td>
-				{$item.is_follow_text}{if condition="$item.is_follow neq 0"} [跟单ID：{$item.follow_id}] {/if}
-			</td>
+			<td>{$item.jiancang_fee|number_format=2}</td>
+			<td>{$item.defer|number_format=2}</td>
+			<td>{$item.has_one_user.has_one_admin.has_one_parent.username|default='无'}</td>
+			<td>{$item.has_one_user.has_one_admin.username|default='无'}</td>
+			<td>{$item.has_one_user.has_one_parent.username|default='无'}</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
 			<td>
-				<input class="btn btn-danger radius" type="button" onclick="force_sell('{$item.order_id}', '{$item.code}', this)" value="平仓">
+				{if condition="$item.is_hedging eq 1"}
+				<span class="label label-success radius">{$item.is_hedging_text}</span>
+				{else /}
+				<span class="label label-danger radius">{$item.is_hedging_text}</span>
+				{/if}
+			</td>
+			<!--<td>{$item.has_one_operator.username|default='-'}</td>
+			<td>
+				{if condition="$item.has_one_operator"}
+				{$item.update_at|date="Y-m-d H:i", ###}
+				{else /}
+				-
+				{/if}
+			</td>-->
+			<td>
+				<a title="持仓详情" href="javascript:;" onclick="show_detail('持仓详情', '{:url("admin/Order/positionDetail", ['id' => $item.order_id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-yanjing"></i></a>
+				<a title="对冲" href="javascript:;" class="ml-5" onclick="hedging_ok({$item.order_id}, {$item.price}, this)" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-cart2-man"></i></a>
+				<!--<input class="btn btn-danger radius" type="button" onclick="force_sell('{$item.order_id}', '{$item.code}', this)" value="平仓">-->
 			</td>
 		</tr>
 		{/volist}
@@ -88,7 +127,36 @@
 {/block}
 
 {block name="script"}
+<script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script>
+    function hedging_ok(_id, _price, _obj)
+    {
+        parent.layer.confirm('确认此订单已对冲？',function(index){
+            parent.layer.close(index);
+            layer.prompt({
+                title: '实际买入价',
+                value: _price,
+                formType: 0,
+            }, function(_number, _prompt){
+                layer.close(_prompt);
+                var _oData = {id : _id, price : _number},
+                    _url = '{:url("admin/Order/hedging")}',
+                    _loading = parent.layer.load(1),
+                    _func = function (_resp) {
+                        parent.layer.close(_loading);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('操作成功！', {time: 500}, function(){
+                                window.location.reload();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
+        });
+    }
+
     function force_sell(_id, _code, _obj)
     {
         parent.layer.confirm('确认此订单强制平仓？', function(index){

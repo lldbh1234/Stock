@@ -25,4 +25,9 @@ class Order extends BaseModel
     {
         return $this->hasOne("\\app\\common\\model\\User", "user_id", "user_id");
     }
+
+    public function hasOneOperator()
+    {
+        return $this->hasOne("\\app\\common\\model\\Admin", "admin_id", "update_by");
+    }
 }

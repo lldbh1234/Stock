@@ -32,9 +32,18 @@ class Order extends Base
 
     public function position()
     {
-        $_res = $this->_logic->pageOrderLists(3, input(""));
+        $_res = $this->_logic->pagePositionOrders(input(""));
+        if($_res['lists']['data']){
+            $codes = array_column($_res['lists']['data'], "code");
+            $quotation = (new StockLogic())->stockQuotationBySina($codes);
+            array_filter($_res['lists']['data'], function(&$item) use ($quotation){
+                $item['last_px'] = isset($quotation[$item['code']]['last_px']) ? number_format($quotation[$item['code']]['last_px'], 2) : '-';
+                $item['pl'] = isset($quotation[$item['code']]['last_px']) ? number_format(($item['last_px'] - $item['price']) * $item['hand'], 2) : "-";
+            });
+        }
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("search", input(""));
         return view();
     }
 

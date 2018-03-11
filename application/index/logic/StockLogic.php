@@ -1,21 +1,30 @@
 <?php
 namespace app\index\logic;
 
-use app\common\libraries\api51;
 use app\index\model\Stock;
+use app\common\libraries\api51;
+use app\common\quotation\sina;
 
 class StockLogic
 {
     protected $_library;
+    protected $_sinaQuotation;
     public function __construct()
     {
         $this->_library = new api51();
+        $this->_sinaQuotation = new sina();
     }
 
     public function stockByCode($code)
     {
         $stock = Stock::where(["code" => $code])->find();
         return $stock ? $stock->toArray() : [];
+    }
+
+    // 新浪财经行情
+    public function quotationBySina($codes){
+        $codes = $this->_fullCodeByCodes($codes);
+        return $this->_sinaQuotation->real($codes);
     }
 
     public function simpleData($codes)
