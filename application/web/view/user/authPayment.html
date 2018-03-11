@@ -1,0 +1,180 @@
+{extend name="layouts/layout_index" /}
+
+{block name="title"}
+首页
+{/block}
+
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__RESOURCEWEB__/css/member.css">
+{/block}
+
+{block name="body"}
+<body class="membercenter logged-in">
+{/block}
+{block name="content"}
+
+<!--个人中心-充值-->
+<div class="br-content">
+    <div class="w1200">
+        <!--主体-->
+        <section class="page-main page-personal">
+            <div class="container clearfix">
+                <!--public左边-->
+                <aside class="col-left">
+                    <div class="userinfo">
+                        <form name="user_head" id="user_head">
+                            <input type="file" name="myfile222" id="img_upload">
+                            <div class="img_download">
+                                <img class="user-pic" id="headImg" src="__RESOURCEWEB__/images/user.png">
+                            </div>
+                        </form>
+                        <p class="user-info">Hi，<strong id="shared_layout_mem_lnm">linzihuan</strong></p>
+                    </div>
+                    <h4 class="new-head-line"><span class="user-5"></span>会员中心</h4>
+                    <nav id="personal-nav" class="left-nav">
+                        <ul>
+                            <li class=""><a href="{:url('web/User/index')}">我的首页&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class=""><a href="{:url('web/User/bankCards')}">银行卡管理&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class="active"><a href="{:url('web/User/payMent')}">充值&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class=""><a href="{:url('web/User/withdraw')}">提现&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <!-- <li class=""><a href="" style="display: none;">推广赚钱&nbsp;<span class="mem_gt">&gt;</span></a></li> -->
+                        </ul>
+                    </nav>
+                </aside>
+                <!--右边-->
+                <div id="page_member_payment" class="col-main page-member-payment">
+                    <div class="tabs-wrapper" id="pay-method-tabs">
+                        <nav>
+                            <ul class="clearfix">
+                                <li style="width: 18%;"><a href="payment.html" id="pm1">网银支付 </a></li>
+                                <li class="active" style="width: 18%;"><a href="{:url('web/User/authPayment')}" id="pm1">认证支付 </a></li>
+                                <li><a href="javascript:;" id="pm3">支付宝转账</a></li>
+                                <li><a href="javascript:;" id="pm2">微信转账</a></li>
+                            </ul>
+                        </nav>
+                        <div class="tabs">
+                            <div class="tab-item" id="tab-pm1">
+                                <form action="http://www.fcml888.com/index/Lianlianpayrenzheng/doPay" id="payForm" method="post">
+                                    <input type="hidden" name="user_id" value="1033">
+                                    <input type="hidden" name="busi_partner" value="101001">
+                                    <input type="hidden" name="name_goods" value="点买股票">
+                                    <input type="hidden" name="url_order" value="">
+                                    <input type="hidden" name="info_order" value="认证支付">
+                                    <input type="hidden" name="bank_code" value="">
+                                    <input type="hidden" name="pay_type" value="D">
+                                    <input type="hidden" name="no_agree" value="">
+                                    <input type="hidden" name="flag_modify" value="1">
+                                    <input type="hidden" name="back_url" value="">
+                                    <input type="hidden" name="shareing_data" value="">
+                                    <input type="hidden" name="valid_order" value="">
+                                    <div class="field-row group" style="display:none">
+                                        <label>可用资金:</label>
+                                        <div class="input-wrapper"> <span class="acount-val"><strong id="账户余额">0</strong><span class="unit">元</span></span> </div>
+                                    </div>
+                                    <div class="field-row group">
+                                        <label>充值金额:</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" class="text  b-pay-amount" name="b-pay-amount" onafterpaste="this.value=this.value.replace(/\D/g,&#39;&#39;)">
+                                        </div>
+                                    </div>
+                                    <div class="field-row group">
+                                        <label>姓名:</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" class="text  b-pay-amount" name="acct_name" value="林子焕">
+                                        </div>
+                                    </div>
+                                    <div class="field-row group">
+                                        <label>银行卡号:</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" class="text  b-pay-amount" name="card_no" value="6217001540017845064" onafterpaste="this.value=this.value.replace(/\D/g,&#39;&#39;)">
+                                        </div>
+                                    </div>
+                                    <div class="field-row group">
+                                        <label>身份证号:</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" class="text  b-pay-amount" name="id_no" value="330825199603234518" onafterpaste="this.value=this.value.replace(/\D/g,&#39;&#39;)">
+                                        </div>
+                                    </div>
+                                    <div class="btn-row group">
+                                        <button id="bankRecharge" type="button" class="btn btn-pri">提 交</button>
+                                    </div>
+                                    <div id="bankRecharge_rmk" class="field-row group" style="display: none">
+                                        <label>特别说明:</label>
+                                        <div class="input-wrapper"> <span class="acount-val"></span> </div>
+                                    </div>
+                                </form>
+                                <div class="bank-notes">
+                                    <h3>温馨提示</h3>
+                                    <ol>
+                                        <li>充值前请注意您的银行卡充值限制，以免造成不便；</li>
+                                        <li>禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用；</li>
+                                        <li>为了您的资金安全，建议充值前进行实名认证、手机绑定；</li>
+                                        <li>认证支付充值额度为单笔5万，当日10万。</li>
+                                        <li>如果充值遇到任何问题，请联系客服：0571-86718052。</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <!--/.tab-item -->
+
+                            <div class="tab-item hide" id="tab-pm3">
+                                <div class="alipay-trans-wrapper">
+                                    <form action="http://www.fcml888.com/ucenter/paymentrenzheng.html#">
+                                        <input type="hidden" id="tab-pm1-bank" name="tab-pm1-bank" value="">
+                                        <img src="__RESOURCEWEB__/images/alipay.png" style="width:250px;margin-left:140px; display:block; margin-bottom:20px;">
+                                        <p> <span style="color: red">请扫码充值，并务必在转账备注中填写注册手机号，这样方便我们多重信息确认您的汇款。</span><br>
+                                            转账成功后，请拨打客服热线
+                                            <label id="m_basic_mobile">0571-86718052</label>
+                                            以便我们及时帮您处理 <br>
+                                            账号：2509137766@qq.com <br>
+                                            户名：杭州鼎蓝商贸有限公司‍ </p>
+                                    </form>
+                                    <div class="bank-notes">
+                                        <p>如需马上到帐或长时间未到帐，请拨打客服电话：
+                                            <label id="m_basic_mobile">0571-86718052</label>
+                                            <br>
+                                            08：30- 17：00 （30分钟内到账）<br>
+                                            17:00以后 （次日09：00前到账） </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/.tab-item -->
+                            <div class="tab-item hide" id="tab-pm2">
+                                <div class="alipay-trans-wrapper">
+                                    <form action="http://www.fcml888.com/ucenter/paymentrenzheng.html#">
+                                        <input type="hidden" id="tab-pm1-bank" name="tab-pm1-bank" value="">
+                                        <img src="__RESOURCEWEB__/images/wxpay.png" style="width:250px;margin-left:140px; display:block; margin-bottom:20px;">
+                                        <p>请用微信扫描二维码</p>
+                                        <p> <span style="color: red">请扫码充值，并务必在转账备注中填写注册手机号，这样方便我们多重信息确认您的汇款。</span><br>
+                                            转账成功后，请拨打客服热线
+                                            <label id="m_basic_mobile">0571-86718052</label>
+                                            以便我们及时帮您处理 <br>
+                                            账号：杭州鼎蓝商贸有限公司
+                                            <!--<br>户名：杭州鼎蓝商贸有限公司‍-->
+                                        </p>
+                                    </form>
+                                    <div class="bank-notes">
+                                        <p>如需马上到帐或长时间未到帐，请拨打客服电话：
+                                            <label id="m_basic_mobile">0571-86718052</label>
+                                            <br>
+                                            08：30- 17：00 （30分钟内到账）<br>
+                                            17:00以后 （次日09：00前到账） </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{/block}
+{block name="script"}
+{/block}
+
+
+
+
+
+

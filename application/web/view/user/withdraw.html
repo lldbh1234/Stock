@@ -1,0 +1,117 @@
+{extend name="layouts/layout_index" /}
+
+{block name="title"}
+首页
+{/block}
+
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__RESOURCEWEB__/css/member.css">
+{/block}
+
+{block name="body"}
+<body class="membercenter logged-in">
+{/block}
+{block name="content"}
+
+<!--个人中心-充值-->
+<div class="br-content">
+    <div class="w1200">
+        <!--主体-->
+        <section class="page-main page-personal">
+            <div class="container clearfix">
+                <!--public左边-->
+                <aside class="col-left">
+                    <div class="userinfo">
+                        <form name="user_head" id="user_head">
+                            <input type="file" name="myfile222" id="img_upload">
+                            <div class="img_download">
+                                <img class="user-pic" id="headImg" src="__RESOURCEWEB__/images/user.png">
+                            </div>
+                        </form>
+                        <p class="user-info">Hi，<strong id="shared_layout_mem_lnm">linzihuan</strong></p>
+                    </div>
+                    <h4 class="new-head-line"><span class="user-5"></span>会员中心</h4>
+                    <nav id="personal-nav" class="left-nav">
+                        <ul>
+                            <li class=""><a href="{:url('web/User/index')}">我的首页&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class=""><a href="{:url('web/User/bankCards')}">银行卡管理&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class=""><a href="{:url('web/User/payMent')}">充值&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <li class="active"><a href="{:url('web/User/withdraw')}">提现&nbsp;<span class="mem_gt">&gt;</span></a></li>
+                            <!-- <li class=""><a href="" style="display: none;">推广赚钱&nbsp;<span class="mem_gt">&gt;</span></a></li> -->
+                        </ul>
+                    </nav>
+                </aside>
+                <!--右边-->
+                <div id="page_member_withdraw" class="col-main">
+                    <div class="personal-main">
+                        <h2>我要提现</h2>
+                        <input type="text" name="" id="" class="hide">
+                        <input type="password" name="" id="" class="hide">
+                        <div class="withdraw-wrapper">
+                            <div class="std-form">
+                                <div class="field-row group">
+                                    <label>可用资金</label>
+                                    <div class="input-wrapper">
+                                        <span class="acount-val"><strong id="账户余额">888211.6</strong><span class="unit">元</span></span>
+                                    </div>
+                                </div>
+                                <div class="field-row group">
+                                    <label>提现金额</label>
+                                    <div class="input-wrapper"><input id="提现金额i" type="text" class="text"></div><div class="f-left" style="line-height:30px; margin-left:20px;">余额小于10元必须全部提取</div>
+                                </div>
+                                <div id="txje_err1" class="error-wrapper" style="margin-left:120px; display:none"><div><i class="icon icon-x-altx-alt"></i>请输入正确提款额</div></div>
+                                <div class="field-row group">
+                                    <label>提现银行卡</label>
+                                    <div class="input-wrapper bankcard"><span id="branch">杭州文晖支行</span><span id="cardNumber">6217001540017845064</span></div>
+                                    <a href="bankcards.html" class="f-left">银行卡管理</a>
+                                </div>
+                                <div id="yhk_err1" class="error-wrapper" style="margin-left:120px;  display:none"><div><i class="icon icon-x-altx-alt"></i>未选择银行卡</div></div>
+
+                                <div class="btn-row group">
+                                    <button id="mem_wdA" href="javascript:;" class="btn btn-pri">提 交</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/.withdraw-wrapper-->
+                        <div class="withdraw-note-wrapper group">
+                            <ul class="group">
+                                <li class="col-10-4 ">
+                                    <h3>提款<strong>T+0</strong>到账！</h3>
+                                    <p>最快5分钟，一般情况24小时到账<br>法定节假日或银行特殊原因除外</p>
+                                </li>
+                                <li class="col-10-3">
+                                    <h3>提现<strong>0</strong>手续费</h3>
+
+                                    <p>提现产生的银行手续费全免<br>更多优质服务只在非常策略</p>
+
+                                </li>
+                                <li class="col-10-3">
+                                    <h3>支持银行多达<strong>10</strong>多家</h3>
+                                    <p>推荐您使用工商银行、建设银行、<br>招商银行、农业银行提现，到账最快</p>
+                                </li>
+                            </ul>
+                            <div class="f-clear">
+                                <p>温馨提示：禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</p>
+                            </div>
+                        </div>
+                        <!--/.withdraw-note-wrapper-->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{/block}
+{block name="script"}
+{/block}
+
+
+
+
+
+
+
+
+
+
+

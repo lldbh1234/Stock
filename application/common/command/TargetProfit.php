@@ -21,7 +21,7 @@ class TargetProfit extends Command
 {
 
     protected function configure(){
-        $this->setName('TargetProfit')->setDescription('计划任务 保证金');
+        $this->setName('TargetProfit')->setDescription('计划任务 -- 止盈止损 -- 保证金处理');
     }
 
     protected function execute(Input $input, Output $output){

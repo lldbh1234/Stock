@@ -119,6 +119,31 @@ Route::group("cron", function () {
     Route::any('niuren-rebate', 'index/Cron/handleNiurenRebate'); // 牛人返点
     Route::any('proxy-rebate', 'index/Cron/handleProxyRebate'); // 代理商返点
 });
+//web
+Route::group([], function() {
+    Route::group("web", function () {
+        Route::any('/$', 'web/Index/index');//首页
+        Route::any('index', 'web/Index/index');//首页
+        Route::any('login', 'web/Home/login');//登陆
+        Route::any('logout', 'web/Home/logout');//登出
+        Route::any('register', 'web/Home/register');//注册
+        Route::any('mobile', 'web/Home/mobile');
+        //A股购买
+        Route::group("stock", function () {
+            Route::any('buy', 'web/Stock/stockBuy'); //点买
+            Route::any('sell', 'web/Stock/stockSell'); //点卖
+            Route::any('history', 'web/Stock/stockHistory'); //结算
+            Route::any('detail', 'web/Stock/stockDetail');
+        });
+        Route::group("user", function () {
+            Route::any('index','web/User/index'); //用户中心
+            Route::any('bank-cards','web/User/bankCards'); //银行卡管理
+            Route::any('payment','web/User/payMent'); //用户充值
+            Route::any('auth-payment','web/User/authPayment'); //认证支付
+            Route::any('withdraw','web/User/withdraw'); //体现
+        });
+    });
+});
 
 // www.baonastone.com.cn
 // stock.lc

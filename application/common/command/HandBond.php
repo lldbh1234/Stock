@@ -22,7 +22,7 @@ class HandBond extends Command
 {
 
     protected function configure(){
-        $this->setName('HandBond')->setDescription('计划任务 保证金');
+        $this->setName('HandBond')->setDescription('计划任务 保证金处理是否足够亏损');
     }
 
     protected function execute(Input $input, Output $output){

@@ -1,0 +1,69 @@
+{extend name="layouts/layout_index" /}
+
+{block name="title"}
+注册
+{/block}
+
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__RESOURCEWEB__/css/reg.css">
+{/block}
+
+{block name="content"}
+
+<!--注册区-->
+<div class="br-content login_reg_cont">
+    <section class="section section-form " id="section-reg">
+        <div class="container ">
+            <div class="container-reg">
+                <h2>注册</h2>
+                <div class="form">
+                    <!--用户名-->
+                    <div id="mobileno3" class="field-wrapper">
+                        <input type="tel" class="text" placeholder="请输入用户名，长度不小于6位" name="mobile" id="mobile" data-error-msg="请输入用户名">
+                    </div>
+                    <div id="pwd_errName" class="error-wrapper" style="display:none"><div><!--<i class="icon icon-x-altx-alt"></i>-->用户名长度不能少于6位</div></div>
+                    <!--密码-->
+                    <div id="mobileno4" class="field-wrapper">
+                        <input type="password" class="text" placeholder="请输入登录密码，长度不小于6位" name="pwd" id="pwd">
+                    </div>
+                    <div id="pwd_err1" class="error-wrapper" style="display:none"><div><!--<i class="icon icon-x-altx-alt"></i>-->密码长度不能少于6位</div></div>
+                    <div id="mobileno5" class="field-wrapper">
+                        <input type="password" class="text" placeholder="请再次输入登录密码" name="mobile_code" id="mobile_code">
+                    </div>
+                    <div id="mobile_code_err1" class="error-wrapper" style="display:none"><div><!--<i class="icon icon-x-altx-alt"></i>-->两次密码不一致</div></div>
+                    <!--机构推荐码-->
+                    <div id="mobileno6" class="field-wrapper">
+                        <input type="text" class="text" placeholder="请输入机构推荐码" name="recommend_code" id="recommend_code">
+                    </div>
+                    <div id="recommend_code_err1" class="error-wrapper" style="display:none"><div><!--<i class="icon icon-x-altx-alt"></i>-->请输入4位数机构码</div></div>
+                    <!--手机号-->
+                    <div id="mobileno1" class="field-wrapper" style="display:none">
+                        <input type="tel" class="text" placeholder="请输入11位手机号" name="mobileno" id="mobileno" data-error-msg="请输入正确手机号" onkeyup="this.value=this.value.replace(/\D/g,&#39;&#39;)" onafterpaste="this.value=this.value.replace(/\D/g,&#39;&#39;)">
+                    </div>
+                    <!--验证码-->
+                    <div id="mobileno2" class="field-wrapper capcha-wrapper capcha-count-down" style="display:none">
+                        <input type="text" class="text" placeholder="请输入短信校验码" name="mobileno_code" id="mobileno_code" data-error-msg="校验码未填" onkeyup="this.value=this.value.replace(/\D/g,&#39;&#39;)" onafterpaste="this.value=this.value.replace(/\D/g,&#39;&#39;)">
+                        <a id="auth_reg_smsA" href="javascript:void(0)" class="btn-get-capcha">获取校验码</a>
+                        <div id="auth_reg_timerD" class="time-counter" style="display: none;"><!--<i class="icon icon-caret-left"></i>--><span>10</span></div>
+                    </div>
+                    <div class="agree-wrapper group">
+                        <input type="checkbox" name="agree" id="agree" checked="checked"><label for="agree">我已阅读并同意</label> <a href="javascript:;" id="reg_agree">《系统服务协议》</a>
+                    </div>
+                    <div class="btn-wrapper">
+                        <a id="auth_regA" href="javascript:void(0)" class="btn btn-pri js-reg-next">下一步</a>
+                    </div>
+                    <div class="quick-link-wrapper group">
+                        已有帐号? 直接&nbsp;<a href="login.html">登录</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+<!--底部-->
+
+{/block}
+{block name="script"}、
+<script src="__RESOURCEWEB__/js/reg.js"></script>
+{/block}

@@ -1,0 +1,93 @@
+{extend name="layouts/layout_index" /}
+
+{block name="title"}
+首页
+{/block}
+
+{block name="style"}
+<style type="text/css">
+	.weixin-section2{
+		width: 100%;
+		background: url(__RESOURCEWEB__/images/mobile.png) no-repeat center center;
+		background-size: cover;
+		/*font-size: 0;*/
+		height: 520px;
+	}
+	.weixin-section2 .w1024{
+		position: relative;
+	}
+	.text_r{
+		width: 515px;
+		float: right;
+		text-align: left;
+		position: relative;
+		margin-top: 160px;
+	}
+	.text_r h1{
+		font-size:34px;
+		font-weight: normal;
+		margin-bottom: 5px;
+	}
+	.text_r h1 span{
+		color: #FE3333;
+	}
+	.titleP{
+		font-size: 20px;
+		margin-bottom: 40px;
+	}
+	.img_box{
+		float: left;
+		width:128px ;
+		height: 180px;
+		text-align: center;
+		margin-right: 105px;
+	}
+</style>
+{/block}
+
+{block name="content"}
+
+<!--点卖区-->
+<div class="br-content">
+	<section class="weixin-section2">
+		<div class="w1024 br-clearfix">
+			<div class="text_r ">
+				<h1><span>微信端</span>&nbsp;<span>手机端</span>APP全面上线</h1>
+				<p class="titleP">A股点买交易更加轻松、便捷</p>
+				<div class="img_box">
+					<img src="__RESOURCEWEB__/images/ewm1.jpg" style="width: 122px;" height="122px">
+					<p>用微信扫描二维码<br>关注官方公众号</p>
+				</div>
+				<div class="img_box">
+					<img src="__RESOURCEWEB__/images/download.png" style="width: 122px;" height="122px">
+					<p>扫描二维码即可<br>下载APP</p>
+				</div>
+
+			</div>
+		</div>
+	</section>
+</div>
+<!--底部-->
+<footer class="br-w100">
+	<div class="footer_bot">
+		<div class="w1024 br-clearfix">
+			<div class="bot_l br-fl">
+				<p>浙江省杭州市上城区外海西湖国贸21层<br>全国统一服务热线 ：0571-86718052<br>客服服务时间工作日：9:00-18:00</p></div>
+			<div class="bot_r br-fr br-text-center">
+				<div class="bot_r_img br-clearfix ">
+					<span class="br-fl"><img src="__RESOURCEWEB__/images/f1.png"></span>
+					<span class="br-fr"><img src="__RESOURCEWEB__/images/f2.png"></span>
+				</div>
+				<p>版权所有 © 杭州鼎蓝商贸有限公司  </p>
+				<p>浙ICP备17030011号  投资有风险 入市需谨慎</p>
+			</div>
+		</div>
+	</div>
+</footer>
+<!--Start Pop-ups-->
+<!--遮罩层-->
+<div class="mask"></div>
+{/block}
+
+{block name="script"}
+{/block}
