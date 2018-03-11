@@ -274,7 +274,7 @@
 		var context = $(this).parents(".control_point");
 		var now_count = parseFloat( context.find(".now_count").val() );
 		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
-		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
+		var nowPrice = parseFloat( $(".agent_price").html() ); //现价
 
 		if( $(this).hasClass("minus_btn") ){ //减
 			if(now_count <= initValue){
@@ -310,7 +310,7 @@
 		var context = $(this).parents(".control_point");
 		var now_count = parseFloat( context.find(".now_count").val() );
 		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
-		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
+		var nowPrice = parseFloat( $(".agent_price").html() ); //现价
 
 
 		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
@@ -344,7 +344,7 @@
 	function calcNum( type ){
 		var creditNum = parseFloat( $(".x_y_options").find(".active").data("money") ); //信用金
 		var multiple = parseFloat( $(".beishu_options").find(".active").data("multiple") );//倍数
-		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() ); //现价
+		var nowPrice = parseFloat( $(".agent_price").html() ); //现价
 		var usage = parseFloat( $(".balance_count").data("usage") ); //资金使用率
 		var count = Math.floor(creditNum * multiple * usage / nowPrice /100 / 100) * 100; //股数
 		var ammount =  (count * nowPrice).toFixed(2);
@@ -364,7 +364,7 @@
 		//涨跌幅
 		var profit = parseFloat( $(".pattern_options").find(".active").data("profit") );
 		var loss = parseFloat( $(".pattern_options").find(".active").data("loss") );
-		var nowPrice = parseFloat( $(".b_gupiao_now_price").html() );
+		var nowPrice = parseFloat( $(".agent_price").html() );
 
 		var maxProfit = (nowPrice * (1 + profit / 100)).toFixed(2);
 		var maxLoss = (nowPrice * (1 - loss / 100)).toFixed(2);
