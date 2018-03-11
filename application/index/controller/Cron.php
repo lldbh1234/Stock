@@ -8,9 +8,45 @@ use think\Queue;
 
 class Cron extends Controller
 {
-    // 半小时
+    // 抓取板块行情指数
+    public function grabPlateIndex()
+    {
+        set_time_limit(0);
+        //if(checkStockTradeTime()){
+            $jsonArray = [];
+            $jsonPath = "./plate.json";
+            $url = 'http://hq.sinajs.cn/rn=1520407404627&list=s_sh000001,s_sz399001,s_sz399006';
+            $html = file_get_contents($url);
+            $html = str_replace(["\r\n", "\n", "\r", " "], "", $html);
+            $plates = explode(';', $html);
+            if($plates){
+                foreach ($plates as $plate){
+                    if($plate){
+                        $plate = iconv("GB2312", "UTF-8", $plate);
+                        preg_match('/^varhq_str_s_([sh|sz]{2})(\d{6})="(.*)"/i', $plate, $match);
+                        if($match[3]){
+                            $_data = explode(",", $match[3]);
+                            $jsonArray[] = [
+                                "plate_name" => $_data[0],
+                                "last_px"   => $_data[1],
+                                "px_change" => $_data[2],
+                                "px_change_rate" => $_data[3]
+                            ];
+                        }
+                    }
+                }
+            }
+            if($jsonArray){
+                @file_put_contents($jsonPath, json_encode($jsonArray, JSON_UNESCAPED_UNICODE));
+                echo "ok";
+            }
+        //}
+    }
+
+    // 半小时 股票列表
     public function grabStockLists()
     {
+        set_time_limit(0);
         if(checkStockTradeTime()){
             $_arrays = [];
             $_jsTextIndex = 0;
@@ -27,9 +63,9 @@ class Cron extends Controller
                 $_arrays[] = [
                     "full_code"	=> $item[0],
                     "code"  => $item[1],
-                    "name"  => $item[2],
+                    "name"  => str_replace(' ', '', $item[2]),
                 ];
-                $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $item[1] . "','" . $item[2] . "','" . $item[0] . "'); ";
+                $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $item[1] . "','" . str_replace(' ', '', $item[2]) . "','" . $item[0] . "'); ";
                 $_jsTextIndex++;
             }
             for ($i = 2; $i <= $count; $i++){
@@ -41,9 +77,9 @@ class Cron extends Controller
                     $_arrays[] = [
                         "full_code"	=> $_item[0],
                         "code"  => $_item[1],
-                        "name"  => $_item[2],
+                        "name"  => str_replace(' ', '', $_item[2]),
                     ];
-                    $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $_item[1] . "','" . $_item[2] . "','" . $_item[0] . "'); ";
+                    $_jsTextArrays[] = "stocks[". $_jsTextIndex ."]=new Array('','" . $_item[1] . "','" . str_replace(' ', '', $_item[2]) . "','" . $_item[0] . "'); ";
                     $_jsTextIndex++;
                 }
             }
@@ -85,17 +121,40 @@ class Cron extends Controller
         }
     }
 
-    // 下午5-6点执行
-    public function handleOrderRebate()
+    // 牛人返点-每天停盘后的时间段 17-23点
+    public function handleNiurenRebate()
     {
         if(checkSettleTime()){
-            $orders = (new OrderLogic())->todaySellOrder();
+            $orders = (new OrderLogic())->todayNiurenRebateOrder();
             if($orders){
                 foreach ($orders as $order){
-                    if($order['profit'] > 0){
-                        // 盈利
-                        Queue::push('app\index\job\RebateJob@handleSellOrder', $order["order_id"], null);
+                    if($order['is_follow'] == 1){
+                        // 跟买
+                        $followData = [
+                            "money" => $order["profit"], //盈利额
+                            "order_id" => $order["order_id"], //订单ID
+                            "follow_id" => $order["follow_id"] //跟买订单ID
+                        ];
+                        Queue::push('app\index\job\RebateJob@handleFollowOrder', $followData, null);
                     }
+                }
+            }
+        }
+    }
+
+    // 代理商返点-每天停盘后的时间段 17-23点
+    public function handleProxyRebate()
+    {
+        if(checkSettleTime()){
+            $orders = (new OrderLogic())->todayProxyRebateOrder();
+            if($orders){
+                foreach ($orders as $order){
+                    $rebateData = [
+                        "money" => $order["profit"],
+                        "order_id" => $order["order_id"], //订单ID
+                        "user_id" => $order["user_id"]
+                    ];
+                    Queue::push('app\index\job\RebateJob@handleProxyRebate', $rebateData, null);
                 }
             }
         }

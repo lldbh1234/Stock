@@ -6,7 +6,6 @@ use app\index\logic\LeverLogic;
 use app\index\logic\ModeLogic;
 use app\index\logic\OrderLogic;
 use app\index\logic\StockLogic;
-use app\index\logic\UserLogic;
 use think\Validate;
 
 class Stock extends Validate
@@ -56,7 +55,7 @@ class Stock extends Validate
     {
         $stock = (new StockLogic())->stockByCode($value);
         if($stock){
-            $quotation = $this->_logic->simpleData($value);
+            $quotation = (new StockLogic())->simpleData($value);
             if(isset($quotation[$value]) && !empty($quotation[$value])){
                 $configs = cfgs();
                 $changeRate = $quotation[$value]["px_change_rate"];
@@ -109,30 +108,31 @@ class Stock extends Validate
     protected function checkLoss($value, $rule, $data)
     {
         if($value < $data['price']){
-            $configs = cfgs();
-            $usage = isset($configs["capital_usage"]) && !$configs["capital_usage"] ? $configs["capital_usage"] : 95;
-            $deposit = (new DepositLogic())->depositById($data["deposit"]);
-            $lever = (new LeverLogic())->leverById($data["lever"]);
-            $total = $deposit["money"] * $lever["multiple"]; // 申请总配资款 = 保证金 * 杠杆倍数
-            $realTotal = $total * $usage / 100; // 实际可使用最大配资款(95%)
-            $hand = floor($realTotal / $data['price'] / 100) * 100; // 买入股数(整百)
-            $min = round($data['price'] - ($deposit["money"] / $hand), 2); //最小止损价
-            if($value < $min){
-                return "止损金额最小可设置为" . number_format($min, 2);
+            $mode = (new ModeLogic())->modeById($data['mode']);
+            $max = round($data['price'] * (1 - $mode['loss'] / 100), 2);
+            if($value > $max){
+                return "止损金额最大可设置为" . number_format($max, 2);
             }else{
-                $mode = (new ModeLogic())->modeById($data['mode']);
-                $max = round($data['price'] * (1 - $mode['loss'] / 100), 2);
-                return $value > $max ? "止损最大可设置为" . number_format($max, 2) : true;
+                $configs = cfgs();
+                $usage = isset($configs["capital_usage"]) && !$configs["capital_usage"] ? $configs["capital_usage"] : 95;
+                $deposit = (new DepositLogic())->depositById($data["deposit"]);
+                $lever = (new LeverLogic())->leverById($data["lever"]);
+                $total = $deposit["money"] * $lever["multiple"]; // 申请总配资款 = 保证金 * 杠杆倍数
+                $realTotal = $total * $usage / 100; // 实际可使用最大配资款(95%)
+                $hand = floor($realTotal / $data['price'] / 100) * 100; // 买入股数(整百)
+                $min = $data['price'] - ($deposit["money"] / $hand); // (买入价-止损价)*买入手数=损失总金额 so====> 最小止损价=买入价-(保证金/买入手数)
+                return $value < $min ? "止损金额最小可设置为" . number_format($max, 2) : true;
             }
         }else{
-            return "止损金额不能大于策略委托价！";
+            return "止损金额必须小于策略委托价！";
         }
     }
 
     protected function checkFollowId($value, $rule, $data)
     {
         if($value){
-            $order = (new StockLogic())->orderById($value);
+            $order = (new OrderLogic())->orderById($value);
+            
             if($order){
                 if($order['user_id'] == isLogin()){
                     return "不可跟买自己的策略！";

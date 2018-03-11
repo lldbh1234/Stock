@@ -57,8 +57,10 @@ class Home extends Controller
                     $data = input("post.");
                     $admin = (new AdminLogic())->adminByCode($data['orgCode']);
                     if($admin){
+                        $configs = cfgs();
+                        $nickname = isset($configs['nickname_prefix']) ? $configs['nickname_prefix'] : config("nickname_prefix");
                         $data['username'] = $data["mobile"];
-                        $data['nickname'] = $data["mobile"];
+                        $data['nickname'] = $nickname . substr($data["mobile"],-4);
                         $data['face'] = config("default_face");
                         $data['admin_id'] = $admin['admin_id'];
                         $data['parent_id'] = input("post.pid/d", 0);

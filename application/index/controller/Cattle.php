@@ -20,29 +20,80 @@ class Cattle extends Base
 
     public function index(){
         $userInfo = $this->_logic->userById($this->user_id);
+
         if($userInfo['is_niuren'] == 1)
         {
             $orderLogic = new OrderLogic();
             $niurenInfo = $this->_logic->getNiuStaticByUid($this->user_id);
             $userInfo = array_merge($niurenInfo, $userInfo);
-            //跟单平仓
-            $userInfo['evening'] = $orderLogic->countBy(['is_follow' => 1, 'follow_id' => $this->user_id, 'state' => 2]);
-            //跟单持仓
-            $userInfo['position'] = $orderLogic->countBy(['is_follow' => 1, 'follow_id' => $this->user_id, 'state' => 3]);
+            //查询牛人订单
+            $niuOrderIds = $orderLogic->orderIdsByUid($this->user_id);
+            $map = [
+                'is_follow' => 1,
+                'follow_id' => ['in', $niuOrderIds],
+                'state' => [
+                    'in', [2,3],
+                ],
+            ];
+            //跟单用户Id
+            $childOrderLists = $orderLogic->getAllBy($map);
+            $allCodes = $orderLogic->getCodesBy([
+                'is_follow' => 1,
+                'follow_id' => ['in', $niuOrderIds],
+                'state' => 3,
+            ]);
+            $codeInfo = [];
+            if($allCodes) $codeInfo = (new StockLogic())->simpleData($allCodes);
+
+            $userInfo['evening']    = 0;//跟单平仓
+            $userInfo['position']   = 0;//跟单持仓
+            $userInfo['realtime_income']   = 0;//实时收入
+            $userInfo['not_income']   = 0;//未结收入
+            $niuren_point = $this->conf['niuren_point']/100;//牛人返点
+
+            foreach($childOrderLists as $v)
+            {
+                if($v['state'] == 2 && $v['niuren_rebate'] == 0) {
+                    $userInfo['evening'] += 1;
+                    //未结收入 --平仓未结算
+                    if($v['profit'] > 0)
+                    {
+                        $money = sprintf("%.2f", substr(sprintf("%.3f", $v['profit']*$niuren_point / 100), 0, -1));
+                        $userInfo['not_income'] += $money;
+                    }
+
+
+                }
+                if($v['state'] == 3) {
+
+                    $userInfo['position'] += 1;
+                    //实时收入 -持仓中
+                    $sell_price = isset($codeInfo[$v['code']]['last_px']) ? $codeInfo[$v['code']]['last_px'] : 0;
+                    $profit = $sell_price - $v['price'];
+                    if($profit > 0)
+                    {
+                        $money_ = sprintf("%.2f", substr(sprintf("%.3f", $v['profit']*$niuren_point / 100), 0, -1));
+                        $userInfo['realtime_income'] += $money_;
+                    }
+
+                }
+
+            }
+
             $this->assign('userInfo', $userInfo);
             return view();
         }
-
-        $userDetail = $this->_logic->userDetail($this->user_id);
-        $pulish_strategy = $this->conf['pulish_strategy'];//发布策略次数
-        $strategy_win = $this->conf['strategy_win'];//策略胜算
-        $strategy_yield = $this->conf['strategy_yield'];//策略收益
+        //不是牛人
+        $userDetail         = $this->_logic->userDetail($this->user_id);
+        $pulish_strategy    = $this->conf['pulish_strategy'];//发布策略次数
+        $strategy_win       = $this->conf['strategy_win'];//策略胜算
+        $strategy_yield     = $this->conf['strategy_yield'];//策略收益
         $applyInfo = [
-            'pulish_strategy' => $pulish_strategy,
-            'strategy_win' => $strategy_win,
-            'strategy_yield' => $strategy_yield,
-            'status' => 0,
-            'enough' => 0,
+            'pulish_strategy'   => $pulish_strategy,
+            'strategy_win'      => $strategy_win,
+            'strategy_yield'    => $strategy_yield,
+            'status'            => 0,
+            'enough'            => 0,
         ];
         //策略数不达标
         if($userDetail['pulish_strategy'] < $pulish_strategy) {
@@ -70,10 +121,10 @@ class Cattle extends Base
         $userInfo = $this->_logic->userById($this->user_id);
         if($userInfo['is_niuren'] == 1) return $this->fail('系统提示：您已经是牛人啦！');
         //判断满足条件
-        $userDetail = $this->_logic->userDetail($this->user_id);
-        $pulish_strategy = $this->conf['pulish_strategy'];//发布策略次数
-        $strategy_win = $this->conf['strategy_win'];//策略胜算
-        $strategy_yield = $this->conf['strategy_yield'];//策略收益
+        $userDetail         = $this->_logic->userDetail($this->user_id);
+        $pulish_strategy    = $this->conf['pulish_strategy'];//发布策略次数
+        $strategy_win       = $this->conf['strategy_win'];//策略胜算
+        $strategy_yield     = $this->conf['strategy_yield'];//策略收益
         if($userDetail['pulish_strategy'] < $pulish_strategy) return $this->fail('系统提示：发布策略数不满足申请条件');
         if($userDetail['strategy_win'] < $strategy_win) return $this->fail('系统提示：策略胜算率不满足申请条件');
         if($userDetail['strategy_yield'] < $strategy_yield) return $this->fail('系统提示：策略收益率不满足申请条件');
@@ -129,10 +180,10 @@ class Cattle extends Base
 //        if($type == 1){
 //
 //        }
-        if($type == 2){
+        if($type == 2){//日
             $orderMap['update_at'] = ['between', [strtotime(date('Y-m-d')), strtotime(date('Y-m-d'))+86399]];
         }
-        if($type == 3){
+        if($type == 3){//月
             $endDay = strtotime(date('Y-m') . "+1 month -1 day") + 86399;
             $orderMap['update_at'] = ['between', [strtotime(date('Y-m')), $endDay]];
         }
@@ -181,7 +232,7 @@ class Cattle extends Base
         $endDate = isset($data['endDate']) ? strtotime($data['endDate'])+86399 : '';
         $map = [
             'user_id' => $this->user_id,
-            'type' => 2,
+            'type' => 0,
         ];
         if($startDate && $endDate) $map["create_at"] = ['between', [$startDate, $endDate]];
         $lists = $this->_logic->recordList($map);

@@ -1,6 +1,31 @@
 {extend name="layouts/layout_user" /}
 {block name="title"}成为牛人{/block}
 {block name="style"}
+<style>
+    .registMaster__list___3EQ_z li {
+        display: block;
+        width: 64%;
+        line-height: 30px;
+        height: 30px;
+        border-radius: 15px;
+        color: #f51a1d;
+        border: 1px solid #f51a1d;
+        margin: 0 auto 10px;
+        padding-left: 30px;
+        font-size: 12px;
+    }
+    .mui-btn.ml_btn {
+        background: #f51a1d;
+        margin-top: 30px;
+        font-size: 16px;
+    }
+    .registMaster__item___5YSgh {
+        font-size: 14px;
+        text-align: center;
+        line-height: 26px;
+        color: #f51a1d;
+    }
+</style>
 {/block}
 <!--个人中心-充值-支付宝-->
 {block name="body"}
@@ -8,7 +33,7 @@
 {/block}
 {block name="content"}
     <header class="bg_fff mui-bar mui-bar-nav">
-        <a href="javascript:history.go(-1)" class="color_red mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <a style="color: #999" href="javascript:history.go(-1)" class="color_red mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
         <h1 class="mui-title">成为牛人</h1>
     </header>
     <div style="text-align: center;">

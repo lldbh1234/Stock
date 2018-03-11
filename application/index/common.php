@@ -54,7 +54,7 @@ if(!function_exists("checkStockTradeTime"))
         if(((date('G') == 11 && date('i') > 30) || date('G') > 11) && date('G') < 13){
             return false;
         }
-        if(date('G') > 15){
+        if(date('G') >= 15){
             return false;
         }
         $holiday = explode(',', cfgs()['holiday']);
@@ -67,6 +67,7 @@ if(!function_exists("checkStockTradeTime"))
 
 if(!function_exists("checkSettleTime"))
 {
+    // 结算时间 工作日 17-23点
     function checkSettleTime()
     {
         if(date('w') == 0){
@@ -78,7 +79,7 @@ if(!function_exists("checkSettleTime"))
         if(date('G') < 17){
             return false;
         }
-        if(date('G') > 18){
+        if(date('G') > 23){
             return false;
         }
         $holiday = explode(',', cfgs()['holiday']);
@@ -90,11 +91,12 @@ if(!function_exists("checkSettleTime"))
 }
 
 if(!function_exists("workTimestamp")){
-    function workTimestamp($length, $holiday = [])
+    function workTimestamp($length, $holiday = [], $time = null)
     {
         $realLength = 1;
+        $time = $time ? : time();
         for($i = 1; $i <= $length;){
-            $timestamp = strtotime("+{$realLength}day");
+            $timestamp = strtotime("+{$realLength}day", $time);
             $realLength++;
             $week = date("w", $timestamp);
             $date = date("Y-m-d", $timestamp);

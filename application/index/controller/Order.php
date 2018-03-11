@@ -29,8 +29,8 @@ class Order extends Base
                 array_filter($orders['data'], function (&$item) use ($quotation){
                     $item['last_px'] = $quotation[$item['code']]['last_px']; //现价
                     $item['market_value'] = $item['last_px'] * $item['hand']; //市值
-                    $item['yield_rate'] = round(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
-                    $item['total_pl'] = ($item['last_px'] - $item['price']) * $item['hand']; //盈亏
+                    $item['yield_rate'] = number_format(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
+                    $item['total_pl'] = number_format(($item['last_px'] - $item['price']) * $item['hand'], 2); //盈亏
                     $item['create_at_text'] = date("m-d H:i", $item['create_at']);
                 });
                 $list = $orders['data'];
@@ -47,7 +47,7 @@ class Order extends Base
             $capital = $this->_userCapital();
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, $field);
             if($orders['data']){
-                $codes = array_column($orders['data'], "code");
+                /*$codes = array_column($orders['data'], "code");
                 $quotation = (new StockLogic())->simpleData($codes);
                 array_filter($orders['data'], function (&$item) use ($quotation){
                     $item['last_px'] = $quotation[$item['code']]['last_px']; //现价
@@ -55,16 +55,16 @@ class Order extends Base
                     $item['yield_rate'] = round(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['last_px'] - $item['price']) * $item['hand']; //盈亏
                 });
-                $list = $orders['data'];
+                $list = $orders['data'];*/
                 $last_page = $orders['last_page'];
                 $current_page = $orders['current_page'];
             }else{
-                $list = [];
+                //$list = [];
                 $last_page= 1;
                 $current_page = 1;
             }
             $this->assign("capital", $capital);
-            $this->assign("orders", $list);
+            //$this->assign("orders", $list);
             $this->assign("totalPage", $last_page);
             $this->assign("currentPage", $current_page);
             return view();
@@ -111,14 +111,14 @@ class Order extends Base
     // 委托
     public function entrust()
     {
-        $field = "order_id,code,name,deposit,defer,price,sell_price,sell_hand,stop_loss_price,stop_profit_price,state,create_at";
+        $field = "order_id,code,name,deposit,defer,price,hand,sell_price,sell_hand,stop_loss_price,stop_profit_price,state,create_at";
         if(request()->isPost()){
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [1, 4], $field);
             if($orders['data']){
                 array_filter($orders['data'], function (&$item){
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
-                    $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
-                    $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                    $item['yield_rate'] = number_format(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
+                    $item['total_pl'] = number_format(($item['sell_price'] - $item['price']) * $item['sell_hand'], 2); //盈亏
                     $item['create_at_text'] = date("m-d H:i", $item['create_at']);
                 });
                 $list = $orders['data'];
@@ -135,21 +135,21 @@ class Order extends Base
             $capital = $this->_userCapital();
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [1, 4], $field);
             if($orders['data']){
-                array_filter($orders['data'], function (&$item){
+                /*array_filter($orders['data'], function (&$item){
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
                 });
-                $list = $orders['data'];
+                $list = $orders['data'];*/
                 $last_page = $orders['last_page'];
                 $current_page = $orders['current_page'];
             }else{
-                $list = [];
+                //$list = [];
                 $last_page= 1;
                 $current_page = 1;
             }
             $this->assign("capital", $capital);
-            $this->assign("orders", $list);
+            //$this->assign("orders", $list);
             $this->assign("totalPage", $last_page);
             $this->assign("currentPage", $current_page);
             return view();
@@ -165,8 +165,8 @@ class Order extends Base
             if($orders['data']){
                 array_filter($orders['data'], function (&$item){
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
-                    $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
-                    $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
+                    $item['yield_rate'] = number_format(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
+                    $item['total_pl'] = number_format(($item['sell_price'] - $item['price']) * $item['sell_hand'], 2); //盈亏
                     $item['create_at_text'] = date("m-d H:i", $item['create_at']);
                     $item['update_at_text'] = date("m-d H:i", $item['update_at']);
                 });
@@ -184,21 +184,21 @@ class Order extends Base
             $capital = $this->_userCapital();
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 2, $field);
             if($orders['data']){
-                array_filter($orders['data'], function (&$item){
+                /*array_filter($orders['data'], function (&$item){
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = round(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = ($item['sell_price'] - $item['price']) * $item['sell_hand']; //盈亏
                 });
-                $list = $orders['data'];
+                $list = $orders['data'];*/
                 $last_page = $orders['last_page'];
                 $current_page = $orders['current_page'];
             }else{
-                $list = [];
+                //$list = [];
                 $last_page= 1;
                 $current_page = 1;
             }
             $this->assign("capital", $capital);
-            $this->assign("orders", $list);
+            //$this->assign("orders", $list);
             $this->assign("totalPage", $last_page);
             $this->assign("currentPage", $current_page);
             return view();
@@ -330,9 +330,15 @@ class Order extends Base
                 $order = $this->_userLogic->userOrderById($this->user_id, $orderId, 3);
                 $order = reset($order);
                 if($order){
-                    $res = $this->_userLogic->userOrderSelling($order);
-                    if($res){
-                        return $this->ok();
+                    $quotation = (new StockLogic())->simpleData($order['code']);
+                    if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
+                        $order['last_px'] = $quotation[$order['code']]['last_px'];
+                        $res = $this->_userLogic->userOrderSelling($order);
+                        if($res){
+                            return $this->ok();
+                        }else{
+                            return $this->fail("平仓申请提交失败！");
+                        }
                     }else{
                         return $this->fail("平仓申请提交失败！");
                     }

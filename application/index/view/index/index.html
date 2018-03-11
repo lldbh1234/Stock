@@ -15,6 +15,15 @@
 	.Ashare_top li+li {
 	    border-left: 0!important;
 	}
+	.follow_btn_con{
+		text-align: right;
+	}
+	.follow_btn{
+		display: inline-block;
+		width: 20%;
+		color: #fff!important;
+		font-size: 12px;
+	}
 </style>
 {/block}
 
@@ -94,12 +103,12 @@
 				<img src="__RESOURCE__/img/recharge.png">
 				<p>充值中心</p>
 			</a></li>
-			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="" style="display: block;">
-				<img src="__RESOURCE__/img/model.png">
-				<p>体验中心</p>
+			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="/manager/home.html" style="display: block;">
+				<img src="__RESOURCE__/img/guide.png">
+				<p>分享推广</p>
 			</a></li>
 			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="" style="display: block;">
-				<img src="__RESOURCE__/img/guide.png">
+				<img src="__RESOURCE__/img/model.png">
 				<p>新手指引</p>
 			</a></li>
 		</ul>
@@ -110,6 +119,32 @@
 			<div class="Ashare_top">
 				<div class="slid-container swiper-container swiper-container-horizontal swiper-container-free-mode">
 		            <ul class="swiper-wrapper">
+		            	<li class="swiper-slide mui-text-center">
+		                    <p class="Ashare_t">深证成指</p>
+							<p class="Ashare_num color color_red">11342.85</p>
+							<div class="per mui-clearfix">
+								<span class="mui-pull-left color color_red">1.5</span>
+								<span class="mui-pull-right color color_red">0.01%</span>
+							</div>
+		                </li>
+		                <li class="swiper-slide mui-text-center">
+		                    <p class="Ashare_t">创业板指</p>
+							<p class="Ashare_num color color_red">1801.42</p>
+							<div class="per mui-clearfix">
+								<span class="mui-pull-left color color_red">6.81</span>
+								<span class="mui-pull-right color color_red">0.38%</span>
+							</div>
+		                </li>
+		                <li class="swiper-slide mui-text-center">
+		                	<a href="">
+		                		<p class="Ashare_t">创业板指</p>
+								<p class="Ashare_num color color_red">1801.42</p>
+								<div class="per mui-clearfix">
+									<span class="mui-pull-left color color_red">6.81</span>
+									<span class="mui-pull-right color color_red">0.38%</span>
+								</div>
+		                	</a>
+		                </li>
 						{volist name="stocks" id="item"}
 		                <li data-code="{$item.quotation.code}"  class="share_item swiper-slide mui-text-center share_item_{$item.quotation.code}">
 		                	<a href="{:url('index/Stock/info',['code' => $item.quotation.code])}">
@@ -128,32 +163,6 @@
 							</a>
 		                </li>
 						{/volist}
-		                <!--<li class="swiper-slide mui-text-center">-->
-		                    <!--<p class="Ashare_t">深证成指</p>-->
-							<!--<p class="Ashare_num color color_red">11342.85</p>-->
-							<!--<div class="per mui-clearfix">-->
-								<!--<span class="mui-pull-left color color_red">1.5</span>-->
-								<!--<span class="mui-pull-right color color_red">0.01%</span>-->
-							<!--</div>-->
-		                <!--</li>-->
-		                <!--<li class="swiper-slide mui-text-center">-->
-		                    <!--<p class="Ashare_t">创业板指</p>-->
-							<!--<p class="Ashare_num color color_red">1801.42</p>-->
-							<!--<div class="per mui-clearfix">-->
-								<!--<span class="mui-pull-left color color_red">6.81</span>-->
-								<!--<span class="mui-pull-right color color_red">0.38%</span>-->
-							<!--</div>-->
-		                <!--</li>-->
-		                <!--<li class="swiper-slide mui-text-center">-->
-		                	<!--<a href="">-->
-		                		<!--<p class="Ashare_t">创业板指</p>-->
-								<!--<p class="Ashare_num color color_red">1801.42</p>-->
-								<!--<div class="per mui-clearfix">-->
-									<!--<span class="mui-pull-left color color_red">6.81</span>-->
-									<!--<span class="mui-pull-right color color_red">0.38%</span>-->
-								<!--</div>-->
-		                	<!--</a>-->
-		                <!--</li>-->
 		                <li class="swiper-slide mui-text-center">
 		                    <a class="add_item" href="{:url('index/User/optional')}">
 		                    	
@@ -172,8 +181,10 @@
 							{volist name="$bestUserList" id="vo"}
 							<li>
 								<div class="clear_fl">
+									<a href="{:url('index/Cattle/niurenDetail', ['uid' => $vo.user_id])}" class="lf">
 									<img class="lf user_pic" src="{$vo.face | default='__RESOURCE__/img/default-user-img.png'}">
 									<p class="lf user_name">{$vo.nickname | default=$vo.username} <img src="__RESOURCE__/img/niuren.png"></p>
+									</a>
 									<a href="javascript:void(0)" onclick="follow('{$vo.user_id}', this);" class="rt guanzhu_btn {in name='vo.user_id' value='$followIds'}active{/in}"></a>
 								</div>
 								<div class="clear_fl daren_info">
@@ -229,6 +240,9 @@
 										</p>
 									</div>
 								</div>
+								<div class="follow_btn_con">
+									<a class="follow_btn" href="{:url('index/Stock/stockBuy', ['follow_id' => $vo.order_id, 'code' => $vo.code])}">跟买</a>
+								</div>
 							</li>
 							{/volist}
 
@@ -254,7 +268,7 @@
 		</a>
 		<a class="mui-tab-item center_item" href="{:url('index/Ai/index')}">
 			<span class="mui-icon mui-icon-celue"></span>
-			<span class="mui-tab-label">AI智能推荐</span>
+			<span class="mui-tab-label">AI智能策略</span>
 		</a>
 		<a class="mui-tab-item" href="{:url('index/Strategy/index')}">
 			<span class="mui-icon mui-icon-jingu"></span>
@@ -270,6 +284,39 @@
 
 {block name="script"}
 	<script type="text/javascript">
+		/**
+		 * 判断当前时间是否在9:30-11:30, 13:00-15:00（交易时间）
+		 */
+		function isTradingTime(){
+		    var date = new Date();
+		    //判断是不是周末
+		    var dt=date.getDay();
+		    if(dt=='6'||dt=='7'){
+		        return false;
+		    }
+		    //判断当前时间是否在9:30-11:30, 13:00-15:00
+		    var h = date.getHours();
+		    var mi = date.getMinutes();
+		    var s = date.getSeconds();
+		    if(h < 10){
+		        h = "0" + h;
+		    }
+		    if(mi < 10){
+		        mi = "0"+ mi;
+		    }
+		    if(s < 10){
+		        s = "0" + s;
+		    }
+		    var curTime = h + ":" + mi + ":" + s;
+		//  console.log(curTime);
+		    if( curTime >= "09:30:00" && curTime <= "11:30:00" || curTime >= "13:00:00" && curTime <= "15:00:00" ){
+		        return true;
+		    }
+		    return false;
+		}
+
+
+
 		var storage = window.localStorage;
 		if( storage.isVisited ){
 			$(".risk_mask").remove();
@@ -412,7 +459,6 @@
 		    var content = '是否关注牛人？';
 		    var msg = '已关注';
 		    var type = 1;//关注
-			console.log(obj);
 
 
 		    if($(obj).hasClass('active')){
@@ -429,10 +475,18 @@
                         _oData = {user_id : id, type:type};
                     $ajaxCustom(_url, _oData, function(res){
                         if(res.state){
+                            if(type == 2){
+                                $(obj).removeClass('active');
+							}
+                            if(type == 1){
+                                $(obj).addClass('active');
+                            }
+
+
                             $alert(msg);
-                            setTimeout(function(){
-                                window.location.reload();
-                            }, 1000);
+//                            setTimeout(function(){
+//                                window.location.reload();
+//                            }, 1000);
                         }else{
                             $alert(res.info);
                         }
@@ -451,6 +505,12 @@
 
 		//定时刷新
 		setInterval(function(){
+			if( !isTradingTime() ){
+				return false;
+			}
+			loadZhiPrice();
+
+
         	var code = new Array();
         	if( $(".share_item").length <= 0 ){
         		return false;
@@ -485,6 +545,39 @@
                 }
             });
 		},4000);
+		loadZhiPrice();
+		function loadZhiPrice(){
+            var _url = "/plate.json?" + Math.random(),
+                _oData = {};
+            $.get(_url,function(data,status){
+            	var _data = JSON.parse( data );
+            	var html = "";
+				for( var key in _data ){
+					var className =  "";
+					if( _data[key].px_change >= 0 ){
+						className = "color_red";
+					}else{
+						className = "color_green";
+					}
+					html += '<li class="swiper-slide mui-text-center">\
+		                	<a href="">\
+		                		<p class="Ashare_t">'+ _data[key].plate_name +'</p>\
+								<p class="Ashare_num color ' + className + '">'+ (_data[key].last_px * 10 / 10).toFixed(2) +'</p>\
+								<div class="per mui-clearfix">\
+									<span class="mui-pull-left color ' + className + '">'+ _data[key].px_change +'</span>\
+									<span class="mui-pull-right color ' + className + '">'+ _data[key].px_change_rate +'%</span>\
+								</div>\
+		                	</a>\
+		                </li>';
+				}
 
+				$(".Ashare_top li:nth-child(1)").remove();
+				$(".Ashare_top li:nth-child(1)").remove();
+				$(".Ashare_top li:nth-child(1)").remove();
+				var $dom = $( html );
+				$(".Ashare_top ul").prepend( $dom );
+
+			});
+		}
 	</script>
 {/block}

@@ -60,7 +60,7 @@
 				{/if}
 			</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
-			<td>{$item.update_at|date="Y-m-d H:i", ###}</td>
+			<td>{if condition="$item.update_at gt 0"}{$item.update_at|date="Y-m-d H:i", ###}{/if}</td>
 		</tr>
 		{/volist}
 		</tbody>

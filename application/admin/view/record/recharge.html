@@ -1,0 +1,94 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}充值记录{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 记录管理
+    <span class="c-gray en">&gt;</span> 充值记录列表
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+    <form action="" method="get">
+    <div class="text-c">
+        <input type="text" class="input-text" style="width:170px;" placeholder="充值订单号" name="trade_no" value="{$search.trade_no|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="充值人" name="nickname" value="{$search.nickname|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+        <input type="text" class="input-text" style="width:170px;" placeholder="结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+        <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+    </div>
+    </form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+            <span class="c-blue">充值总计： <strong>￥{$totalAmount|number_format=2}</strong></span>
+            <span class="c-green ml-15">到账总计：<strong>￥{$totalActual|number_format=2}</strong></span>
+            <span class="c-orange ml-15">手续费总计：<strong>￥{$totalPoundage|number_format=2}</strong></span>
+        </span>
+        <span class="r">共充值：<strong>{$datas.total}</strong> 笔</span>
+    </div>
+    <table class="table table-border table-bordered table-hover table-bg">
+        <thead>
+        <tr class="text-c">
+            <th>充值订单号</th>
+            <th>充值人</th>
+            <th>手机号</th>
+            <th>微圈</th>
+            <th>微会员</th>
+            <th>经纪人</th>
+            <th>充值金额</th>
+            <th>到账金额</th>
+            <th>手续费</th>
+            <th>充值时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="datas.data" id="item"}
+        <tr class="text-c admin-lists">
+            <td>{$item.trade_no}</td>
+            <td>{$item.belongs_to_user.nickname|default=$item.belongs_to_user.username}</td>
+            <td>{$item.belongs_to_user.mobile}</td>
+            <td>{$item.belongs_to_user.has_one_admin.username|default='无'}</td>
+            <td>{$item.belongs_to_user.has_one_admin.has_one_parent.username|default='无'}</td>
+            <td>{$item.belongs_to_user.has_one_parent.username|default='无'}</td>
+            <td>{$item.amount|number_format=2}</td>
+            <td>{$item.actual|number_format=2}</td>
+            <td>{$item.poundage|number_format=2}</td>
+            <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
+        </tr>
+        {/volist}
+        {gt name="datas.total" value="0"}
+        <tr class="text-c admin-lists">
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td><strong>{$pageAmount|number_format=2}</strong></td>
+            <td><strong>{$pageActual|number_format=2}</strong></td>
+            <td><strong>{$pagePoundage|number_format=2}</strong></td>
+            <td>-</td>
+        </tr>
+        {/gt}
+        </tbody>
+    </table>
+    {$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script>
+</script>
+{/block}

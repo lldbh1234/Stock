@@ -221,13 +221,19 @@ class User extends Base
     {
         if(request()->isPost()){
             $data = input('post.');
-            $updateArr = ['user_id' => $this->user_id];
-            isset($data['nickname']) ? $updateArr['nickname'] = $data['nickname'] : '';
-            $userLogic = new UserLogic();
-            if($userLogic->updateUser($updateArr))
-            {
-                return $this->ok();
+            $validate = \think\Loader::validate('User');
+            if(!$validate->scene('update_nick')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $updateArr = ['user_id' => $this->user_id];
+                isset($data['nickname']) ? $updateArr['nickname'] = $data['nickname'] : '';
+                $userLogic = new UserLogic();
+                if($userLogic->updateUser($updateArr))
+                {
+                    return $this->ok();
+                }
             }
+
             return $this->fail('系统提示:操作失败');
         }
     }

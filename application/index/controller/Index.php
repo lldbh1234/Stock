@@ -22,14 +22,16 @@ class Index extends Base
         $userFollowLogic = new UserFollowLogic();
         $userNoticeLogic = new UserNoticeLogic();
 
+        $lists = [];
         $stocks = $userLogic->userOptional($this->user_id);
         if($stocks){
             $codes = array_column($stocks, "code");
             $lists = (new StockLogic())->simpleData($codes);
             array_filter($stocks, function(&$item) use ($lists){
-                $item['quotation'] = $lists[$item['code']];
+                $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
             });
         }
+//        dump($stocks);
 
         $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
@@ -47,10 +49,8 @@ class Index extends Base
 
         $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
         $bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
-//        $codes = $orderLogic->getCodesBy(['state' => 3]);//持仓
-//        $codeInfo = [];
-//        if($codes) $codeInfo = (new StockLogic())->simpleData($codes);
-        $codeInfo = $lists;
+        $codes = $orderLogic->getCodesBy(['state' => 3]);//持仓
+        $codeInfo = $lists ? $lists : (new StockLogic())->simpleData($codes);
         foreach($bestStrategyList as $k => $v)
         {
 

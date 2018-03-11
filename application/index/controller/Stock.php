@@ -64,7 +64,7 @@ class Stock extends Base
                     ];
                     $orderId = (new OrderLogic())->createOrder($order);
                     if($orderId > 0){
-                        $url = url("index/Order/position");
+                        $url = url("index/Order/entrust");
                         // 队列
                         $smsNoticeData = $sysNoticeData = ["niurenId" => $this->user_id];
                         Queue::push('app\index\job\UserNotice@systemNotice', $sysNoticeData, null);

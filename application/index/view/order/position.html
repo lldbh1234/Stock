@@ -145,13 +145,21 @@
         left: 0;
         top: 0;
         background: #fff;
-        margin-bottom: 58px;
+        margin-bottom: 0px;
     }
     .postion_tab_con {
         margin-bottom: 0;
     }
     .dropload-noData,.dropload-refresh,.dropload-load{
         color: #999;
+    }
+    .layui-layer .layui-layer-btn .layui-layer-btn0 {
+        padding: 0 15px;
+        border-color: #F54B4B;
+        background: #F54B4B;
+    }
+    * {
+        -webkit-user-select: auto!important;
     }
 </style>
 <link rel="stylesheet" type="text/css" href="__RESOURCE__/css/dropload.css">
@@ -209,7 +217,7 @@
                         <p class="lf count_panel flex_nowrap">
                             <span class="minus_btn count_btn">-</span>
                             <!-- <span class="now_count">13.63</span> -->
-                            <input readonly="readonly" value="13.08" class="now_count profitCount" data-initvalue="13.88">
+                            <input  class="now_count profitCount" >
                             <span class="plus_btn count_btn">+</span>
                         </p>
                         <p class="rt fudong zhangfu">涨幅约 <span>+11.85%</span></p>
@@ -220,7 +228,7 @@
                         <p class="lf count_panel flex_nowrap">
                             <span class="minus_btn count_btn">-</span>
                             <!-- <span class="now_count">13.63</span> -->
-                            <input readonly="readonly" value="9.07" class="now_count lossCount" data-initvalue="10.94">
+                            <input  class="now_count lossCount">
                             <span class="plus_btn count_btn">+</span>
                         </p>
                         <p class="rt fudong diefu">跌幅约 <span>-11.83%</span></p>
@@ -279,85 +287,6 @@
         </li>
         <div class="dropload_container">
             <ul class="postion_tab_con">
-                {empty name="orders"}
-                <div class="money_tab_con" style="text-align: center;">
-                    <img style="width: 30%;margin-top: 60px;" src="__RESOURCE__/img/no-search-data@3x.png">
-                </div>
-                {else /}
-                {volist name="orders" id="item"}
-                <li class="position{$item.order_id}" data-id="{$item.order_id}" data-code="{$item.code}" data-price="{$item.price}" data-deposit="{$item.price}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
-                    <h1 class="clear_fl">
-                        <span class="lf">{$item.name} {$item.code}</span>
-                        <span class="rt"> <span class="p_key"></span>{$item.create_at|date='m-d H:i', ###}</span>
-                    </h1>
-                    <div class="clear_fl p_info">
-                        <p>
-                            <span class="p_key">买价</span>
-                            <span class="p_value buy_price">{$item.price|number_format=2}</span>
-                        </p>
-                        <p>
-                            <span class="p_key">现价</span>
-                            <span class="p_value red p_now_price">{$item.last_px|number_format=2}</span>
-                        </p>
-                        <p>
-                            <span class="p_key">数量</span>
-                            <span class="p_value g_count">{$item.hand|intval}</span>
-                        </p>
-                        <p>
-                            <span class="p_key">市值</span>
-                            <span class="p_value p_market_value">{$item.market_value|number_format=2}</span>
-                        </p>
-                        <p>
-                            <span class="p_key">收益率</span>
-                            {if condition="$item.yield_rate LT 0"}
-                            <span class="p_value green yield_rate">-{$item.yield_rate|number_format=2}%</span>
-                            {elseif condition="$item.yield_rate EQ 0" /}
-                            <span class="p_value red yield_rate">{$item.yield_rate|number_format=2}%</span>
-                            {else /}
-                            <span class="p_value red yield_rate">+{$item.yield_rate|number_format=2}%</span>
-                            {/if}
-                        </p>
-                        <p>
-                            <span class="p_key">盈亏</span>
-                            {if condition="$item.total_pl LT 0"}
-                            <span class="p_value green total_pl">-{$item.total_pl|number_format=2}</span>
-                            {elseif condition="$item.total_pl EQ 0" /}
-                            <span class="p_value red total_pl">{$item.total_pl|number_format=2}</span>
-                            {else /}
-                            <span class="p_value red total_pl">+{$item.total_pl|number_format=2}</span>
-                            {/if}
-                        </p>
-                        <p>
-                            <span class="p_key">保证金</span>
-                            <span class="p_value banzhengjin">{$item.deposit|number_format=2}</span>
-                        </p>
-                        <p>
-                            <span class="p_key">止损</span>
-                            <span class="p_value">{$item.stop_loss_price|number_format=2}</span>
-                        </p>
-                        <p>
-                            <span class="p_key">止盈</span>
-                            <span class="p_value">{$item.stop_profit_price|number_format=2}</span>
-                        </p>
-                        <!--<p>
-                            <span class="p_key">递延费</span>
-                            <span class="p_value">{$item.defer|number_format=2}</span>
-                        </p>-->
-                        <!--<p>
-                            <span class="p_key">分红</span>
-                            <span class="p_value">0.00</span>
-                        </p>-->
-                    </div>
-                    <div class="clear_fl p_control_panel">
-                        <p class="rt">
-                            <span class="add_money lf" data-order-id="{$item.order_id}">补充保证金</span>
-                            <span class="modify_point lf" data-order-id="{$item.order_id}">修改止盈止损</span>
-                            <span class="sell_position_btn lf" data-order-id="{$item.order_id}">平仓</span>
-                        </p>
-                    </div>
-                </li>
-                {/volist}
-                {/empty}
             </ul>
         </div>
     </ul>
@@ -375,7 +304,7 @@
     </a>
     <a class="mui-tab-item center_item" href="{:url('index/Ai/index')}">
         <span class="mui-icon mui-icon-celue"></span>
-        <span class="mui-tab-label">AI智能推荐</span>
+        <span class="mui-tab-label">AI智能策略</span>
     </a>
     <a class="mui-tab-item mui-active" href="javascript:void(0);">
         <span class="mui-icon mui-icon-jingu"></span>
@@ -391,13 +320,14 @@
 {block name="script"}
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript" src="__RESOURCE__/js/dropload.min.js"></script>
+<script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
 
 <script type="text/javascript">
 	mui.init({
 		swipeBack: true //启用右滑关闭功能
 	})
 	//选项卡
-	 mui('body').on('tap', 'a', function() {
+	 mui('body').on('tap', 'nav a', function() {
         var data_href = this.getAttribute("data-href");
         var href = this.getAttribute("href");
         var url=data_href;
@@ -407,7 +337,28 @@
         window.location.href = url;
      });
 
-     var refreshIntervel = setInterval(refreshPrice,4000);
+     mui('body').on('tap', '.strategy_top a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
+
+
+     mui('body').on('tap', '.postion_tab a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
+
+     var refreshIntervel = setInterval(refreshPrice,6000);
 
      function refreshPrice(){
         if($(".postion_tab_con li").length == 0){
@@ -448,8 +399,10 @@
                 for(var key in _data){
                     var items = _data[key];
                     var context = $(".position" + items.id);
-                    var className = "red";
-                    if( parseFloat( items.yield_rate < 0) ){
+                    var className = "";
+                    if( items.yield_rate >= 0 ){
+                        className = "red";
+                    }else{
                         className = "green";
                     }
                     context.find(".p_now_price").html( items.last_px ).removeClass("red").removeClass("green").addClass(className);
@@ -466,7 +419,7 @@
 
 
      //充值保证金
-     $("body").on("click", ".add_money", function(){
+     $("body").on("tap", ".add_money", function(){
         var context = $(this).parents("li");
         var baohzengjin = context.find(".banzhengjin").html();
         baohzengjin = baohzengjin.split(",");
@@ -551,7 +504,7 @@
      });
 
      //修改止盈止损
-     $("body").on("click", ".modify_point", function(){
+     $("body").on("tap", ".modify_point", function(){
         var context = $(this).parents("li");
         var accountBalance = $(".h_re_banlance").data("balance"); //账户余额
         accountBalance = accountBalance.split(",");
@@ -571,18 +524,54 @@
         //止盈止损点
         var profit = parseFloat(context.data("profit"));
         var loss = parseFloat(context.data("loss"));
+        var nowPrice = parseFloat( context.find(".p_now_price").html() );
 
         //买入价
         var buyPrice = context.find(".buy_price").html();
 
-        $(".profitCount").val( profit.toFixed(2) );
-        $(".lossCount").val( loss.toFixed(2) );
+        $(".profitCount").val( profit.toFixed(2) ).attr("data-initValue", profit.toFixed(2));
+        $(".lossCount").val( loss.toFixed(2) ).attr("data-initValue", loss.toFixed(2));
         $(".account_balance span").html( accountBalance.toFixed(2) );
 
 
-        $(".profit_loss_mask").show().attr("data-baozhengjin", baohzengjin).attr("data-count", count).attr("data-buyPrice", buyPrice);
+        $(".profit_loss_mask").show().attr("data-baozhengjin", baohzengjin).attr("data-count", count).attr("data-buyPrice", buyPrice).attr("data-nowPrice", nowPrice);
         calcNum();
      });
+
+
+     $(".now_count").change(function(){
+        var context = $(this).parents(".control_point");
+        var now_count = parseFloat( context.find(".now_count").val() );
+        var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+        var nowPrice = parseFloat( $(this).parents(".profit_loss_mask").attr("data-nowPrice") ); //现价
+
+
+        var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+
+        if( context.hasClass( "zhisun" ) && now_count > nowPrice){
+            $(this).val( initValue );
+            return false;
+        }
+        if( context.hasClass( "zhiying" ) && now_count < nowPrice){
+            $(this).val( initValue );
+            return false;
+        }
+
+        // var profit = parseFloat( $(this).parents(".profit_loss_mask").attr("profit") );
+        // var loss = parseFloat( $(this).parents(".profit_loss_mask").attr("loss") );
+
+        // if( context.hasClass( "zhisun" ) && (-rate - loss > 0)){
+        //     $(this).val( initValue );
+        //     return false;
+        // }
+        // if( context.hasClass( "zhiying" ) && ( profit - rate > 0 )){
+        //     $(this).val( initValue );
+        //     return false;
+        // }
+
+
+        context.find(".fudong").find("span").html( rate + "%" );
+    });
 
      function calcNum(){
         var context = $(".profit_loss_mask");
@@ -608,7 +597,7 @@
         $(".bazhengjin_count span").html(buchong.toFixed(2));
      }
 
-     $(".control_point").on("click", ".count_btn", function(){
+     $(".control_point").on("tap", ".count_btn", function(){
         var context = $(this).parents(".control_point");
         var val = parseFloat( context.find(".now_count").val() );
         var buyPrice = parseFloat( $(".profit_loss_mask").data("buyprice"));
@@ -623,23 +612,46 @@
             }
             val = (val + 0.01).toFixed(2);
         }
-        context.find(".now_count").val( val );
+        context.find(".now_count").val( val ).attr("data-initValue", val);
         calcNum();
      });
 
      //平仓
-     $("body").on("click", ".sell_position_btn", function(){
+     $("body").on("tap", ".sell_position_btn", function(){
         var context = $(this).parents("li");
         var id = context.data("id");
-        var _url = '{:url("index/Order/selling")}',
-            _oData = {id: id};
-        $ajaxCustom(_url, _oData, function(res){
-            if(res.state){
-                context.remove();
-            }else{
-                $alert(res.info);
+        layer.open({
+            title : '',
+            closeBtn : 0,
+            content: "确认平仓？"
+            ,btn: ['同意', '拒绝']
+            ,yes: function(index, layero){
+                var _url = '{:url("index/Order/selling")}',
+                    _oData = {id: id};
+                $ajaxCustom(_url, _oData, function(res){
+                    if(res.state){ 
+                        context.remove();
+                        layer.close(index);
+                    }else{
+                        alert(res.info);
+                        layer.close(index);
+                    }
+                });
+            }
+            ,cancel: function(){
             }
         });
+
+
+        // var _url = '{:url("index/Order/selling")}',
+        //     _oData = {id: id};
+        // $ajaxCustom(_url, _oData, function(res){
+        //     if(res.state){
+        //         context.remove();
+        //     }else{
+        //         $alert(res.info);
+        //     }
+        // });
      });
 
      //提交
@@ -651,7 +663,12 @@
             _oData = {id: id,profit : profit,loss:loss};
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){
-                $alert(res.info);
+                $alert("修改成功");
+                var timer = setTimeout(function(){
+                    $(".profit_loss_mask").hide();
+                    clearTimeout( timer );
+                    timer = null;
+                },1000);
             }else{
                 $alert(res.info);
             }
@@ -674,10 +691,16 @@
             var data = res.data;
             var html = "";
             for(var key in data.orders){
+                var className = "";
+                if( data.orders[key].yield_rate >= 0 ){
+                    className = "red";
+                }else{
+                    className = "green";
+                }
               html += '<li class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
                     <h1 class="clear_fl">\
                         <span class="lf">' + data.orders[key].name + ' '+ data.orders[key].code +'</span>\
-                        <span class="rt"> <span class="p_key"></span>'+ data.orders[key].create_at +'</span>\
+                        <span class="rt"> <span class="p_key"></span>'+ data.orders[key].create_at_text +'</span>\
                     </h1>\
                     <div class="clear_fl p_info">\
                         <p>\
@@ -686,7 +709,7 @@
                         </p>\
                         <p>\
                             <span class="p_key">现价</span>\
-                            <span class="p_value p_now_price red">'+ data.orders[key].last_px +'</span>\
+                            <span class="p_value p_now_price ' + className + '">'+ data.orders[key].last_px +'</span>\
                         </p>\
                         <p>\
                             <span class="p_key">数量</span>\
@@ -698,11 +721,11 @@
                         </p>\
                         <p>\
                             <span class="p_key">收益率</span>\
-                                                        <span class="p_value yield_rate red">'+ data.orders[key].yield_rate +'%</span>\
+                                                        <span class="p_value yield_rate ' + className + '">'+ data.orders[key].yield_rate +'%</span>\
                                                     </p>\
                         <p>\
                             <span class="p_key">盈亏</span>\
-                                                        <span class="p_value total_pl red">'+ data.orders[key].total_pl +'</span>\
+                                                        <span class="p_value total_pl ' + className + '">'+ data.orders[key].total_pl +'</span>\
                                                     </p>\
                         <p>\
                             <span class="p_key">保证金</span>\
@@ -727,7 +750,7 @@
                     </div>\
                     <div class="clear_fl p_control_panel">\
                         <p class="rt">\
-                            <span class="add_money lf" data-order-id="' + data.orders[key].order_id + '">补充保证金</span>\
+                           <!-- <span class="add_money lf" data-order-id="' + data.orders[key].order_id + '">补充保证金</span> -->\
                             <span class="modify_point lf" data-order-id="' + data.orders[key].order_id + '">修改止盈止损</span>\
                             <span class="sell_position_btn lf" data-order-id="' + data.orders[key].order_id + '">平仓</span>\
                         </p>\

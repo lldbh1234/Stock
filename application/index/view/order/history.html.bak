@@ -1,0 +1,170 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+我的持仓
+{/block}
+
+{block name="style"}
+<style type="text/css">
+    .postion_tab li.active>p a {
+        border-bottom: 2px solid #fc5055;
+        display: inline-block;
+        color: #fc5055;
+    }
+    .postion_tab li>p a{
+        color: #8f8f94;
+        font-size: 13px;
+    }
+    .postion_tab_con{
+        display: block!important;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<body class="quick_body payment_body mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+
+{block name="content"}
+    <header class="strategy_top">
+        <p>
+            <a href="{:url('index/Strategy/index')}">策略</a>
+            <a href="javascript:viod(0);" class="active">持仓</a>
+        </p>
+    </header>
+
+    <ul class="position_section clear_fl">
+        <li>
+            <p>净资产</p>
+            <p>￥{$capital.netAssets|number_format=2}</p>
+        </li>
+        <li>
+            <p>可用资金</p>
+            <p>￥{$capital.expendableFund|number_format=2}</p>
+        </li>
+        <li>
+            <p>持仓市值</p>
+            <p>￥{$capital.marketValue|number_format=2}</p>
+        </li>
+        <li>
+            <p>浮动盈亏</p>
+            <p>{$capital.floatPL|number_format=2}</p>
+        </li>
+    </ul>
+    <ul class="postion_tab flex_nowrap">
+        <li>
+            <p><a href="{:url('index/Order/position')}">当前持仓</a></p>
+        </li>
+        <li>
+            <p><a href="{:url('index/Order/entrust')}">当前委托</a></p>
+        </li>
+        <li class="active" data-total-page="{$totalPage}" data-current-page="{$currentPage}">
+            <p><a href="javascript:void(0);">历史交易</a></p>
+        </li>
+        <ul class="postion_tab_con">
+            {empty name="orders"}
+            <div class="money_tab_con" style="text-align: center;">
+                <img style="width: 30%;margin-top: 60px;" src="__RESOURCE__/img/no-search-data@3x.png">
+            </div>
+            {else /}
+            {volist name="orders" id="item"}
+            <li>
+                <h1 class="clear_fl">
+                    <span class="lf">{$item.name} {$item.code}</span>
+                    <span class="rt"> <span class="p_key"></span>已平仓</span>
+                </h1>
+                <div class="clear_fl p_info">
+                    <p>
+                        <span class="p_key">买价</span>
+                        <span class="p_value">{$item.price|number_format=2}</span>
+                    </p>
+                    <p>
+                        <span class="p_key">卖价</span>
+                        <span class="p_value">{$item.sell_price|number_format=2}</span>
+                    </p>
+                    <p>
+                        <span class="p_key">数量</span>
+                        <span class="p_value">{$item.sell_hand|intval}</span>
+                    </p>
+                    <p>
+                        <span class="p_key">收益率</span>
+                        {if condition="$item.yield_rate LT 0"}
+                        <span class="p_value green">-{$item.yield_rate|number_format=2}%</span>
+                        {elseif condition="$item.yield_rate EQ 0" /}
+                        <span class="p_value red">{$item.yield_rate|number_format=2}%</span>
+                        {else /}
+                        <span class="p_value red">+{$item.yield_rate|number_format=2}%</span>
+                        {/if}
+                    </p>
+                    <p>
+                        <span class="p_key">盈亏</span>
+                        {if condition="$item.total_pl LT 0"}
+                        <span class="p_value green">-{$item.total_pl|number_format=2}</span>
+                        {elseif condition="$item.total_pl EQ 0" /}
+                        <span class="p_value red">{$item.total_pl|number_format=2}</span>
+                        {else /}
+                        <span class="p_value red">+{$item.total_pl|number_format=2}</span>
+                        {/if}
+                    </p>
+                    <p>
+                        <span class="p_key"></span>
+                        <span class="p_value"></span>
+                    </p>
+                    <p>
+                        <span class="p_key">买入</span>
+                        <span class="p_value">{$item.create_at|date='m-d H:i', ###}</span>
+                    </p>
+                    <p>
+                        <span class="p_key">卖出</span>
+                        <span class="p_value">{$item.update_at|date='m-d H:i', ###}</span>
+                    </p>
+                </div>
+            </li>
+            {/volist}
+            {/empty}
+        </ul>
+    </ul>
+{/block}
+
+{block name="nav"}
+<nav class="ml_tab mui-bar mui-bar-tab">
+    <a class="mui-tab-item" href="{:url('index/Index/index')}">
+        <span class="mui-icon mui-icon-home"></span>
+        <span class="mui-tab-label">首页</span>
+    </a>
+    <a class="mui-tab-item" href="{:url('index/User/optional')}">
+        <span class="mui-icon mui-icon-zixuan"></span>
+        <span class="mui-tab-label">自选</span>
+    </a>
+    <a class="mui-tab-item center_item" href="{:url('index/Ai/index')}">
+        <span class="mui-icon mui-icon-celue"></span>
+        <span class="mui-tab-label">AI智能推荐</span>
+    </a>
+    <a class="mui-tab-item mui-active" href="javascript:void(0);">
+        <span class="mui-icon mui-icon-jingu"></span>
+        <span class="mui-tab-label">策略</span>
+    </a>
+    <a class="mui-tab-item" href="{:url('index/User/index')}">
+        <span class="mui-icon mui-icon-my"></span>
+        <span class="mui-tab-label">我的</span>
+    </a>
+</nav>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+	mui.init({
+		swipeBack: true //启用右滑关闭功能
+	})
+	//选项卡
+	 mui('body').on('tap', 'a', function() {
+        var data_href = this.getAttribute("data-href");
+        var href = this.getAttribute("href");
+        var url=data_href;
+        if(!url||url==''){
+            url=href;
+        }
+        window.location.href = url;
+     });
+</script>
+{/block}
