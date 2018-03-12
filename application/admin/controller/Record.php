@@ -37,6 +37,17 @@ class Record extends Base
     public function niuren()
     {
         $res = $this->_logic->pageNiurenRecord(input(""));
+        $type = [0 => "跟单分成", 1 => "建仓费分成", 2=> "递延费分成"];
+        array_filter($res['lists']['data'], function (&$item) use ($type){
+            $item["type_text"] = $type[$item["type"]];
+        });
+        $pageMoney = array_sum(collection($res['lists']['data'])->column("money"));
+        $this->assign("datas", $res['lists']);
+        $this->assign("pages", $res['pages']);
+        $this->assign("pageMoney", $pageMoney);
+        $this->assign("totalMoney", $res['totalMoney']);
+        $this->assign("search", input(""));
+        return view();
     }
 
     // 经纪人返点
