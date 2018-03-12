@@ -128,3 +128,12 @@ if(!function_exists("cfgs"))
         return model("System")->column("val", "alias");
     }
 }
+
+if(!function_exists("cf"))
+{
+    function cf($alias, $default='')
+    {
+        $value = model("System")->where(["alias" => $alias])->value("val");
+        return is_null($value) ? $default : $value;
+    }
+}

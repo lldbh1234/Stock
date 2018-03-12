@@ -114,7 +114,9 @@ class UserLogic
             $user = User::get($userId);
 
             $data['admin_id'] = $user['admin_id'];
-            $data['point'] = isset($configs['manager_point']) && $configs['manager_point'] ? $configs['manager_point'] : 5;
+            $data['point'] = cf('manager_point', 5);
+            $data['jiancang_point'] = cf('manager_jiancang_point', 5);
+            $data['defer_point'] = cf('manager_defer_point', 5);
             if($user->hasOneManager){
                 $data['state'] = 0;
                 $data['update_at'] = 0;
@@ -124,7 +126,7 @@ class UserLogic
                 $user->hasOneManager()->save($data);
             }
 
-            $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+            $poundage = cf('manager_poundage', 88);
             $rData = [
                 "type" => 8,
                 "amount" => $poundage,

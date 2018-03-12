@@ -36,14 +36,6 @@ class Record extends Base
     // 牛人返点
     public function niuren()
     {
-        $codes = [
-            "600000",
-            "600004",
-            "600007",
-        ];
-        $res = (new StockLogic())->stockQuotationBySina($codes);
-        dump($res);
-        exit;
         $res = $this->_logic->pageNiurenRecord(input(""));
     }
 

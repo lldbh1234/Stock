@@ -258,6 +258,7 @@ Route::group([], function() {
             Route::post('del', 'admin/Admin/remove'); // 删除管理员
             Route::post('delete', 'admin/Admin/patchRemove'); //批量删除
         });
+
         //权限管理
         Route::group("permission", function(){
             Route::any('lists', 'admin/Permission/lists');  // 权限资源列表
@@ -291,6 +292,7 @@ Route::group([], function() {
             Route::any('lists', 'admin/Manager/lists');
             Route::any('audit-lists', 'admin/Manager/auditLists');
             Route::post('audit', 'admin/Manager/audit'); // 审核
+            Route::any('point', 'admin/Manager/point'); // 返点修改
         });
 
         // 订单管理

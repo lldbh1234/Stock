@@ -25,21 +25,51 @@ class Manager extends Base
         $map = input('');
         !isset($map['state']) ? $map['state'] = 1 : '';
         $_res = $this->userManageLogic->pageManagerLists($map);
-
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("search", input(""));
         return view();
-
     }
+
     public function auditLists()
     {
-        $_res = $this->userManageLogic->pageManagerLists(input(''));
-
+        $map = input('');
+        $map['state'] = 0;
+        $_res = $this->userManageLogic->pageManagerLists($map);
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("search", input(""));
         return view();
+    }
+
+    public function point($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('UserManager');
+            if(!$validate->scene('point')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "id" => input("post.id/d"),
+                    "point" => input("post.point/f"),
+                    "jiancang_point" => input("post.jiancang_point/f"),
+                    "defer_point" => input("post.defer_point/f")
+                ];
+                $res = $this->userManageLogic->updateManager($data);
+                if($res !== false){
+                    return $this->ok();
+                } else {
+                    return $this->fail("操作失败！");
+                }
+            }
+        }
+        $manager = $this->userManageLogic->managerById($id);
+        if($manager){
+            $this->assign("manager", $manager);
+            return view();
+        }else{
+            return "非法操作！";
+        }
     }
 
 

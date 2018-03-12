@@ -33,6 +33,15 @@ if(!function_exists("cfgs"))
     }
 }
 
+if(!function_exists("cf"))
+{
+    function cf($alias, $default='')
+    {
+        $value = model("System")->where(["alias" => $alias])->value("val");
+        return is_null($value) ? $default : $value;
+    }
+}
+
 if(!function_exists("dd")){
     function dd($array)
     {
