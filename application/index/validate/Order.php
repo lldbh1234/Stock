@@ -71,6 +71,7 @@ class Order extends Validate
             $order = reset($order);
             $holiday = explode(',', cfgs()['holiday']);
             $timestamp = workTimestamp(1, $holiday, $order['create_at']);
+            $timestamp = strtotime(date("Y-m-d", $timestamp));
             return $timestamp > request()->time() ? "建仓未满1个交易日，无法平仓！" : true;
         }
         return false;
