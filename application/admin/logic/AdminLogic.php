@@ -19,6 +19,17 @@ class AdminLogic
         return $lists ? collection($lists)->toArray() : [];
     }
 
+    public function allTeamRoles()
+    {
+        $adminRoles = [
+            Admin::SETTLE_ROLE_ID,
+            Admin::OPERATE_ROLE_ID,
+            Admin::MEMBER_ROLE_ID,
+            Admin::RING_ROLE_ID
+        ];
+        return Role::where(["id" => ["IN", $adminRoles]])->column("name", "id");
+    }
+
     // 不包括组织架构的角色列表
     public function allAdminRoles()
     {

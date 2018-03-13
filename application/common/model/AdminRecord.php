@@ -1,9 +1,10 @@
 <?php
 namespace app\common\model;
 
-class UserManagerRecord extends BaseModel
+
+class AdminRecord extends BaseModel
 {
-    protected $table = 'stock_user_manager_record';
+    protected $table = 'stock_admin_record';
 
     protected $insert = ['create_at'];
 
@@ -12,9 +13,9 @@ class UserManagerRecord extends BaseModel
         return request()->time();
     }
 
-    public function belongsToManager()
+    public function belongsToAdmin()
     {
-        return $this->belongsTo("\\app\\common\\model\\User", "user_id", "user_id");
+        return $this->belongsTo("\\app\\common\\model\\Admin", "admin_id", "admin_id");
     }
 
     public function belongsToOrder()
