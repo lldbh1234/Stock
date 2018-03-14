@@ -25,7 +25,7 @@ class AdminLogic
             Admin::OPERATE_ROLE_ID, //运营中心
             Admin::SETTLE_ROLE_ID, //结算中心
         ];
-        $admins = Admin::where(["role" => ["IN", $roles]])->column("admin_id,pid,point");
+        $admins = Admin::where(["role" => ["IN", $roles]])->column("admin_id,pid,point,jiancang_point,defer_point");
         //dump($admins);
         $this->familyTree = [];
         $this->_familyTree($admins, $adminId);

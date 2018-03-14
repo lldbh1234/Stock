@@ -121,7 +121,7 @@ class Cron extends Controller
         }
     }
 
-    // 牛人返点-每天停盘后的时间段 17-23点
+    // 牛人返点-每天停盘后的时间段 16-23点
     public function handleNiurenRebate()
     {
         if(checkSettleTime()){
@@ -142,7 +142,7 @@ class Cron extends Controller
         }
     }
 
-    // 代理商返点-每天停盘后的时间段 17-23点
+    // 代理商返点-每天停盘后的时间段 16-23点
     public function handleProxyRebate()
     {
         if(checkSettleTime()){
@@ -155,6 +155,24 @@ class Cron extends Controller
                         "user_id" => $order["user_id"]
                     ];
                     Queue::push('app\index\job\RebateJob@handleProxyRebate', $rebateData, null);
+                }
+            }
+        }
+    }
+
+    // 建仓费代理商返点-每天停盘后的时间段 16-23点
+    public function handleJiancangRebate()
+    {
+        if(checkSettleTime()){
+            $orders = (new OrderLogic())->todayJiancangRebateOrder();
+            if($orders){
+                foreach ($orders as $order){
+                    $rebateData = [
+                        "money" => $order["jiancang_fee"],
+                        "order_id" => $order["order_id"], //订单ID
+                        "user_id" => $order["user_id"]
+                    ];
+                    Queue::push('app\index\job\RebateJob@handleJiancangRebate', $rebateData, null);
                 }
             }
         }

@@ -48,7 +48,7 @@ class Order extends Validate
             "deposit"
         ],
         "modifyPl"  => [
-            "id" => "require|checkDatetime|canModifyPl",
+            "id" => "require|canModifyPl",
             "profit",
             "loss"
         ]

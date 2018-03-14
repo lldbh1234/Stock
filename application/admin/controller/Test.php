@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 use app\admin\logic\OrderLogic;
 use app\admin\logic\StockLogic;
+use app\index\job\RebateJob;
 use app\index\logic\AdminLogic;
 use app\index\logic\RebateLogic;
 use app\index\logic\UserLogic;
@@ -19,17 +20,13 @@ class Test extends Controller
 
     public function test()
     {
-        $aa = (new \app\index\logic\StockLogic())->simpleData("000001,399001,399006");
-        dump($aa);
-        exit;
-
-        $order = (new UserLogic())->userOrderById(1, 7, [1,4]);
-        $order = reset($order);
-        dump($order);
-        exit;
-
-        $adminIds = (new AdminLogic())->ringFamilyTree(6);
-        $res = (new RebateLogic())->handleProxyRebate(1, $adminIds, 4, 80);
+        $job = new RebateJob();
+        $data = [
+            "money" => 57,
+            "order_id" => 10,
+            "user_id" => 1
+        ];
+        $res = $job->handleJiancang($data);
         dump($res);
         exit;
 

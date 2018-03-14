@@ -76,7 +76,7 @@ if(!function_exists("checkSettleTime"))
         if(date('w') == 6){
             return false;
         }
-        if(date('G') < 17){
+        if(date('G') < 16){
             return false;
         }
         if(date('G') > 23){

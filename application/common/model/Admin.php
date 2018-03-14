@@ -94,4 +94,9 @@ class Admin extends BaseModel
     {
         return $this->hasOne("\\app\\common\\model\\AdminWechat", "admin_id", "admin_id");
     }
+
+    public function hasManyRecord()
+    {
+        return $this->hasMany("\\app\\common\\model\\AdminRecord", "admin_id", "admin_id");
+    }
 }

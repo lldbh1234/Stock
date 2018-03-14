@@ -16,7 +16,7 @@ class RebateJob
         $this->_logic = new RebateLogic();
     }
 
-    // 跟买订单
+    // 跟买订单(盈利)
     public function handleFollowOrder(Job $job, $data)
     {
         $isJobDone = $this->handleFollow($data);
@@ -36,10 +36,30 @@ class RebateJob
         }
     }
 
-    // 经纪人返点
+    // 经纪人返点(盈利)
     public function handleProxyRebate(Job $job, $data)
     {
         $isJobDone = $this->handleProxy($data);
+        if ($isJobDone) {
+            //成功删除任务
+            $job->delete();
+        } else {
+            //任务轮询4次后删除
+            if ($job->attempts() > 3) {
+                // 第1种处理方式：重新发布任务,该任务延迟10秒后再执行
+                //$job->release(10);
+                // 第2种处理方式：原任务的基础上1分钟执行一次并增加尝试次数
+                //$job->failed();
+                // 第3种处理方式：删除任务
+                $job->delete();
+            }
+        }
+    }
+
+    // 建仓费返点
+    public function handleJiancangRebate(Job $job, $data)
+    {
+        $isJobDone = $this->handleJiancang($data);
         if ($isJobDone) {
             //成功删除任务
             $job->delete();
@@ -78,6 +98,22 @@ class RebateJob
             $adminId = $user["admin_id"];
             $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
             $handleRes = $this->_logic->handleProxyRebate($managerUserId, $adminIds, $orderId, $profit);
+            return $handleRes ? true : false;
+        }
+        return true;
+    }
+
+    public function handleJiancang($data)
+    {
+        $fee = $data['money']; //建仓费
+        $orderId = $data['order_id']; //订单ID
+        $userId = $data['user_id']; // 用户ID
+        $user = (new UserLogic())->userById($userId);
+        if($user){
+            $managerUserId = $user["parent_id"];
+            $adminId = $user["admin_id"];
+            $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
+            $handleRes = $this->_logic->handleJiancangRebate($managerUserId, $adminIds, $orderId, $fee);
             return $handleRes ? true : false;
         }
         return true;
