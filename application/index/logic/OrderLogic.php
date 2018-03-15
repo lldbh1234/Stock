@@ -1,6 +1,8 @@
 <?php
 namespace app\index\logic;
 
+use app\index\model\Admin;
+use app\index\model\DeferRecord;
 use think\Db;
 use app\index\model\Order;
 use app\index\model\User;
@@ -120,6 +122,11 @@ class OrderLogic
         return $order ? $order->toArray() : [];
     }
 
+    public function orderUpdate($data)
+    {
+        return Order::update($data);
+    }
+
     public function orderByState($state = 1)
     {
         $where["state"] = is_array($state) ? ["IN", $state] : $state;
@@ -136,28 +143,23 @@ class OrderLogic
         return $orders ? collection($orders)->toArray() : [];
     }
 
-    // 处理订单自动递延费用
-    public function reduceOrderDefer($order)
+    // 自动递延，扣除用户余额
+    public function handleDeferByUserAccount($order, $managerId, $admins)
     {
         Db::startTrans();
         try{
             // 订单过期时间增加
+            $holiday = cf("holiday", []);
+            $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
             $data = [
                 "order_id"  => $order['order_id'],
-                "free_time" => $order["free_time"] + 86400
+                "free_time" => $timestamp
             ];
             Order::update($data);
             // 用户余额减少
             $user = User::find($order["user_id"]);
-            if($user['account'] >= $order['defer']){
-                // 余额充足
-                $user->setDec("account", $order['defer']);
-            }else{
-                // 余额不足
-                Order::where(["order_id" => $order["user_id"]])->setDec("deposit", $order['defer']);
-                $user->setDec("blocked_account", $order['defer']);
-            }
-            // 资金明细
+            $user->setDec("account", $order['defer']);
+            // 用户资金明细
             $rData = [
                 "type" => 1,
                 "amount" => $order['defer'],
@@ -165,6 +167,116 @@ class OrderLogic
                 "direction" => 2
             ];
             $user->hasManyRecord()->save($rData);
+            // 经纪人返点
+            if($managerId){
+                $manager = User::find($managerId);
+                $managerData = $manager->hasOneManager->toArray();
+                if(isset($managerData['defer_point']) && $managerData['defer_point'] > 0){
+                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $order['defer'] * $managerData['defer_point'] / 100), 0, -1)); //分成金额
+                    // 经纪人总收入增加
+                    $manager->hasOneManager->setInc('income', $rebateMoney);
+                    // 经纪人可转收入增加
+                    $manager->hasOneManager->setInc('sure_income', $rebateMoney);
+                    // 经纪人收入明细
+                    $rData = [
+                        "money" => $rebateMoney,
+                        "type"  => 2, // 收入类型：0-直属用户收益分成，1-建仓费分成，2-递延费分成
+                        "order_id" => $order['order_id'],
+                    ];
+                    $manager->hasManyManagerRecord()->save($rData);
+                }
+            }
+            // 代理商返点
+            foreach ($admins as $admin){
+                $point = $admin["defer_point"];
+                if($point > 0){
+                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $order['defer'] * $point / 100), 0, -1)); //分成金额
+                    $admin = Admin::find($admin['admin_id']);
+                    // 代理商手续费增加
+                    $admin->setInc('total_fee', $rebateMoney);
+                    // 代理商收入明细
+                    $rData = [
+                        "money" => $rebateMoney,
+                        "type"  => 2, // 收入类型：0-用户收益分成，1-建仓费分成，2-递延费分成
+                        "order_id" => $order['order_id'],
+                    ];
+                    $admin->hasManyRecord()->save($rData);
+                }
+            }
+            // 递延费扣除记录
+            $rData = [
+                "user_id" => $order["user_id"],
+                "order_id" => $order['order_id'],
+                "money" => $order['defer'],
+                "type"  => 0, // 0-余额扣除，1-保证金扣除
+            ];
+            DeferRecord::create($rData);
+            Db::commit();
+            return true;
+        }catch (\Exception $e){
+            Db::rollback();
+            return false;
+        }
+    }
+
+    // 自动递延，扣除订单保证金
+    public function handleDeferByDeposit($order, $managerId, $admins)
+    {
+        Db::startTrans();
+        try{
+            // 订单过期时间增加，保证金减少
+            $holiday = cf("holiday", []);
+            $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
+            $data = [
+                "order_id"  => $order['order_id'],
+                "free_time" => $timestamp,
+                "deposit"   => $order['deposit'] - $order['defer']
+            ];
+            Order::update($data);
+            // 经纪人返点
+            if($managerId){
+                $manager = User::find($managerId);
+                $managerData = $manager->hasOneManager->toArray();
+                if(isset($managerData['defer_point']) && $managerData['defer_point'] > 0){
+                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $order['defer'] * $managerData['defer_point'] / 100), 0, -1)); //分成金额
+                    // 经纪人总收入增加
+                    $manager->hasOneManager->setInc('income', $rebateMoney);
+                    // 经纪人可转收入增加
+                    $manager->hasOneManager->setInc('sure_income', $rebateMoney);
+                    // 经纪人收入明细
+                    $rData = [
+                        "money" => $rebateMoney,
+                        "type"  => 2, // 收入类型：0-直属用户收益分成，1-建仓费分成，2-递延费分成
+                        "order_id" => $order['order_id'],
+                    ];
+                    $manager->hasManyManagerRecord()->save($rData);
+                }
+            }
+            // 代理商返点
+            foreach ($admins as $admin){
+                $point = $admin["defer_point"];
+                if($point > 0){
+                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $order['defer'] * $point / 100), 0, -1)); //分成金额
+                    $admin = Admin::find($admin['admin_id']);
+                    // 代理商手续费增加
+                    $admin->setInc('total_fee', $rebateMoney);
+                    // 代理商收入明细
+                    $rData = [
+                        "money" => $rebateMoney,
+                        "type"  => 2, // 收入类型：0-用户收益分成，1-建仓费分成，2-递延费分成
+                        "order_id" => $order['order_id'],
+                    ];
+                    $admin->hasManyRecord()->save($rData);
+                }
+            }
+            // 递延费扣除记录
+            $rData = [
+                "user_id" => $order["user_id"],
+                "order_id" => $order['order_id'],
+                "money" => $order['defer'],
+                "type"  => 1, // 0-余额扣除，1-保证金扣除
+            ];
+            DeferRecord::create($rData);
             Db::commit();
             return true;
         }catch (\Exception $e){

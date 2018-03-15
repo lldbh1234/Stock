@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 use app\admin\logic\OrderLogic;
 use app\admin\logic\StockLogic;
+use app\index\job\DeferJob;
 use app\index\job\RebateJob;
 use app\index\logic\AdminLogic;
 use app\index\logic\RebateLogic;
@@ -20,16 +21,11 @@ class Test extends Controller
 
     public function test()
     {
-        $job = new RebateJob();
-        $data = [
-            "money" => 57,
-            "order_id" => 10,
-            "user_id" => 1
-        ];
-        $res = $job->handleJiancang($data);
+        $job = new DeferJob();
+        $order = (new OrderLogic())->orderById(4);
+        $res = $job->handle($order);
         dump($res);
         exit;
-
         $order = (new OrderLogic())->getAllBy();
         $c70 = [];
         $c50 = [];

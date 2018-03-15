@@ -42,6 +42,30 @@ if(!function_exists("cf"))
     }
 }
 
+if(!function_exists("workTimestamp")){
+    function workTimestamp($length, $holiday = [], $time = null)
+    {
+        $realLength = 1;
+        $time = $time ? : time();
+        for($i = 1; $i <= $length;){
+            $timestamp = strtotime("+{$realLength}day", $time);
+            $realLength++;
+            $week = date("w", $timestamp);
+            $date = date("Y-m-d", $timestamp);
+            if($week == 0 || $week == 6){
+                // 周末
+                continue;
+            }
+            if(in_array($date, $holiday)){
+                // 节假日
+                continue;
+            }
+            $i++;
+        }
+        return $timestamp;
+    }
+}
+
 if(!function_exists("dd")){
     function dd($array)
     {

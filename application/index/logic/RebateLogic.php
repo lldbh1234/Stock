@@ -51,7 +51,7 @@ class RebateLogic
             if($managerId){
                 $manager = User::find($managerId);
                 $managerData = $manager->hasOneManager->toArray();
-                if($managerData['point'] > 0) {
+                if(isset($managerData['point']) && $managerData['point'] > 0) {
                     $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $money * $managerData['point'] / 100), 0, -1)); //分成金额
                     // 经纪人总收入增加
                     $manager->hasOneManager->setInc('income', $rebateMoney);
@@ -102,7 +102,7 @@ class RebateLogic
             if($managerId){
                 $manager = User::find($managerId);
                 $managerData = $manager->hasOneManager->toArray();
-                if($managerData['jiancang_point'] > 0){
+                if(isset($managerData['jiancang_point']) && $managerData['jiancang_point'] > 0){
                     $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $fee * $managerData['jiancang_point'] / 100), 0, -1)); //分成金额
                     // 经纪人总收入增加
                     $manager->hasOneManager->setInc('income', $rebateMoney);

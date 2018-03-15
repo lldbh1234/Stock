@@ -100,7 +100,7 @@ class Cron extends Controller
         }
     }
 
-    // 5分钟一次
+    // 递延费
     public function scanOrderDefer()
     {
         if(checkStockTradeTime()){
@@ -109,12 +109,10 @@ class Cron extends Controller
                 foreach ($orders as $order){
                     if($order['is_defer']){
                         // 自动递延
-                        Queue::push('app\index\job\DeferJob@handleDeferOrder', $order["order_id"], null);
+                        Queue::push('app\index\job\DeferJob@handleDeferOrder', $order, null);
                     }else{
                         // 非自动递延,强制平仓
-                        $Coercions = cache("Coercion_Selling");
-                        $Coercions[] = $order["order_id"];
-                        cache("Coercion_Selling", $Coercions);
+                        Queue::push('app\index\job\DeferJob@handleNonAutoDeferOrder', $order, null);
                     }
                 }
             }
