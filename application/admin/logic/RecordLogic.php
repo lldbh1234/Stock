@@ -4,6 +4,7 @@ namespace app\admin\logic;
 
 use app\admin\model\Admin;
 use app\admin\model\AdminRecord;
+use app\admin\model\DeferRecord;
 use app\admin\model\User;
 use app\admin\model\UserManagerRecord;
 use app\admin\model\UserNiurenRecord;
@@ -257,6 +258,57 @@ class RecordLogic
         $totalMoney = AdminRecord::hasWhere("belongsToAdmin", $hasWhere)->where($where)->sum("money");
         $_lists = AdminRecord::hasWhere("belongsToAdmin", $hasWhere)
                         ->with(["belongsToAdmin", "belongsToOrder"])
+                        ->where($where)
+                        ->order("id DESC")
+                        ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalMoney");
+    }
+
+    public function pageDeferRecord($filter = [], $pageSize = null)
+    {
+        $where = Admin::manager();
+        $hasWhere = [];
+        if(isset($where['admin_id'])){
+            $where['stock_defer_record.admin_id'] = $where['admin_id'];
+            unset($where['admin_id']);
+        }
+        // 昵称
+        if(isset($filter['nickname']) && !empty($filter['nickname'])){
+            $_nickname = trim($filter['nickname']);
+            $hasWhere["nickname"] = ["LIKE", "%{$_nickname}%"];
+        }
+        // 手机号
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){
+            $hasWhere["mobile"] = trim($filter['mobile']);
+        }
+        // 策略ID
+        if(isset($filter['orderId']) && !empty($filter['orderId'])){
+            $where["stock_defer_record.order_id"] = trim($filter['orderId']);
+        }
+        // 结算时间
+        if(isset($filter['begin']) || isset($filter['end'])){
+            if(!empty($filter['begin']) && !empty($filter['end'])){
+                $_start = strtotime($filter['begin']);
+                $_end = strtotime($filter['end']);
+                $where['stock_defer_record.create_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['begin'])){
+                $_start = strtotime($filter['begin']);
+                $where['stock_defer_record.create_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['end'])){
+                $_end = strtotime($filter['end']);
+                $where['stock_defer_record.create_at'] = ["ELT", $_end];
+            }
+        }
+        // 扣除方式
+        if(isset($filter['type']) && is_numeric($filter['type'])){
+            $where["stock_defer_record.type"] = $filter['type'];
+        }
+        $pageSize = $pageSize ? : config("page_size");
+        $totalMoney = DeferRecord::hasWhere("belongsToUser", $hasWhere)->where($where)->sum("money");
+        $_lists = DeferRecord::hasWhere("belongsToUser", $hasWhere)
+                        ->with(["belongsToUser"])
                         ->where($where)
                         ->order("id DESC")
                         ->paginate($pageSize, false, ['query'=>request()->param()]);

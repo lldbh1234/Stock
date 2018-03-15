@@ -91,6 +91,17 @@ class Record extends Base
     // 递延费扣除记录
     public function defer()
     {
-
+        $res = $this->_logic->pageDeferRecord(input(""));
+        $type = [0 => "余额扣除", 1 => "保证金扣除"];
+        array_filter($res['lists']['data'], function (&$item) use ($type){
+            $item["type_text"] = $type[$item["type"]];
+        });
+        $pageMoney = array_sum(collection($res['lists']['data'])->column("money"));
+        $this->assign("datas", $res['lists']);
+        $this->assign("pages", $res['pages']);
+        $this->assign("pageMoney", $pageMoney);
+        $this->assign("totalMoney", $res['totalMoney']);
+        $this->assign("search", input(""));
+        return view();
     }
 }
