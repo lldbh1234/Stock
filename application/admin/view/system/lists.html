@@ -69,9 +69,23 @@
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">经纪人默认返点率：</label>
+                    <label class="form-label col-xs-4 col-sm-2">经纪人默认盈利返点率：</label>
                     <div class="formControls col-xs-2 col-sm-9">
-                        <input type="text" id="manager_point" name="manager_point" placeholder="经纪人默认返点率" value="{$lists.manager_point.val | default=''}" class="input-text">
+                        <input type="text" id="manager_point" name="manager_point" placeholder="经纪人默认盈利返点率" value="{$lists.manager_point.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">%</p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">经纪人默认建仓费返点率：</label>
+                    <div class="formControls col-xs-2 col-sm-9">
+                        <input type="text" id="manager_jiancang_point" name="manager_jiancang_point" placeholder="经纪人默认建仓费返点率" value="{$lists.manager_jiancang_point.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">%</p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">经纪人默认递延费返点率：</label>
+                    <div class="formControls col-xs-2 col-sm-9">
+                        <input type="text" id="manager_defer_point" name="manager_defer_point" placeholder="经纪人默认递延费返点率" value="{$lists.manager_defer_point.val | default=''}" class="input-text">
                         <p class="textarea-numberbar" style="color: #b3abab;">%</p>
                     </div>
                 </div>

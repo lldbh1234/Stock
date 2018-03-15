@@ -47,6 +47,12 @@ class Order extends Base
         return view();
     }
 
+    // 强制平仓
+    public function force()
+    {
+
+    }
+
     public function positionDetail($id = null)
     {
         $order = $this->_logic->orderById($id);

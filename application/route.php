@@ -300,11 +300,11 @@ Route::group([], function() {
             Route::any('lists', 'admin/Order/index'); //委托订单
             Route::any('history', 'admin/Order/history'); //已平仓订单
             Route::any('position', 'admin/Order/position'); //持仓订单
-            Route::post('buy-ok', 'admin/Order/buyOk'); //建仓成功
-            Route::post('buy-fail', 'admin/Order/buyFail'); //建仓失败
+            //Route::post('buy-ok', 'admin/Order/buyOk'); //建仓成功
+            //Route::post('buy-fail', 'admin/Order/buyFail'); //建仓失败
             Route::post('sell-ok', 'admin/Order/sellOk'); //平仓成功
             Route::post('sell-fail', 'admin/Order/sellFail'); //平仓失败
-            Route::post('force-sell', 'admin/Order/forceSell'); //强制平仓
+            //Route::post('force-sell', 'admin/Order/forceSell'); //强制平仓
             Route::any('position-detail', 'admin/Order/positionDetail'); // 持仓订单详情
             Route::post('hedging', 'admin/Order/hedging'); // 持仓订单对冲
         });
