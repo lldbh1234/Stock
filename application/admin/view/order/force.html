@@ -1,0 +1,131 @@
+﻿{extend name="layouts/layout_iframe" /}
+
+{block name="title"}强制平仓订单{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+	<span class="c-gray en">&gt;</span> 订单管理
+	<span class="c-gray en">&gt;</span> 强制平仓订单
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+	</a>
+</nav>
+<div class="page-container">
+	<form action="" method="get">
+		<div class="text-l">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
+		</div>
+		<div class="text-l mt-5">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
+		</div>
+		<div class="text-l mt-5">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+			<span class="select-box radius" style="width:110px;height: 31px;">
+				<select class="select radius" name="force_type" size="1">
+					<option value="">平仓类型</option>
+					<option value="1" {if condition="isset($search.force_type) AND $search.force_type eq '1'"}selected{/if}>爆仓</option>
+					<option value="2" {if condition="isset($search.force_type) AND $search.force_type eq '2'"}selected{/if}>止盈止损</option>
+					<option value="3" {if condition="isset($search.force_type) AND $search.force_type eq '3'"}selected{/if}>非自动递延</option>
+					<option value="4" {if condition="isset($search.force_type) AND $search.force_type eq '4'"}selected{/if}>余额不足</option>
+				</select>
+			</span>
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+		</div>
+	</form>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+		</span>
+		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-hover table-bg">
+		<thead>
+		<tr class="text-c">
+			<!--<th width="25"><input type="checkbox" value="" name=""></th>-->
+			<th width="40">ID</th>
+			<th>用户名</th>
+			<th>股票代码</th>
+			<th>股票名称</th>
+			<th>微会员</th>
+			<th>微圈</th>
+			<th>经纪人</th>
+			<th>买入价</th>
+			<th>买入数量</th>
+			<th>止盈</th>
+			<th>止损</th>
+			<th>卖出价</th>
+			<th>卖出数量</th>
+			<th>盈亏</th>
+			<th>保证金</th>
+			<th>建仓费</th>
+			<th>递延费</th>
+			<th>平仓类型</th>
+			<th>买入时间</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name="datas.data" id="item"}
+		<tr class="text-c mode-lists">
+			<td>{$item.order_id}</td>
+			<td>{$item.has_one_user.username}</td>
+			<td>{$item.code}</td>
+			<td>{$item.name}</td>
+			<td>{$item.has_one_user.has_one_admin.has_one_parent.username|default='无'}</td>
+			<td>{$item.has_one_user.has_one_admin.username|default='无'}</td>
+			<td>{$item.has_one_user.has_one_parent.username|default='无'}</td>
+			<td>{$item.price|number_format=2}</td>
+			<td>{$item.hand|intval}</td>
+			<td>{$item.stop_profit_price|number_format=2}</td>
+			<td>{$item.stop_loss_price|number_format=2}</td>
+			<td>{$item.sell_price|number_format=2}</td>
+			<td>{$item.sell_hand|intval}</td>
+			<td>{$item.profit|number_format=2}</td>
+			<td>{$item.deposit|number_format=2}</td>
+			<td>{$item.jiancang_fee|number_format=2}</td>
+			<td>{$item.defer|number_format=2}</td>
+			<td>{$item.force_type_text}</td>
+			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
+			<td><input class="btn btn-danger radius" type="button" onclick="force_sell('{$item.order_id}', this)" value="平仓"></td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+    function force_sell(_id, _obj)
+    {
+        parent.layer.confirm('确认此订单强制平仓？', function(index){
+            parent.layer.close(index);
+            var _oData = {id : _id},
+                _url = '{:url("admin/Order/forceSell")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            $(_obj).parents("tr").remove();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+</script>
+{/block}

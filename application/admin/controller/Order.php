@@ -50,7 +50,11 @@ class Order extends Base
     // 强制平仓
     public function force()
     {
-
+        $_res = $this->_logic->pageForceOrders(input(""));
+        $this->assign("datas", $_res['lists']);
+        $this->assign("pages", $_res['pages']);
+        $this->assign("search", input(""));
+        return view();
     }
 
     public function positionDetail($id = null)
@@ -68,7 +72,7 @@ class Order extends Base
         return "非法操作！";
     }
 
-    public function buyOk()
+    /*public function buyOk()
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Order');
@@ -90,7 +94,7 @@ class Order extends Base
         }else{
             return $this->fail("系统提示：非法操作！");
         }
-    }
+    }*/
 
     // 持仓订单对冲
     public function hedging()
@@ -119,7 +123,7 @@ class Order extends Base
         }
     }
 
-    public function buyFail()
+    /*public function buyFail()
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Order');
@@ -136,7 +140,7 @@ class Order extends Base
         }else{
             return $this->fail("系统提示：非法操作！");
         }
-    }
+    }*/
 
     public function sellOk()
     {
@@ -193,15 +197,9 @@ class Order extends Base
                 return $this->fail($validate->getError());
             }else{
                 $orderId = input("post.id/d");
-                $code = input("post.code/s");
-                $quotation = (new StockLogic())->stockQuotation($code);
-                if($quotation && isset($quotation['last_px'])){
-                    $res = $this->_logic->forceSell($orderId, $quotation['last_px']);
-                    if($res){
-                        return $this->ok("平仓成功！");
-                    }else{
-                        return $this->fail("强制平仓失败，请稍后重试！");
-                    }
+                $res = $this->_logic->forceSell($orderId);
+                if($res){
+                    return $this->ok("平仓成功！");
                 }else{
                     return $this->fail("强制平仓失败，请稍后重试！");
                 }

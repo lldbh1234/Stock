@@ -52,7 +52,7 @@
 			<td>{$item.sell_hand|intval}</td>
 			<td>
 				{if condition="$item.profit LT 0"}
-				<font style="color: #1eb83f;">-{$item.profit|number_format=2}</font>
+				<font style="color: #1eb83f;">{$item.profit|number_format=2}</font>
 				{elseif condition="$item.profit EQ 0" /}
 				<font style="color: #CC0000;">{$item.profit|number_format=2}</font>
 				{else /}

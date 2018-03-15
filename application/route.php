@@ -304,9 +304,10 @@ Route::group([], function() {
             //Route::post('buy-fail', 'admin/Order/buyFail'); //建仓失败
             Route::post('sell-ok', 'admin/Order/sellOk'); //平仓成功
             Route::post('sell-fail', 'admin/Order/sellFail'); //平仓失败
-            //Route::post('force-sell', 'admin/Order/forceSell'); //强制平仓
+            Route::post('force-sell', 'admin/Order/forceSell'); //强制平仓
             Route::any('position-detail', 'admin/Order/positionDetail'); // 持仓订单详情
             Route::post('hedging', 'admin/Order/hedging'); // 持仓订单对冲
+            Route::any('force', 'admin/Order/force'); // 强制平仓订单
         });
 
         // 记录

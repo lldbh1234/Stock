@@ -8,7 +8,6 @@ class Order extends Validate
     protected $rule = [
         'id'    => 'require|gt:0|canBuy',
         'price' => 'require|float|gt:0|checkPrice',
-        'code'  => 'require|forceSell',
     ];
 
     protected $message = [
@@ -20,8 +19,6 @@ class Order extends Validate
         'price.float'   => '实际买入价必须为数字！',
         'price.gt'      => '实际买入价必须大于0！',
         "price.checkPrice" => "实际买入价与委托买入价相差不得超过0.02",
-        'code.require'  => '系统提示：非法操作！',
-        'code.forceSell' => '系统提示：非法操作！',
     ];
 
     protected $scene = [
@@ -29,8 +26,7 @@ class Order extends Validate
         "buyFail" => ["id"],
         "sell"  => ["id" => "require|gt:0|canSell"],
         "force" => [
-            "id" => "require|gt:0",
-            "code"
+            "id" => "require|gt:0|canForce",
         ],
         "hedging" => [
             "id" => "require|gt:0|canHedging",
@@ -48,6 +44,13 @@ class Order extends Validate
     protected function canSell($value)
     {
         $where = ["order_id" => $value, "state" => 4];
+        $order = \app\admin\model\Order::where($where)->find();
+        return $order ? true : false;
+    }
+
+    protected function canForce($value)
+    {
+        $where = ["order_id" => $value, "state" => 6];
         $order = \app\admin\model\Order::where($where)->find();
         return $order ? true : false;
     }
@@ -70,13 +73,5 @@ class Order extends Validate
             return abs($value - $order['price']) > 0.02 ? false : true;
         }
         return false;
-    }
-
-    protected function forceSell($value, $rule, $data)
-    {
-        $orderId = $data['id'];
-        $where = ["order_id" => $orderId, "code" => $value, "state" => 3];
-        $order = \app\admin\model\Order::where($where)->find();
-        return $order ? true : false;
     }
 }
