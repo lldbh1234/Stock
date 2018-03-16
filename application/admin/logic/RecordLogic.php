@@ -274,8 +274,6 @@ class RecordLogic
             $where['stock_defer_record.admin_id'] = $where['admin_id'];
             unset($where['admin_id']);
         }
-        dump($where);
-        exit;
         // 昵称
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
             $_nickname = trim($filter['nickname']);
@@ -307,6 +305,8 @@ class RecordLogic
         if(isset($filter['type']) && is_numeric($filter['type'])){
             $where["stock_defer_record.type"] = $filter['type'];
         }
+        dump($where);
+        exit;
         $pageSize = $pageSize ? : config("page_size");
         $totalMoney = DeferRecord::hasWhere("belongsToUser", $hasWhere)->where($where)->sum("money");
         $_lists = DeferRecord::hasWhere("belongsToUser", $hasWhere)
