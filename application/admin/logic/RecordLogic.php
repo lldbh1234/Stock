@@ -274,6 +274,8 @@ class RecordLogic
             $where['stock_defer_record.admin_id'] = $where['admin_id'];
             unset($where['admin_id']);
         }
+        dump($where);
+        exit;
         // 昵称
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
             $_nickname = trim($filter['nickname']);
