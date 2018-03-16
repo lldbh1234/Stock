@@ -24,6 +24,19 @@ class Order extends Base
         return view();
     }
 
+    // 委托详情
+    public function entrustDetail($id = null)
+    {
+        $order = $this->_logic->orderIncRecordById($id, $state = 4);
+        if($order){
+            $state = [1 => '委托建仓', 2 => '平仓', 3 => '持仓', 4 => '委托平仓', 5 => '作废'];
+            $order['state_text'] = $state[$order['state']];
+            $this->assign("order", $order);
+            return view();
+        }
+        return "非法操作！";
+    }
+
     // 历史
     public function history()
     {

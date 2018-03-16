@@ -299,6 +299,7 @@ Route::group([], function() {
         // 订单管理
         Route::group("order", function(){
             Route::any('lists', 'admin/Order/index'); //委托订单
+            Route::any('entrust-detail', 'admin/Order/entrustDetail'); // 委托订单详情
             Route::any('history', 'admin/Order/history'); //已平仓订单
             Route::any('history-detail', 'admin/Order/historyDetail'); // 平仓订单详情
             Route::any('position', 'admin/Order/position'); //持仓订单

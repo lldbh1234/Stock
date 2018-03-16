@@ -1,0 +1,196 @@
+﻿{extend name="layouts/layout_iframe" /}
+
+{block name="title"}策略详情{/block}
+
+{block name="body"}
+<div class="page-container">
+    {if condition="$order.state EQ 4"}
+    {// 待平仓}
+	<div class="col-sm-8" style="float: none;margin: 0 auto;">
+        <table class="table table-border table-bordered radius">
+            <thead class="text-c">
+                <tr>
+                    <th class="f-14" colspan="4">策略详情</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="text-r">策略ID：</th>
+                    <td class="text-l">{$order.order_id}</td>
+                    <th class="text-r">策略流水号：</th>
+                    <td class="text-l">{$order.order_sn}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">昵称：</th>
+                    <td class="text-l">{$order.has_one_user.nickname|default='-'}</td>
+                    <th class="text-r">手机号：</th>
+                    <td class="text-l">{$order.has_one_user.mobile|default='-'}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">股票代码：</th>
+                    <td class="text-l">{$order.code}</td>
+                    <th class="text-r">股票名称：</th>
+                    <td class="text-l">{$order.name}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">委托类型：</th>
+                    <td class="text-l">{$order.state_text}</td>
+                    <th class="text-r">状态：</th>
+                    <td class="text-l">等待平仓</td>
+                </tr>
+                <tr>
+                    <th class="text-r">买入价：</th>
+                    <td class="text-l">{$order.price|number_format=2}</td>
+                    <th class="text-r">买入数量：</th>
+                    <td class="text-l">{$order.hand|intval}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">卖出价：</th>
+                    <td class="text-l">{$order.sell_price|number_format=2}</td>
+                    <th class="text-r">卖出数量：</th>
+                    <td class="text-l">{$order.sell_hand|intval}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">止盈：</th>
+                    <td class="text-l">{$order.stop_profit_price|number_format=2}</td>
+                    <th class="text-r">止损：</th>
+                    <td class="text-l">{$order.stop_loss_price|number_format=2}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">盈亏：</th>
+                    <td class="text-l {if condition='$order.profit LT 0'}c-green{else /}c-red{/if}">
+                        {$order.profit}
+                    </td>
+                    <th class="text-r"></th>
+                    <td class="text-l"></td>
+                </tr>
+                <tr>
+                    <th class="text-r">保证金：</th>
+                    <td class="text-l">{$order.deposit|number_format=2}</td>
+                    <th class="text-r">建仓费：</th>
+                    <td class="text-l">{$order.jiancang_fee|number_format=2}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">递延费：</th>
+                    <td class="text-l">{$order.defer|number_format=2}</td>
+                    <th class="text-r">微会员：</th>
+                    <td class="text-l">{$order.has_one_user.has_one_admin.has_one_parent.username|default='-'}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">微圈：</th>
+                    <td class="text-l">{$order.has_one_user.has_one_admin.username|default='-'}</td>
+                    <th class="text-r">经纪人：</th>
+                    <td class="text-l">{$order.has_one_user.has_one_parent.username|default='-'}</td>
+                </tr>
+                <tr>
+                    <th class="text-r">买入时间：</th>
+                    <td class="text-l">{$order.create_at|date="Y-m-d H:i", ###}</td>
+                    <th class="text-r">委托时间：</th>
+                    <td class="text-l">{$order.update_at|date="Y-m-d H:i", ###}</td>
+                </tr>
+            </tbody>
+        </table>
+        {eq name="order.is_follow" value="1"}
+        <table class="table table-border table-bordered radius">
+            <thead class="text-c">
+            <tr>
+                <th class="f-14" colspan="4">牛人返点记录</th>
+            </tr>
+            <tr>
+                <th style="width: 25%;">牛人</th>
+                <th style="width: 25%;">返点类型</th>
+                <th style="width: 25%;">返点金额</th>
+                <th style="width: 25%;">结算时间</th>
+            </tr>
+            </thead>
+            <tbody class="text-c">
+            {empty name="order.has_many_niuren_record"}
+            <tr>
+                <td colspan="4">暂无牛人返点记录</td>
+            </tr>
+            {else /}
+            {volist name="order.has_many_niuren_record" id="vo"}
+            <tr class="text-c">
+                <td>{$vo.belongs_to_niuren.nickname|default=$vo.belongs_to_niuren.username}</td>
+                <td>{$vo.type_text}</td>
+                <td>{$vo.money|number_format=2}</td>
+                <td>{$vo.create_at|date='Y-m-d H:i:s', ###}</td>
+            </tr>
+            {/volist}
+            {/empty}
+            </tbody>
+        </table>
+        {/eq}
+        <table class="table table-border table-bordered radius text-c">
+            <thead class="text-c">
+            <tr>
+                <th class="f-14" colspan="4">经纪人返点记录</th>
+            </tr>
+            <tr>
+                <th style="width: 25%;">经纪人</th>
+                <th style="width: 25%;">返点类型</th>
+                <th style="width: 25%;">返点金额</th>
+                <th style="width: 25%;">结算时间</th>
+            </tr>
+            </thead>
+            <tbody class="text-c">
+            {empty name="order.has_many_manager_record"}
+            <tr>
+                <td colspan="4">暂无经纪人返点记录</td>
+            </tr>
+            {else /}
+            {volist name="order.has_many_manager_record" id="vo"}
+            <tr class="text-c">
+                <td>{$vo.belongs_to_manager.nickname|default=$vo.belongs_to_manager.username}</td>
+                <td>{$vo.type_text}</td>
+                <td>{$vo.money|number_format=2}</td>
+                <td>{$vo.create_at|date='Y-m-d H:i:s', ###}</td>
+            </tr>
+            {/volist}
+            {/empty}
+            </tbody>
+        </table>
+        <table class="table table-border table-bordered radius text-c">
+            <thead class="text-c">
+            <tr>
+                <th class="f-14" colspan="4">代理商返点记录</th>
+            </tr>
+            <tr>
+                <th style="width: 25%;">代理商</th>
+                <th style="width: 25%;">返点类型</th>
+                <th style="width: 25%;">返点金额</th>
+                <th style="width: 25%;">结算时间</th>
+            </tr>
+            </thead>
+            <tbody class="text-c">
+            {empty name="order.has_many_proxy_record"}
+            <tr>
+                <td colspan="4">暂无代理商返点记录</td>
+            </tr>
+            {else /}
+            {volist name="order.has_many_proxy_record" id="vo"}
+            <tr class="text-c">
+                <td>{$vo.belongs_to_admin.nickname|default=$vo.belongs_to_admin.username}</td>
+                <td>{$vo.type_text}</td>
+                <td>{$vo.money|number_format=2}</td>
+                <td>{$vo.create_at|date='Y-m-d H:i:s', ###}</td>
+            </tr>
+            {/volist}
+            {/empty}
+            </tbody>
+        </table>
+	</div>
+    {elseif condition="$order.state EQ 1" /}
+    {// 待建仓}
+    {/if}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+</script>
+{/block}
