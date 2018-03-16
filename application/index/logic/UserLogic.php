@@ -110,7 +110,6 @@ class UserLogic
     {
         Db::startTrans();
         try{
-            $configs = cfgs();
             $user = User::get($userId);
 
             $data['admin_id'] = $user['admin_id'];

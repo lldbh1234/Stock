@@ -56,7 +56,7 @@ class Withdraw extends Validate
         if(date('G') == 17 && date('i') > 30){
             return false;
         }
-        $holiday = explode(',', cfgs()['holiday']);
+        $holiday = explode(',', cf('holiday', ''));
         if(in_array(date("Y-m-d"), $holiday)){
             return false;
         }

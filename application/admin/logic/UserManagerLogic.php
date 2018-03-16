@@ -43,8 +43,7 @@ class UserManagerLogic
                 User::update(['user_id' => $where['user_id'], 'parent_id' => 0, 'is_manager' => 1]);
             }else{
                 // 拒绝，回退申请手续费
-                $configs = cfgs();
-                $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+                $poundage = cf('manager_poundage', 88);
                 $rData = [
                     "type" => 8,
                     "amount" => $poundage,

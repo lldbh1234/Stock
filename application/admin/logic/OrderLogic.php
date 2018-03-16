@@ -485,8 +485,7 @@ class OrderLogic
             Order::update($data);
             if($order["profit"] > 0){
                 // 盈利
-                $configs = cfgs();
-                $bonus_rate = isset($configs['bonus_rate']) && !empty($configs['bonus_rate']) ? $configs['bonus_rate'] : 90;
+                $bonus_rate = cf('bonus_rate', 90);
                 $bonus = round($order["profit"] * $bonus_rate / 100, 2);
                 // 用户资金
                 $user = User::find($order['user_id']);

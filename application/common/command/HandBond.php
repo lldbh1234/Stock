@@ -190,7 +190,7 @@ class HandBond extends Command
         if(date('G') > 15){
             return false;
         }
-        $holiday = explode(',', cfgs()['holiday']);
+        $holiday = explode(',', cf("holiday", ""));
         if(in_array(date("Y-m-d"), $holiday)){
             return false;
         }

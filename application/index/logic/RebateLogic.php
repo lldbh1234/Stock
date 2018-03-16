@@ -8,19 +8,13 @@ use app\index\model\Order;
 
 class RebateLogic
 {
-    protected $_config;
-    public function __construct()
-    {
-        $this->_config = cfgs();
-    }
-
     // 处理跟买牛人订单返点 $niurenUserId-牛人用户ID $orderId-返点订单ID $money-盈利金额
     public function handleNiurenRebate($niurenUserId, $orderId, $money)
     {
         Db::startTrans();
         try{
             // 牛人返点率(%)
-            $point = isset($this->_config['niuren_point']) ? floatval($this->_config['niuren_point']) : 5;
+            $point = cf("niuren_point", 5);
             $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $money * $point / 100), 0, -1)); //分成金额
             // 牛人总收入增加
             $niuren = User::find($niurenUserId);

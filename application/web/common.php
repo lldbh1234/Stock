@@ -57,7 +57,7 @@ if(!function_exists("checkStockTradeTime"))
         if(date('G') >= 15){
             return false;
         }
-        $holiday = explode(',', cfgs()['holiday']);
+        $holiday = explode(',', cf('holiday', ''));
         if(in_array(date("Y-m-d"), $holiday)){
             return false;
         }
@@ -82,7 +82,7 @@ if(!function_exists("checkSettleTime"))
         if(date('G') > 23){
             return false;
         }
-        $holiday = explode(',', cfgs()['holiday']);
+        $holiday = explode(',', cf('holiday', ''));
         if(in_array(date("Y-m-d"), $holiday)){
             return false;
         }
@@ -119,5 +119,14 @@ if(!function_exists("cfgs"))
     function cfgs()
     {
         return model("System")->column("val", "alias");
+    }
+}
+
+if(!function_exists("cf"))
+{
+    function cf($alias, $default='')
+    {
+        $value = model("System")->where(["alias" => $alias])->value("val");
+        return is_null($value) ? $default : $value;
     }
 }
