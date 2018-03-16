@@ -14,22 +14,40 @@ class Order extends Base
         $this->_logic = new OrderLogic();
     }
 
+    // 委托
     public function index()
     {
-        $_res = $this->_logic->pageOrderLists([1, 4], input(""));
+        $_res = $this->_logic->pageEntrustOrders(input(""));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("search", input(""));
         return view();
     }
 
+    // 历史
     public function history()
     {
-        $_res = $this->_logic->pageOrderLists(2, input(""));
+        $_res = $this->_logic->pageHistoryOrders(input(""));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("search", input(""));
         return view();
     }
 
+    // 平仓详情
+    public function historyDetail($id = null)
+    {
+        $order = $this->_logic->orderIncRecordById($id, $state = 2);
+        if($order){
+            $forceType = [0 => '委托平仓', 1 => '爆仓', 2 => '止盈止损', 3 => '非自动递延', 4 => '余额不足'];
+            $order['force_type_text'] = $forceType[$order['force_type']];
+            $this->assign("order", $order);
+            return view();
+        }
+        return "非法操作！";
+    }
+
+    // 持仓
     public function position()
     {
         $_res = $this->_logic->pagePositionOrders(input(""));
@@ -57,9 +75,10 @@ class Order extends Base
         return view();
     }
 
+    // 持仓详情
     public function positionDetail($id = null)
     {
-        $order = $this->_logic->orderById($id);
+        $order = $this->_logic->orderIncRecordById($id, $state = 3);
         if($order){
             $hedging = [1 => '是', 0 => '否'];
             $quotation = (new StockLogic())->stockQuotationBySina($order['code']);

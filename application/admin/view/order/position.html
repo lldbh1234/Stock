@@ -71,8 +71,8 @@
 		{volist name="datas.data" id="item"}
 		<tr class="text-c mode-lists">
 			<td>{$item.order_id}</td>
-			<td>{$item.has_one_user.nickname|default='-'}</td>
-			<td>{$item.has_one_user.mobile|default='-'}</td>
+			<td>{$item.has_one_user.nickname|default=$item.has_one_user.username}</td>
+			<td>{$item.has_one_user.mobile}</td>
 			<td>{$item.code}</td>
 			<td>{$item.name}</td>
 			<td>{$item.price|number_format=2}</td>

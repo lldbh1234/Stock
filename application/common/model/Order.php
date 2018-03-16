@@ -30,4 +30,19 @@ class Order extends BaseModel
     {
         return $this->hasOne("\\app\\common\\model\\Admin", "admin_id", "update_by");
     }
+
+    public function hasManyNiurenRecord()
+    {
+        return $this->hasMany("\\app\\common\\model\\UserNiurenRecord", "order_id", "order_id");
+    }
+
+    public function hasManyManagerRecord()
+    {
+        return $this->hasMany("\\app\\common\\model\\UserManagerRecord", "order_id", "order_id");
+    }
+
+    public function hasManyProxyRecord()
+    {
+        return $this->hasMany("\\app\\common\\model\\AdminRecord", "order_id", "order_id");
+    }
 }

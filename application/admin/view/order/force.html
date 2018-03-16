@@ -49,7 +49,8 @@
 		<tr class="text-c">
 			<!--<th width="25"><input type="checkbox" value="" name=""></th>-->
 			<th width="40">ID</th>
-			<th>用户名</th>
+			<th>昵称</th>
+			<th>手机号</th>
 			<th>股票代码</th>
 			<th>股票名称</th>
 			<th>微会员</th>
@@ -74,7 +75,8 @@
 		{volist name="datas.data" id="item"}
 		<tr class="text-c mode-lists">
 			<td>{$item.order_id}</td>
-			<td>{$item.has_one_user.username}</td>
+			<td>{$item.has_one_user.nickname|default=$item.has_one_user.username}</td>
+			<td>{$item.has_one_user.mobile}</td>
 			<td>{$item.code}</td>
 			<td>{$item.name}</td>
 			<td>{$item.has_one_user.has_one_admin.has_one_parent.username|default='无'}</td>

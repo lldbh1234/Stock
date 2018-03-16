@@ -12,14 +12,28 @@
 	</a>
 </nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray">
+	<form action="" method="get">
+		<div class="text-l">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
+		</div>
+		<div class="text-l mt-5">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
+		</div>
+		<div class="text-l mt-5">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+			<input type="text" class="input-text radius ml-10" style="width:170px;" placeholder="卖出开始时间" name="sell_begin" value="{$search.sell_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="卖出结束时间" name="sell_end" value="{$search.sell_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+		</div>
+	</form>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
-			<!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
-				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
-			</a>
-			<a class="btn btn-primary radius" href="javascript:;" onclick="deposit_add('添加保证金','{:url("admin/Deposit/create")}','','350')">
-				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加保证金
-			</a> -->
 		</span>
 		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
 	</div>
@@ -27,16 +41,21 @@
 		<thead>
 		<tr class="text-c">
 			<!--<th width="25"><input type="checkbox" value="" name=""></th>-->
-			<th width="40">ID</th>
-			<th>用户名</th>
+			<th>策略ID</th>
+			<th>昵称</th>
+			<th>手机号</th>
 			<th>股票代码</th>
 			<th>股票名称</th>
+			<th>微会员</th>
+			<th>微圈</th>
+			<th>经纪人</th>
 			<th>买入价</th>
 			<th>卖出价</th>
 			<th>卖出手数</th>
 			<th>盈亏</th>
 			<th>买入时间</th>
 			<th>卖出时间</th>
+			<th>操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -44,9 +63,13 @@
 		<tr class="text-c mode-lists">
 			<!--<td><input type="checkbox" value="{$item.order_id}" name="id"></td>-->
 			<td>{$item.order_id}</td>
-			<td>{$item.has_one_user.username}</td>
+			<td>{$item.has_one_user.nickname|default=$item.has_one_user.username}</td>
+			<td>{$item.has_one_user.mobile}</td>
 			<td>{$item.code}</td>
 			<td>{$item.name}</td>
+			<td>{$item.has_one_user.has_one_admin.has_one_parent.username|default='无'}</td>
+			<td>{$item.has_one_user.has_one_admin.username|default='无'}</td>
+			<td>{$item.has_one_user.has_one_parent.username|default='无'}</td>
 			<td>{$item.price|number_format=2}</td>
 			<td>{$item.sell_price|number_format=2}</td>
 			<td>{$item.sell_hand|intval}</td>
@@ -60,7 +83,10 @@
 				{/if}
 			</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
-			<td>{if condition="$item.update_at gt 0"}{$item.update_at|date="Y-m-d H:i", ###}{/if}</td>
+			<td>{if condition="$item.update_at gt 0"}{$item.update_at|date="Y-m-d H:i", ###}{else /}-{/if}</td>
+			<td>
+				<a title="策略详情" href="javascript:;" onclick="show_detail('策略详情', '{:url("admin/Order/historyDetail", ['id' => $item.order_id])}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-yanjing"></i></a>
+			</td>
 		</tr>
 		{/volist}
 		</tbody>
@@ -74,7 +100,15 @@
 {/block}
 
 {block name="script"}
+<script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script>
-
+    function show_detail(title,url){
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
+        });
+        layer.full(index);
+    }
 </script>
 {/block}
