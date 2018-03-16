@@ -100,9 +100,10 @@ class Cron extends Controller
         }
     }
 
-    // 递延费
+    // 递延费扣除
     public function scanOrderDefer()
     {
+        set_time_limit(0);
         if(checkStockTradeTime()){
             $orders = (new OrderLogic())->allDeferOrders();
             if($orders){
@@ -119,9 +120,10 @@ class Cron extends Controller
         }
     }
 
-    // 牛人返点-每天停盘后的时间段 16-23点
+    // 盈利牛人返点-每天停盘后的时间段 16-23点
     public function handleNiurenRebate()
     {
+        set_time_limit(0);
         if(checkSettleTime()){
             $orders = (new OrderLogic())->todayNiurenRebateOrder();
             if($orders){
@@ -140,9 +142,10 @@ class Cron extends Controller
         }
     }
 
-    // 代理商返点-每天停盘后的时间段 16-23点
+    // 盈利代理商返点-每天停盘后的时间段 16-23点
     public function handleProxyRebate()
     {
+        set_time_limit(0);
         if(checkSettleTime()){
             $orders = (new OrderLogic())->todayProxyRebateOrder();
             if($orders){
@@ -158,9 +161,10 @@ class Cron extends Controller
         }
     }
 
-    // 建仓费代理商返点-每天停盘后的时间段 16-23点
+    // 建仓费返点-每天停盘后的时间段 16-23点
     public function handleJiancangRebate()
     {
+        set_time_limit(0);
         if(checkSettleTime()){
             $orders = (new OrderLogic())->todayJiancangRebateOrder();
             if($orders){

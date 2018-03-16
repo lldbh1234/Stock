@@ -118,6 +118,7 @@ Route::group("cron", function () {
     Route::any('defer', 'index/Cron/scanOrderDefer'); // 订单递延
     Route::any('niuren-rebate', 'index/Cron/handleNiurenRebate'); // 牛人返点
     Route::any('proxy-rebate', 'index/Cron/handleProxyRebate'); // 代理商返点
+    Route::any('jiancang', 'index/Cron/handleJiancangRebate'); // 建仓费
 });
 //web
 Route::group([], function() {

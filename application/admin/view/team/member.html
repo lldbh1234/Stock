@@ -33,7 +33,7 @@
             <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont  Hui-iconfont-del3"></i> 批量删除
             </a>-->
-			<a class="btn btn-primary radius" href="javascript:;" onclick="admin_add('添加用户','{:url("admin/Team/createMember")}','', '420')">
+			<a class="btn btn-primary radius" href="javascript:;" onclick="admin_add('添加微会员','{:url("admin/Team/createMember")}','', '450')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加用户
             </a>
         </span>
@@ -55,7 +55,7 @@
             <th>手续费总计</th>
             <th>创建时间</th>
             <th>状态</th>
-            <th width="70">操作</th>
+            <th width="100">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -81,7 +81,7 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="编辑" href="javascript:;" onclick="admin_edit('用户编辑','{:url("admin/Team/modifyMember", ['id' => $item.admin_id])}','','380')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+                <a title="编辑" href="javascript:;" onclick="admin_edit('编辑微会员','{:url("admin/Team/modifyMember", ['id' => $item.admin_id])}','','450')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
                 <a title="微信公众号" href="javascript:;" onclick="admin_wechat('{$item.username}-微信公众号','{:url("admin/Team/memberWechat", ['id' => $item.admin_id])}');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-share-weixin"></i></a>
                 <a title="返点修改" href="javascript:;" onclick="admin_edit('返点修改','{:url("admin/Team/memberPoint", ['id' => $item.admin_id])}','','380');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-arrow1-left"></i></a>
                 <a title="保证金充值" href="javascript:;" onclick="admin_recharge(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>

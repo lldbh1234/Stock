@@ -105,13 +105,12 @@ class Team extends Base
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Team');
-            if(!$validate->scene('create')->check(input("post."))){
+            if(!$validate->scene('createTeam')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
                 $data = input("post.");
                 unset($data['password2']);
                 $data['role'] = \app\admin\model\Admin::OPERATE_ROLE_ID;
-                $data['pid'] = $this->_logic->getAdminPid();
                 $data['code'] = $this->_logic->getAdminCode($data['role']);
                 $adminId = $this->_logic->adminCreate($data);
                 if(0 < $adminId){
@@ -121,6 +120,8 @@ class Team extends Base
                 }
             }
         }
+        $parent = $this->_logic->teamAdminsByRole("settle");
+        $this->assign("parent", $parent);
         return view();
     }
 
@@ -128,7 +129,7 @@ class Team extends Base
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Team');
-            if(!$validate->scene('modify')->check(input("post."))){
+            if(!$validate->scene('modifyTeam')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
                 $data = input("post.");
@@ -146,7 +147,9 @@ class Team extends Base
         }
         $admin = $this->_logic->teamAdminById($id, "operate");
         if($admin){
+            $parent = $this->_logic->teamAdminsByRole("settle");
             $this->assign("admin", $admin);
+            $this->assign("parent", $parent);
             return view();
         }else{
             return "非法操作！";
@@ -157,13 +160,12 @@ class Team extends Base
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Team');
-            if(!$validate->scene('create')->check(input("post."))){
+            if(!$validate->scene('createTeam')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
                 $data = input("post.");
                 unset($data['password2']);
                 $data['role'] = \app\admin\model\Admin::MEMBER_ROLE_ID;
-                $data['pid'] = $this->_logic->getAdminPid();
                 $data['code'] = $this->_logic->getAdminCode($data['role']);
                 $adminId = $this->_logic->adminCreate($data);
                 if(0 < $adminId){
@@ -173,6 +175,8 @@ class Team extends Base
                 }
             }
         }
+        $parent = $this->_logic->teamAdminsByRole("operate");
+        $this->assign("parent", $parent);
         return view();
     }
 
@@ -180,7 +184,7 @@ class Team extends Base
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Team');
-            if(!$validate->scene('modify')->check(input("post."))){
+            if(!$validate->scene('modifyTeam')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
                 $data = input("post.");
@@ -198,7 +202,9 @@ class Team extends Base
         }
         $admin = $this->_logic->teamAdminById($id, "member");
         if($admin){
+            $parent = $this->_logic->teamAdminsByRole("operate");
             $this->assign("admin", $admin);
+            $this->assign("parent", $parent);
             return view();
         }else{
             return "非法操作！";
@@ -233,13 +239,12 @@ class Team extends Base
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Team');
-            if(!$validate->scene('create')->check(input("post."))){
+            if(!$validate->scene('createTeam')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
                 $data = input("post.");
                 unset($data['password2']);
                 $data['role'] = \app\admin\model\Admin::RING_ROLE_ID;
-                $data['pid'] = $this->_logic->getAdminPid();
                 $data['code'] = $this->_logic->getAdminCode($data['role']);
                 $adminId = $this->_logic->adminCreate($data);
                 if(0 < $adminId){
@@ -249,6 +254,8 @@ class Team extends Base
                 }
             }
         }
+        $parent = $this->_logic->teamAdminsByRole("member");
+        $this->assign("parent", $parent);
         return view();
     }
 
@@ -256,7 +263,7 @@ class Team extends Base
     {
         if(request()->isPost()){
             $validate = \think\Loader::validate('Team');
-            if(!$validate->scene('modify')->check(input("post."))){
+            if(!$validate->scene('modifyTeam')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
                 $data = input("post.");
@@ -274,7 +281,9 @@ class Team extends Base
         }
         $admin = $this->_logic->teamAdminById($id, "ring");
         if($admin){
+            $parent = $this->_logic->teamAdminsByRole("member");
             $this->assign("admin", $admin);
+            $this->assign("parent", $parent);
             return view();
         }else{
             return "非法操作！";

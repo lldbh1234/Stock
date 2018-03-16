@@ -289,6 +289,28 @@ class AdminLogic
         return $admin ? $admin->toArray() : [];
     }
 
+    public function teamAdminsByRole($role="settle")
+    {
+        $where = Admin::manager();
+        $where['status'] = 0;
+        switch ($role){
+            case "settle": //结算中心
+                $where['role'] = Admin::SETTLE_ROLE_ID;
+                break;
+            case "operate": //运营中心
+                $where['role'] = Admin::OPERATE_ROLE_ID;
+                break;
+            case "member": //微会员
+                $where['role'] = Admin::MEMBER_ROLE_ID;
+                break;
+            case "ring": //微圈
+                $where['role'] = Admin::RING_ROLE_ID;
+                break;
+        }
+        $admins = Admin::where($where)->select();
+        return $admins ? collection($admins)->toArray() : [];
+    }
+
     public function memberWechat($id)
     {
         $wechat = Admin::with("hasOneWechat")->field("password", true)->find($id);

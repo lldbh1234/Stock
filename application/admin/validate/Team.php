@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\validate;
 
+use app\admin\logic\AdminLogic;
 use think\Validate;
 use app\admin\model\Role;
 use app\admin\model\Admin;
@@ -12,6 +13,7 @@ class Team extends Validate
         'username'  => 'require|unique:admin|length:2,32',
         'password'	=> 'require|length:6,16',
         'password2' => 'confirm:password',
+        'pid'       => 'require|gt:0|checkParent',
         'nickname'  => 'max:32',
         'mobile'    => 'require|unique:admin|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
         //'role'      => 'require|checkRole',
@@ -44,6 +46,8 @@ class Team extends Validate
         'password.require'  => '初始密码不能为空！',
         'password.length'   => '初始密码为6-16位字符！',
         'password2.confirm' => '俩次输入密码不一致！',
+        'pid.require'       => '请选择上级！',
+        'pid.gt'            => '请选择上级！',
         'nickname.max'      => '昵称最大32位字符！',
         'mobile.require'    => '手机不能为空！',
         'mobile.unique'     => '手机已经存在！',
@@ -90,9 +94,18 @@ class Team extends Validate
     protected $scene = [
         //'create'  => ['username', 'password', 'password2', 'nickname', 'mobile', 'role', 'status'],
         'create'  => ['username', 'password', 'password2', 'nickname', 'mobile', 'status'],
+        'createTeam' => ['username', 'password', 'password2', 'pid', 'nickname', 'mobile', 'status'],
         'modify'  => [
             'admin_id',
             'password' => "length:6,16",
+            'nickname',
+            'mobile' => 'require|unique:admin,mobile^admin_id|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
+            'status'
+        ],
+        'modifyTeam' => [
+            'admin_id',
+            'password' => "length:6,16",
+            'pid',
             'nickname',
             'mobile' => 'require|unique:admin,mobile^admin_id|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
             'status'
@@ -128,5 +141,24 @@ class Team extends Validate
         //$_where['pid'] = manager()['admin_id'];
         $admin = Admin::where($_where)->find();
         return $admin ? true : false;
+    }
+
+    public function checkParent($value)
+    {
+        $referer = $_SERVER['HTTP_REFERER'];
+        if(strpos($referer, "settle") !== false){
+            return false;
+        }elseif(strpos($referer, "operate") !== false){
+            $_role = "settle";
+        }elseif(strpos($referer, "member") !== false){
+            $_role = "operate";
+        }elseif(strpos($referer, "ring") !== false){
+            $_role = "member";
+        }else{
+            return false;
+        }
+        $parents = (new AdminLogic())->teamAdminsByRole($_role);
+        $parentIds = array_column($parents, "admin_id");
+        return in_array($value, $parentIds) ? true : false;
     }
 }

@@ -19,6 +19,18 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>上级：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <span class="select-box">
+                    <select class="select" name="pid">
+                        {volist name="parent" id="item"}
+                        <option value="{$item.admin_id}" {if condition="$item.admin_id EQ $admin.pid"}selected{/if}>{$item.nickname|default=$item.username}</option>
+                        {/volist}
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">真名：</label>
             <div class="formControls col-xs-8 col-sm-7">
                 <input type="text" class="input-text" value="{$admin.nickname}" placeholder="" name="nickname">
