@@ -23,8 +23,7 @@ class Manager extends Base
             if($user['has_one_manager']){
                 if($user['has_one_manager']['state'] == 0){
                     // 待审核
-                    $configs = cfgs();
-                    $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+                    $poundage = cf("manager_poundage", 88);
                     $this->assign("user", $user);
                     $this->assign("poundage", $poundage);
                     return view("manager/wait");
@@ -35,16 +34,14 @@ class Manager extends Base
                     }
                 }elseif ($user['has_one_manager']['state'] == 2){
                     //审核未通过
-                    $configs = cfgs();
-                    $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+                    $poundage = cf("manager_poundage", 88);
                     $this->assign("user", $user);
                     $this->assign("poundage", $poundage);
                     return view("manager/register");
                 }
             }else{
                 // 未申请
-                $configs = cfgs();
-                $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+                $poundage = cf("manager_poundage", 88);
                 $this->assign("user", $user);
                 $this->assign("poundage", $poundage);
                 return view("manager/register");

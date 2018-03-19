@@ -44,8 +44,7 @@ class Manager extends Validate
 
     protected function checkUserAmount($value, $rule, $data)
     {
-        $configs = cfgs();
-        $poundage = isset($configs['manager_poundage']) && $configs['manager_poundage'] ? $configs['manager_poundage'] : 88;
+        $poundage = cf('manager_poundage', 88);
         return uInfo()['account'] >= $poundage;
     }
 }

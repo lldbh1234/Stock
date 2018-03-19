@@ -35,13 +35,12 @@ class Stock extends Base
                 $mode = (new ModeLogic())->modeIncPluginsById($modeId);
                 $deposit = (new DepositLogic())->depositById($depositId);
                 $lever = (new LeverLogic())->leverById($leverId);
-                $configs = cfgs();
                 $plugins = $mode['has_one_plugins'];
                 require_once request()->root() . "../plugins/{$plugins['type']}/{$plugins['code']}.php";
                 $obj = new $plugins['code'];
-                $trade = $obj->getTradeInfo($price, $configs['capital_usage'], $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
+                $trade = $obj->getTradeInfo($price, cf("capital_usage", 95), $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
                 if(uInfo()['account'] > $deposit['money'] + $trade["jiancang"]){
-                    $holiday = explode(',', $configs['holiday']);
+                    $holiday = explode(',', cf("holiday", ""));
                     $order = [
                         "order_sn" => createStrategySn(),
                         "user_id" => $this->user_id,
@@ -94,7 +93,7 @@ class Stock extends Base
                     $this->assign("deposits", $deposits);
                     $this->assign("levers", $levers);
                     $this->assign("user", uInfo());
-                    $this->assign("usage", cfgs()['capital_usage']);
+                    $this->assign("usage", cf('capital_usage', 95));
                     $this->assign("follow_id", input("?follow_id") ? input("follow_id") : 0);
                     return view('buy');
                 }else{

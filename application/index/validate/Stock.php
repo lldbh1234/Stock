@@ -57,11 +57,10 @@ class Stock extends Validate
         if($stock){
             $quotation = (new StockLogic())->simpleData($value);
             if(isset($quotation[$value]) && !empty($quotation[$value])){
-                $configs = cfgs();
                 $changeRate = $quotation[$value]["px_change_rate"];
-                $_maxRate = isset($configs["max_change_rate"]) && !$configs["max_change_rate"] ? $configs["max_change_rate"] : 9.95;
-                if(abs($changeRate) > $_maxRate){
-                    return "最大可购买涨跌幅为{$_maxRate}的股票！";
+                $profitRate = cf('max_profit_rate', 9.5);
+                if($changeRate >= $profitRate){
+                    return "最大可购买涨幅为{$profitRate}的股票！";
                 }else{
                     return true;
                 }
@@ -113,8 +112,7 @@ class Stock extends Validate
             if($value > $max){
                 return "止损金额最大可设置为" . number_format($max, 2);
             }else{
-                $configs = cfgs();
-                $usage = isset($configs["capital_usage"]) && !$configs["capital_usage"] ? $configs["capital_usage"] : 95;
+                $usage = cf('capital_usage', 95);
                 $deposit = (new DepositLogic())->depositById($data["deposit"]);
                 $lever = (new LeverLogic())->leverById($data["lever"]);
                 $total = $deposit["money"] * $lever["multiple"]; // 申请总配资款 = 保证金 * 杠杆倍数
