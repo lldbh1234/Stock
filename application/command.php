@@ -10,8 +10,7 @@
 // +----------------------------------------------------------------------
 
 return [
-    'app\common\command\Test',
-    'app\common\command\HandBond',
-    'app\common\command\TargetProfit',
+    'app\index\command\Test',
+    'app\index\command\HandBond',
 ];
 ///usr/local/bin/php think Date

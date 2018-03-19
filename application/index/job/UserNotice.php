@@ -50,20 +50,51 @@ class UserNotice
 
     public function sendSystem($data)
     {
-        $niurenId = $data["niurenId"];
-        $niuren = (new UserLogic())->userIncFans($niurenId);
-        if($niuren['has_many_fans']){
-            $saveData = [];
-            foreach ($niuren['has_many_fans'] as $fans){
-                $saveData[] = [
-                    "user_id" => $fans["fans_id"],
-                    "title" => "牛人操盘动向",
-                    "content" => "您关注的牛人“{$niuren['username']}”有新的操盘动向，请注意查看！",
-                ];
+        $saveData = [];
+        if(isset($data["has_many_fans"]))
+        {
+
+            $niurenId = $data["niurenId"];
+            $niuren = (new UserLogic())->userIncFans($niurenId);
+            if($niuren['has_many_fans']){
+
+                foreach ($niuren['has_many_fans'] as $fans){
+                    $saveData[] = [
+                        "user_id" => $fans["fans_id"],
+                        "title" => "牛人操盘动向",
+                        "content" => "您关注的牛人“{$niuren['username']}”有新的操盘动向，请注意查看！",
+                    ];
+                }
+//                model("UserNotice")->saveAll($saveData);
             }
-            model("UserNotice")->saveAll($saveData);
+        }else{
+
+                $readyKey = $data['order_id'].'_'.$data['type'];
+                if(self::checkNotice($readyKey))
+                {
+                    $saveData[] = [
+                        "user_id"   => $data["user_id"],
+                        "title"     => $data["title"],
+                        "content"   => $data["content"],
+                    ];
+                }
+
+
         }
+        model("UserNotice")->saveAll($saveData);
         return true;
+    }
+    public function checkNotice($option)
+    {
+//        $readyKey = $v['order_id'].'_'.$v['type'];
+        $readyKey = $option;
+        //通知过的不再通知
+        if(!cache($readyKey))
+        {
+            cache($readyKey, 1, ['expire' => 86400]);
+            return true;
+        }
+        return false;
     }
 
     /**
