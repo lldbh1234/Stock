@@ -55,13 +55,19 @@ class Stock extends Validate
     {
         $stock = (new StockLogic())->stockByCode($value);
         if($stock){
-            $quotation = (new StockLogic())->simpleData($value);
+            $quotation = (new StockLogic())->quotationBySina($value);
             if(isset($quotation[$value]) && !empty($quotation[$value])){
                 $changeRate = $quotation[$value]["px_change_rate"];
                 $profitRate = cf('max_profit_rate', 9.5);
                 if($changeRate >= $profitRate){
-                    return "最大可购买涨幅为{$profitRate}的股票！";
+                    return "最大可购买涨幅为{$profitRate}的股票";
                 }else{
+                    if(strpos("ST", $quotation[$value]['prod_name']) !== false){
+                        $stRate = cf('max_st_rate', 4.5);
+                        if($changeRate >= $stRate){
+                            return "ST股票最大可购买涨幅为{$stRate}";
+                        }
+                    }
                     return true;
                 }
             }
@@ -72,6 +78,7 @@ class Stock extends Validate
 
     protected function checkTradeTime($value, $rule, $data)
     {
+        return true;
         return checkStockTradeTime();
     }
 

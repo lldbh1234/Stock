@@ -52,6 +52,12 @@
                         <input type="text" id="nickname_prefix" name="nickname_prefix" placeholder="用户注册时默认昵称前缀" value="{$lists.nickname_prefix.val | default=''}" class="input-text">
                     </div>
                 </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">客服热线：</label>
+                    <div class="formControls col-xs-2 col-sm-4">
+                        <input type="text" id="service_telephone" name="service_telephone" placeholder="用户中心客服热线" value="{$lists.service_telephone.val | default=''}" class="input-text">
+                    </div>
+                </div>
             </div>
             <div class="tabCon">
                 <div class="row cl">
@@ -97,9 +103,16 @@
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">可购买股票最大涨幅：</label>
+                    <label class="form-label col-xs-4 col-sm-2">普通股票可购买最大涨幅：</label>
                     <div class="formControls col-xs-2 col-sm-9">
-                        <input type="text" id="max_change_rate" name="max_profit_rate" placeholder="可购买股票最大涨幅" value="{$lists.max_profit_rate.val | default=''}" class="input-text">
+                        <input type="text" id="max_profit_rate" name="max_profit_rate" placeholder="可购买股票最大涨幅" value="{$lists.max_profit_rate.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">%</p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">ST股票可购买最大涨幅：</label>
+                    <div class="formControls col-xs-2 col-sm-9">
+                        <input type="text" id="max_st_rate" name="max_st_rate" placeholder="ST股票可购买最大涨幅" value="{$lists.max_st_rate.val | default=''}" class="input-text">
                         <p class="textarea-numberbar" style="color: #b3abab;">%</p>
                     </div>
                 </div>

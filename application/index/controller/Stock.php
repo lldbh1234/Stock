@@ -52,7 +52,7 @@ class Stock extends Base
                         "hand"  => $trade["hand"],
                         "jiancang_fee" => $trade["jiancang"],
                         "defer" => $trade["defer"],
-                        "free_time" => workTimestamp($mode['free'], $holiday),
+                        "free_time" => workTimestamp($mode['free'], $holiday, strtotime(date("Y-m-d 14:40", request()->time()))),
                         "is_defer" => input("post.defer/d"),
                         "stop_profit_price" => input("post.profit/f"),
                         "stop_profit_point" => round((input("post.profit/f") - $price) / $price * 100, 2),
