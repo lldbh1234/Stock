@@ -19,6 +19,7 @@ class Mode extends Validate
         "defer"     => "require|float|gt:0",
         "profit"    => "require|float|gt:0|max:100",
         "loss"      => "require|float|gt:0|max:100",
+        "point"     => "require|float|max:100",
         "sort"      => "number|max:255",
         "status"    => "require|in:0,1"
     ];
@@ -56,6 +57,9 @@ class Mode extends Validate
         "loss.float"   => "最小止损必须为数字！",
         "loss.gt"      => "最小止损必须大于0！",
         "loss.max"      => "最小止损最大100%！",
+        "point.require" => "盈利抽成不能为空！",
+        "point.float"   => "盈利抽成必须为数字！",
+        "point.max"      => "盈利抽成最大100%！",
         "sort.number"   => "排序必须为数字！",
         "sort.max"      => "排序值最大为255！",
         'status.require'    => '系统提示：非法操作！',
@@ -63,7 +67,7 @@ class Mode extends Validate
     ];
 
     protected $scene = [
-        "create" => ["name", "product_id", "plugins_code", "free", "jiancang", "defer", "profit", "loss", "sort", "status"],
+        "create" => ["name", "product_id", "plugins_code", "free", "jiancang", "defer", "profit", "loss", 'point', "sort", "status"],
         "modify" => [
             "mode_id",
             "name" => "require|unique:mode,name^mode_id|max:32",
@@ -74,6 +78,7 @@ class Mode extends Validate
             "defer",
             "profit",
             "loss",
+            'point',
             "sort",
             "status"
         ],

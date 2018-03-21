@@ -17,7 +17,7 @@
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
 				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
 			</a>
-			<a class="btn btn-primary radius" href="javascript:;" onclick="mode_add('添加交易模式','{:url("admin/Mode/create")}','','500')">
+			<a class="btn btn-primary radius" href="javascript:;" onclick="mode_add('添加交易模式','{:url("admin/Mode/create")}','','640')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加交易模式
 			</a> </span>
 		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
@@ -35,6 +35,7 @@
 			<th>递延费（元/天/万元）</th>
 			<th>最小止盈（%）</th>
 			<th>最小止损（%）</th>
+			<th>盈利抽成（%）</th>
 			<th>状态</th>
 			<th width="90">操作</th>
 		</tr>
@@ -52,6 +53,7 @@
 			<td>{$item.defer|number_format=2}</td>
 			<td>{$item.profit|number_format=2}</td>
 			<td>{$item.loss|number_format=2}</td>
+			<td>{$item.point|number_format=2}</td>
 			<td>
 				{if condition="$item.status.value eq 0"}
 				<span class="label label-success radius">{$item.status.text}</span>
@@ -60,7 +62,7 @@
 				{/if}
 			</td>
 			<td class="f-14">
-				<a title="编辑" href="javascript:;" onclick="mode_edit('编辑交易模式','{:url("admin/Mode/modify", ['id' => $item.mode_id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+				<a title="编辑" href="javascript:;" onclick="mode_edit('编辑交易模式','{:url("admin/Mode/modify", ['id' => $item.mode_id])}','','640')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
 				<!--<a title="保证金配置" href="javascript:;" onclick="mode_deposit('{$item.name}交易模式','{:url("admin/Mode/deposit", ['id' => $item.mode_id])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
 				<a title="杠杆配置" href="javascript:;" onclick="mode_lever('{$item.name}交易模式','{:url("admin/Mode/lever", ['id' => $item.mode_id])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-text-width"></i></a>-->
 				<a title="删除" href="javascript:;" onclick="mode_del(this,{$item.mode_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
