@@ -62,7 +62,7 @@ class Stock extends Validate
                 if($changeRate >= $profitRate){
                     return "最大可购买涨幅为{$profitRate}的股票";
                 }else{
-                    if(strpos("ST", $quotation[$value]['prod_name']) !== false){
+                    if(strpos($quotation[$value]['prod_name'], "ST") !== false){
                         $stRate = cf('max_st_rate', 4.5);
                         if($changeRate >= $stRate){
                             return "ST股票最大可购买涨幅为{$stRate}";
