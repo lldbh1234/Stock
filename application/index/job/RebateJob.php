@@ -89,7 +89,7 @@ class RebateJob
 
     public function handleProxy($data)
     {
-        $profit = $data['money']; //盈利金额
+        $profit = $data['money']; // 系统抽成总金额
         $orderId = $data['order_id']; //订单ID
         $userId = $data['user_id']; // 用户ID
         $user = (new UserLogic())->userById($userId);

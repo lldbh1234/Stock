@@ -203,7 +203,9 @@ class UserLogic
     public function pageUserOrder($userId, $state = 1, $field = "*", $pageSize = 4){
         try{
             $where = is_array($state) ? ["state" => ["IN", $state]] : ["state" => $state];
-            $res = User::find($userId)->hasManyOrder()->where($where)->field($field)->paginate($pageSize);
+            //$res = User::find($userId)->hasManyOrder()->where($where)->field($field)->paginate($pageSize);
+            $where['user_id'] = $userId;
+            $res = Order::with("belongsToMode")->where($where)->field($field)->paginate($pageSize);
             return $res ? $res->toArray() : [];
         } catch(\Exception $e) {
             return [];

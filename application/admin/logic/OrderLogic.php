@@ -477,7 +477,7 @@ class OrderLogic
     {
         Db::startTrans();
         try{
-            $order = Order::find($orderId)->toArray();
+            $order = Order::with("belongsToMode")->find($orderId)->toArray();
             $data = [
                 "order_id" => $order["order_id"],
                 "state" => 2
@@ -485,8 +485,8 @@ class OrderLogic
             Order::update($data);
             if($order["profit"] > 0){
                 // 盈利
-                $bonus_rate = cf('bonus_rate', 90);
-                $bonus = round($order["profit"] * $bonus_rate / 100, 2);
+                $bonus_rate = isset($order['belongs_to_mode']['point']) ? $order['belongs_to_mode']['point'] : 0;
+                $bonus = round($order["profit"] * (1 - $bonus_rate / 100), 2);
                 // 用户资金
                 $user = User::find($order['user_id']);
                 $user->setInc("account", $order['deposit'] + $bonus);
@@ -537,7 +537,7 @@ class OrderLogic
     {
         Db::startTrans();
         try{
-            $order = Order::find($orderId)->toArray();
+            $order = Order::with("belongsToMode")->find($orderId)->toArray();
             // 订单更改
             $data = [
                 "order_id" => $orderId,
@@ -548,8 +548,8 @@ class OrderLogic
             // 分成
             if($order["profit"] > 0){
                 // 盈利
-                $bonus_rate = cf('bonus_rate', 90);
-                $bonus = round($order["profit"] * $bonus_rate / 100, 2);
+                $bonus_rate = isset($order['belongs_to_mode']['point']) ? $order['belongs_to_mode']['point'] : 0;
+                $bonus = round($order["profit"] * (1 - $bonus_rate / 100), 2);
                 // 用户资金
                 $user = User::find($order['user_id']);
                 $user->setInc("account", $order['deposit'] + $bonus);

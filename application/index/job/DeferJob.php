@@ -10,9 +10,9 @@ use think\queue\Job;
 class DeferJob
 {
     // 自动递延
-    public function handleDeferOrder(Job $job, $order)
+    public function handleDeferOrder(Job $job, $orderId)
     {
-        $isJobDone = $this->handle($order);
+        $isJobDone = $this->handle($orderId);
         if ($isJobDone) {
             //成功删除任务
             $job->delete();
@@ -50,8 +50,9 @@ class DeferJob
     }
 
     // 自动递延
-    public function handle($order)
+    public function handle($orderId)
     {
+        $order = (new OrderLogic())->orderById($orderId);
         if($order['is_defer'] && $order['free_time'] < time()){
             $user = (new UserLogic())->userById($order['user_id']);
             if($user){
@@ -62,11 +63,11 @@ class DeferJob
                     // 用户余额充足
                     $handleRes = (new OrderLogic())->handleDeferByUserAccount($order, $managerUserId, $adminIds);
                     return $handleRes ? true : false;
-                }else if($order['deposit'] >= $order['defer']){
+                }/*else if($order['deposit'] >= $order['defer']){ // 取消余额不足，扣除保证金功能
                     // 订单保证金充足
                     $handleRes = (new OrderLogic())->handleDeferByDeposit($order, $managerUserId, $adminIds);
                     return $handleRes ? true : false;
-                }else{
+                }*/else{
                     // 余额不足，无法扣除
                     $quotation = (new StockLogic())->quotationBySina($order['code']);
                     if(isset($quotation[$order['code']])){

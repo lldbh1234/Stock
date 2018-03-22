@@ -21,10 +21,16 @@ class Test extends Controller
 
     public function test()
     {
+        $order = (new \app\index\logic\OrderLogic())->orderById(4);
         $job = new DeferJob();
-        $order = (new OrderLogic())->orderById(4);
-        $res = $job->handle($order);
-        dump($res);
+        $job->handle($order);
+        exit;
+        $admins = (new AdminLogic())->ringFamilyTree(6);
+        dump($admins);
+        $money = 100;
+        foreach ($admins as $val){
+            dump($money * $val['real_point']);
+        }
         exit;
         $order = (new OrderLogic())->getAllBy();
         $c70 = [];

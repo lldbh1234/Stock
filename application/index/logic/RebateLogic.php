@@ -38,6 +38,7 @@ class RebateLogic
         }
     }
 
+    // $money-系统抽成总金额
     public function handleProxyRebate($managerId, $admins, $orderId, $money)
     {
         Db::startTrans();
@@ -46,31 +47,42 @@ class RebateLogic
                 $manager = User::find($managerId);
                 $managerData = $manager->hasOneManager->toArray();
                 if(isset($managerData['point']) && $managerData['point'] > 0) {
-                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $money * $managerData['point'] / 100), 0, -1)); //分成金额
-                    // 经纪人总收入增加
-                    $manager->hasOneManager->setInc('income', $rebateMoney);
-                    // 经纪人可转收入增加
-                    $manager->hasOneManager->setInc('sure_income', $rebateMoney);
-                    // 经纪人收入明细
-                    $rData = [
-                        "money" => $rebateMoney,
-                        "type" => 0, //0-直属用户收益分成, 1-建仓费分成，2-递延费分成
-                        "order_id" => $orderId,
-                    ];
-                    $manager->hasManyManagerRecord()->save($rData);
+                    if(isset($admins[$managerData['admin_id']])){
+                        $ring = $admins[$managerData['admin_id']];
+                        $realPoint = $ring['real_point'] * $managerData['point'] / 100;
+                        $admins[$managerData['admin_id']]['real_point'] -= $realPoint;
+                        if($realPoint > 0){
+                            //$rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $money * $realPoint), 0, -1)); //分成金额
+                            $rebateMoney = round($money * $realPoint, 2);
+                            // 经纪人总收入增加
+                            $manager->hasOneManager->setInc('income', $rebateMoney);
+                            // 经纪人可转收入增加
+                            $manager->hasOneManager->setInc('sure_income', $rebateMoney);
+                            // 经纪人收入明细
+                            $rData = [
+                                "money" => $rebateMoney, //返点金额
+                                "point" => $managerData['point'], // 返点比例
+                                "type" => 0, //0-直属用户收益分成, 1-建仓费分成，2-递延费分成
+                                "order_id" => $orderId,
+                            ];
+                            $manager->hasManyManagerRecord()->save($rData);
+                        }
+                    }
                 }
             }
             // 各级代理商返点
             foreach ($admins as $admin){
-                $point = $admin["point"];
-                if($point > 0){
-                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $money * $point / 100), 0, -1)); //分成金额
+                $realPoint = $admin["real_point"];
+                if($realPoint > 0){
+                    //$rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $money * $realPoint), 0, -1)); //分成金额
+                    $rebateMoney = round($money * $realPoint, 2);
                     $admin = Admin::find($admin['admin_id']);
                     // 代理商手续费增加
                     $admin->setInc('total_fee', $rebateMoney);
                     // 代理商收入明细
                     $rData = [
-                        "money" => $rebateMoney,
+                        "money" => $rebateMoney, //返点金额
+                        "point" => $admin['point'], // 返点比例
                         "type"  => 0, // 收入类型：0-用户收益分成，1-建仓费分成，2-递延费分成
                         "order_id" => $orderId,
                     ];
@@ -97,31 +109,42 @@ class RebateLogic
                 $manager = User::find($managerId);
                 $managerData = $manager->hasOneManager->toArray();
                 if(isset($managerData['jiancang_point']) && $managerData['jiancang_point'] > 0){
-                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $fee * $managerData['jiancang_point'] / 100), 0, -1)); //分成金额
-                    // 经纪人总收入增加
-                    $manager->hasOneManager->setInc('income', $rebateMoney);
-                    // 经纪人可转收入增加
-                    $manager->hasOneManager->setInc('sure_income', $rebateMoney);
-                    // 经纪人收入明细
-                    $rData = [
-                        "money" => $rebateMoney,
-                        "type"  => 1, // 收入类型：0-直属用户收益分成，1-建仓费分成，2-递延费分成
-                        "order_id" => $orderId,
-                    ];
-                    $manager->hasManyManagerRecord()->save($rData);
+                    if(isset($admins[$managerData['admin_id']])){
+                        $ring = $admins[$managerData['admin_id']];
+                        $realPoint = $ring['real_jiancang_point'] * $managerData['jiancang_point'] / 100;
+                        $admins[$managerData['admin_id']]['real_jiancang_point'] -= $realPoint;
+                        if($realPoint > 0){
+                            //$rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $fee * $managerData['jiancang_point'] / 100), 0, -1)); //分成金额
+                            $rebateMoney = round($fee * $realPoint, 2);
+                            // 经纪人总收入增加
+                            $manager->hasOneManager->setInc('income', $rebateMoney);
+                            // 经纪人可转收入增加
+                            $manager->hasOneManager->setInc('sure_income', $rebateMoney);
+                            // 经纪人收入明细
+                            $rData = [
+                                "money" => $rebateMoney, //返点金额
+                                "point" => $managerData['jiancang_point'], // 返点比例
+                                "type"  => 1, // 收入类型：0-直属用户收益分成，1-建仓费分成，2-递延费分成
+                                "order_id" => $orderId,
+                            ];
+                            $manager->hasManyManagerRecord()->save($rData);
+                        }
+                    }
                 }
             }
             // 各级代理商返点
             foreach ($admins as $admin){
-                $point = $admin["jiancang_point"];
-                if($point > 0){
-                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $fee * $point / 100), 0, -1)); //分成金额
+                $realPoint = $admin["real_jiancang_point"];
+                if($realPoint > 0){
+                    //$rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $fee * $point / 100), 0, -1)); //分成金额
+                    $rebateMoney = round($fee * $realPoint, 2);
                     $admin = Admin::find($admin['admin_id']);
                     // 代理商手续费增加
                     $admin->setInc('total_fee', $rebateMoney);
                     // 代理商收入明细
                     $rData = [
-                        "money" => $rebateMoney,
+                        "money" => $rebateMoney, //返点金额
+                        "point" => $admin['jiancang_point'], // 返点比例
                         "type"  => 1, // 收入类型：0-用户收益分成，1-建仓费分成，2-递延费分成
                         "order_id" => $orderId,
                     ];

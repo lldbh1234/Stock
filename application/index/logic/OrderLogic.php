@@ -3,6 +3,7 @@ namespace app\index\logic;
 
 use app\index\model\Admin;
 use app\index\model\DeferRecord;
+use app\index\model\System;
 use think\Db;
 use app\index\model\Order;
 use app\index\model\User;
@@ -149,7 +150,7 @@ class OrderLogic
         Db::startTrans();
         try{
             // 订单过期时间增加
-            $holiday = cf("holiday", []);
+            $holiday = cf("holiday", '');
             $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
             $data = [
                 "order_id"  => $order['order_id'],
@@ -172,31 +173,42 @@ class OrderLogic
                 $manager = User::find($managerId);
                 $managerData = $manager->hasOneManager->toArray();
                 if(isset($managerData['defer_point']) && $managerData['defer_point'] > 0){
-                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $order['defer'] * $managerData['defer_point'] / 100), 0, -1)); //分成金额
-                    // 经纪人总收入增加
-                    $manager->hasOneManager->setInc('income', $rebateMoney);
-                    // 经纪人可转收入增加
-                    $manager->hasOneManager->setInc('sure_income', $rebateMoney);
-                    // 经纪人收入明细
-                    $rData = [
-                        "money" => $rebateMoney,
-                        "type"  => 2, // 收入类型：0-直属用户收益分成，1-建仓费分成，2-递延费分成
-                        "order_id" => $order['order_id'],
-                    ];
-                    $manager->hasManyManagerRecord()->save($rData);
+                    if(isset($admins[$managerData['admin_id']])){
+                        $ring = $admins[$managerData['admin_id']];
+                        $realPoint = $ring['real_defer_point'] * $managerData['defer_point'] / 100;
+                        $admins[$managerData['admin_id']]['real_defer_point'] -= $realPoint;
+                        if($realPoint > 0){
+                            //$rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $order['defer'] * $managerData['defer_point'] / 100), 0, -1)); //分成金额
+                            $rebateMoney = round($order['defer'] * $realPoint, 2);
+                            // 经纪人总收入增加
+                            $manager->hasOneManager->setInc('income', $rebateMoney);
+                            // 经纪人可转收入增加
+                            $manager->hasOneManager->setInc('sure_income', $rebateMoney);
+                            // 经纪人收入明细
+                            $rData = [
+                                "money" => $rebateMoney, //返点金额
+                                "point" => $managerData['defer_point'], // 返点比例
+                                "type"  => 2, // 收入类型：0-直属用户收益分成，1-建仓费分成，2-递延费分成
+                                "order_id" => $order['order_id'],
+                            ];
+                            $manager->hasManyManagerRecord()->save($rData);
+                        }
+                    }
                 }
             }
             // 代理商返点
             foreach ($admins as $admin){
-                $point = $admin["defer_point"];
-                if($point > 0){
-                    $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $order['defer'] * $point / 100), 0, -1)); //分成金额
+                $realPoint = $admin["real_defer_point"];
+                if($realPoint > 0){
+                    //$rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $order['defer'] * $point / 100), 0, -1)); //分成金额
+                    $rebateMoney = round($order['defer'] * $realPoint, 2);
                     $admin = Admin::find($admin['admin_id']);
                     // 代理商手续费增加
                     $admin->setInc('total_fee', $rebateMoney);
                     // 代理商收入明细
                     $rData = [
-                        "money" => $rebateMoney,
+                        "money" => $rebateMoney, //返点金额
+                        "point" => $admin['defer_point'], // 返点比例
                         "type"  => 2, // 收入类型：0-用户收益分成，1-建仓费分成，2-递延费分成
                         "order_id" => $order['order_id'],
                     ];
@@ -305,7 +317,7 @@ class OrderLogic
         $where["profit"] = ["GT", 0];
         $where["proxy_rebate"] = 0;
         $where["update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
-        $orders = Order::where($where)->select();
+        $orders = Order::with("belongsToMode")->where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
     }
 

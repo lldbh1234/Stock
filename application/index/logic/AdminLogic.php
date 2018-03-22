@@ -29,6 +29,7 @@ class AdminLogic
         //dump($admins);
         $this->familyTree = [];
         $this->_familyTree($admins, $adminId);
+        $this->familyTree = $this->_realPoint($this->familyTree);
         return $this->familyTree;
     }
 
@@ -36,9 +37,49 @@ class AdminLogic
     {
         foreach ($admins as $key=>$val){
             if($val['admin_id'] == $admin_id){
-                $this->familyTree[] = $val;
+                $this->familyTree[$admin_id] = $val;
                 $this->_familyTree($admins, $val[$field], $field);
             }
         }
+    }
+
+    private function _realPoint($admins)
+    {
+        foreach ($admins as &$val){
+            $val = $this->_handleRealPoint($admins, $val['admin_id']);
+        }
+        $original = $admins;
+        foreach ($admins as &$val){
+            foreach ($original as $item){
+                if($val['admin_id'] == $item['pid']){
+                    $val['real_point'] = $val['real_point'] - $item['real_point'];
+                    $val['real_jiancang_point'] = $val['real_jiancang_point'] - $item['real_jiancang_point'];
+                    $val['real_defer_point'] = $val['real_defer_point'] - $item['real_defer_point'];
+                    break;
+                }
+            }
+        }
+        return $admins;
+    }
+
+    private function _handleRealPoint($admins, $admin_id, $field = "pid")
+    {
+        $parent = [];
+        foreach ($admins as $key=>$val){
+            if($val['admin_id'] == $admin_id){
+                $temp = $this->_handleRealPoint($admins, $val[$field], $field);
+                if(isset($temp['real_point'])){
+                    $val['real_point'] = $val['point'] / 100 * $temp['real_point'];
+                    $val['real_jiancang_point'] = $val['jiancang_point'] / 100 * $temp['real_jiancang_point'];
+                    $val['real_defer_point'] = $val['defer_point'] / 100 * $temp['real_defer_point'];
+                }else{
+                    $val['real_point'] = $val['point'] / 100;
+                    $val['real_jiancang_point'] = $val['jiancang_point'] / 100;
+                    $val['real_defer_point'] = $val['defer_point'] / 100;
+                }
+                $parent = $val;
+            }
+        }
+        return $parent;
     }
 }

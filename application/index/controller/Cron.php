@@ -110,7 +110,7 @@ class Cron extends Controller
                 foreach ($orders as $order){
                     if($order['is_defer']){
                         // 自动递延
-                        Queue::push('app\index\job\DeferJob@handleDeferOrder', $order, null);
+                        Queue::push('app\index\job\DeferJob@handleDeferOrder', $order["order_id"], null);
                     }else{
                         // 非自动递延,强制平仓
                         Queue::push('app\index\job\DeferJob@handleNonAutoDeferOrder', $order, null);
@@ -151,9 +151,9 @@ class Cron extends Controller
             if($orders){
                 foreach ($orders as $order){
                     $rebateData = [
-                        "money" => $order["profit"],
+                        "money" => $order["profit"] * $order['belongs_to_mode']['point'] / 100, //系统抽成金额
                         "order_id" => $order["order_id"], //订单ID
-                        "user_id" => $order["user_id"]
+                        "user_id" => $order["user_id"],
                     ];
                     Queue::push('app\index\job\RebateJob@handleProxyRebate', $rebateData, null);
                 }

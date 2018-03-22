@@ -20,7 +20,7 @@ class Order extends Base
     // 持仓
     public function position()
     {
-        $field = "order_id,code,name,price,deposit,defer,hand,stop_loss_price,stop_profit_price,create_at";
+        $field = "order_id,mode_id,code,name,price,deposit,defer,hand,stop_loss_price,stop_profit_price,create_at";
         if(request()->isPost()){
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, $field);
             if($orders['data']){
@@ -32,6 +32,8 @@ class Order extends Base
                     $item['yield_rate'] = number_format(($item['last_px'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = number_format(($item['last_px'] - $item['price']) * $item['hand'], 2); //盈亏
                     $item['create_at_text'] = date("m-d H:i", $item['create_at']);
+                    $item['mode_name'] = $item['belongs_to_mode']['name']; // 交易模式
+                    unset($item['belongs_to_mode']); // 交易模式
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
@@ -111,15 +113,17 @@ class Order extends Base
     // 委托
     public function entrust()
     {
-        $field = "order_id,code,name,deposit,defer,price,hand,sell_price,sell_hand,stop_loss_price,stop_profit_price,state,create_at";
+        $field = "order_id,mode_id,code,name,deposit,defer,price,hand,sell_price,sell_hand,stop_loss_price,stop_profit_price,state,create_at";
         if(request()->isPost()){
-            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [1, 4], $field);
+            $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = [4, 6], $field);
             if($orders['data']){
                 array_filter($orders['data'], function (&$item){
                     $item['market_value'] = $item['sell_price'] * $item['sell_hand']; //市值
                     $item['yield_rate'] = number_format(($item['sell_price'] - $item['price']) / $item['price'] * 100, 2); //收益率
                     $item['total_pl'] = number_format(($item['sell_price'] - $item['price']) * $item['sell_hand'], 2); //盈亏
                     $item['create_at_text'] = date("m-d H:i", $item['create_at']);
+                    $item['mode_name'] = $item['belongs_to_mode']['name']; // 交易模式
+                    unset($item['belongs_to_mode']); // 交易模式
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
@@ -159,7 +163,7 @@ class Order extends Base
     // 平仓
     public function history()
     {
-        $field = "order_id,code,name,price,sell_price,sell_hand,create_at,update_at";
+        $field = "order_id,mode_id,code,name,price,sell_price,sell_hand,create_at,update_at";
         if(request()->isPost()){
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 2, $field);
             if($orders['data']){
@@ -169,6 +173,8 @@ class Order extends Base
                     $item['total_pl'] = number_format(($item['sell_price'] - $item['price']) * $item['sell_hand'], 2); //盈亏
                     $item['create_at_text'] = date("m-d H:i", $item['create_at']);
                     $item['update_at_text'] = date("m-d H:i", $item['update_at']);
+                    $item['mode_name'] = $item['belongs_to_mode']['name']; // 交易模式
+                    unset($item['belongs_to_mode']); // 交易模式
                 });
                 $list = $orders['data'];
                 $last_page = $orders['last_page'];
