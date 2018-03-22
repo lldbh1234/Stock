@@ -1,5 +1,5 @@
 {extend name="layouts/layout_user" /}
-{block name="title"}成为牛人{/block}
+{block name="title"}成为大神{/block}
 {block name="style"}
 <style>
     .registMaster__list___3EQ_z li {
@@ -34,7 +34,7 @@
 {block name="content"}
     <header class="bg_fff mui-bar mui-bar-nav">
         <a style="color: #999" href="javascript:history.go(-1)" class="color_red mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-        <h1 class="mui-title">成为牛人</h1>
+        <h1 class="mui-title">成为大神</h1>
     </header>
     <div style="text-align: center;">
         <img style="width:18%;padding: 78px 0 10px 0;" src="__RESOURCE__/img/wddsqzg.svg">
@@ -89,13 +89,13 @@
     <div class="tip_con">
         <div class="registMaster__title___1U70X">
             <img src="__RESOURCE__/img/icon_tq.svg" alt="icon">
-            <span> 牛人享受以下特权</span>
+            <span> 大神享受以下特权</span>
         </div>
         <div class="registMaster__item___5YSgh">1. 发布策略用户跟单，盈利得分成</div>
         <div class="registMaster__item___5YSgh">2. 增加粉丝关注，发展粉丝经济</div>
     </div>
     {if condition="$applyInfo.status eq 0"}
-        <button href="{:url('index/Strategy/index')}" class="ml_btn mui-btn mui-btn-block apply">申请牛人</button>
+        <button href="{:url('index/Strategy/index')}" class="ml_btn mui-btn mui-btn-block apply">申请大神</button>
     {else /}
         <button class="ml_btn mui-btn mui-btn-block continue">继续创建策略</button>
     {/if}
