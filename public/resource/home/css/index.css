@@ -508,10 +508,10 @@ nav.ml_tab .mui-icon-celue:before {
 	top: 22px;
 	z-index: 999;
 }
-.index_search_link{
-	width: calc(100% - 48px);
-    height: 28px;
-    line-height: 29px;
+.index_search_link {
+    width: calc(100% - 48px);
+    height: 34px;
+    line-height: 36px;
     padding-left: 29px;
     background: #fff url(../img/search_btn.png) no-repeat 10px center;
     background-size: 14px 14px;
@@ -521,12 +521,12 @@ nav.ml_tab .mui-icon-celue:before {
     color: #999;
     padding-right: 32px;
 }
-.message_link{
-	width: 48px;
-	height: 28px;
-	background: url(../img/msg.png) no-repeat center center;
-	background-size: 22px 20px;
-	position: relative;
+.message_link {
+    width: 48px;
+    height: 37px;
+    background: url(../img/msg.png) no-repeat center center;
+    background-size: 22px 24px;
+    position: relative;
 }
 .message_link.has_msg:after{
 	content: "";

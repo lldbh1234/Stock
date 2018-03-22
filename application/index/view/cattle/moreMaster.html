@@ -1,5 +1,5 @@
 {extend name="layouts/layout_index" /}
-{block name="title"}牛人排行榜{/block}
+{block name="title"}大神排行榜{/block}
 {block name="style"}
 <link href="__RESOURCE__/css/person.css" rel="stylesheet">
 <style type="text/css">
@@ -11,7 +11,7 @@
 
 {block name="content"}
 <header class="has_back_top ">
-    牛人排行榜
+    大神排行榜
     <a href="{:url('index/Index/index')}" class="back_icon">
         <img src="__RESOURCE__/img/back_icon.png">
     </a>
@@ -69,14 +69,14 @@
 <script type="text/javascript">
     function follow(id, obj)
     {
-//        var content = '是否关注牛人？';
+//        var content = '是否关注大神？';
         var msg = '已关注';
         var type = 1;//关注
 //        console.log(obj);
 
 
         if($(obj).hasClass('active')){
-//            content = '是否取消关注牛人？';
+//            content = '是否取消关注大神？';
             msg = '已取消关注';
             type = 2;//取关
         }

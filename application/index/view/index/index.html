@@ -24,6 +24,17 @@
 		color: #fff!important;
 		font-size: 12px;
 	}
+	.qiquan_link{
+		display: block;
+		height: 50px;
+		color: #fff;
+		margin-top: 8px;
+		text-align: center;
+		line-height: 50px;
+		background-image: linear-gradient(135deg,#f48651 12.5%, #e59eac 25%,#e59eac 37.5%, #f48651 50%,#f48651 62.5%, #e59eac 75%,#e59eac 87.5%, #f48651 100%);
+		background-repeat:repeat;
+		background-size:4px 4px;
+	}
 </style>
 {/block}
 
@@ -173,6 +184,9 @@
 			</div>
 		</section>
 		<section>
+			<a href="" class="qiquan_link">个股期权</a>
+		</section>
+		<section>
 			<div class="clear_fl rink_tab_con">
 				<ul class="lf rink_tab_list clear_fl">
 					<li class="item active daren">
@@ -200,7 +214,7 @@
 						</ul>
 					</li>
 					<li  class="item celue">
-						<p>最优策略</p>
+						<p>最优持仓</p>
 						<ul class="rink_tab_content great_strategy daren">
 							{volist name="$bestStrategyList" id="vo"}
 							<li>
@@ -250,7 +264,7 @@
 						</ul>
 					</li>
 				</ul>
-				<a href="{:url('index/Cattle/moreMaster')}" class="rt more_dongtai">更多达人</a>
+				<a href="{:url('index/Cattle/moreMaster')}" class="rt more_dongtai">更多排行</a>
 			</div>
 		</section>
 	</div>
@@ -284,6 +298,14 @@
 
 {block name="script"}
 	<script type="text/javascript">
+		$(".qiquan_link").click(function(e){
+			e.preventDefault();
+			$alert( "敬请期待！" );
+		});
+
+
+
+
 		/**
 		 * 判断当前时间是否在9:30-11:30, 13:00-15:00（交易时间）
 		 */
