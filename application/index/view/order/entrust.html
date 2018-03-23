@@ -253,7 +253,7 @@
                             <span class="p_value">'+ data.orders[key].mode_name +'</span>\
                         </p>\
                         <p>\
-                            <span class="p_key">方向</span>\
+                            <span class="p_key">类型</span>\
                             <span class="p_value ' + className + '">' + fangxiang + '</span>\
                         </p>\
                     </div>\
@@ -305,7 +305,7 @@
                             <span class="p_value">'+ data.orders[key].mode_name +'</span>\
                         </p>\
                         <p>\
-                            <span class="p_key">方向</span>\
+                            <span class="p_key">类型</span>\
                             <span class="p_value ' + className + '">' + fangxiang + '</span>\
                         </p>\
                     </div>\
@@ -321,11 +321,11 @@
                     if( forceType == 1 ){
                         typeText = "爆仓";
                     }else if( forceType == 2 ){
-                        typeText = "到达止盈止损";
+                        typeText = "止盈止损";
                     }else if( forceType == 3 ){
                         typeText = "非自动递延";
                     }else if( forceType == 4 ){
-                        typeText = "递延费无法扣除";
+                        typeText = "余额不足";
                     }
 
                     fangxiang = "强制平仓";
@@ -374,11 +374,11 @@
                             <span class="p_value">'+ data.orders[key].mode_name +'</span>\
                         </p>\
                         <p>\
-                            <span class="p_key">方向</span>\
+                            <span class="p_key">类型</span>\
                             <span class="p_value ' + className + '">' + fangxiang + '</span>\
                         </p>\
                         <p>\
-                            <span class="p_key">强制平仓类型</span>\
+                            <span class="p_key">强平类型</span>\
                             <span class="p_value">' + typeText + '</span>\
                         </p>\
                     </div>\
