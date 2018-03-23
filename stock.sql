@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `stock_admin` (
 -- 正在导出表  stock.stock_admin 的数据：~15 rows (大约)
 /*!40000 ALTER TABLE `stock_admin` DISABLE KEYS */;
 INSERT INTO `stock_admin` (`admin_id`, `username`, `password`, `nickname`, `mobile`, `pid`, `role`, `company`, `realname`, `point`, `jiancang_point`, `defer_point`, `total_fee`, `deposit`, `code`, `last_ip`, `last_time`, `status`, `create_at`) VALUES
-	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0.00, 0.00, 'root', '127.0.0.1', 1521688104, 0, 1518085749),
+	(1, 'root', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0.00, 0.00, 'root', '127.0.0.1', 1521795658, 0, 1518085749),
 	(2, 'admin', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 0, 1, NULL, NULL, 0, 0, 0, 0.00, 0.00, 'admin', '127.0.0.1', 1521196184, 0, 1518085749),
 	(3, '结算中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 2, 2, NULL, NULL, 60, 60, 60, 140.58, 0.00, '111111', '127.0.0.1', 1518098557, 0, 1518085749),
 	(4, '运营中心', '###4e14ffcfd2b1b28ef9d6d44b3b619dc2', NULL, NULL, 3, 3, NULL, NULL, 50, 40, 50, 89.40, 0.00, '22222222222', '0.0.0.0', 0, 0, 1518085749),
@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `stock_admin_record` (
   KEY `admin_id` (`admin_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='代理商收入明细表';
 
--- 正在导出表  stock.stock_admin_record 的数据：~0 rows (大约)
+-- 正在导出表  stock.stock_admin_record 的数据：~11 rows (大约)
 /*!40000 ALTER TABLE `stock_admin_record` DISABLE KEYS */;
 INSERT INTO `stock_admin_record` (`id`, `admin_id`, `money`, `point`, `type`, `order_id`, `create_at`) VALUES
 	(1, 6, 0.40, 30, 2, 4, 1521727644),
@@ -466,7 +466,7 @@ CREATE TABLE IF NOT EXISTS `stock_defer_record` (
   KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='递延费扣除记录';
 
--- 正在导出表  stock.stock_defer_record 的数据：~6 rows (大约)
+-- 正在导出表  stock.stock_defer_record 的数据：~8 rows (大约)
 /*!40000 ALTER TABLE `stock_defer_record` DISABLE KEYS */;
 INSERT INTO `stock_defer_record` (`id`, `user_id`, `order_id`, `money`, `type`, `create_at`) VALUES
 	(1, 2, 4, 12.00, 0, 1521096243),
@@ -536,7 +536,7 @@ CREATE TABLE IF NOT EXISTS `stock_jobs` (
   `available_at` int(10) unsigned NOT NULL,
   `created_at` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 正在导出表  stock.stock_jobs 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `stock_jobs` DISABLE KEYS */;
@@ -4271,7 +4271,7 @@ CREATE TABLE IF NOT EXISTS `stock_order` (
 /*!40000 ALTER TABLE `stock_order` DISABLE KEYS */;
 INSERT INTO `stock_order` (`order_id`, `order_sn`, `user_id`, `product_id`, `mode_id`, `code`, `name`, `full_code`, `price`, `hand`, `jiancang_fee`, `defer`, `free_time`, `is_defer`, `stop_profit_price`, `stop_profit_point`, `stop_loss_price`, `stop_loss_point`, `deposit`, `sell_price`, `sell_hand`, `sell_deposit`, `profit`, `state`, `is_follow`, `follow_id`, `is_hedging`, `force_type`, `jiancang_rebate`, `niuren_rebate`, `proxy_rebate`, `create_at`, `update_by`, `update_at`) VALUES
 	(1, '20180311131118184534', 1, 1, 1, '600000', '浦发银行', 'sh600000', 12.41, 1100.00, 28.50, 12.00, 1520577873, 1, 13.91, 12.09, 11.00, 11.36, 1500.00, 1800.00, 0.00, 0.00, 10.00, 2, 0, 0, 0, 0, 0, 0, 0, 1520059473, NULL, 1520005956),
-	(4, '20180311131118186143244', 2, 1, 1, '600000', '浦发银行', 'sh600000', 12.41, 1100.00, 28.50, 12.00, 1521702629, 1, 13.88, 11.85, 10.94, 11.85, 1488.00, 12.25, 1100.00, 13475.00, -176.00, 3, 1, 1, 0, 4, 0, 1, 1, 1520061028, NULL, 1521728535),
+	(4, '20180311131118186143244', 2, 1, 1, '600000', '浦发银行', 'sh600000', 6.20, 2200.00, 28.50, 12.00, 1521702629, 1, 6.94, 11.94, 5.47, 11.77, 1500.00, 5.50, 2200.00, 12100.00, -1540.00, 6, 1, 1, 0, 2, 0, 1, 1, 1520061028, NULL, 1521804380),
 	(5, '201803111311181854394', 4, 1, 1, '600021', '上海电力', 'sh600021', 8.07, 1700.00, 28.50, 12.00, 1520594111, 0, 9.03, 11.90, 7.12, 11.77, 1500.00, 8.46, 1700.00, 14382.00, 663.00, 6, 1, 1, 0, 3, 0, 0, 0, 1520075711, NULL, 1521724466),
 	(6, '2018031113111818614324', 1, 1, 1, '600000', '浦发银行', 'sh600000', 12.42, 1100.00, 28.50, 12.00, 1520911072, 0, 13.89, 11.84, 10.95, 11.84, 1500.00, 12.49, 1100.00, 13739.00, 77.00, 2, 0, 0, 0, 0, 0, 0, 0, 1520306271, 1, 1520319830),
 	(7, '2018031113111818654234', 1, 1, 1, '600000', '浦发银行', 'sh600000', 12.49, 1100.00, 28.50, 12.00, 1520925293, 0, 13.97, 11.85, 11.01, 11.85, 1500.00, 0.00, 0.00, 0.00, 0.00, 1, 0, 0, 0, 0, 0, 0, 0, 1520320492, NULL, 0),
@@ -4279,6 +4279,23 @@ INSERT INTO `stock_order` (`order_id`, `order_sn`, `user_id`, `product_id`, `mod
 	(9, '201803111311181861342', 1, 1, 1, '600000', '浦发银行', 'sh600000', 12.49, 1100.00, 28.50, 12.00, 1521174793, 0, 14.99, 20.02, 11.48, 8.09, 1500.00, 12.25, 1100.00, 13475.00, -264.00, 6, 0, 0, 1, 3, 0, 0, 0, 1520742793, 1, 1521724466),
 	(10, '201803111311181861194', 2, 1, 1, '600004', '白云机场', 'sh600004', 16.30, 1700.00, 57.00, 24.00, 1521177078, 0, 19.56, 20.00, 15.00, 7.98, 3000.00, 16.80, 1700.00, 28560.00, 800.00, 2, 0, 0, 1, 0, 0, 0, 1, 1520745078, 1, 1521726949);
 /*!40000 ALTER TABLE `stock_order` ENABLE KEYS */;
+
+-- 导出  表 stock.stock_order_action 结构
+DROP TABLE IF EXISTS `stock_order_action`;
+CREATE TABLE IF NOT EXISTS `stock_order_action` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID',
+  `act` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '动作；0-转送股，1-穿仓价调整，2-转为持仓',
+  `ext` text COMMENT '备注',
+  `act_admin` tinyint(10) DEFAULT NULL COMMENT '操作者',
+  `act_time` tinyint(10) DEFAULT '0' COMMENT '操作时间',
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单操作日志';
+
+-- 正在导出表  stock.stock_order_action 的数据：~0 rows (大约)
+/*!40000 ALTER TABLE `stock_order_action` DISABLE KEYS */;
+/*!40000 ALTER TABLE `stock_order_action` ENABLE KEYS */;
 
 -- 导出  表 stock.stock_plugins 结构
 DROP TABLE IF EXISTS `stock_plugins`;
@@ -4487,7 +4504,7 @@ CREATE TABLE IF NOT EXISTS `stock_user_manager_record` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='经纪人收入明细表';
 
--- 正在导出表  stock.stock_user_manager_record 的数据：~7 rows (大约)
+-- 正在导出表  stock.stock_user_manager_record 的数据：~8 rows (大约)
 /*!40000 ALTER TABLE `stock_user_manager_record` DISABLE KEYS */;
 INSERT INTO `stock_user_manager_record` (`id`, `user_id`, `money`, `point`, `type`, `order_id`, `create_at`) VALUES
 	(1, 1, 2.16, 0, 0, 10, 1521724466),
