@@ -3,6 +3,9 @@
 {block name="title"}强制平仓订单{/block}
 
 {block name="body"}
+<style>
+
+</style>
 <nav class="breadcrumb">
 	<i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
 	<span class="c-gray en">&gt;</span> 订单管理
@@ -36,7 +39,7 @@
 					<option value="4" {if condition="isset($search.force_type) AND $search.force_type eq '4'"}selected{/if}>余额不足</option>
 				</select>
 			</span>
-			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+			<button type="submit" class="btn btn-success size-S radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
 		</div>
 	</form>
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -88,13 +91,28 @@
 			<td>{$item.stop_loss_price|number_format=2}</td>
 			<td>{$item.sell_price|number_format=2}</td>
 			<td>{$item.sell_hand|intval}</td>
-			<td>{$item.profit|number_format=2}</td>
+			<td>
+				{if condition="$item.profit LT 0"}
+				<font style="color: #1eb83f;">{$item.profit|number_format=2}</font>
+				{elseif condition="$item.profit EQ 0" /}
+				<font style="color: #CC0000;">{$item.profit|number_format=2}</font>
+				{else /}
+				<font style="color: #CC0000;">{$item.profit|number_format=2}</font>
+				{/if}
+			</td>
 			<td>{$item.deposit|number_format=2}</td>
 			<td>{$item.jiancang_fee|number_format=2}</td>
 			<td>{$item.defer|number_format=2}</td>
 			<td>{$item.force_type_text}</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
-			<td><input class="btn btn-danger radius" type="button" onclick="force_sell('{$item.order_id}', this)" value="平仓"></td>
+			<td>
+                <input class="btn btn-danger size-MINI radius" type="button" title="平仓" onclick="force_sell('{$item.order_id}', this)" value="平">
+                {in name="item.force_type" value="1,2"}
+                <input class="btn btn-secondary size-MINI radius" type="button" title="送股" onclick="mode_show('订单转送股', '{:url("admin/Order/give", ['id' => $item.order_id])}', '', '350')" value="送">
+                <input class="btn btn-warning size-MINI radius" type="button" title="穿仓" onclick="order_ware('{$item.order_id}', '{$item.sell_price}')" value="穿">
+                <input class="btn btn-primary size-MINI radius" type="button" title="转为持仓" onclick="to_position('{$item.order_id}', this)" value="持">
+                {/in}
+            </td>
 		</tr>
 		{/volist}
 		</tbody>
@@ -109,6 +127,56 @@
 
 {block name="script"}
 <script>
+    function mode_show(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function order_ware(_id, _price)
+    {
+        layer.prompt({
+            title: '开盘跌停价',
+            value: _price,
+            formType: 0,
+        }, function(_number, _prompt){
+            layer.close(_prompt);
+            var _oData = {id : _id, price : _number},
+                _url = '{:url("admin/Order/ware")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            window.location.reload();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
+    function to_position(_id, _obj)
+    {
+        parent.layer.confirm('确认此订单转为持仓？', function(index){
+            parent.layer.close(index);
+            var _oData = {id : _id},
+                _url = '{:url("admin/Order/toPosition")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            $(_obj).parents("tr").remove();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+
     function force_sell(_id, _obj)
     {
         parent.layer.confirm('确认此订单强制平仓？', function(index){

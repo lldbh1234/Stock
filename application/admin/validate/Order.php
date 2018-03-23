@@ -1,6 +1,10 @@
 <?php
 namespace app\admin\validate;
 
+use app\admin\logic\DepositLogic;
+use app\admin\logic\LeverLogic;
+use app\admin\logic\ModeLogic;
+use app\admin\logic\OrderLogic;
 use think\Validate;
 
 class Order extends Validate
@@ -8,6 +12,9 @@ class Order extends Validate
     protected $rule = [
         'id'    => 'require|gt:0|canBuy',
         'price' => 'require|float|gt:0|checkPrice',
+        'hand'  => 'require|number|gt:0|checkHand',
+        'profit' => 'require|float|gt:0|checkProfit',
+        'loss'  => 'require|float|gt:0|checkLoss',
     ];
 
     protected $message = [
@@ -15,10 +22,22 @@ class Order extends Validate
         'id.gt'         => '系统提示：非法操作！',
         'id.canBuy'     => '系统提示：非法操作！',
         'id.canSell'    => '系统提示：非法操作！',
-        'price.require' => '请输入实际买入价！',
-        'price.float'   => '实际买入价必须为数字！',
-        'price.gt'      => '实际买入价必须大于0！',
+        'price.require' => '请输入买入价！',
+        'price.float'   => '买入价必须为数字！',
+        'price.gt'      => '买入价必须大于0！',
         "price.checkPrice" => "实际买入价与委托买入价相差不得超过0.02",
+        'hand.require'  => '请输入买入数量！',
+        'hand.number'   => '买入数量必须为整数！',
+        'hand.gt'       => '买入数量必须大于0！',
+        "hand.checkHand" => "买入数量必须为100的倍数！",
+        'profit.require' => '请输入止盈金额！',
+        'profit.float'  => '止盈金额必须为数字！',
+        'profit.gt'     => '止盈金额必须大于0！',
+        "profit.checkProfit" => "止盈金额输入错误！",
+        'loss.require'  => '请输入止损金额！',
+        'loss.float'    => '止损金额必须为数字！',
+        'loss.gt'       => '止损金额必须大于0！',
+        "loss.checkLoss" => "止损金额输入错误！",
     ];
 
     protected $scene = [
@@ -31,6 +50,13 @@ class Order extends Validate
         "hedging" => [
             "id" => "require|gt:0|canHedging",
             "price"
+        ],
+        "give"  => [
+            'id'    => 'require|gt:0|canGive',
+            "price" => 'require|float|gt:0',
+            "hand",
+            "profit",
+            "loss"
         ],
     ];
 
@@ -73,5 +99,37 @@ class Order extends Validate
             return abs($value - $order['price']) > 0.02 ? false : true;
         }
         return false;
+    }
+
+    protected function canGive($value)
+    {
+        $order = (new OrderLogic())->orderById($value, $state = 6);
+        if($order){
+            return $order["force_type"] == 1 || $order["force_type"] == 2;
+        }
+        return false;
+    }
+
+    protected function checkHand($value)
+    {
+        return $value % 100 == 0;
+    }
+
+    protected function checkProfit($value, $rule, $data)
+    {
+        if($value > $data['price']){
+            return true;
+        }else{
+            return "止盈金额不能小于买入价！";
+        }
+    }
+
+    protected function checkLoss($value, $rule, $data)
+    {
+        if($value < $data['price']){
+            return true;
+        }else{
+            return "止损金额必须小于买入价！";
+        }
     }
 }

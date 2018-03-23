@@ -240,4 +240,45 @@ class Order extends Base
             return $this->fail("系统提示：非法操作！");
         }
     }
+
+    // 送股
+    public function give($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('give')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $price = input("post.price/f");
+                $order = $this->_logic->orderById($id);
+                $data = [
+                    "order_id"  => $orderId,
+                    "price"     => $price,
+                    "hand"      => input("post.hand/d"),
+                    "stop_profit_price" => input("post.profit/f"),
+                    "stop_profit_point" => round((input("post.profit/f") - $price) / $price * 100, 2),
+                    "stop_loss_price" => input("post.loss/f"),
+                    "stop_loss_point" => round(($price - input("post.loss/f")) / $price * 100, 2),
+                    "sell_hand" => input("post.hand/d"),
+                    "sell_deposit" => $order['sell_price'] * input("post.hand/d"),
+                    "profit"    => ($order['sell_price'] - $price) * input("post.hand/d"),
+                ];
+                $res = $this->_logic->updateOrder($data);
+                if($res){
+                    return $this->ok("操作成功！");
+                }else{
+                    return $this->fail("操作失败，请稍后重试！");
+                }
+            }
+        }else{
+            $order = $this->_logic->orderById($id, $state = 6);
+            if($order){
+                $this->assign("order", $order);
+                return view();
+            }else{
+                return "非法操作！";
+            }
+        }
+    }
 }

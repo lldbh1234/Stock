@@ -382,8 +382,8 @@ class OrderLogic
         return ["lists" => $records, "pages" => $lists->render()];
     }
 
-    // 订单详情
-    public function orderById($orderId)
+    // 订单详情（包括关联用户数据）
+    public function orderIncUserById($orderId)
     {
         $myUserIds = Admin::userIds();
         $where = ["order_id" => $orderId];
@@ -391,6 +391,17 @@ class OrderLogic
         $order = Order::with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator"])
                     ->where($where)
                     ->find();
+        return $order ? $order->toArray() : [];
+    }
+
+    // 订单本身数据（不包括关联数据）
+    public function orderById($orderId, $state = null)
+    {
+        $myUserIds = Admin::userIds();
+        $where = ["order_id" => $orderId];
+        $myUserIds ? $where["user_id"] = ["IN", $myUserIds] : null;
+        is_null($state) ? null : $where["state"] = is_array($state) ? ["IN", $state] : $state;
+        $order = Order::where($where)->find();
         return $order ? $order->toArray() : [];
     }
 
