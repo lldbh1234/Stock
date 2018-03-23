@@ -249,6 +249,10 @@
                             <span class="p_value">'+ data.orders[key].stop_profit_price +'</span>\
                         </p>\
                         <p>\
+                            <span class="p_key">交易模式</span>\
+                            <span class="p_value">'+ data.orders[key].mode_name +'</span>\
+                        </p>\
+                        <p>\
                             <span class="p_key">方向</span>\
                             <span class="p_value ' + className + '">' + fangxiang + '</span>\
                         </p>\
@@ -297,6 +301,10 @@
                             <span class="p_value">'+ data.orders[key].stop_profit_price +'</span>\
                         </p>\
                         <p>\
+                            <span class="p_key">交易模式</span>\
+                            <span class="p_value">'+ data.orders[key].mode_name +'</span>\
+                        </p>\
+                        <p>\
                             <span class="p_key">方向</span>\
                             <span class="p_value ' + className + '">' + fangxiang + '</span>\
                         </p>\
@@ -306,6 +314,79 @@
                             <span class="sell_position_btn lf" data-id="' + className + '">'+ data.orders[key].order_id +'">撤销</span>\
                         </p>\
                     </div>\
+                </li>';
+                }else if( data.orders[key].state == 6 ){
+                    var forceType = data.orders[key].force_type;
+                    var typeText = "";
+                    if( forceType == 1 ){
+                        typeText = "爆仓";
+                    }else if( forceType == 2 ){
+                        typeText = "到达止盈止损";
+                    }else if( forceType == 3 ){
+                        typeText = "非自动递延";
+                    }else if( forceType == 4 ){
+                        typeText = "递延费无法扣除";
+                    }
+
+                    fangxiang = "强制平仓";
+                    className = "green";
+
+                    html += '<li>\
+                    <h1 class="clear_fl">\
+                        <span class="lf">' + data.orders[key].name + ' '+ data.orders[key].code +'</span>\
+                        <span class="rt"> <span class="p_key"></span>'+ data.orders[key].create_at_text +'</span>\
+                    </h1>\
+                    <div class="clear_fl p_info">\
+                        <p>\
+                            <span class="p_key">买价</span>\
+                            <span class="p_value">'+ data.orders[key].price +'</span>\
+                        </p>\
+                        <p>\
+                            <span class="p_key">卖价</span>\
+                            <span class="p_value">'+ data.orders[key].sell_price +'</span>\
+                        </p>\
+                        <p>\
+                            <span class="p_key">市值</span>\
+                            <span class="p_value">'+ data.orders[key].market_value +'</span>\
+                        </p>\
+                        <p>\
+                            <span class="p_key">收益率</span>\
+                            <span class="p_value ' + className + '">'+ data.orders[key].yield_rate +'</span>\
+                        </p>\
+                                                <p>\
+                            <span class="p_key">数量</span>\
+                            <span class="p_value">'+ data.orders[key].sell_hand +'</span>\
+                        </p>\
+                                                <p>\
+                            <span class="p_key">保证金</span>\
+                            <span class="p_value">'+ data.orders[key].deposit +'</span>\
+                        </p>\
+                        <p>\
+                            <span class="p_key">止损</span>\
+                            <span class="p_value">'+ data.orders[key].stop_loss_price +'</span>\
+                        </p>\
+                        <p>\
+                            <span class="p_key">止盈</span>\
+                            <span class="p_value">'+ data.orders[key].stop_profit_price +'</span>\
+                        </p>\
+                        <p>\
+                            <span class="p_key">交易模式</span>\
+                            <span class="p_value">'+ data.orders[key].mode_name +'</span>\
+                        </p>\
+                        <p>\
+                            <span class="p_key">方向</span>\
+                            <span class="p_value ' + className + '">' + fangxiang + '</span>\
+                        </p>\
+                        <p>\
+                            <span class="p_key">强制平仓类型</span>\
+                            <span class="p_value">' + typeText + '</span>\
+                        </p>\
+                    </div>\
+                    <!--  <div class="clear_fl p_control_panel">\
+                        <p class="rt">\
+                            <span class="sell_position_btn lf" data-id="' + className + '">'+ data.orders[key].order_id +'">撤销</span>\
+                        </p>\
+                    </div>  -->\
                 </li>';
                 }
               
