@@ -55,7 +55,7 @@
             <th>手续费总计</th>
             <th>创建时间</th>
             <th>状态</th>
-            <th width="100">操作</th>
+            <th width="160">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -81,10 +81,10 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="编辑" href="javascript:;" onclick="admin_edit('编辑微会员','{:url("admin/Team/modifyMember", ['id' => $item.admin_id])}','','450')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-                <a title="微信公众号" href="javascript:;" onclick="admin_wechat('{$item.username}-微信公众号','{:url("admin/Team/memberWechat", ['id' => $item.admin_id])}');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-share-weixin"></i></a>
-                <a title="返点修改" href="javascript:;" onclick="admin_edit('返点修改','{:url("admin/Team/memberPoint", ['id' => $item.admin_id])}','','380');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-arrow1-left"></i></a>
-                <a title="保证金充值" href="javascript:;" onclick="admin_recharge(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
+                <input class="btn btn-success size-MINI radius" type="button" title="编辑微会员" onclick="admin_edit('编辑微会员','{:url("admin/Team/modifyMember", ['id' => $item.admin_id])}','','450')" value="修改">
+                <input class="btn btn-secondary size-MINI radius" type="button" title="微信公众号" onclick="admin_wechat('{$item.username}-微信公众号','{:url("admin/Team/memberWechat", ['id' => $item.admin_id])}');" value="微信">
+                <input class="btn btn-primary size-MINI radius" type="button" title="返点修改" onclick="admin_edit('返点修改','{:url("admin/Team/memberPoint", ['id' => $item.admin_id])}','','380');" value="返点">
+                <input class="btn btn-warning size-MINI radius" type="button" title="保证金充值" onclick="admin_recharge(this,{$item.admin_id});" value="充值">
             </td>
         </tr>
         {/volist}

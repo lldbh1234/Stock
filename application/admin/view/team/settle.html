@@ -53,7 +53,7 @@
             <th>手续费总计</th>
             <th>创建时间</th>
             <th>状态</th>
-            <th width="70">操作</th>
+            <th width="120">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -78,9 +78,9 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="编辑" href="javascript:;" onclick="admin_edit('用户编辑','{:url("admin/Team/modifySettle", ['id' => $item.admin_id])}','','380')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-                <a title="返点修改" href="javascript:;" onclick="admin_edit('返点修改','{:url("admin/Team/settlePoint", ['id' => $item.admin_id])}','','340');" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-arrow1-left"></i></a>
-                <a title="保证金充值" href="javascript:;" onclick="admin_recharge(this,{$item.admin_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
+                <input class="btn btn-success size-MINI radius" type="button" title="结算中心修改" onclick="admin_edit('结算中心修改','{:url("admin/Team/modifySettle", ['id' => $item.admin_id])}','','380')" value="修改">
+                <input class="btn btn-primary size-MINI radius" type="button" title="返点修改" onclick="admin_edit('返点修改','{:url("admin/Team/settlePoint", ['id' => $item.admin_id])}','','340');" value="返点">
+                <input class="btn btn-warning size-MINI radius" type="button" title="保证金充值" onclick="admin_recharge(this,{$item.admin_id});" value="充值">
             </td>
         </tr>
         {/volist}
