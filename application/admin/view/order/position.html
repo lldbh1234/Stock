@@ -64,7 +64,7 @@
 			<th>经纪人</th>
 			<th width="70">下单时间</th>
 			<th>是否对冲</th>
-			<th>操作</th>
+			<th width="120">操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -96,9 +96,10 @@
 				{/if}
 			</td>
 			<td>
-				<a title="持仓详情" href="javascript:;" onclick="show_detail('持仓详情', '{:url("admin/Order/positionDetail", ['id' => $item.order_id])}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-yanjing"></i></a>
+				<input class="btn btn-secondary size-MINI radius" type="button" title="策略详情" onclick="show_detail('策略详情', '{:url("admin/Order/positionDetail", ['id' => $item.order_id])}')" value="详情">
+				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_detail('返点记录', '{:url("admin/Order/positionRebate", ['id' => $item.order_id])}')" value="返点">
 				{eq name="$item.is_hedging" value="0"}
-				<a title="对冲" href="javascript:;" class="ml-5" onclick="hedging_ok({$item.order_id}, {$item.price})" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-cart2-man"></i></a>
+				<input class="btn btn-warning size-MINI radius" type="button" title="对冲" onclick="hedging_ok({$item.order_id}, {$item.price})" value="对冲">
 				{/eq}
 			</td>
 		</tr>

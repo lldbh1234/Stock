@@ -52,7 +52,7 @@
 			<th>卖出手数</th>
 			<th>盈亏</th>
 			<th>委托时间</th>
-			<th>操作</th>
+			<th width="160">操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -87,13 +87,14 @@
 				{/eq}
 			</td>
 			<td>
-				<a title="策略详情" href="javascript:;" onclick="show_detail('策略详情', '{:url("admin/Order/entrustDetail", ['id' => $item.order_id])}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-yanjing"></i></a>
+				<input class="btn btn-secondary size-MINI radius" type="button" title="策略详情" onclick="show_detail('策略详情', '{:url("admin/Order/entrustDetail", ['id' => $item.order_id])}')" value="详情">
+				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_detail('返点记录', '{:url("admin/Order/entrustRebate", ['id' => $item.order_id])}')" value="返点">
 				{if condition="$item.state eq 1"}
-				<a title="建仓成功" href="javascript:;" onclick="buy_ok({$item.order_id}, {$item.price}, this);" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
-				<a title="建仓失败" href="javascript:;" onclick="buy_fail({$item.order_id}, this);" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
+				<input class="btn btn-success size-MINI radius" type="button" title="建仓成功" onclick="buy_ok({$item.order_id}, {$item.price}, this);" value="建仓">
+				<input class="btn btn-danger size-MINI radius" type="button" title="建仓失败" onclick="buy_fail({$item.order_id}, this);" value="撤销">
 				{elseif condition="$item.state eq 4" /}
-				<a title="平仓成功" href="javascript:;" onclick="sell_ok({$item.order_id}, this);" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
-				<a title="平仓失败" href="javascript:;" onclick="sell_fail({$item.order_id}, this);" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
+				<input class="btn btn-success size-MINI radius" type="button" title="平仓成功" onclick="sell_ok({$item.order_id}, this);" value="平仓">
+				<input class="btn btn-danger size-MINI radius" type="button" title="平仓失败" onclick="sell_fail({$item.order_id}, this);" value="撤销">
 				{/if}
 			</td>
 		</tr>

@@ -27,10 +27,21 @@ class Order extends Base
     // 委托详情
     public function entrustDetail($id = null)
     {
-        $order = $this->_logic->orderIncRecordById($id, $state = 4);
+        $order = $this->_logic->orderIncUserById($id, $state = 4);
         if($order){
             $state = [1 => '委托建仓', 2 => '平仓', 3 => '持仓', 4 => '委托平仓', 5 => '作废'];
             $order['state_text'] = $state[$order['state']];
+            $this->assign("order", $order);
+            return view();
+        }
+        return "非法操作！";
+    }
+
+    // 委托返点
+    public function entrustRebate($id = null)
+    {
+        $order = $this->_logic->orderIncRecordById($id, $state = 4);
+        if($order){
             $this->assign("order", $order);
             return view();
         }
@@ -50,10 +61,21 @@ class Order extends Base
     // 平仓详情
     public function historyDetail($id = null)
     {
-        $order = $this->_logic->orderIncRecordById($id, $state = 2);
+        $order = $this->_logic->orderIncUserById($id, $state = 2);
         if($order){
             $forceType = [0 => '委托平仓', 1 => '爆仓', 2 => '止盈止损', 3 => '非自动递延', 4 => '余额不足'];
             $order['force_type_text'] = $forceType[$order['force_type']];
+            $this->assign("order", $order);
+            return view();
+        }
+        return "非法操作！";
+    }
+
+    // 平仓返点
+    public function historyRebate($id = null)
+    {
+        $order = $this->_logic->orderIncRecordById($id, $state = 2);
+        if($order){
             $this->assign("order", $order);
             return view();
         }
@@ -91,13 +113,24 @@ class Order extends Base
     // 持仓详情
     public function positionDetail($id = null)
     {
-        $order = $this->_logic->orderIncRecordById($id, $state = 3);
+        $order = $this->_logic->orderIncUserById($id, $state = 3);
         if($order){
             $hedging = [1 => '是', 0 => '否'];
             $quotation = (new StockLogic())->stockQuotationBySina($order['code']);
             $order['is_hedging_text'] = $hedging[$order['is_hedging']];
             $order['last_px'] = isset($quotation[$order['code']]['last_px']) ? number_format($quotation[$order['code']]['last_px'], 2) : '-';
             $order['pl'] = isset($quotation[$order['code']]['last_px']) ? number_format(($order['last_px'] - $order['price']) * $order['hand'], 2) : "-";
+            $this->assign("order", $order);
+            return view();
+        }
+        return "非法操作！";
+    }
+
+    // 持仓返点
+    public function positionRebate($id = null)
+    {
+        $order = $this->_logic->orderIncRecordById($id, $state = 3);
+        if($order){
             $this->assign("order", $order);
             return view();
         }

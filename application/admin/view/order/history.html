@@ -55,7 +55,7 @@
 			<th>盈亏</th>
 			<th>买入时间</th>
 			<th>卖出时间</th>
-			<th>操作</th>
+			<th width="80">操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -85,7 +85,8 @@
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
 			<td>{if condition="$item.update_at gt 0"}{$item.update_at|date="Y-m-d H:i", ###}{else /}-{/if}</td>
 			<td>
-				<a title="策略详情" href="javascript:;" onclick="show_detail('策略详情', '{:url("admin/Order/historyDetail", ['id' => $item.order_id])}')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-yanjing"></i></a>
+				<input class="btn btn-secondary size-MINI radius" type="button" title="策略详情" onclick="show_detail('策略详情', '{:url("admin/Order/historyDetail", ['id' => $item.order_id])}')" value="详情">
+				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_detail('返点记录', '{:url("admin/Order/historyRebate", ['id' => $item.order_id])}')" value="返点">
 			</td>
 		</tr>
 		{/volist}

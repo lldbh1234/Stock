@@ -106,11 +106,11 @@
 			<td>{$item.force_type_text}</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
 			<td>
-                <input class="btn btn-danger size-MINI radius" type="button" title="平仓" onclick="force_sell('{$item.order_id}', '{$item.sell_price}', this)" value="平">
+                <input class="btn btn-danger size-MINI radius" type="button" title="平仓" onclick="force_sell('{$item.order_id}', '{$item.sell_price}', this)" value="平仓">
                 {in name="item.force_type" value="1,2"}
-                <input class="btn btn-secondary size-MINI radius" type="button" title="送股" onclick="mode_show('订单转送股', '{:url("admin/Order/give", ['id' => $item.order_id])}', '', '350')" value="送">
-                <input class="btn btn-warning size-MINI radius" type="button" title="穿仓" onclick="order_ware('{$item.order_id}', '{$item.sell_price}')" value="穿">
-                <input class="btn btn-primary size-MINI radius" type="button" title="转为持仓" onclick="to_position('{$item.order_id}', this)" value="持">
+                <input class="btn btn-secondary size-MINI radius" type="button" title="送股" onclick="mode_show('订单转送股', '{:url("admin/Order/give", ['id' => $item.order_id])}', '', '350')" value="送股">
+                <input class="btn btn-warning size-MINI radius" type="button" title="穿仓" onclick="order_ware('{$item.order_id}', '{$item.sell_price}')" value="穿仓">
+                <input class="btn btn-primary size-MINI radius" type="button" title="转为持仓" onclick="to_position('{$item.order_id}', this)" value="持仓">
                 {/in}
             </td>
 		</tr>

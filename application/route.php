@@ -300,10 +300,13 @@ Route::group([], function() {
         Route::group("order", function(){
             Route::any('lists', 'admin/Order/index'); //委托订单
             Route::any('entrust-detail', 'admin/Order/entrustDetail'); // 委托订单详情
+            Route::any('entrust-rebate', 'admin/Order/entrustRebate'); // 委托订单返点记录
             Route::any('history', 'admin/Order/history'); //已平仓订单
             Route::any('history-detail', 'admin/Order/historyDetail'); // 平仓订单详情
+            Route::any('history-rebate', 'admin/Order/historyRebate'); // 平仓订单返点记录
             Route::any('position', 'admin/Order/position'); //持仓订单
             Route::any('position-detail', 'admin/Order/positionDetail'); // 持仓订单详情
+            Route::any('position-rebate', 'admin/Order/positionRebate'); // 持仓订单返点记录
             //Route::post('buy-ok', 'admin/Order/buyOk'); //建仓成功
             //Route::post('buy-fail', 'admin/Order/buyFail'); //建仓失败
             Route::post('sell-ok', 'admin/Order/sellOk'); //平仓成功

@@ -383,11 +383,12 @@ class OrderLogic
     }
 
     // 订单详情（包括关联用户数据）
-    public function orderIncUserById($orderId)
+    public function orderIncUserById($orderId, $state = null)
     {
         $myUserIds = Admin::userIds();
         $where = ["order_id" => $orderId];
         $myUserIds ? $where["user_id"] = ["IN", $myUserIds] : null;
+        is_null($state) ? null : $where["state"] = is_array($state) ? ["IN", $state] : $state;
         $order = Order::with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator"])
                     ->where($where)
                     ->find();
@@ -411,11 +412,9 @@ class OrderLogic
         $myUserIds = Admin::userIds();
         $where = ["order_id" => $orderId];
         $myUserIds ? $where["user_id"] = ["IN", $myUserIds] : null;
-        is_null($state) ? null : $where["state"] = $state;
+        is_null($state) ? null : $where["state"] = is_array($state) ? ["IN", $state] : $state;
         $_order = Order::with(
                         [
-                            "hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]],
-                            "hasOneOperator",
                             "hasManyNiurenRecord" => ["belongsToNiuren"],
                             "hasManyManagerRecord" => ["belongsToManager"],
                             "hasManyProxyRecord" => ["belongsToAdmin"],
