@@ -229,7 +229,8 @@ class Order extends Base
                 return $this->fail($validate->getError());
             }else{
                 $orderId = input("post.id/d");
-                $res = $this->_logic->forceSell($orderId);
+                $price = input("post.sell_price/f");
+                $res = $this->_logic->forceSell($orderId, $price);
                 if($res){
                     return $this->ok("平仓成功！");
                 }else{
@@ -264,7 +265,7 @@ class Order extends Base
                     "sell_deposit" => $order['sell_price'] * input("post.hand/d"),
                     "profit"    => ($order['sell_price'] - $price) * input("post.hand/d"),
                 ];
-                $res = $this->_logic->updateOrder($data);
+                $res = $this->_logic->orderGive($data);
                 if($res){
                     return $this->ok("操作成功！");
                 }else{
@@ -279,6 +280,49 @@ class Order extends Base
             }else{
                 return "非法操作！";
             }
+        }
+    }
+
+    // 穿仓
+    public function ware()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('ware')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $price = input("post.sell/f");
+                $res = $this->_logic->orderWare($orderId, $price);
+                if($res){
+                    return $this->ok("操作成功！");
+                }else{
+                    return $this->fail("操作失败，请稍后重试！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+    }
+
+    // 订单转持仓
+    public function toPosition()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Order');
+            if(!$validate->scene('toPosition')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $orderId = input("post.id/d");
+                $res = $this->_logic->orderToPosition($orderId);
+                if($res){
+                    return $this->ok("操作成功！");
+                }else{
+                    return $this->fail("操作失败，请稍后重试！");
+                }
+            }
+        }else{
+            return $this->fail("系统提示：非法操作！");
         }
     }
 }

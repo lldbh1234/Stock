@@ -15,6 +15,8 @@ class Order extends Validate
         'hand'  => 'require|number|gt:0|checkHand',
         'profit' => 'require|float|gt:0|checkProfit',
         'loss'  => 'require|float|gt:0|checkLoss',
+        'sell'  => "require|float|gt:0",
+        'sell_price' => "require|float|gt:0"
     ];
 
     protected $message = [
@@ -22,6 +24,11 @@ class Order extends Validate
         'id.gt'         => '系统提示：非法操作！',
         'id.canBuy'     => '系统提示：非法操作！',
         'id.canSell'    => '系统提示：非法操作！',
+        'id.canForce'   => '系统提示：非法操作！',
+        'id.canHedging' => '系统提示：非法操作！',
+        'id.canGive'    => '系统提示：非法操作！',
+        'id.canWare'    => '系统提示：非法操作！',
+        'id.canPosition' => '系统提示：非法操作！',
         'price.require' => '请输入买入价！',
         'price.float'   => '买入价必须为数字！',
         'price.gt'      => '买入价必须大于0！',
@@ -38,6 +45,12 @@ class Order extends Validate
         'loss.float'    => '止损金额必须为数字！',
         'loss.gt'       => '止损金额必须大于0！',
         "loss.checkLoss" => "止损金额输入错误！",
+        'sell.require'  => '请输入开盘跌停价！',
+        'sell.float'    => '开盘跌停价必须为数字！',
+        'sell.gt'       => '开盘跌停价必须大于0！',
+        'sell_price.require'  => '请输入实际平仓价！',
+        'sell_price.float'    => '实际平仓价必须为数字！',
+        'sell_price.gt'       => '实际平仓价必须大于0！',
     ];
 
     protected $scene = [
@@ -46,6 +59,7 @@ class Order extends Validate
         "sell"  => ["id" => "require|gt:0|canSell"],
         "force" => [
             "id" => "require|gt:0|canForce",
+            "sell_price"
         ],
         "hedging" => [
             "id" => "require|gt:0|canHedging",
@@ -57,6 +71,13 @@ class Order extends Validate
             "hand",
             "profit",
             "loss"
+        ],
+        "ware"  => [
+            'id'    => 'require|gt:0|canWare',
+            "sell"
+        ],
+        "toPosition" => [
+            'id'    => 'require|gt:0|canPosition',
         ],
     ];
 
@@ -131,5 +152,20 @@ class Order extends Validate
         }else{
             return "止损金额必须小于买入价！";
         }
+    }
+
+    protected function canWare($value)
+    {
+        $order = (new OrderLogic())->orderById($value, $state = 6);
+        if($order){
+            return $order["force_type"] == 1 || $order["force_type"] == 2;
+        }
+        return false;
+    }
+
+    protected function canPosition($value)
+    {
+        $order = (new OrderLogic())->orderById($value, $state = 6);
+        return $order ? true : false;
     }
 }

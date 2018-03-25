@@ -46,6 +46,11 @@ class Order extends BaseModel
         return $this->hasMany("\\app\\common\\model\\AdminRecord", "order_id", "order_id");
     }
 
+    public function hasManyAction()
+    {
+        return $this->hasMany("\\app\\common\\model\\OrderAction", "order_id", "order_id");
+    }
+
     public function belongsToMode()
     {
         return $this->belongsTo("\\app\\common\\model\\Mode", "mode_id", "mode_id");

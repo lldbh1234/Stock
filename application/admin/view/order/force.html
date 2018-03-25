@@ -106,7 +106,7 @@
 			<td>{$item.force_type_text}</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
 			<td>
-                <input class="btn btn-danger size-MINI radius" type="button" title="平仓" onclick="force_sell('{$item.order_id}', this)" value="平">
+                <input class="btn btn-danger size-MINI radius" type="button" title="平仓" onclick="force_sell('{$item.order_id}', '{$item.sell_price}', this)" value="平">
                 {in name="item.force_type" value="1,2"}
                 <input class="btn btn-secondary size-MINI radius" type="button" title="送股" onclick="mode_show('订单转送股', '{:url("admin/Order/give", ['id' => $item.order_id])}', '', '350')" value="送">
                 <input class="btn btn-warning size-MINI radius" type="button" title="穿仓" onclick="order_ware('{$item.order_id}', '{$item.sell_price}')" value="穿">
@@ -139,7 +139,7 @@
             formType: 0,
         }, function(_number, _prompt){
             layer.close(_prompt);
-            var _oData = {id : _id, price : _number},
+            var _oData = {id : _id, sell : _number},
                 _url = '{:url("admin/Order/ware")}',
                 _loading = parent.layer.load(1),
                 _func = function (_resp) {
@@ -177,24 +177,31 @@
         });
     }
 
-    function force_sell(_id, _obj)
+    function force_sell(_id, _price, _obj)
     {
         parent.layer.confirm('确认此订单强制平仓？', function(index){
             parent.layer.close(index);
-            var _oData = {id : _id},
-                _url = '{:url("admin/Order/forceSell")}',
-                _loading = parent.layer.load(1),
-                _func = function (_resp) {
-                    parent.layer.close(_loading);
-                    if (!_resp.state) {
-                        layer.msg(_resp.info);
-                    } else {
-                        layer.msg('操作成功！', {time: 500}, function(){
-                            $(_obj).parents("tr").remove();
-                        });
-                    }
-                };
-            _ajaxPost(_url, _oData, _func);
+            layer.prompt({
+                title: '平仓价格',
+                value: _price,
+                formType: 0,
+            }, function(_number, _prompt){
+                layer.close(_prompt);
+                var _oData = {id : _id, sell_price : _number},
+                    _url = '{:url("admin/Order/forceSell")}',
+                    _loading = parent.layer.load(1),
+                    _func = function (_resp) {
+                        parent.layer.close(_loading);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('操作成功！', {time: 500}, function(){
+                                $(_obj).parents("tr").remove();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
         });
     }
 </script>

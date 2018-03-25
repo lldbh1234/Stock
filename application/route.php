@@ -312,6 +312,8 @@ Route::group([], function() {
             Route::post('hedging', 'admin/Order/hedging'); // 持仓订单对冲
             Route::any('force', 'admin/Order/force'); // 强制平仓订单
             Route::any('give', 'admin/Order/give'); // 转送股
+            Route::post('ware', 'admin/Order/ware'); // 穿仓价
+            Route::post('to-position', 'admin/Order/toPosition'); // 订单转为持仓
         });
 
         // 记录

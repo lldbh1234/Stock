@@ -543,24 +543,28 @@ class OrderLogic
         }
     }
 
-    // 强制平仓
-    public function forceSell($orderId)
+    // 强制平仓, $sellPrice-平仓价
+    public function forceSell($orderId, $sellPrice)
     {
         Db::startTrans();
         try{
             $order = Order::with("belongsToMode")->find($orderId)->toArray();
             // 订单更改
+            $profit = ($sellPrice - $order['price']) * $order['sell_hand']; //实际盈亏
             $data = [
                 "order_id" => $orderId,
+                "sell_price" => $sellPrice,
+                "sell_deposit" => $sellPrice * $order['sell_hand'],
+                "profit" => $profit,
                 "state" => 2,
                 "update_by" => isLogin()
             ];
             Order::update($data);
             // 分成
-            if($order["profit"] > 0){
+            if($profit > 0){
                 // 盈利
                 $bonus_rate = isset($order['belongs_to_mode']['point']) ? $order['belongs_to_mode']['point'] : 0;
-                $bonus = round($order["profit"] * (1 - $bonus_rate / 100), 2);
+                $bonus = round($profit * (1 - $bonus_rate / 100), 2);
                 // 用户资金
                 $user = User::find($order['user_id']);
                 $user->setInc("account", $order['deposit'] + $bonus);
@@ -586,18 +590,93 @@ class OrderLogic
                 // 亏损
                 // 用户资金
                 $user = User::find($order['user_id']);
-                $user->setInc("account", $order['deposit'] + $order["profit"]);
+                $account = $profit + $order['deposit'] > 0 ? $profit + $order['deposit'] : 0; // 爆仓=>最多扣除保证金
+                $user->setInc("account", $account);
                 // 冻结资金
                 $user->setDec("blocked_account", $order['deposit']);
                 // 资金明细(保证金)
-                $rData = [
-                    "type" => 4,
-                    "amount" => $order['deposit'] + $order["profit"],
-                    "remark" => json_encode(['orderId' => $order["order_id"]]),
-                    "direction" => 1
-                ];
-                $user->hasManyRecord()->save($rData);
+                if($account > 0){
+                    $rData = [
+                        "type" => 4,
+                        "amount" => $account,
+                        "remark" => json_encode(['orderId' => $order["order_id"]]),
+                        "direction" => 1
+                    ];
+                    $user->hasManyRecord()->save($rData);
+                }
             }
+            Db::commit();
+            return true;
+        }catch(\Exception $e){
+            Db::rollback();
+            return false;
+        }
+    }
+
+    // 送股
+    public function orderGive($data)
+    {
+        Db::startTrans();
+        try{
+            Order::update($data);
+            // 操作明细
+            $rData = [
+                "act" => 0, //动作；0-转送股，1-穿仓价调整，2-转为持仓
+                "ext" => json_encode($data), // 返点比例
+            ];
+            Order::find($data['order_id'])->hasManyAction()->save($rData);
+            Db::commit();
+            return true;
+        }catch(\Exception $e){
+            Db::rollback();
+            return false;
+        }
+    }
+
+    // 穿仓
+    public function orderWare($orderId, $price)
+    {
+        Db::startTrans();
+        try{
+            $order = Order::find($orderId);
+            $data = [
+                "order_id" => $orderId,
+                "sell_price" => $price,
+                "sell_deposit" => $order->sell_hand * $price,
+                "profit" => ($price - $order->price) * $order->sell_hand,
+            ];
+            Order::update($data);
+            // 操作明细
+            $rData = [
+                "act" => 1, //动作；0-转送股，1-穿仓价调整，2-转为持仓
+                "ext" => json_encode(['sell_price' => $price]),
+            ];
+            Order::find($orderId)->hasManyAction()->save($rData);
+            Db::commit();
+            return true;
+        }catch(\Exception $e){
+            Db::rollback();
+            return false;
+        }
+    }
+
+    // 转为持仓
+    public function orderToPosition($orderId)
+    {
+        Db::startTrans();
+        try{
+            $data = [
+                "order_id"  => $orderId,
+                "sell_price" => 0,
+                "sell_hand" => 0,
+                "sell_deposit" => 0,
+                "profit"    => 0,
+                "state"     => 3, //状态，1委托建仓，2抛出，3持仓，4委托平仓，5作废，6-强制平仓
+                "force_type" => 0 //强制平仓类型；1-爆仓，2-到达止盈止损，3-非自动递延，4-递延费无法扣除
+            ];
+            Order::update($data);
+            // 操作明细
+            Order::find($orderId)->hasManyAction()->save(["act" => 2]);
             Db::commit();
             return true;
         }catch(\Exception $e){
