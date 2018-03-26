@@ -30,22 +30,20 @@ class Base extends Controller
      */
     public function checkAuth()
     {
-        $module_name = request()->module();
-        $controller_name = request()->controller();
-        $action_name = request()->action();
-        $rule_name = $module_name.'/'.$controller_name.'/'.$action_name;
-
+        $module = request()->module();
+        $controller = request()->controller();
+        $action = request()->action();
+        $rule = "{$module}/{$controller}/{$action}";
+        $userNodeList = self::getUserNodeList();
         if(
-            in_array($controller_name, ['Index', 'index', 'Test'])
-            || in_array($action_name, ['login', 'logout'])
+            in_array($controller, ['Index', 'index', 'Test'])
+            || in_array($action, ['login', 'logout'])
             || BaseModel::ADMINISTRATOR_ID == $this->adminId)
         {
             return true;
         }
         //读取用户权限列表
-        $userNodeList = self::getUserNodeList();
-//        dump($userNodeList);
-        if(!in_array($rule_name, $userNodeList)){
+        if(!in_array($rule, $userNodeList)){
             if(request()->isAjax()){
                 return $this->fail('您没有权限访问');
             }
@@ -59,12 +57,22 @@ class Base extends Controller
      */
     public function getUserNodeList()
     {
-        $accessLogic = new AccessLogic();
-        $menueLogic = new MenuLogic();
-
-        $userRoleId = manager()['role'];
-        $nodeList = $accessLogic->getRoleBy(['role_id' => $userRoleId]);
-        return $menueLogic->getActBy(['id' => $nodeList]);
+        if(session("?ACCESS_LIST")){
+            $nodeActs = session("ACCESS_LIST");
+        }else{
+            $accessLogic = new AccessLogic();
+            $menuLogic = new MenuLogic();
+            if(BaseModel::ADMINISTRATOR_ID == $this->adminId){
+                $nodeActs = $menuLogic->getActBy();
+            }else{
+                $userRoleId = manager()['role'];
+                $nodeList = $accessLogic->getRoleBy(['role_id' => $userRoleId]);
+                $nodeActs = $menuLogic->getActBy(['id' => $nodeList]);
+            }
+            $nodeActs = array_filter($nodeActs);
+            session("ACCESS_LIST", $nodeActs);
+        }
+        return $nodeActs;
     }
 
     /**
