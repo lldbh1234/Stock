@@ -62,10 +62,10 @@
 				{/if}
 			</td>
 			<td class="f-14">
-				<a title="编辑" href="javascript:;" onclick="mode_edit('编辑交易模式','{:url("admin/Mode/modify", ['id' => $item.mode_id])}','','640')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
+				<input class="btn btn-primary size-MINI radius" type="button" title="编辑交易模式" onclick="mode_edit('编辑交易模式','{:url("admin/Mode/modify", ['id' => $item.mode_id])}','','640')" value="编辑">
+				<input class="btn btn-danger size-MINI radius" type="button" title="删除交易模式" onclick="mode_del(this,{$item.mode_id});" value="删除">
 				<!--<a title="保证金配置" href="javascript:;" onclick="mode_deposit('{$item.name}交易模式','{:url("admin/Mode/deposit", ['id' => $item.mode_id])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
 				<a title="杠杆配置" href="javascript:;" onclick="mode_lever('{$item.name}交易模式','{:url("admin/Mode/lever", ['id' => $item.mode_id])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-text-width"></i></a>-->
-				<a title="删除" href="javascript:;" onclick="mode_del(this,{$item.mode_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
 			</td>
 		</tr>
 		{/volist}

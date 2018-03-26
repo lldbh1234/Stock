@@ -30,7 +30,7 @@
 			<th>推荐类型名称</th>
 			<th>排序</th>
 			<th>状态</th>
-			<th width="70">操作</th>
+			<th width="140">操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -48,9 +48,9 @@
 				{/if}
 			</td>
 			<td class="f-14">
-				<a title="编辑" href="javascript:;" onclick="type_edit('编辑推荐类型','{:url("admin/Ai/modifyType", ['id' => $item.type_id])}','','350')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-				<a title="股票列表" href="javascript:;" onclick="type_stocks('股票列表','{:url("admin/Ai/stocks", ['id' => $item.type_id])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-unordered-list"></i></a>
-				<a title="删除" href="javascript:;" onclick="type_del(this, {$item.type_id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+				<input class="btn btn-primary size-MINI radius" type="button" title="编辑推荐类型" onclick="type_edit('编辑推荐类型','{:url("admin/Ai/modifyType", ['id' => $item.type_id])}','','350')" value="编辑">
+				<input class="btn btn-secondary size-MINI radius" type="button" title="股票列表" onclick="type_stocks('股票列表','{:url("admin/Ai/stocks", ['id' => $item.type_id])}')" value="股票列表">
+				<input class="btn btn-danger size-MINI radius" type="button" title="推荐类型删除" onclick="type_del(this, {$item.type_id});" value="删除">
 			</td>
 		</tr>
 		{/volist}

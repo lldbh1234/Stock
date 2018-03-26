@@ -30,7 +30,7 @@
 			<th>币种</th>
 			<th>上/下架</th>
 			<th>状态</th>
-			<th width="70">操作</th>
+			<th width="80">操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -65,8 +65,8 @@
 				{/if}
 			</td>
 			<td class="f-14">
-				<a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-				<a title="删除" href="javascript:;" onclick="admin_role_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+				<input class="btn btn-primary size-MINI radius" type="button" title="角色编辑" onclick="admin_role_edit('角色编辑','admin-role-add.html','1')" value="编辑">
+				<input class="btn btn-danger size-MINI radius" type="button" title="角色删除" onclick="admin_role_del(this,'1')" value="删除">
 			</td>
 		</tr>
 		{/volist}

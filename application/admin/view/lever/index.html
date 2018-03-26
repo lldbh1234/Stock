@@ -31,7 +31,7 @@
 			<th>杠杆倍数</th>
 			<th>排序</th>
 			<th>状态</th>
-			<th width="70">操作</th>
+			<th width="80">操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -50,8 +50,8 @@
 				{/if}
 			</td>
 			<td class="f-14">
-				<a title="编辑" href="javascript:;" onclick="lever_edit('编辑杠杆','{:url("admin/Lever/modify", ['id' => $item.id])}','','350')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-edit"></i></a>
-				<a title="删除" href="javascript:;" onclick="lever_del(this, {$item.id});" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-del3"></i></a>
+				<input class="btn btn-primary size-MINI radius" type="button" title="编辑杠杆" onclick="lever_edit('编辑杠杆','{:url("admin/Lever/modify", ['id' => $item.id])}','','350')" value="编辑">
+				<input class="btn btn-danger size-MINI radius" type="button" title="删除杠杆" onclick="lever_del(this, {$item.id});" value="删除">
 			</td>
 		</tr>
 		{/volist}
