@@ -47,7 +47,7 @@
             <th>审核时间</th>
             <th>审核人</th>
             <th>状态</th>
-            <th width="70">操作</th>
+            <th width="140">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -80,10 +80,10 @@
                 {/if}
             </td>
             <td class="f-14">
-                <a title="查看详情" href="javascript:;" onclick="show_detail('出金详情', '{:url("admin/User/withdrawDetail", ['id' => $item.id])}','','500')" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-yanjing"></i></a>
+                <input class="btn btn-primary size-MINI radius" type="button" title="查看详情" onclick="show_detail('出金详情', '{:url("admin/User/withdrawDetail", ['id' => $item.id])}','','500')" value="查看详情">
                 {if condition='$item.state eq 0'}
-                <a title="通过" href="javascript:;" onclick="admin_success('{$item.id}', '1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-tongguo"></i></a>
-                <a title="拒绝" href="javascript:;" onclick="admin_refuse('{$item.id}', '-1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-shenhe-butongguo2"></i></a>
+                <input class="btn btn-success size-MINI radius" type="button" title="审核通过" onclick="admin_success('{$item.id}', '1')" value="通过">
+                <input class="btn btn-danger size-MINI radius" type="button" title="审核拒绝" onclick="admin_refuse('{$item.id}', '-1')" value="拒绝">
                 {/if}
             </td>
         </tr>

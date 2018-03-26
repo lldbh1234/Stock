@@ -45,7 +45,7 @@
             <th>审核时间</th>
             <th>审核人</th>
             <th>状态</th>
-            <th width="70">操作</th>
+            <th width="80">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -76,7 +76,7 @@
             </td>
             <td class="f-14">
                 {if condition='$item.state eq 0'}
-                <input class="btn btn-primary size-MINI radius" type="button" title="审核通过" onclick="admin_success('{$item.id}', '1', '{$item.user_id}')" value="通过">
+                <input class="btn btn-success size-MINI radius" type="button" title="审核通过" onclick="admin_success('{$item.id}', '1', '{$item.user_id}')" value="通过">
                 <input class="btn btn-danger size-MINI radius" type="button" title="审核拒绝" onclick="admin_refuse('{$item.id}', '2', '{$item.user_id}')" value="拒绝">
                 {/if}
             </td>
