@@ -109,7 +109,23 @@ class User extends Base
 
     public function recharge()
     {
+        /*$arr = [
+            "frms_ware_category" => "2026",
+            "user_info_mercht_userno" => "1",
+            "user_info_bind_phone"  => "17629282058",
+            "user_info_dt_register" => "",
+            "goods_name"    => "",
+            "user_info_full_name" => "",
+            "user_info_id_no" => "",
+            "user_info_identify_state" => "",
+            "user_info_identify_type" => ""
+        ];*/
         if(request()->isPost()){
+            // 生成订单
+            // 请求支付
+            $amount = input("post.amount");
+            $html = (new \app\common\payment\llpay())->getCode($this->user_id, uniqid(), $amount);
+            echo $html;
             exit;
         }
         return view();

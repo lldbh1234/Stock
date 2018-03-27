@@ -34,6 +34,10 @@ Route::group("index", function () {
     Route::any('index', 'index/Index/index');
 });
 
+Route::group("notify", function () {
+    Route::post('llpay','index/Notify/llpay');
+});
+
 //我的
 Route::group("user", function () {
     Route::any('home','index/User/index'); //用户中心
