@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>添加银行卡</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/person.css">
+	<script src="js/jquery-2.2.0.min.js"></script>
+	<style type="text/css">
+		.withdrawal-name {
+	        line-height: 30px;
+	    }
+	    .withdrawal-con .control-style {
+	        line-height: 30px;
+	    }
+	    .boxflex1 .get-btn {
+	        line-height: 30px;
+	    }
+	    .withdrawal-con.yanzheng {
+	        width: 40%;
+	    }
+	    .boxflex1 .get-btn {
+	        border: 1px solid #0066FF;
+	        padding: 0 .2rem;
+	    }
+
+	</style>
+</head>
+<!--个人中心-充值-->
+<body class="withdrew_body">    
+	<div class="withdrew_body">
+		<header class="header_con">
+		    <a href="javascript:history.go(-1)" class="lf">
+		        <img src="img/call_back.png">
+		    </a>
+		    <p>添加银行卡</p>
+		</header>
+		<div class="personal">
+		    <form id="with-drawForm" method="post">
+				<input type="hidden" name="_csrf" value="dWRoZndpTnoSKzg.RCwkJQ0OWw8WLQs8TRcNAEEvFhYeND8SEB8sHA==">    
+				<div class="boxflex1 mt10 clearfloat">
+			        <div class="withdrawal-name">开户人姓名</div>
+			        <div class="withdrawal-con">
+			            <div class="form-group field-userwithdraw-amount required">
+							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入开户人姓名">
+							<div class="help-block"></div>
+						</div>        
+					</div>
+			    </div>
+			    <div class="boxflex1 clearfloat mt10">
+			        <div class="withdrawal-name">开户银行</div>
+			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+			            <div class="form-group field-useraccount-bank_name required">
+							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
+							<option value="102">中国工商银行</option>
+							<option value="103">中国农业银行</option>
+							<option value="104">中国银行</option>
+							<option value="105">中国建设银行</option>
+							<option value="301">交通银行</option>
+							<option value="303">中国光大银行</option>
+							<option value="305">中国民生银行</option>
+							<option value="308">招商银行</option>
+							<option value="310">上海浦东发展银行</option>
+							<option value="403">中国邮政储蓄银行</option>
+							</select>
+							<div class="help-block"></div>
+						</div>       
+					</div>
+		    	</div>
+		    	<div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">所在省份</div>
+			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+			            <div class="form-group field-useraccount-bank_name required">
+							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
+							<option value="102">中国工商银行</option>
+							<option value="103">中国农业银行</option>
+							<option value="104">中国银行</option>
+							<option value="105">中国建设银行</option>
+							<option value="301">交通银行</option>
+							<option value="303">中国光大银行</option>
+							<option value="305">中国民生银行</option>
+							<option value="308">招商银行</option>
+							<option value="310">上海浦东发展银行</option>
+							<option value="403">中国邮政储蓄银行</option>
+							</select>
+							<div class="help-block"></div>
+						</div>       
+					</div>
+		    	</div>
+		    	<div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">所在城市</div>
+			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+			            <div class="form-group field-useraccount-bank_name required">
+							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
+							<option value="102">中国工商银行</option>
+							<option value="103">中国农业银行</option>
+							<option value="104">中国银行</option>
+							<option value="105">中国建设银行</option>
+							<option value="301">交通银行</option>
+							<option value="303">中国光大银行</option>
+							<option value="305">中国民生银行</option>
+							<option value="308">招商银行</option>
+							<option value="310">上海浦东发展银行</option>
+							<option value="403">中国邮政储蓄银行</option>
+							</select>
+							<div class="help-block"></div>
+						</div>       
+					</div>
+		    	</div>
+		    	<div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">支行名称</div>
+			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+			            <div class="form-group field-useraccount-bank_name required">
+							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
+							<option value="102">中国工商银行</option>
+							<option value="103">中国农业银行</option>
+							<option value="104">中国银行</option>
+							<option value="105">中国建设银行</option>
+							<option value="301">交通银行</option>
+							<option value="303">中国光大银行</option>
+							<option value="305">中国民生银行</option>
+							<option value="308">招商银行</option>
+							<option value="310">上海浦东发展银行</option>
+							<option value="403">中国邮政储蓄银行</option>
+							</select>
+							<div class="help-block"></div>
+						</div>       
+					</div>
+		    	</div>
+		    	<div class="boxflex1 mt10 clearfloat">
+			        <div class="withdrawal-name">银行卡号</div>
+			        <div class="withdrawal-con">
+			            <div class="form-group field-userwithdraw-amount required">
+							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入银行卡号">
+							<div class="help-block"></div>
+						</div>        
+					</div>
+			    </div>
+			    <div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">身份证号</div>
+			        <div class="withdrawal-con">
+			            <div class="form-group field-userwithdraw-amount required">
+							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入身份证号">
+							<div class="help-block"></div>
+						</div>        
+					</div>
+			    </div>
+			    <div class="boxflex1 none clearfloat">
+			        <div class="withdrawal-name">银行预留手机号</div>
+			        <div class="withdrawal-con">
+			            <div class="form-group field-userwithdraw-amount required">
+							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入银行预留手机号">
+							<div class="help-block"></div>
+						</div>        
+					</div>
+			    </div>
+		   		
+			    <div class="withdrawal-tips">
+			        <ul>添加规则：
+			            <li>1、规则1</li>
+			            <li>2、规则2</li>
+			            <li>3、规则3</li>
+			            <li></li>
+			        </ul>
+			    </div>
+
+			    <div class="recharge-btn mt10" id="submitBtn">提交</div>
+			    <div class="form-group field-useraccount-bank_mobile required">
+					<input type="hidden" id="useraccount-bank_mobile" class="form-control" name="UserAccount[bank_mobile]" value="15851408673">
+					<div class="help-block"></div>
+				</div>    
+			</form>
+		</div>
+	</div>
+</body>
+</html>
