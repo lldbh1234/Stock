@@ -53,6 +53,8 @@ Route::group("user", function () {
     Route::any('notice-detail','index/User/noticeDetail');
     Route::post('avatar','index/User/avatar'); //用户中心
     Route::post('nick-edit','index/User/nickEdit');
+    Route::any('cards', 'index/User/cards'); //银行卡列表
+    Route::any('modify-card', 'index/User/modifyCard'); // 修改银行卡
 });
 
 // 订单
