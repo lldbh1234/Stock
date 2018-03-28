@@ -1,5 +1,5 @@
 <?php
-namespace llpay\wap;
+namespace llpay\wap\fast;
 
 /* *
  * 类名：LLpaySubmit

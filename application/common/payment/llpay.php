@@ -1,8 +1,8 @@
 <?php
 namespace app\common\payment;
 
-use llpay\wap\LLpaySubmit;
-use llpay\wap\LLpayNotify;
+use llpay\wap\fast\LLpaySubmit;
+use llpay\wap\fast\LLpayNotify;
 
 class llpay
 {
@@ -11,10 +11,9 @@ class llpay
     protected $returnUrl;
     public function __construct()
     {
-        $this->config = config("llpay_wap_config");
+        $this->config = config("llpay_fast_wap");
         $this->notifyUrl = url("index/Notify/llpay", "", true, true);
         $this->returnUrl = url("index/Index/index", "", true, true);
-
     }
 
     public function getCode($userId, $tradeNo, $amount)

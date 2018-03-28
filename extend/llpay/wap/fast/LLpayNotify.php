@@ -1,5 +1,5 @@
 <?php
-namespace llpay\wap;
+namespace llpay\wap\fast;
 /* *
  * 类名：LLpayNotify
  * 功能：连连支付通知处理类
