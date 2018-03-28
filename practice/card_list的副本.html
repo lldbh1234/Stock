@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+	<title>银行卡列表</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+	<link href="css/mui.min.css" rel="stylesheet">
+	<link href="css/person.css" rel="stylesheet">
+	<script src="js/jquery-2.2.0.min.js"></script>
+	<script src="js/mui.min.js"></script>
+	<style type="text/css">
+		body{
+			background: #f5f5f5!important;
+		}
+		.search_con div {
+		    width: 100%;
+		    height: 36px;
+		    line-height: 36px;
+		    padding-left: 18px;
+		    border: none;
+		    border-radius: 3px;
+		    font-size: 14px;
+		    color: #333;
+		    padding-right: 30px;
+		    background: #fff;
+		}
+		.delete_panel {
+		    bottom: 0px;
+		}
+		.add_card_link{
+			font-size: 14px;
+			color: #666;
+		}
+		.gray{
+			color: #666;
+			text-align: center;
+		}
+		.zi_name{
+			text-align: left;
+		}
+	</style>
+</head>
+	<body class="  mui-ios mui-ios-10 mui-ios-10-3">  
+		<header class="header_con">
+		    <a href="javascript:history.go(-1)" class="lf">
+		        <img src="img/call_back.png">
+		    </a>
+		    <p>银行卡列表</p>
+		</header>
+		<div class="search_con clear_fl">
+			<div>
+				<a class="lf add_card_link" href="add_card.html">添加银行卡</a>
+			</div>
+			<span class="edit_btn"></span>
+		</div>
+		<ul class="zixuan_list">
+			<li class="list_header flex_nowrap">
+				<div class="select_btn" style="width:15%">
+				</div>
+				<span style="width:50%;padding-left: 18px;">卡号</span>
+				<span style="width:25%;text-align: center;">银行名称</span>
+				<span style="width:25%;text-align: center;">持卡人</span>
+			</li>
+			<li class="list_header flex_nowrap">
+				<div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
+					<label></label>
+					<input name="checkbox" value="Item 1" type="checkbox">
+				</div>
+				<a style="width:100%" class="flex_nowrap" href="add_card.html">
+					<span class="zi_name gray" style="width:50%;padding-left: 18px;">6100000646450321202</span>
+					<span style="width:25%" class="gray">中国人民银行</span>
+					<span style="width:25%" class="gray">小明</span>
+				</a>
+			</li>
+			<li class="list_header flex_nowrap">
+				<div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
+					<label></label>
+					<input name="checkbox" value="Item 1" type="checkbox">
+				</div>
+				<a style="width:100%" class="flex_nowrap" href="add_card.html">
+					<span class="zi_name gray" style="width:50%;padding-left: 18px;">6100000646450321202</span>
+					<span style="width:25%" class="gray">中国人民银行</span>
+					<span style="width:25%" class="gray">小明</span>
+				</a>
+			</li>
+			<li class="list_header flex_nowrap">
+				<div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
+					<label></label>
+					<input name="checkbox" value="Item 1" type="checkbox">
+				</div>
+				<a style="width:100%" class="flex_nowrap" href="add_card.html">
+					<span class="zi_name gray" style="width:50%;padding-left: 18px;">6100000646450321202</span>
+					<span style="width:25%" class="gray">中国人民银行</span>
+					<span style="width:25%" class="gray">小明</span>
+				</a>
+			</li>
+			<li class="list_header flex_nowrap">
+				<div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
+					<label></label>
+					<input name="checkbox" value="Item 1" type="checkbox">
+				</div>
+				<a style="width:100%" class="flex_nowrap" href="add_card.html">
+					<span class="zi_name gray" style="width:50%;padding-left: 18px;">6100000646450321202</span>
+					<span style="width:25%" class="gray">中国人民银行</span>
+					<span style="width:25%" class="gray">小明</span>
+				</a>
+			</li>
+		</ul>
+
+		<div class="delete_panel clear_fl">
+			
+			<button class="rt zixun_delete_btn">删除</button>
+		</div>
+
+<script type="text/javascript">
+	$(".edit_btn").on("tap" , function(){
+		$(".select_btn").toggle();
+	});
+</script>
+</body></html>
