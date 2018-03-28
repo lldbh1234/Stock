@@ -124,7 +124,7 @@ class User extends Base
             // 生成订单
             // 请求支付
             $amount = input("post.amount");
-            $html = (new \app\common\payment\llpay())->getCode($this->user_id, uniqid(), $amount);
+            $html = (new \app\common\payment\authLlpay())->getCode($this->user_id, uniqid(), $amount);
             echo $html;
             exit;
         }
