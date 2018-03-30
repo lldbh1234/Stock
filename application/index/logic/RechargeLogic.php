@@ -49,6 +49,7 @@ class RechargeLogic
             Db::commit();
             return true;
         } catch (\Exception $e){
+            dump($e->getMessage());
             Db::rollback();
             return false;
         }
