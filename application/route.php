@@ -37,6 +37,7 @@ Route::group("index", function () {
 
 Route::group("notify", function () {
     Route::post('auth-llpay','index/Notify/authLLpay');
+    Route::any('test','index/Notify/test');
 });
 
 //我的
