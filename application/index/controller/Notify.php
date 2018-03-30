@@ -13,6 +13,7 @@ class Notify extends Controller
         $payment = new authLlpay();
         $llpayNotify = $payment->verifyNotify();
         @file_put_contents("./pay.log", json_encode($llpayNotify->notifyResp)."\r\n", FILE_APPEND);
+        exit;
         if ($llpayNotify->result) { //验证成功
             //获取连连支付的通知返回参数，可参考技术文档中服务器异步通知参数列表
             $no_order = $llpayNotify->notifyResp['no_order'];//商户订单号
