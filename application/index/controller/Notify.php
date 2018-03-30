@@ -9,6 +9,9 @@ class Notify extends Controller
 {
     public function authLLpay()
     {
+        $str = file_get_contents("php://input");
+        @file_put_contents("./pay.log", "$str\r\n", FILE_APPEND);
+        exit;
         //计算得出通知验证结果
         $payment = new authLlpay();
         $llpayNotify = $payment->verifyNotify();
