@@ -38,7 +38,19 @@
 		</a>
 		<p>我的银行卡</p>
 	</header>
-
+    {empty name="user.has_one_card"}
+    <div class="mui-content">
+        <p class="ml-tip  ml_title">银行账户</p>
+        <ul class="cardList mui-table-view">
+            <li class="mui-table-view-cell mui-media" style="text-align: center;">
+                <a href="{:url('index/User/modifyCard')}">
+                    +添加银行卡
+                </a>
+            </li>
+        </ul>
+        <p class="ml-tip">每人最多绑定一张银行卡,点击卡片可修改原银行卡信息</p>
+    </div>
+    {else /}
 	<div class="mui-content">
 	   <p class="ml-tip  ml_title">银行账户</p>
 		<ul class="cardList mui-table-view">
@@ -46,16 +58,17 @@
 				<a href="{:url('index/User/modifyCard')}">
 					<img class="mui-media-object mui-pull-left" src="__RESOURCE__/img/yl.png">
 					<div class="mui-media-body">
-						<span class="bankName">城站支行</span>
-						<p class="bankNum mui-ellipsis">999999999798989</p>
+						<span class="bankName">{$user.has_one_card.bank_name} {$user.has_one_card.bank_address}</span>
+						<p class="bankNum mui-ellipsis">{$user.has_one_card.bank_card}</p>
 					</div>
 				</a>
 			</li>
 		</ul>
 		<p class="ml-tip">每人最多绑定一张银行卡,点击卡片可修改原银行卡信息</p>
 	</div>
+    {/empty}
 
-	<div class="mui-content">
+	<!--<div class="mui-content">
 	   <p class="ml-tip ml_title">支付宝账号</p>
 		<ul class="cardList mui-table-view">
 			<li class="mui-table-view-cell mui-media">
@@ -69,7 +82,7 @@
 			</li>
 		</ul>
 		<p class="ml-tip">每人最多绑定一个支付宝账号</p>
-	</div>
+	</div>-->
 {/block}
 
 {block name="nav"}

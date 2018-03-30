@@ -2,6 +2,7 @@
 namespace app\common\payment;
 
 use llpay\wap\api\LLpaySubmit as apiLLpaySubmit;
+use llpay\wap\auth\LLpayNotify;
 use llpay\wap\auth\LLpaySubmit as authLLpaySubmit;
 
 class authLlpay
@@ -12,11 +13,11 @@ class authLlpay
     public function __construct()
     {
         $this->config = config("llpay_wap_config");
-        $this->notifyUrl = url("index/Notify/llpay", "", true, true);
+        $this->notifyUrl = url("index/Notify/authLLpay", "", true, true);
         $this->returnUrl = url("index/Index/index", "", true, true);
     }
 
-    public function getCode($userId, $tradeNo, $amount)
+    public function getCode($userId, $tradeNo, $amount, $card, $risk)
     {
         $parameter = [
             "oid_partner" => trim($this->config['oid_partner']),
@@ -33,23 +34,30 @@ class authLlpay
             "money_order" => $amount,
             "notify_url" => $this->notifyUrl,
             "url_return" => $this->returnUrl,
-            "card_no" => "6217004220033901731",
-            "acct_name" => "梁健",
-            "id_no" => "142222199008101512",
+            "card_no" => $card['bank_card'],
+            "acct_name" => $card['bank_user'],
+            "id_no" => $card['id_card'],
             "no_agree" => "",
-            "risk_item" => '{\"frms_ware_category\":\"2026\",\"user_info_mercht_userno\":\"1\",\"user_info_dt_register\":\"20180226113000\",\"user_info_full_name\":\"梁健\",\"user_info_id_no\":\"142222199008101512\",\"user_info_identify_type\":\"1\",\"user_info_identify_state\":\"1\"}'
+            "risk_item" => addslashes(json_encode($risk, JSON_UNESCAPED_UNICODE))
         ];
         $llpaySubmit = new authLLpaySubmit($this->config);
         return $llpaySubmit->buildRequestForm($parameter, "post", "确认");
     }
 
-    public function bankBindList()
+    public function verifyNotify()
+    {
+        $llpayNotify = new LLpayNotify($this->config);
+        $llpayNotify->verifyNotify();
+        return $llpayNotify;
+    }
+
+    public function bankBindList($userId)
     {
         //订单查询接口地址
         $llpay_gateway_new = 'https://queryapi.lianlianpay.com/bankcardbindlist.htm';
         $parameter = [
             "oid_partner" => trim($this->config['oid_partner']),
-            "user_id" => "22222222",
+            "user_id" => $userId,
             "pat_type" => "D",
             "offset" => "0",
             "sign_type" => trim($this->config['sign_type']),
@@ -57,6 +65,37 @@ class authLlpay
 
         $llpaySubmit = new apiLLpaySubmit($this->config);
         $html_text = $llpaySubmit->buildRequestJSON($parameter, $llpay_gateway_new);
-        echo $html_text;
+        $response = json_decode($html_text, true);
+        if($response){
+            if(isset($response['ret_code']) && $response['ret_code'] == '0000'){
+                return $response['agreement_list'];
+            }else{
+                return [];
+            }
+        }
+        return [];
+    }
+
+    public function unbindBank($userId, $noAgree)
+    {
+        $llpay_gateway_new = 'https://traderapi.lianlianpay.com/bankcardunbind.htm';
+        $parameter = [
+            "oid_partner" => trim($this->config['oid_partner']),
+            "user_id" => $userId,
+            "pat_type" => "D",
+            "no_agree" => $noAgree,
+            "sign_type" => trim($this->config['sign_type']),
+        ];
+        $llpaySubmit = new apiLLpaySubmit($this->config);
+        $html_text = $llpaySubmit->buildRequestJSON($parameter, $llpay_gateway_new);
+        $response = json_decode($html_text, true);
+        if($response){
+            if(isset($response['ret_code']) && $response['ret_code'] == '0000'){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
     }
 }

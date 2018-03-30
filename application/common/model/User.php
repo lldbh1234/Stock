@@ -97,4 +97,10 @@ class User extends BaseModel
     {
         return $this->hasMany("\\app\\common\\model\\UserNiurenRecord", "user_id", "user_id");
     }
+
+    // 银行卡
+    public function hasOneCard()
+    {
+        return $this->hasOne("\\app\\common\\model\\UserCard", "user_id", "user_id");
+    }
 }

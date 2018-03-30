@@ -32,10 +32,11 @@ Route::any('logout','index/Home/logout');
 Route::group("index", function () {
     Route::any('/$','index/Index/index');
     Route::any('index', 'index/Index/index');
+    Route::post('get-region', 'index/Index/getRegion');
 });
 
 Route::group("notify", function () {
-    Route::post('llpay','index/Notify/llpay');
+    Route::post('auth-llpay','index/Notify/authLLpay');
 });
 
 //我的

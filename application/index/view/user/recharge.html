@@ -82,6 +82,7 @@
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script>
     $(function() {
         var options = [68, 160, 340, 860, 1500, 2300, 3200, 4400];
@@ -132,6 +133,15 @@
                 alert('金额输入不合法!');
                 return false;
             }
+            var _bind = "{$bind|default=0}";
+            if(_bind == "0"){
+                var _jump = "{$redirect}";
+                $alert("请先绑定银行卡！");
+                setTimeout(function(){
+					window.location.href = _jump;
+                }, 1000);
+                return false;
+			}
             $("#payform").submit();
         });
 

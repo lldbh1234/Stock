@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\index\logic\OrderLogic;
+use app\index\logic\RegionLogic;
 use app\index\logic\StockLogic;
 use app\index\logic\UserFollowLogic;
 use app\index\logic\UserLogic;
@@ -73,5 +74,19 @@ class Index extends Base
         $this->assign('userNotice', $userNotice);
         $this->assign("stocks", $stocks);
         return view();
+    }
+
+    public function getRegion()
+    {
+        if(request()->isPost()){
+            $id = input("post.id", null);
+            if(!is_null($id)){
+                $citys = (new RegionLogic())->regionByParentId($id);
+                return $this->ok($citys);
+            }else {
+                return $this->fail("非法操作");
+            }
+        }
+        return $this->fail("非法操作");
     }
 }

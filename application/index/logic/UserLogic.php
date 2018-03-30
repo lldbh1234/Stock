@@ -1,6 +1,7 @@
 <?php
 namespace app\index\logic;
 
+use app\common\payment\authLlpay;
 use app\index\model\UserManagerRecord;
 use app\index\model\UserNiuren;
 use app\index\model\Order;
@@ -140,6 +141,41 @@ class UserLogic
         }
     }
 
+    // 绑定银行卡
+    public function saveUserCard($userId, $data)
+    {
+        Db::startTrans();
+        try{
+            $user = User::find($userId);
+            if($user->hasOneCard){
+                $user->hasOneCard->save($data);
+            }else{
+                $user->hasOneCard()->save($data);
+            }
+            $llpayBanks = (new authLlpay())->bankBindList($userId);
+            if($llpayBanks){
+                $newCardNo = substr($data['bank_card'], -4);
+                $cardNos = array_column($llpayBanks, "card_no");
+                if(!in_array($newCardNo, $cardNos)){
+                    // 新卡
+                    foreach ($llpayBanks as $item){
+                        $noAgree = $item['no_agree'];
+                        $temp = (new authLlpay())->unbindBank($userId, $noAgree);
+                        if(!$temp){
+                            Db::rollback();
+                            return false;
+                        }
+                    }
+                }
+            }
+            Db::commit();
+            return true;
+        } catch (\Exception $e){
+            Db::rollback();
+            return false;
+        }
+    }
+
     public function userIncAdmin($userId)
     {
         $user = User::with("hasOneAdmin")->find($userId);
@@ -155,6 +191,12 @@ class UserLogic
     public function userIncFans($userId)
     {
         $user = User::with("hasManyFans,hasManyFans.belongsToFans")->find($userId);
+        return $user ? $user->toArray() : [];
+    }
+
+    public function userIncCard($userId)
+    {
+        $user = User::with(["hasOneCard" => ["hasOneProvince", "hasOneCity"]])->find($userId);
         return $user ? $user->toArray() : [];
     }
 

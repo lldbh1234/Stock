@@ -17,4 +17,10 @@ class BankLogic
         $bank = Bank::where(["number" => $number])->find();
         return $bank ? $bank->toArray() : [];
     }
+
+    public function bankByName($name)
+    {
+        $bank = Bank::where(["name" => $name])->find();
+        return $bank ? $bank->toArray() : [];
+    }
 }

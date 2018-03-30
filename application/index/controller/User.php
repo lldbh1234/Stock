@@ -1,7 +1,10 @@
 <?php
 namespace app\index\controller;
 
+use app\common\payment\authLlpay;
 use app\index\logic\OrderLogic;
+use app\index\logic\RechargeLogic;
+use app\index\logic\RegionLogic;
 use app\index\logic\UserNoticeLogic;
 use think\Request;
 use app\index\logic\UserLogic;
@@ -109,38 +112,94 @@ class User extends Base
 
     public function cards()
     {
+        $user = $this->_logic->userIncCard($this->user_id);
+        $this->assign("user", $user);
         return view();
     }
 
     public function modifyCard()
     {
         if(request()->isPost()) {
-
+            $validate = \think\Loader::validate('Card');
+            if(!$validate->scene('modify')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                $res = $this->_logic->saveUserCard($this->user_id, $data);
+                if($res){
+                    $url = url("index/User/cards");
+                    return $this->ok(['url' => $url]);
+                }else{
+                    return $this->fail("绑定银行卡失败，请稍后重试！");
+                }
+            }
         }
+        $user = $this->_logic->userIncCard($this->user_id);
+        $banks = (new BankLogic())->bankLists();
+        $_regionLogic = new RegionLogic();
+        if($user['has_one_card']){
+            $provinces = $_regionLogic->regionByParentId();
+            $citys = $_regionLogic->regionByParentId($user['has_one_card']['bank_province']);
+        }else{
+            $provinces = $_regionLogic->regionByParentId();
+            $citys = $_regionLogic->regionByParentId($provinces[0]['id']);
+        }
+        $callback = input("?get.callback") ? base64_decode(input("get.callback")) : "";
+        $this->assign("user", $user);
+        $this->assign("banks", $banks);
+        $this->assign("provinces", $provinces);
+        $this->assign("citys", $citys);
+        $this->assign("callback", $callback);
         return view();
     }
 
     public function recharge()
     {
-        /*$arr = [
-            "frms_ware_category" => "2026",
-            "user_info_mercht_userno" => "1",
-            "user_info_bind_phone"  => "17629282058",
-            "user_info_dt_register" => "",
-            "goods_name"    => "",
-            "user_info_full_name" => "",
-            "user_info_id_no" => "",
-            "user_info_identify_state" => "",
-            "user_info_identify_type" => ""
-        ];*/
         if(request()->isPost()){
-            // 生成订单
-            // 请求支付
-            $amount = input("post.amount");
-            $html = (new \app\common\payment\authLlpay())->getCode($this->user_id, uniqid(), 0.1);
-            echo $html;
-            exit;
+            $validate = \think\Loader::validate('Recharge');
+            if(!$validate->scene('do')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $amount = input("post.amount");
+                $type = 3;
+                // 生成订单
+                $orderSn = (new RechargeLogic())->createRechargeOrder($this->user_id, $amount, $type);
+                if($orderSn){
+                    if($type == 3){
+                        // 连连支付
+                        $user = $this->_logic->userIncCard($this->user_id);
+                        if($user['has_one_card']){
+                            // 请求支付
+                            $card = $user['has_one_card'];
+                            $risk = [
+                                "frms_ware_category" => "2026",
+                                "user_info_mercht_userno" => $this->user_id,
+                                "user_info_bind_phone"  => $user['mobile'],
+                                "user_info_dt_register" => date("Y-m-d H:i:s", $user['create_at']),
+                                "goods_name"    => "58好策略余额充值",
+                                "user_info_full_name" => $card['bank_user'],
+                                "user_info_id_no" => $card['id_card'],
+                                "user_info_identify_state" => "1",
+                                "user_info_identify_type" => "1"
+                            ];
+                            $html = (new authLlpay())->getCode($this->user_id, $orderSn, 0.1, $card, $risk);
+                            echo $html;
+                            exit;
+                        }else{
+                            return $this->fail("请先绑定银行卡！");
+                        }
+                    }
+                }else{
+                    return $this->fail("充值订单创建失败！");
+                }
+            }
         }
+        $user = $this->_logic->userIncCard($this->user_id);
+        $bind = $user['has_one_card'] ? 1 : 0;
+        $callback = url("index/User/recharge");
+        $redirect = url("index/User/modifyCard", ["callback" => base64_encode($callback)]);
+        $this->assign("bind", $bind);
+        $this->assign("redirect", $redirect);
         return view();
     }
 

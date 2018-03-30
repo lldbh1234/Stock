@@ -37,7 +37,7 @@ class LLpayNotify {
 	function verifyNotify() {
 		//生成签名结果
 			$is_notify = true;
-			include_once('llpay_cls_json.php');
+			include_once('lib/llpay_cls_json.php');
 			$json = new \JSON;
 			$str = file_get_contents("php://input");
 			$val = $json->decode($str);
@@ -96,7 +96,7 @@ class LLpayNotify {
 		if (empty ($_POST)) { //判断POST来的数组是否为空
 			return false;
 		} else {
-		
+            include_once('lib/llpay_cls_json.php');
 		$res_data = $_POST["res_data"];
       //  file_put_contents("log.txt", "返回结果:" . $res_data . "\n", FILE_APPEND);
         $json = new \JSON;

@@ -39,31 +39,23 @@
 		</header>
 		<div class="personal">
 		    <form id="with-drawForm" method="post">
-				<input type="hidden" name="_csrf" value="dWRoZndpTnoSKzg.RCwkJQ0OWw8WLQs8TRcNAEEvFhYeND8SEB8sHA==">    
 				<div class="boxflex1 mt10 clearfloat">
-			        <div class="withdrawal-name">开户人姓名</div>
+			        <div class="withdrawal-name">持卡人姓名</div>
 			        <div class="withdrawal-con">
 			            <div class="form-group field-userwithdraw-amount required">
-							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入开户人姓名">
+							<input type="text" class="control-style" name="bank_user" value="{$user.has_one_card.bank_user|default=''}" placeholder="持卡人姓名">
 							<div class="help-block"></div>
 						</div>        
 					</div>
 			    </div>
 			    <div class="boxflex1 clearfloat mt10">
 			        <div class="withdrawal-name">开户银行</div>
-			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+			        <div class="wrapper-dropdown-1" tabindex="1">
 			            <div class="form-group field-useraccount-bank_name required">
-							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
-							<option value="102">中国工商银行</option>
-							<option value="103">中国农业银行</option>
-							<option value="104">中国银行</option>
-							<option value="105">中国建设银行</option>
-							<option value="301">交通银行</option>
-							<option value="303">中国光大银行</option>
-							<option value="305">中国民生银行</option>
-							<option value="308">招商银行</option>
-							<option value="310">上海浦东发展银行</option>
-							<option value="403">中国邮政储蓄银行</option>
+							<select class="form-control" name="bank_name">
+								{volist name="banks" id="item"}
+								<option value="{$item.name}" {eq name="item.name" value="$user.has_one_card.bank_name"}selected{/eq}>{$item.name}</option>
+								{/volist}
 							</select>
 							<div class="help-block"></div>
 						</div>       
@@ -71,19 +63,12 @@
 		    	</div>
 		    	<div class="boxflex1 none clearfloat">
 			        <div class="withdrawal-name">所在省份</div>
-			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+			        <div class="wrapper-dropdown-1" tabindex="1">
 			            <div class="form-group field-useraccount-bank_name required">
-							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
-							<option value="102">中国工商银行</option>
-							<option value="103">中国农业银行</option>
-							<option value="104">中国银行</option>
-							<option value="105">中国建设银行</option>
-							<option value="301">交通银行</option>
-							<option value="303">中国光大银行</option>
-							<option value="305">中国民生银行</option>
-							<option value="308">招商银行</option>
-							<option value="310">上海浦东发展银行</option>
-							<option value="403">中国邮政储蓄银行</option>
+							<select class="form-control" name="bank_province">
+								{volist name="provinces" id="item"}
+								<option value="{$item.id}" {eq name="item.id" value="$user.has_one_card.bank_province"}selected{/eq}>{$item.name}</option>
+								{/volist}
 							</select>
 							<div class="help-block"></div>
 						</div>       
@@ -91,19 +76,12 @@
 		    	</div>
 		    	<div class="boxflex1 none clearfloat">
 			        <div class="withdrawal-name">所在城市</div>
-			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+			        <div class="wrapper-dropdown-1" tabindex="1">
 			            <div class="form-group field-useraccount-bank_name required">
-							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
-							<option value="102">中国工商银行</option>
-							<option value="103">中国农业银行</option>
-							<option value="104">中国银行</option>
-							<option value="105">中国建设银行</option>
-							<option value="301">交通银行</option>
-							<option value="303">中国光大银行</option>
-							<option value="305">中国民生银行</option>
-							<option value="308">招商银行</option>
-							<option value="310">上海浦东发展银行</option>
-							<option value="403">中国邮政储蓄银行</option>
+							<select class="form-control" name="bank_city">
+								{volist name="citys" id="item"}
+								<option value="{$item.id}" {eq name="item.id" value="$user.has_one_card.bank_city"}selected{/eq}>{$item.name}</option>
+								{/volist}
 							</select>
 							<div class="help-block"></div>
 						</div>       
@@ -111,38 +89,27 @@
 		    	</div>
 		    	<div class="boxflex1 none clearfloat">
 			        <div class="withdrawal-name">支行名称</div>
-			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
-			            <div class="form-group field-useraccount-bank_name required">
-							<select id="useraccount-bank_name" class="form-control" name="UserAccount[bank_name]">
-							<option value="102">中国工商银行</option>
-							<option value="103">中国农业银行</option>
-							<option value="104">中国银行</option>
-							<option value="105">中国建设银行</option>
-							<option value="301">交通银行</option>
-							<option value="303">中国光大银行</option>
-							<option value="305">中国民生银行</option>
-							<option value="308">招商银行</option>
-							<option value="310">上海浦东发展银行</option>
-							<option value="403">中国邮政储蓄银行</option>
-							</select>
+					<div class="withdrawal-con">
+						<div class="form-group field-userwithdraw-amount required">
+							<input type="text" class="control-style" name="bank_address" value="{$user.has_one_card.bank_address|default=''}" placeholder="支行名称">
 							<div class="help-block"></div>
-						</div>       
+						</div>
 					</div>
 		    	</div>
 		    	<div class="boxflex1 mt10 clearfloat">
 			        <div class="withdrawal-name">银行卡号</div>
 			        <div class="withdrawal-con">
 			            <div class="form-group field-userwithdraw-amount required">
-							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入银行卡号">
+							<input type="text" class="control-style" name="bank_card" value="{$user.has_one_card.bank_card|default=''}" placeholder="请输入银行卡号">
 							<div class="help-block"></div>
-						</div>        
+						</div>
 					</div>
 			    </div>
 			    <div class="boxflex1 none clearfloat">
 			        <div class="withdrawal-name">身份证号</div>
 			        <div class="withdrawal-con">
 			            <div class="form-group field-userwithdraw-amount required">
-							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入身份证号">
+							<input type="text" class="control-style" name="id_card" value="{$user.has_one_card.id_card|default=''}" placeholder="请输入身份证号">
 							<div class="help-block"></div>
 						</div>        
 					</div>
@@ -151,26 +118,22 @@
 			        <div class="withdrawal-name">银行预留手机号</div>
 			        <div class="withdrawal-con">
 			            <div class="form-group field-userwithdraw-amount required">
-							<input type="text" id="userwithdraw-amount" class="control-style" name="UserWithdraw[amount]" placeholder="请输入银行预留手机号">
+							<input type="text" class="control-style" name="bank_mobile" value="{$user.has_one_card.bank_mobile|default=''}" placeholder="请输入银行预留手机号">
 							<div class="help-block"></div>
 						</div>        
 					</div>
 			    </div>
 		   		
-			    <div class="withdrawal-tips">
+			    <!--<div class="withdrawal-tips">
 			        <ul>添加规则：
 			            <li>1、规则1</li>
 			            <li>2、规则2</li>
 			            <li>3、规则3</li>
 			            <li></li>
 			        </ul>
-			    </div>
+			    </div>-->
 
-			    <div class="recharge-btn mt10" id="submitBtn">提交</div>
-			    <div class="form-group field-useraccount-bank_mobile required">
-					<input type="hidden" id="useraccount-bank_mobile" class="form-control" name="UserAccount[bank_mobile]" value="15851408673">
-					<div class="help-block"></div>
-				</div>    
+			    <div class="recharge-btn" style="margin-top: 50px;" id="submitBtn">提交</div>
 			</form>
 		</div>
 	</div>
@@ -180,4 +143,55 @@
 {/block}
 
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
+<script>
+    $("select[name='bank_province']").on("change", function(){
+        var _id = $(this).val();
+        $.ajax({
+            url: "{:url('index/Index/getRegion')}",
+            type: "POST",
+            data: {id:_id},
+            dataType: "json",
+            success: function(_resp) {
+                console.log(_resp);
+                if(_resp.state){
+                    if(_resp.data){
+                        var _html = "";
+                        for(var _key in _resp.data){
+                            _html += '<option value="' + _resp.data[_key].id + '">'+ _resp.data[_key].name +'</option>';
+                        }
+                        $("select[name='bank_city']").empty().append($(_html));
+					}
+                    return false;
+                }else{
+                    $alert(_resp.info);
+                }
+            }
+        });
+    });
+
+    $("#submitBtn").click(function () {
+        var _url = "{:url('index/User/modifyCard')}",
+            _oData = $("form").serialize();
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ // 登录成功
+                $alert("银行卡绑定成功！");
+                setTimeout(function(){
+                    var _callback = "{$callback|default=''}";
+                    if(_callback == ''){
+                        if(res.data.url){
+                            window.location.href = res.data.url;
+                        }else{
+                            window.location.href = "/";
+                        }
+					}else{
+                        window.location.href = _callback;
+					}
+                }, 1000);
+            }else{
+                $alert(res.info);
+            }
+        });
+    });
+</script>
 {/block}
