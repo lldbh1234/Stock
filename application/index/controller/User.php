@@ -161,11 +161,12 @@ class User extends Base
                 return $this->fail($validate->getError());
             }else{
                 $amount = input("post.amount");
-                $type = 3;
+                $type = input("post.type", 1);
+                $way = $type == 1 ? 2 : 1; //支付通道，2-连连支付
                 // 生成订单
-                $orderSn = (new RechargeLogic())->createRechargeOrder($this->user_id, $amount, $type);
+                $orderSn = (new RechargeLogic())->createRechargeOrder($this->user_id, $amount, $way);
                 if($orderSn){
-                    if($type == 3){
+                    if($way == 2){
                         // 连连支付
                         $user = $this->_logic->userIncCard($this->user_id);
                         if($user['has_one_card']){

@@ -7,28 +7,6 @@ use app\common\payment\authLlpay;
 
 class Notify extends Controller
 {
-    public function test()
-    {
-        $json = '{"oid_partner":"201803270001673008","sign_type":"RSA","dt_order":"20180330222403","no_order":"201803302224031140787","oid_paybill":"2018033004372813","money_order":"0.1","result_pay":"SUCCESS","settle_date":"20180330","info_order":"58\u597d\u7b56\u7565\u4f59\u989d\u5145\u503c","pay_type":"D","bank_code":"01050000","no_agree":"","id_type":"","id_no":"","acct_name":""}';
-        $array = json_decode($json, true);
-        $no_order = $array['no_order'];//商户订单号
-        $oid_paybill = $array['oid_paybill'];//连连支付单号
-        $result_pay = $array['result_pay'];//支付结果，SUCCESS：为支付成功
-        $money_order = $array['money_order'];// 支付金额
-        if($result_pay == "SUCCESS"){
-            //请在这里加上商户的业务逻辑程序代(更新订单状态、入账业务)
-            //——请根据您的业务逻辑来编写程序——
-            //payAfter($llpayNotify->notifyResp);
-            $_rechargeLogic = new RechargeLogic();
-            $order = $_rechargeLogic->orderByTradeNo($no_order, 0);
-            if($order){
-                // 有该笔充值订单
-                $res = $_rechargeLogic->rechargeComplete($no_order, $order['amount'], $order['user_id'], $oid_paybill);
-                dump($res);
-            }
-        }
-    }
-
     public function authLLpay()
     {
         //计算得出通知验证结果
