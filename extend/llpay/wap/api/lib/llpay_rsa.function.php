@@ -44,7 +44,7 @@ function Rsasign($data,$priKey) {
  */
 function Rsaverify($data, $sign)  {
 	//读取连连支付公钥文件
-	$pubKey = file_get_contents('../key/llpay_public_key.pem');
+    $pubKey = file_get_contents(EXTEND_PATH . "llpay/wap/key/llpay_public_key.pem");
 
 	//转换为openssl格式密钥
     $res = openssl_get_publickey($pubKey);
