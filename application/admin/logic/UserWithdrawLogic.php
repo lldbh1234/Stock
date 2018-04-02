@@ -3,6 +3,7 @@ namespace app\admin\logic;
 
 use app\admin\model\User;
 use app\admin\model\UserWithdraw;
+use app\common\payment\paymentLLpay;
 use think\Db;
 
 class UserWithdrawLogic
@@ -43,7 +44,74 @@ class UserWithdrawLogic
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
-    public function withdrawById($param)
+
+    public function withdrawById($id)
+    {
+        $withdraw = UserWithdraw::find($id);
+        return $withdraw ? $withdraw->toArray() : [];
+    }
+
+    public function doWithdraw($id, $state)
+    {
+        Db::startTrans();
+        try{
+            $withdraw = UserWithdraw::find($id);
+            if($state == 1){
+                // 审核通过
+                // 代付接口
+                $remark = json_decode($withdraw->remark, true);
+                $withdrawData = [
+                    "tradeNo" => $withdraw->out_sn,
+                    "amount" => $withdraw->actual,
+                    "name" => $remark["name"],
+                    "card" => $remark["card"],
+                ];
+                $response = (new paymentLLpay())->payment($withdrawData);
+                if($response['ret_code'] == '0000'){
+                    // 代付申请成功
+                    // 订单状态更改
+                    $data = [
+                        "id" => $id,
+                        "state" => $state,
+                        "update_by" => isLogin()
+                    ];
+                    UserWithdraw::update($data);
+                }else{
+                    // 代付申请失败
+                    Db::rollback();
+                    return [false, "代付平台错误：{$response['ret_msg']}！"];
+                }
+            }elseif($state == -1){
+                // 审核拒绝
+                // 订单状态更改
+                $data = [
+                    "id" => $id,
+                    "state" => $state,
+                    "update_by" => isLogin()
+                ];
+                UserWithdraw::update($data);
+                // 用户余额回退
+                $user = User::find($withdraw->user_id);
+                $user->setInc("account", $withdraw->amount);
+                // 资金明细
+                $rData = [
+                    "type" => 6,
+                    "amount" => $withdraw->amount,
+                    "remark" => json_encode(['tradeNo' => $withdraw->out_sn]),
+                    "direction" => 1
+                ];
+                $user->hasManyRecord()->save($rData);
+            }
+            Db::commit();
+            return [true, '操作成功！'];
+        }catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return [false, '系统提示：异常错误！'];
+        }
+    }
+
+    /*public function withdrawById($param)
     {
         $data = UserWithdraw::find($param['id']);
         if(!$data) return ['code' => 1, 'msg' => '系统提示：非法操作！'];
@@ -85,8 +153,6 @@ class UserWithdrawLogic
             Db::rollback();
             return ['code' => 1, '系统提示：操作异常！'];
         }
-
-
-    }
+    }*/
 
 }

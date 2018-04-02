@@ -23,7 +23,7 @@ class paymentLLpay
         $parameter = [
             "oid_partner" => trim($this->config['oid_partner']),
             "sign_type" => trim($this->config['sign_type']),
-            "no_order" => uniqid(),
+            "no_order" => $withdraw['tradeNo'],
             "dt_order" => date('YmdHis'),
             "money_order" => $withdraw['amount'],
             "acct_name" => $withdraw['name'],

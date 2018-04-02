@@ -24,6 +24,7 @@ class Test extends Controller
     public function test()
     {
         $withdraw = [
+            "tradeNo" => "20180402214505",
             "amount" => 30,
             "name"  => "梁健",
             "card" => "6217004220033901731"
