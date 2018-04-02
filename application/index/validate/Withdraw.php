@@ -33,6 +33,7 @@ class Withdraw extends Validate
 
     public function checkDateTime($value)
     {
+        return true;
         if(date('w') == 0){
             return false;
         }
