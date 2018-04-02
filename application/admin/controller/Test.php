@@ -21,6 +21,9 @@ class Test extends Controller
 
     public function test()
     {
+        $quotation = (new StockLogic())->stockQuotationBySina("600000");
+        dump($quotation);
+        exit;
         $order = (new \app\index\logic\OrderLogic())->orderById(4);
         $job = new DeferJob();
         $job->handle($order);

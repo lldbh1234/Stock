@@ -12,7 +12,7 @@ class Cron extends Controller
     public function grabPlateIndex()
     {
         set_time_limit(0);
-        //if(checkStockTradeTime()){
+        if(checkStockTradeTime()){
             $jsonArray = [];
             $jsonPath = "./plate.json";
             $url = 'http://hq.sinajs.cn/rn=1520407404627&list=s_sh000001,s_sz399001,s_sz399006';
@@ -40,7 +40,7 @@ class Cron extends Controller
                 @file_put_contents($jsonPath, json_encode($jsonArray, JSON_UNESCAPED_UNICODE));
                 echo "ok";
             }
-        //}
+        }
     }
 
     // 半小时 股票列表
@@ -115,6 +115,30 @@ class Cron extends Controller
                         // 非自动递延,强制平仓
                         Queue::push('app\index\job\DeferJob@handleNonAutoDeferOrder', $order, null);
                     }
+                }
+            }
+        }
+    }
+
+    // 爆仓、止盈、止损，交易时间段、每2秒一次
+    public function scanOrderSell()
+    {
+        set_time_limit(0);
+        if(checkStockTradeTime()){
+            $orders = (new OrderLogic())->orderByState($state = 3);
+            if($orders){
+                foreach ($orders as $order){
+                    /*$sellData = [
+                        "order_id"  => $order["order_id"], //订单ID
+                        "code"      => $order["code"], // 股票code
+                        "price"     => $order["price"], // 买入价
+                        "hand"      => $order["hand"], // 买入手数
+                        "stop_profit" => $order["stop_profit_price"], // 止盈
+                        "stop_loss" => $order["stop_loss_price"], // 止损
+                        "deposit"   => $order["deposit"], // 保证金
+                    ];*/
+                    //Queue::push('app\index\job\SellJob@handleSellOrder', $sellData, null);
+                    Queue::push('app\index\job\SellJob@handleSellOrder', $order["order_id"], null);
                 }
             }
         }
