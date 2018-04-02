@@ -15,12 +15,17 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
+			{if condition="in_array('admin/Ai/remove', $Think.session.ACCESS_LIST)"}
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
 				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
 			</a>
+			{/if}
+			{if condition="in_array('admin/Ai/create', $Think.session.ACCESS_LIST)"}
 			<a class="btn btn-primary radius" href="javascript:;" onclick="stock_add('添加股票','{:url("admin/Ai/create")}','','450')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加股票
-			</a> </span>
+			</a>
+			{/if}
+		</span>
 		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
 	</div>
 	<table class="table table-border table-bordered table-hover table-bg">
@@ -57,8 +62,12 @@
 				{/if}
 			</td>
 			<td class="f-14">
+				{if condition="in_array('admin/Ai/modify', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-primary size-MINI radius" type="button" title="编辑股票" onclick="stock_edit('编辑股票','{:url("admin/Ai/modify", ['id' => $item.id])}','','450')" value="编辑">
+				{/if}
+				{if condition="in_array('admin/Ai/remove', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-danger size-MINI radius" type="button" title="股票删除" onclick="stock_del(this, {$item.id});" value="删除">
+				{/if}
 			</td>
 		</tr>
 		{/volist}
@@ -75,6 +84,7 @@
 {block name="script"}
 <script>
     /*用户-添加*/
+    {if condition="in_array('admin/Ai/create', $Think.session.ACCESS_LIST)"}
     function stock_add(title,url,w,h){
         var func = function(layero, index){
             var body = layer.getChildFrame('body', index);
@@ -82,11 +92,15 @@
         };
         layer_show_2(title,url,w,h,func);
     }
+	{/if}
 
+    {if condition="in_array('admin/Ai/modify', $Think.session.ACCESS_LIST)"}
     function stock_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
+	{/if}
 
+    {if condition="in_array('admin/Ai/remove', $Think.session.ACCESS_LIST)"}
     function stock_del(_obj, _id) {
         layer.confirm('确认要删除推荐股票吗？',function(index){
             var _oData = {id:_id},
@@ -139,5 +153,6 @@
             });
         }
     }
+	{/if}
 </script>
 {/block}

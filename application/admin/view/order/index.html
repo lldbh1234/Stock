@@ -87,14 +87,26 @@
 				{/eq}
 			</td>
 			<td>
+				{if condition="in_array('admin/Order/entrustDetail', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-secondary size-MINI radius" type="button" title="策略详情" onclick="show_detail('策略详情', '{:url("admin/Order/entrustDetail", ['id' => $item.order_id])}')" value="详情">
-				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_detail('返点记录', '{:url("admin/Order/entrustRebate", ['id' => $item.order_id])}')" value="返点">
+				{/if}
+				{if condition="in_array('admin/Order/entrustRebate', $Think.session.ACCESS_LIST)"}
+				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_rebate('返点记录', '{:url("admin/Order/entrustRebate", ['id' => $item.order_id])}')" value="返点">
+				{/if}
 				{if condition="$item.state eq 1"}
+				{if condition="in_array('admin/Order/buyOk', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-success size-MINI radius" type="button" title="建仓成功" onclick="buy_ok({$item.order_id}, {$item.price}, this);" value="建仓">
+				{/if}
+				{if condition="in_array('admin/Order/buyFail', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-danger size-MINI radius" type="button" title="建仓失败" onclick="buy_fail({$item.order_id}, this);" value="撤销">
+				{/if}
 				{elseif condition="$item.state eq 4" /}
+				{if condition="in_array('admin/Order/sellOk', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-success size-MINI radius" type="button" title="平仓成功" onclick="sell_ok({$item.order_id}, this);" value="平仓">
+				{/if}
+				{if condition="in_array('admin/Order/sellFail', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-danger size-MINI radius" type="button" title="平仓失败" onclick="sell_fail({$item.order_id}, this);" value="撤销">
+				{/if}
 				{/if}
 			</td>
 		</tr>
@@ -112,6 +124,7 @@
 {block name="script"}
 <script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script>
+    {if condition="in_array('admin/Order/entrustDetail', $Think.session.ACCESS_LIST)"}
     function show_detail(title,url){
         var index = layer.open({
             type: 2,
@@ -120,6 +133,18 @@
         });
         layer.full(index);
     }
+	{/if}
+
+	{if condition="in_array('admin/Order/entrustRebate', $Think.session.ACCESS_LIST)"}
+	function show_rebate(title,url){
+		var index = layer.open({
+			type: 2,
+			title: title,
+			content: url
+		});
+		layer.full(index);
+	}
+	{/if}
 	/*function buy_ok(_id, _price, _obj)
 	{
         parent.layer.confirm('确认此订单建仓成功？',function(index){
@@ -169,6 +194,7 @@
         });
     }*/
 
+	{if condition="in_array('admin/Order/sellOk', $Think.session.ACCESS_LIST)"}
     function sell_ok(_id, _obj)
     {
         parent.layer.confirm('确认此订单平仓成功？',function(index){
@@ -189,7 +215,9 @@
             _ajaxPost(_url, _oData, _func);
         });
     }
+	{/if}
 
+	{if condition="in_array('admin/Order/sellFail', $Think.session.ACCESS_LIST)"}
     function sell_fail(_id, _obj)
     {
         parent.layer.confirm('确认此订单平仓失败？',function(index){
@@ -210,5 +238,6 @@
             _ajaxPost(_url, _oData, _func);
         });
     }
+	{/if}
 </script>
 {/block}

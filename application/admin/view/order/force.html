@@ -106,11 +106,19 @@
 			<td>{$item.force_type_text}</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
 			<td>
+				{if condition="in_array('admin/Order/forceSell', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-danger size-MINI radius" type="button" title="平仓" onclick="force_sell('{$item.order_id}', '{$item.sell_price}', this)" value="平仓">
+				{/if}
                 {in name="item.force_type" value="1,2"}
+				{if condition="in_array('admin/Order/give', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-secondary size-MINI radius" type="button" title="送股" onclick="mode_show('订单转送股', '{:url("admin/Order/give", ['id' => $item.order_id])}', '', '350')" value="送股">
-                <input class="btn btn-warning size-MINI radius" type="button" title="穿仓" onclick="order_ware('{$item.order_id}', '{$item.sell_price}')" value="穿仓">
+                {/if}
+				{if condition="in_array('admin/Order/ware', $Think.session.ACCESS_LIST)"}
+				<input class="btn btn-warning size-MINI radius" type="button" title="穿仓" onclick="order_ware('{$item.order_id}', '{$item.sell_price}')" value="穿仓">
+				{/if}
+				{if condition="in_array('admin/Order/toPosition', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-primary size-MINI radius" type="button" title="转为持仓" onclick="to_position('{$item.order_id}', this)" value="持仓">
+				{/if}
                 {/in}
             </td>
 		</tr>
@@ -127,10 +135,13 @@
 
 {block name="script"}
 <script>
+    {if condition="in_array('admin/Order/give', $Think.session.ACCESS_LIST)"}
     function mode_show(title,url,w,h){
         layer_show(title,url,w,h);
     }
+	{/if}
 
+	{if condition="in_array('admin/Order/ware', $Think.session.ACCESS_LIST)"}
     function order_ware(_id, _price)
     {
         layer.prompt({
@@ -155,7 +166,9 @@
             _ajaxPost(_url, _oData, _func);
         });
     }
+	{/if}
 
+	{if condition="in_array('admin/Order/toPosition', $Think.session.ACCESS_LIST)"}
     function to_position(_id, _obj)
     {
         parent.layer.confirm('确认此订单转为持仓？', function(index){
@@ -176,7 +189,9 @@
             _ajaxPost(_url, _oData, _func);
         });
     }
+	{/if}
 
+    {if condition="in_array('admin/Order/forceSell', $Think.session.ACCESS_LIST)"}
     function force_sell(_id, _price, _obj)
     {
         parent.layer.confirm('确认此订单强制平仓？', function(index){
@@ -204,5 +219,6 @@
             });
         });
     }
+	{/if}
 </script>
 {/block}

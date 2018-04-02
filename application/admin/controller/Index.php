@@ -21,6 +21,11 @@ class Index extends Base
     // 首页
     public function welcome()
     {
+        $isProxy = (new AdminLogic())->isProxy(manager()['role']);
+        if($isProxy){
+            return $this->redirect(url("admin/Index/userinfo"));
+            exit;
+        }
         return view();
     }
 

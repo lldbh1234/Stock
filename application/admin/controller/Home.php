@@ -48,6 +48,7 @@ class Home extends Controller
             session('admin_info', null);
             session('admin_auth', null);
             session('admin_auth_sign', null);
+            session('ACCESS_LIST', null);
             session('[destroy]');
             return $this->redirect(url('admin/Home/login'));
         } else {

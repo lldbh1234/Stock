@@ -14,12 +14,17 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
+			{if condition="in_array('admin/Lever/remove', $Think.session.ACCESS_LIST)"}
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
 				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
 			</a>
+			{/if}
+			{if condition="in_array('admin/Lever/create', $Think.session.ACCESS_LIST)"}
 			<a class="btn btn-primary radius" href="javascript:;" onclick="lever_add('添加杠杆','{:url("admin/Lever/create")}','','350')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加杠杆
-			</a> </span>
+			</a>
+			{/if}
+		</span>
 		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
 	</div>
 	<table class="table table-border table-bordered table-hover table-bg">
@@ -50,8 +55,12 @@
 				{/if}
 			</td>
 			<td class="f-14">
+				{if condition="in_array('admin/Lever/modify', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-primary size-MINI radius" type="button" title="编辑杠杆" onclick="lever_edit('编辑杠杆','{:url("admin/Lever/modify", ['id' => $item.id])}','','350')" value="编辑">
+				{/if}
+				{if condition="in_array('admin/Lever/remove', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-danger size-MINI radius" type="button" title="删除杠杆" onclick="lever_del(this, {$item.id});" value="删除">
+				{/if}
 			</td>
 		</tr>
 		{/volist}
@@ -68,14 +77,19 @@
 {block name="script"}
 <script>
     /*用户-添加*/
+    {if condition="in_array('admin/Lever/create', $Think.session.ACCESS_LIST)"}
     function lever_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
+	{/if}
 
+    {if condition="in_array('admin/Lever/modify', $Think.session.ACCESS_LIST)"}
     function lever_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
+	{/if}
 
+    {if condition="in_array('admin/Lever/remove', $Think.session.ACCESS_LIST)"}
     function lever_del(_obj, _id) {
         layer.confirm('确认要删除此杠杆配置吗？',function(index){
             var _oData = {id:_id},
@@ -128,5 +142,6 @@
             });
         }
     }
+	{/if}
 </script>
 {/block}

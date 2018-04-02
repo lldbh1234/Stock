@@ -37,12 +37,16 @@
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
+            {if condition="in_array('admin/Admin/patchRemove', $Think.session.ACCESS_LIST)"}
             <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont  Hui-iconfont-del3"></i> 批量删除
             </a>
+            {/if}
+            {if condition="in_array('admin/Admin/create', $Think.session.ACCESS_LIST)"}
 			<a class="btn btn-primary radius" href="javascript:;" onclick="admin_add('添加管理员','{:url("admin/Admin/create")}','', '500')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加管理员
             </a>
+            {/if}
         </span>
         <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
     </div>
@@ -82,8 +86,12 @@
                 {/if}
             </td>
             <td class="f-14">
+                {if condition="in_array('admin/Admin/modify', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-success size-MINI radius" type="button" title="管理员编辑" onclick="admin_edit('管理员编辑','{:url("admin/Admin/modify", ['id' => $item.admin_id])}','','500')" value="编辑">
+                {/if}
+                {if condition="in_array('admin/Admin/remove', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-danger size-MINI radius" type="button" title="管理员删除" onclick="admin_del(this,{$item.admin_id});" value="删除">
+                {/if}
             </td>
         </tr>
         {/volist}
@@ -100,14 +108,19 @@
 {block name="script"}
 <script>
     /*用户-添加*/
+    {if condition="in_array('admin/Admin/create', $Think.session.ACCESS_LIST)"}
     function admin_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
+    {/if}
 
+    {if condition="in_array('admin/Admin/modify', $Think.session.ACCESS_LIST)"}
     function admin_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
+    {/if}
 
+    {if condition="in_array('admin/Admin/remove', $Think.session.ACCESS_LIST)"}
     function admin_del(_obj, _id) {
         parent.layer.confirm('管理员删除不可逆，确认要删除吗？',function(index){
             var _oData = {id:_id},
@@ -129,7 +142,9 @@
             _ajaxPost(_url, _oData, _func);
         });
     }
+    {/if}
 
+    {if condition="in_array('admin/Admin/patchRemove', $Think.session.ACCESS_LIST)"}
     function datadel()
     {
         var _ids = new Array();
@@ -160,5 +175,6 @@
             });
         }
     }
+    {/if}
 </script>
 {/block}
