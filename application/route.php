@@ -36,7 +36,8 @@ Route::group("index", function () {
 });
 
 Route::group("notify", function () {
-    Route::post('auth-llpay','index/Notify/authLLpay');
+    Route::post('auth-llpay','index/Notify/authLLpay'); // wap认证入金
+    Route::post('payment','index/Notify/payment'); // 代付出金
 });
 
 //我的

@@ -5,6 +5,7 @@
 
 namespace app\common\payment;
 
+use llpay\payment\notify\LLpayNotify as paymentLLpayNotify;
 use llpay\payment\pay\LLpaySubmit as paymentLLpaySubmit;
 
 class paymentLLpay
@@ -44,5 +45,12 @@ class paymentLLpay
         $html_text = $llpaySubmit->buildRequestJSON($parameterRequest, $llpay_payment_url);
         $response = json_decode($html_text, true);
         return $response ? $response : [];
+    }
+
+    public function verifyNotify()
+    {
+        $llpayNotify = new paymentLLpayNotify($this->config);
+        $llpayNotify->verifyNotify();
+        return $llpayNotify;
     }
 }

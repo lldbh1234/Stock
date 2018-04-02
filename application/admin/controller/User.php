@@ -141,11 +141,13 @@ class User extends Base
             if(!$validate->scene('user_withdraw')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
-                $ret = (new UserWithdrawLogic())->withdrawById(input('post.'));
-                if($ret['code'] == 0){
+                $id = input('post.id/d');
+                $state = input('post.state/d');
+                list($res, $msg) = (new UserWithdrawLogic())->doWithdraw($id, $state);
+                if($res){
                     return $this->ok();
                 } else {
-                    return $this->fail([$ret['msg']]);
+                    return $this->fail($msg);
                 }
             }
         }
