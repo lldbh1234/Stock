@@ -213,12 +213,12 @@ class User extends Base
                 return $this->fail($validate->getError());
             }else{
                 $money = input("post.money/f");
-                $bank = (new BankLogic())->bankByNumber(input("post.bank"));
+                $user = $this->_logic->userIncCard($this->user_id);
                 $remark = [
-                    "bank" => $bank['name'],
-                    "card" => input("post.card/s"),
-                    "name" => input("post.realname/s"),
-                    "addr" => input("post.address/s"),
+                    "bank" => $user['has_one_card']['bank_name'],
+                    "card" => $user['has_one_card']['bank_card'],
+                    "name" => $user['has_one_card']['bank_user'],
+                    "addr" => $user['has_one_card']['bank_address'],
                 ];
                 $withdrawId = $this->_logic->createUserWithdraw($this->user_id, $money, $remark);
                 if($withdrawId > 0){
@@ -229,9 +229,13 @@ class User extends Base
                 }
             }
         }
-        $banks = (new BankLogic())->bankLists();
-        $this->assign("user", uInfo());
-        $this->assign("banks", $banks);
+        $user = $this->_logic->userIncCard($this->user_id);
+        $bind = $user['has_one_card'] ? 1 : 0;
+        $callback = url("index/User/withdraw");
+        $redirect = url("index/User/modifyCard", ["callback" => base64_encode($callback)]);
+        $this->assign("bind", $bind);
+        $this->assign("user", $user);
+        $this->assign("redirect", $redirect);
         return view();
     }
 

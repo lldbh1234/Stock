@@ -58,45 +58,18 @@
 					</div>
 			    </div>
 			    <div class="boxflex1 none clearfloat">
-			        <div class="withdrawal-name">银行</div>
+			        <div class="withdrawal-name">到账银行</div>
 			        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
 			            <div class="form-group field-useraccount-bank_name required">
-							<select id="useraccount-bank_name" class="form-control" name="bank">
-                                {volist name="banks" id="item"}
-							    <option value="{$item.number}">{$item.name}</option>
-                                {/volist}
+							<select id="useraccount-bank_name" class="form-control" name="card">
+								{notempty name="user.has_one_card"}
+							    <option value="{$user.has_one_card.id}">{$user.has_one_card.bank_name}（尾号{$user.has_one_card.bank_card|substr=-4}）</option>
+                                {/notempty}
 							</select>
 							<div class="help-block"></div>
 						</div>       
 					</div>
 		    	</div>
-		   		<div class="boxflex1 none clearfloat">
-			        <div class="withdrawal-name">卡号</div>
-			        <div class="withdrawal-con" tabindex="1">
-			            <div class="form-group field-useraccount-bank_card required">
-							<input type="text" id="useraccount-bank_card" class="control-style" name="card" placeholder="请输入卡号">
-							<div class="help-block"></div>
-						</div>
-					</div>
-			    </div>
-		    	<div class="boxflex1 none clearfloat">
-		        	<div class="withdrawal-name">持卡人</div>
-		    		<div class="withdrawal-con" tabindex="1">
-		                <div class="form-group field-useraccount-realname required">
-							<input type="text" id="useraccount-realname" class="control-style" name="realname" placeholder="请输入持卡人姓名">
-							<div class="help-block"></div>
-						</div>          
-					</div>
-		    	</div>
-				<div class="boxflex1 none clearfloat">
-				    <div class="withdrawal-name">开卡行详细地址</div>
-				    <div class="withdrawal-con" tabindex="1">
-				        <div class="form-group field-useraccount-bank_address required">
-							<input type="text" id="useraccount-bank_address" class="form-control" name="address" placeholder="开卡行地址(XX银行XX省XX市XX支行)">
-							<div class="help-block"></div>
-						</div>        
-					</div>
-				</div> 
 			    <div class="boxflex1 none clearfloat">
 			        <div class="withdrawal-name">手机号</div>
 			        <div class="withdrawal-con" tabindex="1">
@@ -162,12 +135,20 @@
             $ajaxCustom(_url, _oData, function(res){
                 if(res.state){ // 登录成功
                     $alert("发送成功");
-                    $("input[name='code']").val(res.data.code);
+                    //$("input[name='code']").val(res.data.code);
                 }else{
                     $alert(res.info);
                 }
             });
 	    });
 	});
+    var _bind = "{$bind|default=0}";
+    if(_bind == "0"){
+        var _jump = "{$redirect}";
+        $alert("请先绑定银行卡！");
+        setTimeout(function(){
+            window.location.href = _jump;
+        }, 1000);
+    }
 	</script>
 {/block}

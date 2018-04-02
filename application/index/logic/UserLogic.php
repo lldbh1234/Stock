@@ -52,8 +52,8 @@ class UserLogic
                 $user->setDec("account", $money);
                 $data = [
                     "amount"    => $money,
-                    "actual"    => $money - config('withdraw_poundage'),
-                    "poundage"  => config('withdraw_poundage'),
+                    "actual"    => $money - cf('withdraw_poundage', config('withdraw_poundage')),
+                    "poundage"  => cf('withdraw_poundage', config('withdraw_poundage')),
                     "out_sn"    => createOrderSn(),
                     "remark"    => json_encode($remark),
                 ];
