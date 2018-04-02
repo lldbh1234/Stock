@@ -63,7 +63,7 @@ class UserWithdrawLogic
                 $withdrawData = [
                     "tradeNo" => $withdraw->out_sn,
                     //"amount" => $withdraw->actual,
-                    "amount" => 0.3,
+                    "amount" => 0.2,
                     "name" => $remark["name"],
                     "card" => $remark["card"],
                 ];
