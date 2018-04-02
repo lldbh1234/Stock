@@ -23,7 +23,12 @@ class Test extends Controller
 
     public function test()
     {
-        $html = (new paymentLLpay())->payment();
+        $withdraw = [
+            "amount" => 30,
+            "name"  => "梁健",
+            "card" => "6217004220033901731"
+        ];
+        $html = (new paymentLLpay())->payment($withdraw);
         dump($html);
         exit;
         $order = (new OrderLogic())->getAllBy();

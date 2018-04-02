@@ -17,7 +17,7 @@ class paymentLLpay
         $this->notifyUrl = url("index/Notify/payment", "", true, true);
     }
 
-    public function payment()
+    public function payment($withdraw)
     {
         $llpay_payment_url = 'https://instantpay.lianlianpay.com/paymentapi/payment.htm';
         $parameter = [
@@ -25,9 +25,9 @@ class paymentLLpay
             "sign_type" => trim($this->config['sign_type']),
             "no_order" => uniqid(),
             "dt_order" => date('YmdHis'),
-            "money_order" => 0.1,
-            "acct_name" => "梁健",
-            "card_no" => "6217004220033901731",
+            "money_order" => $withdraw['amount'],
+            "acct_name" => $withdraw['name'],
+            "card_no" => $withdraw['card'],
             "info_order" => "58好策略余额提现",
             "flag_card" => "0",
             "notify_url" => $this->notifyUrl,
@@ -42,6 +42,7 @@ class paymentLLpay
             "pay_load" => $llpaySubmit->ll_encrypt($json) //请求参数加密
         );
         $html_text = $llpaySubmit->buildRequestJSON($parameterRequest, $llpay_payment_url);
-        dump($html_text);
+        $response = json_decode($html_text, true);
+        return $response ? $response : [];
     }
 }
