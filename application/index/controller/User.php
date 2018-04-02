@@ -156,6 +156,7 @@ class User extends Base
     public function recharge()
     {
         if(request()->isPost()){
+            header("Content-type: text/html; charset=utf-8");
             $validate = \think\Loader::validate('Recharge');
             if(!$validate->scene('do')->check(input("post."))){
                 return $this->fail($validate->getError());
