@@ -27,7 +27,11 @@ class Index extends Base
     // 个人信息
     public function userinfo()
     {
+        if(request()->isPost()){
 
+        }
+        $this->assign("admin", manager());
+        return view();
     }
 
     // 修改密码

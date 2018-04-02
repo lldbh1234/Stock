@@ -1,0 +1,70 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}个人信息{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 个人信息
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<article class="page-container">
+    <form class="form form-horizontal" id="form-admin-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">登录名：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="input" class="input-text" value="{$admin.username}" disabled />
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">身份：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="input" class="input-text" value="{$admin.has_one_role.name}" disabled />
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">盈利返点：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="input" class="input-text" value="{$admin.point}%" disabled />
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">建仓费返点：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="input" class="input-text" value="{$admin.jiancang_point}%" disabled />
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">递延费返点：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="input" class="input-text" value="{$admin.defer_point}%" disabled />
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">手续率总计：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="input" class="input-text" value="{$admin.total_fee|number_format=2}" disabled />
+            </div>
+        </div>
+        {if condition="$admin.role EQ 5"}
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">邀请码：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="input" class="input-text" value="{$admin.code}" disabled />
+            </div>
+        </div>
+        {/if}
+    </form>
+</article>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+</script>
+{/block}
