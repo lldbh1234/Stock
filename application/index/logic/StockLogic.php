@@ -30,7 +30,7 @@ class StockLogic
     public function simpleData($codes)
     {
         $codes = $this->_fullCodeByCodes($codes);
-        $result = $this->_sinaQuotation->real($codes);
+        /*$result = $this->_sinaQuotation->real($codes);
         $response = [];
         foreach ($result as $key => $value){
             $response[$key] = [
@@ -40,8 +40,8 @@ class StockLogic
                 "px_change_rate" => $value['px_change_rate']
             ];
         }
-        return $response;
-        /*$codes = $this->_handleCodes($codes);
+        return $response;*/
+        $codes = $this->_handleCodes($codes);
         $code = implode(',', $codes);
         $fields = 'prod_name,last_px,px_change,px_change_rate';
         $response = $this->_library->realtime($code, $fields);
@@ -61,7 +61,7 @@ class StockLogic
             }
             return $_resp;
         }
-        return [];*/
+        return [];
     }
 
     public function klineData($code, $period = 6, $count = 50)
