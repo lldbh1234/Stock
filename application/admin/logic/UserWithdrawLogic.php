@@ -62,8 +62,8 @@ class UserWithdrawLogic
                 $remark = json_decode($withdraw->remark, true);
                 $withdrawData = [
                     "tradeNo" => $withdraw->out_sn,
-                    //"amount" => $withdraw->actual,
-                    "amount" => 0.2,
+                    "amount" => $withdraw->actual,
+                    //"amount" => 0.2,
                     "name" => $remark["name"],
                     "card" => $remark["card"],
                 ];
