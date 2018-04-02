@@ -14,8 +14,7 @@ class SmsLogic
     public function send($mobile, $act = "register")
     {
         $code = randomString($length = 4, $num = true);
-        $res = $this->smsLib->send($mobile, $code, $act);
-        return [$res, $code];
+        return $this->smsLib->send($mobile, $code, $act);
     }
 
     public function verify($mobile, $code, $act = "register")

@@ -176,7 +176,7 @@ class User extends Base
                                 "frms_ware_category" => "2026",
                                 "user_info_mercht_userno" => $this->user_id,
                                 "user_info_bind_phone"  => $user['mobile'],
-                                "user_info_dt_register" => date("Y-m-d H:i:s", $user['create_at']),
+                                "user_info_dt_register" => date("YmdHis", $user['create_at']),
                                 "goods_name"    => "58好策略余额充值",
                                 "user_info_full_name" => $card['bank_user'],
                                 "user_info_id_no" => $card['id_card'],
