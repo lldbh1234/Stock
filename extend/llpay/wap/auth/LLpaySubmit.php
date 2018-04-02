@@ -9,6 +9,7 @@ namespace llpay\wap\auth;
  * 说明：
  * 以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
  */
+header("Content-type: text/html; charset=utf-8");
 require_once("lib/llpay_core.function.php");
 require_once("lib/llpay_md5.function.php");
 require_once("lib/llpay_rsa.function.php");
