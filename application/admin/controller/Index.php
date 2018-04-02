@@ -17,8 +17,24 @@ class Index extends Base
         return view();
     }
 
+    // 首页
     public function welcome()
     {
+        return view();
+    }
+
+    // 个人信息
+    public function userinfo()
+    {
+
+    }
+
+    // 修改密码
+    public function password()
+    {
+        if(request()->isPost()){
+
+        }
         return view();
     }
 }

@@ -164,6 +164,8 @@ Route::group([], function() {
         Route::any('/$','admin/Index/index');
         Route::any('index','admin/Index/index');
         Route::any('welcome','admin/Index/welcome');
+        Route::any('userinfo','admin/Index/userinfo');
+        Route::any('password','admin/Index/password');
         Route::any('login', 'admin/Home/login');
         Route::any('logout', 'admin/Home/logout');
 

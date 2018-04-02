@@ -9,43 +9,43 @@
 </head>
 <body>
 	<header class="has_back_top ">
-			注册
-			<a href="javascript:history.go(-1)" class="back_icon">
-				<img src="__RESOURCE__/img/back_icon.png">
-			</a>
-		</header>
+		注册
+		<a href="javascript:history.go(-1)" class="back_icon">
+			<img src="__RESOURCE__/img/back_icon.png">
+		</a>
+	</header>
 
-		<form class="my_from">
-			<input name="parent_id" type="hidden" value="{$pid|default=0}" />
-			<div class="my_form_group">
-				<input type="text" placeholder="请填写机构编码" id="orgCode" value="{$ring_code|default=''}" name="orgCode" />
+	<form class="my_from">
+		<input name="parent_id" type="hidden" value="{$pid|default=0}" />
+		<div class="my_form_group">
+			<input type="text" placeholder="请填写机构编码" id="orgCode" value="{$ring_code|default=''}" name="orgCode" />
+		</div>
+		<div class="my_form_group">
+			<input type="text" placeholder="请输入手机号码" id="mobile" name="mobile" />
+		</div>
+		<div class="my_form_group">
+			<input type="password" placeholder="请输入6~16位密码" id="password" name="password" />
+		</div>
+		<div class="my_form_group">
+			<input type="password" placeholder="请再次输入6~16位密码" id="rePassword" name="rePassword" />
+		</div>
+		<div class="my_form_group has_get">
+			<input type="text" placeholder="请输入验证码" id="code" name="code" />
+			<span class="get_btn">获取短信验证码</span>
+		</div>
+		<div class="my_form_group">
+			<input class="sub_btn" type="button"  value="立刻注册" id="submit" />
+		</div>
+		<div class="my_form_group">
+			<div style="width:22px; display: inline-block;" class="mui-input-row mui-checkbox mui-left select_btn lf">
+				<label></label>
+				<input id="isRead" name="checkbox" value="Item 1" type="checkbox">
 			</div>
-			<div class="my_form_group">
-				<input type="text" placeholder="请输入手机号码" id="mobile" name="mobile" />
+			<div class="lf read_tip">
+				提交注册表示您已经阅读并同意<span>用户协议</span>相关内容
 			</div>
-			<div class="my_form_group">
-				<input type="password" placeholder="请输入6~16位密码" id="password" name="password" />
-			</div>
-			<div class="my_form_group">
-				<input type="password" placeholder="请再次输入6~16位密码" id="rePassword" name="rePassword" />
-			</div>
-			<div class="my_form_group has_get">
-				<input type="text" placeholder="请输入验证码" id="code" name="code" />
-				<span class="get_btn">获取短信验证码</span>
-			</div>
-			<div class="my_form_group">
-				<input class="sub_btn" type="button"  value="立刻注册" id="submit" />
-			</div>
-			<div class="my_form_group">
-				<div style="width:22px; display: inline-block;" class="mui-input-row mui-checkbox mui-left select_btn lf">
-					<label></label>
-					<input id="isRead" name="checkbox" value="Item 1" type="checkbox">
-				</div>
-				<div class="lf read_tip">
-					提交注册表示您已经阅读并同意<span>用户协议</span>相关内容
-				</div>
-			</div>
-		</form>
+		</div>
+	</form>
 
 	<script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
 	<script src="__RESOURCE__/js/mui.min.js"></script>
@@ -70,12 +70,8 @@
         		$alert("请仔细阅读用户协议");
         		return false;
         	}
-
             var _url = "{:url('index/Home/register')}",
 				_oData = $("form").serialize();
-
-
-
             $ajaxCustom(_url, _oData, function(res){
                 if(res.state){ // 登录成功
                     $alert("注册成功");
