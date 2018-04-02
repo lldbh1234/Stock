@@ -54,7 +54,7 @@ class UserLogic
                     "amount"    => $money,
                     "actual"    => $money - cf('withdraw_poundage', config('withdraw_poundage')),
                     "poundage"  => cf('withdraw_poundage', config('withdraw_poundage')),
-                    "out_sn"    => createOrderSn(),
+                    "out_sn"    => createStrategySn(),
                     "remark"    => json_encode($remark),
                 ];
                 $res = $user->hasManyWithdraw()->save($data);
