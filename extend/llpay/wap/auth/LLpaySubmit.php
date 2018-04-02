@@ -9,7 +9,7 @@ namespace llpay\wap\auth;
  * 说明：
  * 以下代码只是为了方便商户测试而提供的样例代码，商户可以根据自己网站的需要，按照技术文档编写,并非一定要使用该代码。
  */
-header("Content-type: text/html; charset=utf-8");
+
 require_once("lib/llpay_core.function.php");
 require_once("lib/llpay_md5.function.php");
 require_once("lib/llpay_rsa.function.php");
@@ -41,7 +41,7 @@ class LLpaySubmit {
 		$mysign = "";
         //PHP5.3 版本以上 风控参数去斜杠
         $prestr =stripslashes($prestr);
-        file_put_contents("log.txt","新的签名:".$prestr."\n", FILE_APPEND);
+        //file_put_contents("log.txt","新的签名:".$prestr."\n", FILE_APPEND);
 		switch (strtoupper(trim($this->llpay_config['sign_type']))) {
 			case "MD5" :
 				$mysign = md5Sign($prestr, $this->llpay_config['key']);
@@ -52,7 +52,7 @@ class LLpaySubmit {
 			default :
 				$mysign = "";
 		}
-		file_put_contents("log.txt","签名:".$mysign."\n", FILE_APPEND);
+		//file_put_contents("log.txt","签名:".$mysign."\n", FILE_APPEND);
 		return $mysign;
 	}
 
@@ -105,9 +105,9 @@ class LLpaySubmit {
 		$sHtml = "<form id='llpaysubmit' name='llpaysubmit' action='" . $this->llpay_gateway_new . "' method='" . $method . "'>";
 		$sHtml .= "<input type='hidden' name='req_data' value='" . $para . "'/>";
 		//submit按钮控件请不要含有name属性
-		//$sHtml = $sHtml . "<input type='submit' style='display:none;' value='" . $button_name . "'></form>";
-        $sHtml = $sHtml . "<input type='submit' value='" . $button_name . "'></form>";
-		//$sHtml = $sHtml."<script>document.forms['llpaysubmit'].submit();</script>";
+		$sHtml = $sHtml . "<input type='submit' style='display:none;' value='" . $button_name . "'></form>";
+        //$sHtml = $sHtml . "<input type='submit' value='" . $button_name . "'></form>";
+		$sHtml = $sHtml."<script>document.forms['llpaysubmit'].submit();</script>";
 		return $sHtml;
 	}
 
