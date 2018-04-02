@@ -184,6 +184,7 @@ class User extends Base
                                 "user_info_identify_type" => "1"
                             ];
                             $html = (new authLlpay())->getCode($this->user_id, $orderSn, 0.1, $card, $risk);
+                            file_put_contents("./llpay.log", $html);
                             echo $html;
                             exit;
                         }else{
