@@ -47,7 +47,9 @@ class Manager extends Base
                 return view("manager/register");
             }
         }else{
+            dump(file_exists('./upload/manager_qrcode/' . $this->user_id . '.png'));die();
             if(!file_exists('./upload/manager_qrcode/' . $this->user_id . '.png')){
+
                 self::createManagerQrcode($this->user_id);
             }
             //经纪人下的用户
