@@ -47,7 +47,7 @@
                     <p class="m_key">可转收入</p>
                     <p class="m_value clear_fl">
                         <span>{$userInfo.sure_income}</span>
-                        <a href="" class="rt">转出</a>
+                        <a href="javascript:remove_out();" class="rt">转出</a>
                     </p>
                 </li>
                 <li class="border_bottom">
@@ -86,5 +86,30 @@
 {/block}
 {block name="nav"}{/block}
 {block name="script"}
+<script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
+<script>
+    function remove_out()
+    {
+        //询问框
+        layer.confirm('是否确认转出？', {
+            title:'提示',
+            btn: ['转出','取消'] //按钮
+        }, function(){
+            var _url = '{:url("index/Cattle/removeCapital")}',
+                _oData = {};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){
+                    layer.msg(res.info, {icon: 1});
+                }else{
+//                    $alert(res.info);
+                    layer.msg(res.info);
+                }
+            });
 
+            window.location.reload();
+        }, function(){
+            //取消了
+        });
+    }
+</script>
 {/block}
