@@ -29,9 +29,9 @@ class Manager extends Base
                     return view("manager/wait");
                 }elseif ($user['has_one_manager']['state'] == 1){
                     // 审核通过
-                    if(!file_exists('./upload/manager_qrcode/' . $this->user_id . '.png')){
-                        self::createManagerQrcode($this->user_id);
-                    }
+//                    if(!file_exists('./upload/manager_qrcode/' . $this->user_id . '.png')){
+//                        self::createManagerQrcode($this->user_id);
+//                    }
                 }elseif ($user['has_one_manager']['state'] == 2){
                     //审核未通过
                     $poundage = cf("manager_poundage", 88);
@@ -47,6 +47,9 @@ class Manager extends Base
                 return view("manager/register");
             }
         }else{
+            if(!file_exists('./upload/manager_qrcode/' . $this->user_id . '.png')){
+                self::createManagerQrcode($this->user_id);
+            }
             //经纪人下的用户
             $childrenIds = $this->_logic->getUidsByParentId($this->user_id);
             $user['children'] = count($childrenIds);
