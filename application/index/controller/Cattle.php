@@ -407,7 +407,7 @@ class Cattle extends Base
     public function removeCapital()
     {
         //查询当前用户是否属于牛人
-        if(uInfo()['is_manager'] == 1 && uInfo()['manager_state'] == 2)
+        if(uInfo()['is_niuren'] == 1 /*&& uInfo()['manager_state'] == 2*/)
         {
             //查询当前用户可转收入
             $niurenLogic = new UserNiurenLogic();
