@@ -100,11 +100,12 @@
             $ajaxCustom(_url, _oData, function(res){
                 if(res.state){
                     layer.msg(res.info, {icon: 1});
+                    setTimeout(window.location.reload(), 2000);
                 }else{
 //                    $alert(res.info);
                     layer.msg(res.info);
+                    setTimeout(window.location.reload(), 2000);
                 }
-                setTimeout(window.location.reload(), 2000);
             });
 
         }, function(){
