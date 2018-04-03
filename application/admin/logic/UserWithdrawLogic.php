@@ -64,6 +64,7 @@ class UserWithdrawLogic
                     "tradeNo" => $withdraw->out_sn,
                     "amount" => $withdraw->actual,
                     //"amount" => 0.2,
+                    "createAt" => $withdraw->create_at,
                     "name" => $remark["name"],
                     "card" => $remark["card"],
                 ];

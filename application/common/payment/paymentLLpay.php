@@ -25,7 +25,7 @@ class paymentLLpay
             "oid_partner" => trim($this->config['oid_partner']),
             "sign_type" => trim($this->config['sign_type']),
             "no_order" => $withdraw['tradeNo'],
-            "dt_order" => date('YmdHis'),
+            "dt_order" => date('YmdHis', $withdraw['createAt']),
             "money_order" => $withdraw['amount'],
             "acct_name" => $withdraw['name'],
             "card_no" => $withdraw['card'],
