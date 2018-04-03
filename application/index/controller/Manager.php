@@ -228,7 +228,7 @@ class Manager extends Base
     {
         $uid = $this->user_id;
         //查询当前用户是否属于经纪人
-        if(uInfo()['is_manager'] == 1 && uInfo()['manager_state'] == 2)
+        if(uInfo()['is_manager'] == 1/* && uInfo()['manager_state'] == 2*/)
         {
             //查询当前用户可转收入
             $managerLogic = new UserManagerLogic();
