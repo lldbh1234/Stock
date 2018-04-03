@@ -16,8 +16,7 @@ use Endroid\QrCode\Writer\WriterInterface;
 
 class QrCode implements QrCodeInterface
 {
-    const LABEL_FONT_PATH_DEFAULT = __DIR__ .'./../assets/noto_sans.otf';
-
+    const LABEL_FONT_PATH_DEFAULT = __DIR__ .'//..//assets//noto_sans.otf';
     /**
      * @var string
      */

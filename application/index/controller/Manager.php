@@ -48,9 +48,9 @@ class Manager extends Base
             }
         }else{
 
-            if(!file_exists('./upload/manager_qrcode/' . $this->user_id . '.png')){
+//            if(!file_exists('./upload/manager_qrcode/' . $this->user_id . '.png')){
                 self::createManagerQrcode($this->user_id);
-            }
+//            }
             //经纪人下的用户
             $childrenIds = $this->_logic->getUidsByParentId($this->user_id);
             $user['children'] = count($childrenIds);
