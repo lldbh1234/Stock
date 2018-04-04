@@ -100,7 +100,7 @@
             $ajaxCustom(_url, _oData, function(res){
                 if(res.state){ // 登录成功
                     $alert("发送成功");
-                    $("input[name='code']").val(res.data.code);
+                    //$("input[name='code']").val(res.data.code);
                 }else{
                     $alert(res.info);
                 }

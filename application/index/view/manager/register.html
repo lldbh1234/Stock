@@ -145,7 +145,7 @@ $(function () {
         }
         $.post(url, {mobile: mobile, act: "manager"}, function(msg) {
                 if (msg.state) {
-                    $("input[name='code']").val(msg.data.code);
+                    //$("input[name='code']").val(msg.data.code);
             		$('#submitBtn').removeClass('disabled');
                     time($('#verifyCodeBtn'));
                 } else {
