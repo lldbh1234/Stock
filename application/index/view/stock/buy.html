@@ -61,6 +61,9 @@
 	.x_y_options span:nth-child(4n + 1) {
 	    margin-left: 6px;
 	}
+	.x_o_title {
+	    line-height: normal;
+	}
 </style>
 {/block}
 
@@ -291,6 +294,7 @@
 		for( var key in deposit_ids ){
 			$(".x_y_options").find("[data-id='" + deposit_ids[key] + "']").show();
 		}
+		$(".x_y_options").find("[data-id='" + deposit_ids[0] + "']").trigger("click");
 
 		for( var key in deposit_ids ){
 			$(".beishu_options").find("[data-id='" + deposit_ids[key] + "']").show();
@@ -302,7 +306,7 @@
 	});
 
 
-	$(".x_y_options").on("tap" , "span" , function(){
+	$(".x_y_options").on("click" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
 		var val = $(this).html();
 		$(".selected_count").html(val);
