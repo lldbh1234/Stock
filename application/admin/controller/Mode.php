@@ -1,6 +1,8 @@
 <?php
 namespace app\admin\controller;
 
+use app\admin\logic\DepositLogic;
+use app\admin\logic\LeverLogic;
 use think\Request;
 use app\admin\logic\ModeLogic;
 use app\admin\logic\ProductLogic;
@@ -104,6 +106,66 @@ class Mode extends Base
             }
         }else{
             return $this->fail("非法操作！");
+        }
+    }
+
+    public function setDeposit($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Mode');
+            if(!$validate->scene('setDeposit')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "mode_id" => input("post.id/d"),
+                    "deposit" => input("post.deposit/a")
+                ];
+                $res = $this->_logic->updateMode($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("操作失败！");
+                }
+            }
+        }
+        $mode = $this->_logic->modeById($id);
+        if($mode){
+            $deposit = (new DepositLogic())->depositLists();
+            $this->assign("mode", $mode);
+            $this->assign("deposit", $deposit);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function setLever($id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Mode');
+            if(!$validate->scene('setLever')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = [
+                    "mode_id" => input("post.id/d"),
+                    "lever" => input("post.lever/a")
+                ];
+                $res = $this->_logic->updateMode($data);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail("操作失败！");
+                }
+            }
+        }
+        $mode = $this->_logic->modeById($id);
+        if($mode){
+            $lever = (new LeverLogic())->leverLists();
+            $this->assign("mode", $mode);
+            $this->assign("lever", $lever);
+            return view();
+        }else{
+            return "非法操作！";
         }
     }
 

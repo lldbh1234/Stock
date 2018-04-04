@@ -85,8 +85,12 @@
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
 			<td>{if condition="$item.update_at gt 0"}{$item.update_at|date="Y-m-d H:i", ###}{else /}-{/if}</td>
 			<td>
+				{if condition="in_array('admin/Order/historyDetail', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-secondary size-MINI radius" type="button" title="策略详情" onclick="show_detail('策略详情', '{:url("admin/Order/historyDetail", ['id' => $item.order_id])}')" value="详情">
-				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_detail('返点记录', '{:url("admin/Order/historyRebate", ['id' => $item.order_id])}')" value="返点">
+				{/if}
+				{if condition="in_array('admin/Order/historyRebate', $Think.session.ACCESS_LIST)"}
+				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_rebate('返点记录', '{:url("admin/Order/historyRebate", ['id' => $item.order_id])}')" value="返点">
+				{/if}
 			</td>
 		</tr>
 		{/volist}
@@ -103,6 +107,7 @@
 {block name="script"}
 <script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script>
+    {if condition="in_array('admin/Order/historyDetail', $Think.session.ACCESS_LIST)"}
     function show_detail(title,url){
         var index = layer.open({
             type: 2,
@@ -111,5 +116,17 @@
         });
         layer.full(index);
     }
+	{/if}
+
+    {if condition="in_array('admin/Order/historyRebate', $Think.session.ACCESS_LIST)"}
+    function show_rebate(title,url){
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
+        });
+        layer.full(index);
+    }
+	{/if}
 </script>
 {/block}

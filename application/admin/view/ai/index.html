@@ -14,12 +14,17 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
+			{if condition="in_array('admin/Ai/removeType', $Think.session.ACCESS_LIST)"}
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
 				<i class="Hui-iconfont Hui-iconfont-del3"></i> 批量删除
 			</a>
+			{/if}
+			{if condition="in_array('admin/Ai/createType', $Think.session.ACCESS_LIST)"}
 			<a class="btn btn-primary radius" href="javascript:;" onclick="type_add('添加推荐类型','{:url("admin/Ai/createType")}','','350')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加推荐类型
-			</a> </span>
+			</a>
+			{/if}
+		</span>
 		<span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
 	</div>
 	<table class="table table-border table-bordered table-hover table-bg">
@@ -48,9 +53,15 @@
 				{/if}
 			</td>
 			<td class="f-14">
+				{if condition="in_array('admin/Ai/modifyType', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-primary size-MINI radius" type="button" title="编辑推荐类型" onclick="type_edit('编辑推荐类型','{:url("admin/Ai/modifyType", ['id' => $item.type_id])}','','350')" value="编辑">
+				{/if}
+				{if condition="in_array('admin/Ai/stocks', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-secondary size-MINI radius" type="button" title="股票列表" onclick="type_stocks('股票列表','{:url("admin/Ai/stocks", ['id' => $item.type_id])}')" value="股票列表">
+				{/if}
+				{if condition="in_array('admin/Ai/removeType', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-danger size-MINI radius" type="button" title="推荐类型删除" onclick="type_del(this, {$item.type_id});" value="删除">
+				{/if}
 			</td>
 		</tr>
 		{/volist}
@@ -67,14 +78,19 @@
 {block name="script"}
 <script>
     /*用户-添加*/
+    {if condition="in_array('admin/Ai/createType', $Think.session.ACCESS_LIST)"}
     function type_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
+	{/if}
 
+	{if condition="in_array('admin/Ai/modifyType', $Think.session.ACCESS_LIST)"}
     function type_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
+	{/if}
 
+	{if condition="in_array('admin/Ai/stocks', $Think.session.ACCESS_LIST)"}
     function type_stocks(title,url){
         var index = layer.open({
             type: 2,
@@ -83,7 +99,9 @@
         });
         layer.full(index);
     }
+	{/if}
 
+	{if condition="in_array('admin/Ai/removeType', $Think.session.ACCESS_LIST)"}
     function type_del(_obj, _id) {
         layer.confirm('确认要删除推荐类型吗？',function(index){
             var _oData = {id:_id},
@@ -136,5 +154,6 @@
             });
         }
     }
+	{/if}
 </script>
 {/block}

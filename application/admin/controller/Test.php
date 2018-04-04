@@ -3,11 +3,13 @@ namespace app\admin\controller;
 
 use app\admin\logic\OrderLogic;
 use app\admin\logic\StockLogic;
+use app\common\payment\paymentLLpay;
 use app\index\job\DeferJob;
 use app\index\job\RebateJob;
 use app\index\logic\AdminLogic;
 use app\index\logic\RebateLogic;
 use app\index\logic\UserLogic;
+use llpay\payment\pay\LLpaySubmit;
 use think\Controller;
 use think\Queue;
 use think\Request;
@@ -21,16 +23,14 @@ class Test extends Controller
 
     public function test()
     {
-        $order = (new \app\index\logic\OrderLogic())->orderById(4);
-        $job = new DeferJob();
-        $job->handle($order);
-        exit;
-        $admins = (new AdminLogic())->ringFamilyTree(6);
-        dump($admins);
-        $money = 100;
-        foreach ($admins as $val){
-            dump($money * $val['real_point']);
-        }
+        $withdraw = [
+            "tradeNo" => "20180402214505",
+            "amount" => 30,
+            "name"  => "梁健",
+            "card" => "6217004220033901731"
+        ];
+        $html = (new paymentLLpay())->payment($withdraw);
+        dump($html);
         exit;
         $order = (new OrderLogic())->getAllBy();
         $c70 = [];

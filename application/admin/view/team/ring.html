@@ -33,9 +33,11 @@
             <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont  Hui-iconfont-del3"></i> 批量删除
             </a>-->
+            {if condition="in_array('admin/Team/createRing', $Think.session.ACCESS_LIST)"}
 			<a class="btn btn-primary radius" href="javascript:;" onclick="admin_add('添加微圈','{:url("admin/Team/createRing")}','', '450')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加用户
             </a>
+            {/if}
         </span>
         <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
     </div>
@@ -83,9 +85,15 @@
                 {/if}
             </td>
             <td class="f-14">
+                {if condition="in_array('admin/Team/modifyRing', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-success size-MINI radius" type="button" title="修改微圈" onclick="admin_edit('编辑微圈','{:url("admin/Team/modifyRing", ['id' => $item.admin_id])}','','450')" value="修改">
-                <input class="btn btn-primary size-MINI radius" type="button" title="返点修改" onclick="admin_edit('返点修改','{:url("admin/Team/ringPoint", ['id' => $item.admin_id])}','','340');" value="返点">
+                {/if}
+                {if condition="in_array('admin/Team/ringPoint', $Think.session.ACCESS_LIST)"}
+                <input class="btn btn-primary size-MINI radius" type="button" title="返点修改" onclick="ring_point('返点修改','{:url("admin/Team/ringPoint", ['id' => $item.admin_id])}','','340');" value="返点">
+                {/if}
+                {if condition="in_array('admin/Team/recharge', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-warning size-MINI radius" type="button" title="保证金充值" onclick="admin_recharge(this,{$item.admin_id});" value="充值">
+                {/if}
             </td>
         </tr>
         {/volist}
@@ -102,14 +110,25 @@
 {block name="script"}
 <script>
     /*用户-添加*/
+    {if condition="in_array('admin/Team/createRing', $Think.session.ACCESS_LIST)"}
     function admin_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
+    {/if}
 
+    {if condition="in_array('admin/Team/modifyRing', $Think.session.ACCESS_LIST)"}
     function admin_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
+    {/if}
 
+    {if condition="in_array('admin/Team/ringPoint', $Think.session.ACCESS_LIST)"}
+    function ring_point(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    {/if}
+
+    {if condition="in_array('admin/Team/recharge', $Think.session.ACCESS_LIST)"}
     function admin_recharge(_obj, _id)
     {
         layer.prompt({
@@ -142,6 +161,7 @@
             _ajaxPost(_url, _oData, _func);
         });
     }
+    {/if}
 
     /*function admin_point(_obj, _id)
     {

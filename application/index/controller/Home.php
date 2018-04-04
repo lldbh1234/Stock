@@ -57,8 +57,7 @@ class Home extends Controller
                     $data = input("post.");
                     $admin = (new AdminLogic())->adminByCode($data['orgCode']);
                     if($admin){
-                        $configs = cfgs();
-                        $nickname = isset($configs['nickname_prefix']) ? $configs['nickname_prefix'] : config("nickname_prefix");
+                        $nickname = cf('nickname_prefix', config("nickname_prefix"));
                         $data['username'] = $data["mobile"];
                         $data['nickname'] = $nickname . substr($data["mobile"],-4);
                         $data['face'] = config("default_face");
@@ -141,11 +140,17 @@ class Home extends Controller
             }else{
                 $mobile = input("post.mobile/s");
                 $act = input("post.act/s");
+                $ip = str_replace('.', '_', isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null);
+                $sessKey = "ip_{$ip}_{$mobile}_{$act}";
+                if (session($sessKey) && session($sessKey) >= time()) {
+                    return $this->fail("短信已发送请在60秒后再次点击发送！");
+                }
                 list($res, $code) = (new SmsLogic())->send($mobile, $act);
                 if($res){
-                    return $this->ok(['code' => $code]);
+                    session($sessKey, time()+60);
+                    return $this->ok();
                 }else{
-                    return $this->fail("发送失败！");
+                    return $this->fail("发送失败{$code}！");
                 }
             }
         }else{

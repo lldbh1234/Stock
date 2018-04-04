@@ -156,6 +156,7 @@ class User extends Base
     public function recharge()
     {
         if(request()->isPost()){
+            header("Content-type: text/html; charset=utf-8");
             $validate = \think\Loader::validate('Recharge');
             if(!$validate->scene('do')->check(input("post."))){
                 return $this->fail($validate->getError());
@@ -176,14 +177,14 @@ class User extends Base
                                 "frms_ware_category" => "2026",
                                 "user_info_mercht_userno" => $this->user_id,
                                 "user_info_bind_phone"  => $user['mobile'],
-                                "user_info_dt_register" => date("Y-m-d H:i:s", $user['create_at']),
+                                "user_info_dt_register" => date("YmdHis", $user['create_at']),
                                 "goods_name"    => "58好策略余额充值",
                                 "user_info_full_name" => $card['bank_user'],
                                 "user_info_id_no" => $card['id_card'],
                                 "user_info_identify_state" => "1",
                                 "user_info_identify_type" => "1"
                             ];
-                            $html = (new authLlpay())->getCode($this->user_id, $orderSn, 0.1, $card, $risk);
+                            $html = (new authLlpay())->getCode($this->user_id, $orderSn, $amount, $card, $risk);
                             echo $html;
                             exit;
                         }else{
@@ -212,12 +213,12 @@ class User extends Base
                 return $this->fail($validate->getError());
             }else{
                 $money = input("post.money/f");
-                $bank = (new BankLogic())->bankByNumber(input("post.bank"));
+                $user = $this->_logic->userIncCard($this->user_id);
                 $remark = [
-                    "bank" => $bank['name'],
-                    "card" => input("post.card/s"),
-                    "name" => input("post.realname/s"),
-                    "addr" => input("post.address/s"),
+                    "bank" => $user['has_one_card']['bank_name'],
+                    "card" => $user['has_one_card']['bank_card'],
+                    "name" => $user['has_one_card']['bank_user'],
+                    "addr" => $user['has_one_card']['bank_address'],
                 ];
                 $withdrawId = $this->_logic->createUserWithdraw($this->user_id, $money, $remark);
                 if($withdrawId > 0){
@@ -228,9 +229,13 @@ class User extends Base
                 }
             }
         }
-        $banks = (new BankLogic())->bankLists();
-        $this->assign("user", uInfo());
-        $this->assign("banks", $banks);
+        $user = $this->_logic->userIncCard($this->user_id);
+        $bind = $user['has_one_card'] ? 1 : 0;
+        $callback = url("index/User/withdraw");
+        $redirect = url("index/User/modifyCard", ["callback" => base64_encode($callback)]);
+        $this->assign("bind", $bind);
+        $this->assign("user", $user);
+        $this->assign("redirect", $redirect);
         return view();
     }
 

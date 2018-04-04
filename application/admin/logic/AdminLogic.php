@@ -195,6 +195,17 @@ class AdminLogic
         return Admin::destroy($ids);
     }
 
+    //是否代理商
+    public function isProxy($roleId){
+        $proxyRoleIds = [
+            Admin::SETTLE_ROLE_ID,
+            Admin::OPERATE_ROLE_ID,
+            Admin::MEMBER_ROLE_ID,
+            Admin::RING_ROLE_ID
+        ];
+        return in_array($roleId, $proxyRoleIds);
+    }
+
     public function pageTeamLists($role = "settle", $filter = [], $pageSize = null)
     {
         $where = Admin::manager();

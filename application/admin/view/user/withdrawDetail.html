@@ -6,6 +6,10 @@
 <article class="page-container">
     <form class="form form-horizontal" id="form-admin-add">
         <div class="row cl">
+            <label class="form-label col-xs-5 col-sm-4">到账金额：</label>
+            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.actual|number_format=2}</p></div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-5 col-sm-4">开户行：</label>
             <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.remark.bank|default=''}</p></div>
         </div>

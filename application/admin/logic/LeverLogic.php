@@ -12,6 +12,12 @@ class LeverLogic
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 
+    public function leverLists()
+    {
+        $lists = Lever::where(["status" => 0])->order("sort")->select();
+        return $lists ? collection($lists)->toArray() : [];
+    }
+
     public function createLever($data)
     {
         $res = Lever::create($data);

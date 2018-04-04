@@ -14,12 +14,16 @@
 <div class="page-container">
     <div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
+            {if condition="in_array('admin/Admin/rolePatchRemove', $Think.session.ACCESS_LIST)"}
             <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont  Hui-iconfont-del3"></i> 批量删除
             </a>
+            {/if}
+            {if condition="in_array('admin/Admin/roleCreate', $Think.session.ACCESS_LIST)"}
 			<a class="btn btn-primary radius" href="javascript:;" onclick="role_add('添加角色','{:url("admin/Admin/roleCreate")}','', '350')">
 				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加角色
             </a>
+            {/if}
         </span>
         <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
     </div>
@@ -49,9 +53,15 @@
                 {/if}
             </td>
             <td class="f-14">
+                {if condition="in_array('admin/Admin/roleEdit', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-success size-MINI radius" type="button" title="角色编辑" onclick="role_edit('角色编辑','{:url("admin/Admin/roleEdit", ['id' => $item.id])}','','350')" value="编辑">
-                <input class="btn btn-warning size-MINI radius" type="button" title="角色授权" onclick="role_push('角色授权','{:url("admin/permission/role-push", ['id' => $item.id])}','', '650');" value="授权">
+                {/if}
+                {if condition="in_array('admin/Permission/rolePush', $Think.session.ACCESS_LIST)"}
+                <input class="btn btn-warning size-MINI radius" type="button" title="角色授权" onclick="role_push('角色授权','{:url("admin/Permission/rolePush", ['id' => $item.id])}','', '650');" value="授权">
+                {/if}
+                {if condition="in_array('admin/Admin/roleRemove', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-danger size-MINI radius" type="button" title="角色删除" onclick="role_del(this,{$item.id});" value="删除">
+                {/if}
             </td>
         </tr>
         {/volist}
@@ -68,14 +78,19 @@
 {block name="script"}
 <script>
     /*用户-添加*/
+    {if condition="in_array('admin/Admin/roleCreate', $Think.session.ACCESS_LIST)"}
     function role_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
+    {/if}
 
+    {if condition="in_array('admin/Admin/roleEdit', $Think.session.ACCESS_LIST)"}
     function role_edit(title,url,w,h){
         layer_show(title,url,w,h);
     }
+    {/if}
 
+    {if condition="in_array('admin/Admin/roleRemove', $Think.session.ACCESS_LIST)"}
     function role_del(_obj, _id) {
         parent.layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
             var _oData = {id:_id},
@@ -97,7 +112,9 @@
             _ajaxPost(_url, _oData, _func);
         });
     }
+    {/if}
 
+    {if condition="in_array('admin/Admin/rolePatchRemove', $Think.session.ACCESS_LIST)"}
     function datadel()
     {
         var _ids = new Array();
@@ -128,8 +145,12 @@
             });
         }
     }
+    {/if}
+
+    {if condition="in_array('admin/Permission/rolePush', $Think.session.ACCESS_LIST)"}
     function role_push(title,url,w,h){
         layer_show(title,url,w,h);
     }
+    {/if}
 </script>
 {/block}

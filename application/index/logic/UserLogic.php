@@ -52,9 +52,9 @@ class UserLogic
                 $user->setDec("account", $money);
                 $data = [
                     "amount"    => $money,
-                    "actual"    => $money - config('withdraw_poundage'),
-                    "poundage"  => config('withdraw_poundage'),
-                    "out_sn"    => createOrderSn(),
+                    "actual"    => $money - cf('withdraw_poundage', config('withdraw_poundage')),
+                    "poundage"  => cf('withdraw_poundage', config('withdraw_poundage')),
+                    "out_sn"    => createStrategySn(),
                     "remark"    => json_encode($remark),
                 ];
                 $res = $user->hasManyWithdraw()->save($data);
@@ -509,7 +509,7 @@ class UserLogic
     public function pageUserRecords($userId, $type = null, $pageSize = 4){
         try{
             $where = [];
-            $type ? is_array($type) ? $where["type"] = ["IN", $type] : $where["type"] = $type : null;
+            isset($type) ? is_array($type) ? $where["type"] = ["IN", $type] : $where["type"] = $type : null;
 
             $res = User::find($userId)->hasManyRecord()->where($where)->paginate($pageSize);
             return $res ? $res->toArray() : [];

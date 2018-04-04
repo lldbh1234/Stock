@@ -21,8 +21,9 @@
             <select class="select" name="state" size="1">
                 <option value="">状态</option>
                 <option value="0" {if condition="isset($search.state) AND $search.state heq '0'"}selected{/if}>待审核</option>
-                <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>审核通过</option>
-                <option value="-1" {if condition="isset($search.state) AND $search.state heq '-1'"}selected{/if}>审核失败</option>
+                <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>代付中</option>
+                <option value="1" {if condition="isset($search.state) AND $search.state heq '2'"}selected{/if}>已到账</option>
+                <option value="-1" {if condition="isset($search.state) AND $search.state heq '-1'"}selected{/if}>已拒绝</option>
             </select>
         </span>
         <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
@@ -74,16 +75,22 @@
                 {if condition="$item.state eq 0"}
                     <span class="label label-warning radius">待审核</span>
                 {elseif condition="$item.state eq 1"}
-                    <span class="label label-success radius">审核通过</span>
+                    <span class="label label-primary radius">代付中</span>
+                {elseif condition="$item.state eq 2"}
+                    <span class="label label-success radius">已到账</span>
                 {elseif condition="$item.state eq -1"}
-                    <span class="label label-danger radius">审核失败</span>
+                    <span class="label label-danger radius">已拒绝</span>
                 {/if}
             </td>
             <td class="f-14">
-                <input class="btn btn-primary size-MINI radius" type="button" title="查看详情" onclick="show_detail('出金详情', '{:url("admin/User/withdrawDetail", ['id' => $item.id])}','','500')" value="查看详情">
+                {if condition="in_array('admin/User/withdrawDetail', $Think.session.ACCESS_LIST)"}
+                <input class="btn btn-primary size-MINI radius" type="button" title="查看详情" onclick="show_detail('出金详情', '{:url("admin/User/withdrawDetail", ['id' => $item.id])}','','540')" value="查看详情">
+                {/if}
                 {if condition='$item.state eq 0'}
+                {if condition="in_array('admin/User/withdraw', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-success size-MINI radius" type="button" title="审核通过" onclick="admin_success('{$item.id}', '1')" value="通过">
                 <input class="btn btn-danger size-MINI radius" type="button" title="审核拒绝" onclick="admin_refuse('{$item.id}', '-1')" value="拒绝">
+                {/if}
                 {/if}
             </td>
         </tr>
@@ -100,20 +107,22 @@
 
 {block name="script"}
 <script>
+    {if condition="in_array('admin/User/withdrawDetail', $Think.session.ACCESS_LIST)"}
     function show_detail(title,url,w,h){
         layer_show(title,url,w,h);
     }
+    {/if}
 
+    {if condition="in_array('admin/User/withdraw', $Think.session.ACCESS_LIST)"}
     function admin_success(_id, state)
     {
         layer.confirm('是否确认本次出金?', {icon: 1, title:'提示'}, function(index){
-
+            parent.layer.close(index);
             var _oData = {id : _id, state:state},
                 _url = '{:url("admin/User/withdraw")}',
                 _loading = parent.layer.load(1),
                 _func = function (_resp) {
                     parent.layer.close(_loading);
-                    parent.layer.close(index);
                     if (!_resp.state) {
                         layer.msg(_resp.info);
                     } else {
@@ -129,13 +138,12 @@
     function admin_refuse(_id, state)
     {
         layer.confirm('是否拒绝本次出金?', {icon: 5, title:'提示'}, function(index){
-
+            parent.layer.close(index);
             var _oData = {id : _id, state:state},
                 _url = '{:url("admin/User/withdraw")}',
                 _loading = parent.layer.load(1),
                 _func = function (_resp) {
                     parent.layer.close(_loading);
-                    parent.layer.close(index);
                     if (!_resp.state) {
                         layer.msg(_resp.info);
                     } else {
@@ -146,8 +154,7 @@
                 };
             _ajaxPost(_url, _oData, _func);
         });
-
     }
-
+    {/if}
 </script>
 {/block}

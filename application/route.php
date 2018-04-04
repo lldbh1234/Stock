@@ -36,8 +36,8 @@ Route::group("index", function () {
 });
 
 Route::group("notify", function () {
-    Route::post('auth-llpay','index/Notify/authLLpay');
-    Route::any('test','index/Notify/test');
+    Route::post('auth-llpay','index/Notify/authLLpay'); // wap认证入金
+    Route::post('payment','index/Notify/payment'); // 代付出金
 });
 
 //我的
@@ -79,6 +79,7 @@ Route::group("manager", function(){
     Route::any('children','index/Manager/children');
     Route::any('follow-evening','index/Manager/followEvening');
     Route::any('follow-position','index/Manager/followPosition');
+    Route::any('remove-capital', 'index/Manager/removeCapital'); // 可转资金转出
 
 });
 
@@ -109,6 +110,7 @@ Route::group("cattle", function () {
     Route::any('niuren-detail','index/Cattle/niurenDetail');
     Route::any('more-evening','index/Cattle/moreEvening');
     Route::any('more-position','index/Cattle/morePosition');
+    Route::any('remove-capital', 'index/Cattle/removeCapital'); // 可转资金转出
 });
 
 Route::group("stock", function () {
@@ -124,6 +126,7 @@ Route::group("cron", function () {
     Route::any('plate', 'index/Cron/grabPlateIndex'); // 板块指数
     Route::any('stock', 'index/Cron/grabStockLists'); // 股票列表
     Route::any('defer', 'index/Cron/scanOrderDefer'); // 订单递延
+    Route::any('sell', 'index/Cron/scanOrderSell'); // 订单爆仓、止盈、止损
     Route::any('niuren-rebate', 'index/Cron/handleNiurenRebate'); // 牛人返点
     Route::any('proxy-rebate', 'index/Cron/handleProxyRebate'); // 代理商返点
     Route::any('jiancang', 'index/Cron/handleJiancangRebate'); // 建仓费
@@ -164,6 +167,8 @@ Route::group([], function() {
         Route::any('/$','admin/Index/index');
         Route::any('index','admin/Index/index');
         Route::any('welcome','admin/Index/welcome');
+        Route::any('userinfo','admin/Index/userinfo');
+        Route::any('password','admin/Index/password');
         Route::any('login', 'admin/Home/login');
         Route::any('logout', 'admin/Home/logout');
 
@@ -208,6 +213,8 @@ Route::group([], function() {
             Route::any('add', 'admin/Mode/create');
             Route::any('edit', 'admin/Mode/modify');
             Route::post('delete', 'admin/Mode/remove');
+            Route::any('set-deposit', 'admin/Mode/setDeposit');
+            Route::any('set-lever', 'admin/Mode/setLever');
             //Route::any('deposit', 'admin/Mode/deposit'); //保证金列表
             //Route::any('add-deposit', 'admin/Mode/createDeposit');
             //Route::any('edit-deposit', 'admin/Mode/modifyDeposit');

@@ -57,9 +57,9 @@ class Base extends Controller
      */
     public function getUserNodeList()
     {
-        if(session("?ACCESS_LIST")){
-            $nodeActs = session("ACCESS_LIST");
-        }else{
+        //if(session("?ACCESS_LIST")){
+        //    $nodeActs = session("ACCESS_LIST");
+        //}else{
             $accessLogic = new AccessLogic();
             $menuLogic = new MenuLogic();
             if(BaseModel::ADMINISTRATOR_ID == $this->adminId){
@@ -71,7 +71,7 @@ class Base extends Controller
             }
             $nodeActs = array_filter($nodeActs);
             session("ACCESS_LIST", $nodeActs);
-        }
+        //}
         return $nodeActs;
     }
 
@@ -111,7 +111,9 @@ class Base extends Controller
                 ->setLabelFontSize(16)
                 ->setLogoPath($_SERVER['DOCUMENT_ROOT'] . trim($userInfo['face']))
                 ->setWriterByName('png');
-
+            if(!file_exists('./upload/manager_qrcode/')){
+                mkdir('./upload/manager_qrcode/');
+            }
             $qrCode->writeFile('./upload/manager_qrcode/' . $uid . '.png');
         }
     }
