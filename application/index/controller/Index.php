@@ -51,8 +51,6 @@ class Index extends Base
         $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
         $bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
         $codes = $orderLogic->getCodesBy(['state' => 3]);//持仓
-        dump($codes);
-        dump($lists);
         $codeInfo = [];
         if($lists){
             $codeInfo = (new StockLogic())->simpleData($codes);
