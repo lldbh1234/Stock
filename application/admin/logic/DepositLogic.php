@@ -13,6 +13,12 @@ class DepositLogic
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 
+    public function depositLists()
+    {
+        $lists = Deposit::where(["status" => 0])->order("sort")->select();
+        return $lists ? collection($lists)->toArray() : [];
+    }
+
     public function createDeposit($data)
     {
         $res = Deposit::create($data);

@@ -14,6 +14,16 @@ class Mode extends BaseModel
         return is_numeric($value) ? $value : 50;
     }
 
+    protected function setDepositAttr($value)
+    {
+        return is_array($value) ? implode(",", $value) : $value;
+    }
+
+    protected function setLeverAttr($value)
+    {
+        return is_array($value) ? implode(",", $value) : $value;
+    }
+
     protected function setCreateAtAttr()
     {
         return request()->time();

@@ -211,6 +211,8 @@ Route::group([], function() {
             Route::any('add', 'admin/Mode/create');
             Route::any('edit', 'admin/Mode/modify');
             Route::post('delete', 'admin/Mode/remove');
+            Route::any('set-deposit', 'admin/Mode/setDeposit');
+            Route::any('set-lever', 'admin/Mode/setLever');
             //Route::any('deposit', 'admin/Mode/deposit'); //保证金列表
             //Route::any('add-deposit', 'admin/Mode/createDeposit');
             //Route::any('edit-deposit', 'admin/Mode/modifyDeposit');

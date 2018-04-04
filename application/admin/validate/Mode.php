@@ -1,6 +1,9 @@
 <?php
 namespace app\admin\validate;
 
+use app\admin\logic\DepositLogic;
+use app\admin\logic\LeverLogic;
+use app\admin\logic\ModeLogic;
 use app\admin\model\Plugins;
 use app\admin\model\Product;
 use think\Validate;
@@ -8,7 +11,7 @@ use think\Validate;
 class Mode extends Validate
 {
     protected $rule = [
-        'id'        => 'require|gt:0',
+        'id'        => 'require|gt:0|checkId',
         'ids'       => 'require|array|checkIds',
         "mode_id"   => "require|gt:0",
         "name"      => "require|unique:mode|max:32",
@@ -21,12 +24,15 @@ class Mode extends Validate
         "loss"      => "require|float|gt:0|max:100",
         "point"     => "require|float|max:100",
         "sort"      => "number|max:255",
-        "status"    => "require|in:0,1"
+        "status"    => "require|in:0,1",
+        "deposit"   => "array|checkDeposit",
+        "lever"     => "array|checkLever"
     ];
 
     protected $message = [
         'id.require'    => '系统提示：非法操作！',
         'id.min'        => '系统提示：非法操作！',
+        'id.checkId'    => '系统提示：非法操作！',
         'ids.require'   => '请选择要操作的数据！',
         'ids.array'     => '请选择要操作的数据！',
         'ids.checkIds'  => '请选择要操作的数据！',
@@ -64,6 +70,10 @@ class Mode extends Validate
         "sort.max"      => "排序值最大为255！",
         'status.require'    => '系统提示：非法操作！',
         'status.in'         => '系统提示：非法操作！',
+        'deposit.array'     => '系统提示：非法操作！',
+        'deposit.checkDeposit' => '系统提示：非法操作！',
+        'lever.array'       => '系统提示：非法操作！',
+        'lever.checkLever'  => '系统提示：非法操作！',
     ];
 
     protected $scene = [
@@ -84,6 +94,8 @@ class Mode extends Validate
         ],
         'remove' => ['id'],
         'patch'  => ['ids'],
+        'setDeposit' => ['id', 'deposit'],
+        'setLever' => ['id', 'lever'],
     ];
 
     public function checkProduct($value)
@@ -102,5 +114,35 @@ class Mode extends Validate
     protected function checkIds($value)
     {
         return count($value) > 0;
+    }
+
+    protected function checkId($value)
+    {
+        $mode = (new ModeLogic())->modeById($value);
+        return $mode ? true : false;
+    }
+
+    protected function checkDeposit($value)
+    {
+        $deposits = (new DepositLogic())->depositLists();
+        $depositIds = array_column($deposits, 'id');
+        foreach ($value as $item){
+            if(!in_array($item, $depositIds)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected function checkLever($value)
+    {
+        $levers = (new LeverLogic())->leverLists();
+        $leverIds = array_column($levers, 'id');
+        foreach ($value as $item){
+            if(!in_array($item, $leverIds)){
+                return false;
+            }
+        }
+        return true;
     }
 }

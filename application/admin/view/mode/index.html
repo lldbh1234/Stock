@@ -42,7 +42,7 @@
 			<th>最小止损（%）</th>
 			<th>盈利抽成（%）</th>
 			<th>状态</th>
-			<th width="90">操作</th>
+			<th width="170">操作</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -70,11 +70,15 @@
 				{if condition="in_array('admin/Mode/modify', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-primary size-MINI radius" type="button" title="编辑交易模式" onclick="mode_edit('编辑交易模式','{:url("admin/Mode/modify", ['id' => $item.mode_id])}','','640')" value="编辑">
 				{/if}
+				{if condition="in_array('admin/Mode/setDeposit', $Think.session.ACCESS_LIST)"}
+				<input class="btn btn-secondary size-MINI radius" type="button" title="设置保证金" onclick="mode_deposit('设置保证金','{:url("admin/Mode/setDeposit", ['id' => $item.mode_id])}','','300')" value="保证金">
+				{/if}
+				{if condition="in_array('admin/Mode/setLever', $Think.session.ACCESS_LIST)"}
+				<input class="btn btn-warning size-MINI radius" type="button" title="设置杠杆" onclick="mode_lever('设置杠杆','{:url("admin/Mode/setLever", ['id' => $item.mode_id])}','','300')" value="杠杆">
+				{/if}
 				{if condition="in_array('admin/Mode/remove', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-danger size-MINI radius" type="button" title="删除交易模式" onclick="mode_del(this,{$item.mode_id});" value="删除">
 				{/if}
-				<!--<a title="保证金配置" href="javascript:;" onclick="mode_deposit('{$item.name}交易模式','{:url("admin/Mode/deposit", ['id' => $item.mode_id])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-hongbao"></i></a>
-				<a title="杠杆配置" href="javascript:;" onclick="mode_lever('{$item.name}交易模式','{:url("admin/Mode/lever", ['id' => $item.mode_id])}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont Hui-iconfont-text-width"></i></a>-->
 			</td>
 		</tr>
 		{/volist}
@@ -103,23 +107,17 @@
     }
 	{/if}
 
-    /*function mode_deposit(title,url){
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
+	{if condition="in_array('admin/Mode/setDeposit', $Think.session.ACCESS_LIST)"}
+	function mode_deposit(title,url,w,h){
+		layer_show(title,url,w,h);
+	}
+	{/if}
 
-    function mode_lever(title,url){
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }*/
+	{if condition="in_array('admin/Mode/setLever', $Think.session.ACCESS_LIST)"}
+	function mode_lever(title,url,w,h){
+		layer_show(title,url,w,h);
+	}
+	{/if}
 
     {if condition="in_array('admin/Mode/remove', $Think.session.ACCESS_LIST)"}
     function mode_del(_obj, _id) {
