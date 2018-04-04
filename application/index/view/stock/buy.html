@@ -77,7 +77,7 @@
 		margin-left: 6px;
 	}
 	.pattern_options span+span, .beishu_options span+span {
-		margin-left: 0;
+		margin-left: 6px;
 	}
 </style>
 {/block}
@@ -129,7 +129,7 @@
 		<section class="buy_section">
 			<div class="celue_pattern clear_fl">
 				<span class="lf pattern_title">策略模式</span>
-				<div class="lf pattern_options flex_nowrap">
+				<div class="lf pattern_options clear_fl">
 					<!--<span class="active">T+1</span>-->
                     {volist name="modes" id="item"}
 					<span data-id="{$item.mode_id}" data-profit="{$item.profit}" data-loss="{$item.loss}" data-jiancang="{$item.jiancang}" data-defer="{$item.defer}"  data-deposit="{$item.deposit}" data-lever="{$item.lever}">{$item.name}</span>
