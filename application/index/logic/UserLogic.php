@@ -509,7 +509,7 @@ class UserLogic
     public function pageUserRecords($userId, $type = null, $pageSize = 4){
         try{
             $where = [];
-            $type ? is_array($type) ? $where["type"] = ["IN", $type] : $where["type"] = $type : null;
+            isset($type) ? is_array($type) ? $where["type"] = ["IN", $type] : $where["type"] = $type : null;
 
             $res = User::find($userId)->hasManyRecord()->where($where)->paginate($pageSize);
             return $res ? $res->toArray() : [];

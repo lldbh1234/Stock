@@ -71,8 +71,8 @@
                     <li class="border_bottom">
                         <p class="m_key">可转收入</p>
                         <p class="m_value clear_fl">
-                            <span>{$user.sure_income | default=0.00}</span>
-                            <a href="" class="rt">转出</a>
+                            <span>{$user.has_one_manager.sure_income | default=0.00}</span>
+                            <a href="javascript:remove_out();" class="rt">转出</a>
                         </p>
                     </li>
                     <li class="border_bottom">
@@ -122,6 +122,7 @@
 
 {block name="script"}
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="__RESOURCE__/lib/layer/2.4/layer.js"></script>
 <script type="text/javascript">
     $(".share_erweima").click(function(){
         $(".erweima_mask").show();
@@ -132,5 +133,31 @@
     $(".erweima_mask img").click(function(e){
         e.stopPropagation();
     });
+</script>
+<script>
+    function remove_out()
+    {
+        //询问框
+        layer.confirm('是否确认转出？', {
+            title:'提示',
+            btn: ['转出','取消'] //按钮
+        }, function(){
+            var _url = '{:url("index/manager/removeCapital")}',
+                _oData = {};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){
+                    layer.msg(res.info, {icon: 1});
+                    setTimeout(window.location.reload(), 2000);
+                }else{
+//                    $alert(res.info);
+                    layer.msg(res.info);
+                }
+            });
+
+
+        }, function(){
+         //取消了
+        });
+    }
 </script>
 {/block}

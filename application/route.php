@@ -79,6 +79,7 @@ Route::group("manager", function(){
     Route::any('children','index/Manager/children');
     Route::any('follow-evening','index/Manager/followEvening');
     Route::any('follow-position','index/Manager/followPosition');
+    Route::any('remove-capital', 'index/Manager/removeCapital'); // 可转资金转出
 
 });
 
@@ -109,6 +110,7 @@ Route::group("cattle", function () {
     Route::any('niuren-detail','index/Cattle/niurenDetail');
     Route::any('more-evening','index/Cattle/moreEvening');
     Route::any('more-position','index/Cattle/morePosition');
+    Route::any('remove-capital', 'index/Cattle/removeCapital'); // 可转资金转出
 });
 
 Route::group("stock", function () {

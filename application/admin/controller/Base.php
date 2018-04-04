@@ -111,7 +111,9 @@ class Base extends Controller
                 ->setLabelFontSize(16)
                 ->setLogoPath($_SERVER['DOCUMENT_ROOT'] . trim($userInfo['face']))
                 ->setWriterByName('png');
-
+            if(!file_exists('./upload/manager_qrcode/')){
+                mkdir('./upload/manager_qrcode/');
+            }
             $qrCode->writeFile('./upload/manager_qrcode/' . $uid . '.png');
         }
     }
