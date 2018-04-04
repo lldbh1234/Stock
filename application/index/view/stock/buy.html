@@ -44,6 +44,23 @@
 	* {
         -webkit-user-select: auto!important;
     }
+    .x_y_options span {
+	    float: left;
+	    width: calc((100% - 24px) / 4);
+	    text-align: center;
+	    border: 1px solid #eaeaea;
+	    font-size: 13px;
+	    color: #999;
+	    height: 28px;
+	    line-height: 28px;
+	    margin-left: 6px;
+	    margin-bottom: 6px;
+	    position: relative;
+	    left: -6px;
+	}
+	.x_y_options span:nth-child(4n + 1) {
+	    margin-left: 6px;
+	}
 </style>
 {/block}
 
@@ -257,10 +274,33 @@
 	});
 
 
-	$(".pattern_options").on("tap" , "span" , function(){
+
+	$(".pattern_options").on("click" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
-		calcNum(true)
+		calcNum(true);
+
+		var deposit_ids = $(this).data("deposit");
+		deposit_ids = deposit_ids.split(",");
+		var lever_ids = $(this).data("lever");
+		lever_ids = lever_ids.split(",");
+
+		$(".x_y_options span").hide();
+		$(".beishu_options span").hide();
+
+
+		for( var key in deposit_ids ){
+			$(".x_y_options").find("[data-id='" + deposit_ids[key] + "']").show();
+		}
+
+		for( var key in deposit_ids ){
+			$(".beishu_options").find("[data-id='" + deposit_ids[key] + "']").show();
+		}
 	});
+
+	$(function(){
+		$(".pattern_options span:first-child").trigger("click");
+	});
+
 
 	$(".x_y_options").on("tap" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
