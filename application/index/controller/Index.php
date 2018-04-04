@@ -53,7 +53,10 @@ class Index extends Base
         $codes = $orderLogic->getCodesBy(['state' => 3]);//持仓
         dump($codes);
         dump($lists);
-        $codeInfo = $lists ? $lists : (new StockLogic())->simpleData($codes);
+        $codeInfo = [];
+        if($lists){
+            $codeInfo = (new StockLogic())->simpleData($codes);
+        }
         foreach($bestStrategyList as $k => $v)
         {
 
