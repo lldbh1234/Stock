@@ -27,6 +27,7 @@ class Index extends Base
         $stocks = $userLogic->userOptional($this->user_id);
         if($stocks){
             $codes = array_column($stocks, "code");
+            dump($codes);
             $lists = (new StockLogic())->simpleData($codes);
             array_filter($stocks, function(&$item) use ($lists){
                 $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
