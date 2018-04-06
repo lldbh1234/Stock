@@ -30,7 +30,6 @@ class StockLogic
     public function simpleData($codes)
     {
         $codes = $this->_fullCodeByCodes($codes);
-        dump($codes);
         /*$result = $this->_sinaQuotation->real($codes);
         $response = [];
         foreach ($result as $key => $value){
@@ -43,9 +42,7 @@ class StockLogic
         }
         return $response;*/
         $codes = $this->_handleCodes($codes);
-        dump($codes);
         $code = implode(',', $codes);
-        dump($code);
         $fields = 'prod_name,last_px,px_change,px_change_rate';
         $response = $this->_library->realtime($code, $fields);
         if($response){

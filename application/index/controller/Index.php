@@ -32,7 +32,7 @@ class Index extends Base
                 $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
             });
         }
-//        dump($stocks);
+        dump($stocks);
 
         $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
