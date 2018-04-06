@@ -32,7 +32,6 @@ class Index extends Base
                 $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
             });
         }
-        dump($stocks);
 
         $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
@@ -52,7 +51,7 @@ class Index extends Base
         $bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
         $codes = $orderLogic->getCodesBy(['state' => 3]);//持仓
         $codeInfo = [];
-        if($lists){
+        if($codes){
             $codeInfo = (new StockLogic())->simpleData($codes);
         }
         foreach($bestStrategyList as $k => $v)
