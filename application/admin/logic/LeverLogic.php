@@ -8,13 +8,13 @@ class LeverLogic
     public function pageLeverLists($pageSize = null)
     {
         $pageSize = $pageSize ? : config("page_size");
-        $lists = Lever::order("sort")->paginate($pageSize);
+        $lists = Lever::order("sort,id")->paginate($pageSize);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 
     public function leverLists()
     {
-        $lists = Lever::where(["status" => 0])->order("sort")->select();
+        $lists = Lever::where(["status" => 0])->order("sort,id")->select();
         return $lists ? collection($lists)->toArray() : [];
     }
 
