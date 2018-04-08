@@ -9,13 +9,13 @@ class DepositLogic
     public function pageDepositLists($pageSize = null)
     {
         $pageSize = $pageSize ? : config("page_size");
-        $lists = Deposit::order("sort")->paginate($pageSize);
+        $lists = Deposit::order("sort,id")->paginate($pageSize);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 
     public function depositLists()
     {
-        $lists = Deposit::where(["status" => 0])->order("sort")->select();
+        $lists = Deposit::where(["status" => 0])->order("sort,id")->select();
         return $lists ? collection($lists)->toArray() : [];
     }
 

@@ -7,7 +7,7 @@ class LeverLogic
 {
     public function allLevers()
     {
-        $levers = Lever::where(["status" => 0])->order("sort")->limit(3)->select();
+        $levers = Lever::where(["status" => 0])->order("sort,id")->select();
         return $levers ? collection($levers)->toArray() : [];
     }
 
