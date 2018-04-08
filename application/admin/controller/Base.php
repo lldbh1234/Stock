@@ -57,9 +57,9 @@ class Base extends Controller
      */
     public function getUserNodeList()
     {
-        //if(session("?ACCESS_LIST")){
-        //    $nodeActs = session("ACCESS_LIST");
-        //}else{
+        if(session("?ACCESS_LIST")){
+            $nodeActs = session("ACCESS_LIST");
+        }else{
             $accessLogic = new AccessLogic();
             $menuLogic = new MenuLogic();
             if(BaseModel::ADMINISTRATOR_ID == $this->adminId){
@@ -71,7 +71,7 @@ class Base extends Controller
             }
             $nodeActs = array_filter($nodeActs);
             session("ACCESS_LIST", $nodeActs);
-        //}
+        }
         return $nodeActs;
     }
 
