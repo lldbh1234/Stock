@@ -23,6 +23,10 @@ class Test extends Controller
 
     public function test()
     {
+        $job = new DeferJob();
+        $res = $job->handle(1);
+        dump($res);
+        exit;
         $withdraw = [
             "tradeNo" => "20180402214505",
             "amount" => 30,

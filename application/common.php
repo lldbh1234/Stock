@@ -137,7 +137,7 @@ if(!function_exists("cf"))
 {
     function cf($alias, $default='')
     {
-        $value = model("System")->where(["alias" => $alias])->value("val");
+        $value = (new \app\admin\model\System())->where(["alias" => $alias])->value("val");
         return is_null($value) ? $default : $value;
     }
 }
