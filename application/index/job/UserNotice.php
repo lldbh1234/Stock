@@ -51,13 +51,11 @@ class UserNotice
     public function sendSystem($data)
     {
         $saveData = [];
-        if(isset($data["has_many_fans"]))
+        if(isset($data["niurenId"]))
         {
-
             $niurenId = $data["niurenId"];
             $niuren = (new UserLogic())->userIncFans($niurenId);
             if($niuren['has_many_fans']){
-
                 foreach ($niuren['has_many_fans'] as $fans){
                     $saveData[] = [
                         "user_id" => $fans["fans_id"],
@@ -68,18 +66,15 @@ class UserNotice
 //                model("UserNotice")->saveAll($saveData);
             }
         }else{
-
-                $readyKey = $data['order_id'].'_'.$data['type'];
-                if(self::checkNotice($readyKey))
-                {
-                    $saveData[] = [
-                        "user_id"   => $data["user_id"],
-                        "title"     => $data["title"],
-                        "content"   => $data["content"],
-                    ];
-                }
-
-
+            $readyKey = $data['order_id'].'_'.$data['type'];
+            if(self::checkNotice($readyKey))
+            {
+                $saveData[] = [
+                    "user_id"   => $data["user_id"],
+                    "title"     => $data["title"],
+                    "content"   => $data["content"],
+                ];
+            }
         }
         model("UserNotice")->saveAll($saveData);
         return true;
