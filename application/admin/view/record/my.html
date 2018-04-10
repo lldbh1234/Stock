@@ -1,0 +1,76 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}代理商返点记录{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 记录管理
+    <span class="c-gray en">&gt;</span> 我的返点记录
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+    <form action="" method="get">
+    <div class="text-l">
+        <span class="select-box radius" style="width:110px;height: 31px;">
+            <select class="select radius" name="type" size="1">
+                <option value="">返点类型</option>
+                <option value="0" {if condition="isset($search.type) AND $search.type heq '0'"}selected{/if}>盈利分成</option>
+                <option value="1" {if condition="isset($search.type) AND $search.type heq '1'"}selected{/if}>建仓费分成</option>
+                <option value="2" {if condition="isset($search.type) AND $search.type heq '2'"}selected{/if}>递延费分成</option>
+            </select>
+        </span>
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="结算开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="结算结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+        <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+    </div>
+    </form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+            <span class="c-blue">返点金额总计： <strong>￥{$totalMoney|number_format=2}</strong></span>
+        </span>
+        <span class="r">共返点：<strong>{$datas.total}</strong> 笔</span>
+    </div>
+    <table class="table table-border table-bordered table-hover table-bg">
+        <thead>
+        <tr class="text-c">
+            <th>返点类型</th>
+            <th>返点金额</th>
+            <th>返点策略ID</th>
+            <th>结算时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="datas.data" id="item"}
+        <tr class="text-c admin-lists">
+            <td>{$item.type_text}</td>
+            <td>{$item.money|number_format=2}</td>
+            <td>{$item.order_id}</td>
+            <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
+        </tr>
+        {/volist}
+        {gt name="datas.total" value="0"}
+        <tr class="text-c admin-lists">
+            <td>-</td>
+            <td><strong>{$pageMoney|number_format=2}</strong></td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        {/gt}
+        </tbody>
+    </table>
+    {$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script>
+</script>
+{/block}

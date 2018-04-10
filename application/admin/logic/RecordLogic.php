@@ -154,12 +154,7 @@ class RecordLogic
         return compact("lists", "pages", "totalMoney");
     }
 
-    // 代理商个人返点记录
-    public function pageSelfRecordById($adminId, $pageSize = null)
-    {
-
-    }
-
+    // 经纪人返点记录
     public function pageManagerRecord($filter = [], $pageSize = null)
     {
         $where = [];
@@ -225,6 +220,37 @@ class RecordLogic
         return compact("lists", "pages", "totalMoney");
     }
 
+    // 代理商个人返点记录
+    public function pageSelfRecordById($adminId, $filter = [], $pageSize = null)
+    {
+        $where = ["admin_id" => $adminId];
+        // 结算时间
+        if(isset($filter['begin']) || isset($filter['end'])){
+            if(!empty($filter['begin']) && !empty($filter['end'])){
+                $_start = strtotime($filter['begin']);
+                $_end = strtotime($filter['end']);
+                $where['create_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['begin'])){
+                $_start = strtotime($filter['begin']);
+                $where['create_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['end'])){
+                $_end = strtotime($filter['end']);
+                $where['create_at'] = ["ELT", $_end];
+            }
+        }
+        // 分成类型
+        if(isset($filter['type']) && is_numeric($filter['type'])){
+            $where["type"] = $filter['type'];
+        }
+        $totalMoney = AdminRecord::where($where)->sum("money");
+        $_lists = AdminRecord::where($where)
+            ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalMoney");
+    }
+
+    // 代理商返点记录
     public function pageAdminRecord($filter = [], $pageSize = null)
     {
         $where = Admin::manager();

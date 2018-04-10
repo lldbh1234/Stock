@@ -341,6 +341,7 @@ Route::group([], function() {
             Route::any('manager', 'admin/Record/manager'); // 经纪人返点
             Route::any('proxy', 'admin/Record/proxy'); // 后台代理商
             Route::any('defer', 'admin/Record/defer'); // 递延费自动扣除
+            Route::any('my', 'admin/Record/my'); // 我的返佣记录
         });
     });
 });
