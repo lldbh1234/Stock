@@ -15,6 +15,12 @@ class Record extends Base
         $this->_logic = new RecordLogic();
     }
 
+    // 代理商个人返点记录
+    public function my()
+    {
+        $res = $this->_logic->pageSelfRecordById();
+    }
+
     // 充值记录
     public function recharge()
     {

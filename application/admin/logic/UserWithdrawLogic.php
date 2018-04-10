@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\logic;
 
+use app\admin\model\Admin;
 use app\admin\model\User;
 use app\admin\model\UserWithdraw;
 use app\common\payment\paymentLLpay;
@@ -16,21 +17,17 @@ class UserWithdrawLogic
 
     public function pageUserWithdrawLists($filter = [], $pageSize = null)
     {
-//        $where = Admin::manager();
         $where = [];
+        $hasWhere = [];
+        $myUserIds = Admin::userIds();
+        $myUserIds ? $where["stock_user_withdraw.user_id"] = ["IN", $myUserIds] : null;
         if(isset($filter['username']) && !empty($filter['username'])){//用户
-            $parent_ids_by_username = User::where(['username' => ["LIKE", "%{$filter['username']}%"]])->column('user_id');
-            $where['user_id'] = ['IN', $parent_ids_by_username];
+            $_username = trim($filter['username']);
+            $hasWhere["username"] = ["LIKE", "%{$_username}%"];
         }
 
         if(isset($filter['mobile']) && !empty($filter['mobile'])){//用户
-            $parent_ids_by_mobile = User::where(['mobile' => ["LIKE", "%{$filter['mobile']}%"]])->column('user_id');
-            if(isset($parent_ids_by_username)){
-                $where['user_id'] = ['IN', array_intersect($parent_ids_by_username, $parent_ids_by_mobile)];
-            }else{
-                $where['user_id'] = ['IN', $parent_ids_by_mobile];
-            }
-
+            $hasWhere["mobile"] = trim($filter['mobile']);
         }
 
         if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,-1])){//状态
@@ -39,7 +36,8 @@ class UserWithdrawLogic
 
         $pageSize = $pageSize ? : config("page_size");
         //推荐人-微圈-微会员
-        $lists = UserWithdraw::with(['hasOneUser', 'hasOneAdmin',])
+        $lists = UserWithdraw::hasWhere("hasOneUser", $hasWhere)
+            ->with(['hasOneUser', 'hasOneAdmin'])
             ->where($where)
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];

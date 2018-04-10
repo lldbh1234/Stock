@@ -28,8 +28,8 @@
     <div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
             <span class="c-blue">充值总计： <strong>￥{$totalAmount|number_format=2}</strong></span>
-            <span class="c-green ml-15">到账总计：<strong>￥{$totalActual|number_format=2}</strong></span>
-            <span class="c-orange ml-15">手续费总计：<strong>￥{$totalPoundage|number_format=2}</strong></span>
+            <!--<span class="c-green ml-15">到账总计：<strong>￥{$totalActual|number_format=2}</strong></span>
+            <span class="c-orange ml-15">手续费总计：<strong>￥{$totalPoundage|number_format=2}</strong></span>-->
         </span>
         <span class="r">共充值：<strong>{$datas.total}</strong> 笔</span>
     </div>
@@ -43,8 +43,8 @@
             <th>微会员</th>
             <th>经纪人</th>
             <th>充值金额</th>
-            <th>到账金额</th>
-            <th>手续费</th>
+            <!--<th>到账金额</th>
+            <th>手续费</th>-->
             <th>充值时间</th>
         </tr>
         </thead>
@@ -58,8 +58,8 @@
             <td>{$item.belongs_to_user.has_one_admin.has_one_parent.username|default='无'}</td>
             <td>{$item.belongs_to_user.has_one_parent.username|default='无'}</td>
             <td>{$item.amount|number_format=2}</td>
-            <td>{$item.actual|number_format=2}</td>
-            <td>{$item.poundage|number_format=2}</td>
+            <!--<td>{$item.actual|number_format=2}</td>
+            <td>{$item.poundage|number_format=2}</td>-->
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
         </tr>
         {/volist}
@@ -72,8 +72,8 @@
             <td>-</td>
             <td>-</td>
             <td><strong>{$pageAmount|number_format=2}</strong></td>
-            <td><strong>{$pageActual|number_format=2}</strong></td>
-            <td><strong>{$pagePoundage|number_format=2}</strong></td>
+            <!--<td><strong>{$pageActual|number_format=2}</strong></td>
+            <td><strong>{$pagePoundage|number_format=2}</strong></td>-->
             <td>-</td>
         </tr>
         {/gt}

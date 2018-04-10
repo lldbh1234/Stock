@@ -154,6 +154,12 @@ class RecordLogic
         return compact("lists", "pages", "totalMoney");
     }
 
+    // 代理商个人返点记录
+    public function pageSelfRecordById($adminId, $pageSize = null)
+    {
+
+    }
+
     public function pageManagerRecord($filter = [], $pageSize = null)
     {
         $where = [];
