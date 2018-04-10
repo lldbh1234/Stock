@@ -99,4 +99,10 @@ class Admin extends BaseModel
     {
         return $this->hasMany("\\app\\common\\model\\AdminRecord", "admin_id", "admin_id");
     }
+
+    // 银行卡
+    public function hasOneCard()
+    {
+        return $this->hasOne("\\app\\common\\model\\AdminCard", "admin_id", "admin_id");
+    }
 }

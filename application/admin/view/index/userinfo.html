@@ -56,6 +56,14 @@
             </div>
         </div>
         {/if}
+        {in name="admin.role" value="2,3,4,5"}
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" id="bank-btn" onclick="my_bank('绑定银行卡','{:url("admin/Index/myCard")}','','530')" value="&nbsp;&nbsp;绑定银行卡&nbsp;&nbsp;">
+                <input class="btn btn-success radius" type="button" id="withdraw-btn" value="&nbsp;&nbsp;手续费提现&nbsp;&nbsp;">
+            </div>
+        </div>
+        {/in}
     </form>
 </article>
 {/block}
@@ -66,5 +74,10 @@
 
 {block name="script"}
 <script>
+    {in name="admin.role" value="2,3,4,5"}
+    function my_bank(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    {/in}
 </script>
 {/block}

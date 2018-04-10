@@ -3,6 +3,8 @@ namespace app\admin\logic;
 
 use app\admin\model\Admin;
 use app\admin\model\Role;
+use app\common\payment\authLlpay;
+use think\Db;
 
 class AdminLogic
 {
@@ -182,6 +184,54 @@ class AdminLogic
     {
         $admin = Admin::find($id);
         return $admin ? $admin->toArray() : [];
+    }
+
+    public function adminIncRole($id)
+    {
+        $admin = Admin::with("hasOneRole")->find($id);
+        return $admin ? $admin->toArray() : [];
+    }
+
+    public function adminIncCard($id)
+    {
+        $admin = Admin::with(["hasOneCard" => ["hasOneProvince", "hasOneCity"]])->find($id);
+        return $admin ? $admin->toArray() : [];
+    }
+
+    // 绑定银行卡
+    public function saveAdminCard($adminId, $data)
+    {
+        Db::startTrans();
+        try{
+            $user = Admin::find($adminId);
+            if($user->hasOneCard){
+                $user->hasOneCard->save($data);
+            }else{
+                $user->hasOneCard()->save($data);
+            }
+            $llpayUserId = "PROXY{$adminId}";
+            $llpayBanks = (new authLlpay())->bankBindList($llpayUserId);
+            if($llpayBanks){
+                $newCardNo = substr($data['bank_card'], -4);
+                $cardNos = array_column($llpayBanks, "card_no");
+                if(!in_array($newCardNo, $cardNos)){
+                    // 新卡
+                    foreach ($llpayBanks as $item){
+                        $noAgree = $item['no_agree'];
+                        $temp = (new authLlpay())->unbindBank($llpayUserId, $noAgree);
+                        if(!$temp){
+                            Db::rollback();
+                            return false;
+                        }
+                    }
+                }
+            }
+            Db::commit();
+            return true;
+        } catch (\Exception $e){
+            Db::rollback();
+            return false;
+        }
     }
 
     public function adminUpdate($data)

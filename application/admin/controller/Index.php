@@ -2,6 +2,8 @@
 namespace app\admin\controller;
 
 use app\admin\logic\AdminLogic;
+use app\admin\logic\BankLogic;
+use app\admin\logic\RegionLogic;
 use think\Request;
 
 class Index extends Base
@@ -35,7 +37,8 @@ class Index extends Base
         if(request()->isPost()){
 
         }
-        $this->assign("admin", manager());
+        $admin = (new AdminLogic())->adminIncRole($this->adminId);
+        $this->assign("admin", $admin);
         return view();
     }
 
@@ -61,5 +64,53 @@ class Index extends Base
             }
         }
         return view();
+    }
+
+    //绑定银行卡
+    public function myCard()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Card');
+            if(!$validate->scene('modify')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                $res = (new AdminLogic())->saveAdminCard($this->adminId, $data);
+                if($res){
+                    return $this->ok();
+                }else{
+                    return $this->fail("绑定银行卡失败，请稍后重试！");
+                }
+            }
+        }
+        $admin = (new AdminLogic())->adminIncCard($this->adminId);
+        $banks = (new BankLogic())->bankLists();
+        $_regionLogic = new RegionLogic();
+        if($admin['has_one_card']){
+            $provinces = $_regionLogic->regionByParentId();
+            $citys = $_regionLogic->regionByParentId($admin['has_one_card']['bank_province']);
+        }else{
+            $provinces = $_regionLogic->regionByParentId();
+            $citys = $_regionLogic->regionByParentId($provinces[0]['id']);
+        }
+        $this->assign("admin", $admin);
+        $this->assign("banks", $banks);
+        $this->assign("provinces", $provinces);
+        $this->assign("citys", $citys);
+        return view("card");
+    }
+
+    public function getRegion()
+    {
+        if(request()->isPost()){
+            $id = input("post.id", null);
+            if(!is_null($id)){
+                $citys = (new RegionLogic())->regionByParentId($id);
+                return $this->ok($citys);
+            }else {
+                return $this->fail("非法操作");
+            }
+        }
+        return $this->fail("非法操作");
     }
 }
