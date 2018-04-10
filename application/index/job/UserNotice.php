@@ -63,7 +63,7 @@ class UserNotice
                         "content" => "您关注的牛人“{$niuren['username']}”有新的操盘动向，请注意查看！",
                     ];
                 }
-                model("UserNotice")->saveAll($saveData);
+                //model("UserNotice")->saveAll($saveData);
             }
         }else{
             $readyKey = $data['order_id'].'_'.$data['type'];
