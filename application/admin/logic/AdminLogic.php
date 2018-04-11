@@ -3,6 +3,7 @@ namespace app\admin\logic;
 
 use app\admin\model\Admin;
 use app\admin\model\Role;
+use app\admin\model\AdminWithdraw;
 use app\common\payment\authLlpay;
 use think\Db;
 
@@ -261,6 +262,30 @@ class AdminLogic
             }
         }
         return 0;
+    }
+
+    public function pageAdminWithdraws($adminId, $filter = [], $pageSize = null)
+    {
+        $where = ["admin_id" => $adminId, "state" => ["NEQ", -1]];
+        if(isset($filter['begin']) || isset($filter['end'])){
+            if(!empty($filter['begin']) && !empty($filter['end'])){
+                $_start = strtotime($filter['begin']);
+                $_end = strtotime($filter['end']);
+                $where['create_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['begin'])){
+                $_start = strtotime($filter['begin']);
+                $where['create_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['end'])){
+                $_end = strtotime($filter['end']);
+                $where['create_at'] = ["ELT", $_end];
+            }
+        }
+        if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0, 1, 2])){//状态
+            $where['state'] = $filter['state'];
+        }
+        $pageSize = $pageSize ? : config("page_size");
+        $lists = AdminWithdraw::where($where)->order("id DESC")->paginate($pageSize, false, ['query'=>request()->param()]);
+        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 
     public function adminUpdate($data)

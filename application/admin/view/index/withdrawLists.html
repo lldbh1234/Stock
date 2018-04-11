@@ -1,0 +1,93 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}提现记录{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 个人中心
+    <span class="c-gray en">&gt;</span> 提现记录
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+    <form action="" method="get">
+    <div class="text-c">
+        <span class="select-box radius" style="width:80px;height: 31px;">
+            <select class="select radius" name="state" size="1">
+                <option value="">状态</option>
+                <option value="0" {if condition="isset($search.state) AND $search.state heq '0'"}selected{/if}>待审核</option>
+                <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>代付中</option>
+                <option value="2" {if condition="isset($search.state) AND $search.state heq '2'"}selected{/if}>已到账</option>
+            </select>
+        </span>
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="结算开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="结算结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+        <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+    </div>
+    </form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+        <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+    </div>
+    <table class="table table-border table-bordered table-hover table-bg">
+        <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" value="" name=""></th>
+            <th width="40">ID</th>
+            <th>出金金额</th>
+            <th>手续费</th>
+            <th>实际到账</th>
+            <th>到账银行</th>
+            <th>银行卡号</th>
+            <th>持卡人</th>
+            <th>出金时间</th>
+            <th>状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        {empty name="datas.data"}
+        <tr class="text-c admin-lists">
+            <td colspan="10">暂时没有匹配到数据</td>
+        </tr>
+        {/empty}
+
+        {volist name="datas.data" id="item"}
+        <tr class="text-c admin-lists">
+            <td width="25"><input type="checkbox" value="{$item.id}" name=""></td>
+            <td width="40">{$item.id}</td>
+            <td>{$item.amount | default='0.00'}</td>
+            <td>{$item.poundage | default='0.00'}</td>
+            <td>{$item.actual | default='0.00'}</td>
+            <td>{$item.remark.bank}</td>
+            <td>{$item.remark.card}</td>
+            <td>{$item.remark.name}</td>
+            <td>{$item.create_at | date='Y-m-d H:i:s', ###}</td>
+            <td>
+                {if condition="$item.state.value eq 0"}
+                    <span class="label label-warning radius">{$item.state.text}</span>
+                {elseif condition="$item.state.value eq 1"}
+                    <span class="label label-primary radius">{$item.state.text}</span>
+                {elseif condition="$item.state.value eq 2"}
+                    <span class="label label-success radius">{$item.state.text}</span>
+                {elseif condition="$item.state.value eq -1"}
+                    <span class="label label-danger radius">{$item.state.text}</span>
+                {/if}
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script>
+</script>
+{/block}

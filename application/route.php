@@ -172,6 +172,7 @@ Route::group([], function() {
         Route::any('my-card','admin/Index/myCard');
         Route::post('get-region', 'admin/Index/getRegion');
         Route::any('withdraw','admin/Index/withdraw'); //提现
+        Route::any('withdraw-list','admin/Index/withdrawList'); //提现记录
         Route::any('password','admin/Index/password');
         Route::any('login', 'admin/Home/login');
         Route::any('logout', 'admin/Home/logout');

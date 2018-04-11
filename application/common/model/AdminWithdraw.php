@@ -17,6 +17,17 @@ class AdminWithdraw extends BaseModel
         return request()->time();
     }
 
+    public function getStateAttr($value)
+    {
+        $status = [1 => '代付中', 0 => '待审核', 2=> '已到账', -1 => "已拒绝"];
+        return ["value" => $value, "text" => $status[$value]];
+    }
+
+    public function getRemarkAttr($value)
+    {
+        return json_decode($value, true);
+    }
+
     public function hasOneAdmin()
     {
         return $this->hasOne('\app\\common\\model\\Admin', 'admin_id', 'admin_id');

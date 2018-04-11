@@ -136,6 +136,15 @@ class Index extends Base
         return view();
     }
 
+    public function withdrawList()
+    {
+        $res = (new AdminLogic())->pageAdminWithdraws($this->adminId, input(""));
+        $this->assign("datas", $res['lists']);
+        $this->assign("pages", $res['pages']);
+        $this->assign("search", input(""));
+        return view("withdrawLists");
+    }
+
     public function getRegion()
     {
         if(request()->isPost()){
