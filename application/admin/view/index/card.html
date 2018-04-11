@@ -3,6 +3,14 @@
 {block name="title"}绑定银行卡{/block}
 
 {block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 个人中心
+    <span class="c-gray en">&gt;</span> 银行卡信息
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
 <article class="page-container">
     <form class="form form-horizontal" id="form-team-user-add">
         <div class="row cl">
@@ -63,6 +71,12 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>预留手机号：</label>
             <div class="formControls col-xs-8 col-sm-7">
                 <input type="text" class="input-text" value="{$admin.has_one_card.bank_mobile|default=''}" placeholder="请输入银行预留手机号" name="bank_mobile">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"></label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <span class="text-danger">注意：银行卡绑定后不可修改，请仔细核对信息</span>
             </div>
         </div>
         <div class="row cl">
