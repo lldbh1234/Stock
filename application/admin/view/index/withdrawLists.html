@@ -14,6 +14,7 @@
 <div class="page-container">
     <form action="" method="get">
     <div class="text-c">
+        <input type="text" class="input-text radius" style="width:200px;" placeholder="订单号" name="trade_no" value="{$search.trade_no|default=''}">
         <span class="select-box radius" style="width:80px;height: 31px;">
             <select class="select radius" name="state" size="1">
                 <option value="">状态</option>
@@ -35,6 +36,7 @@
         <tr class="text-c">
             <th width="25"><input type="checkbox" value="" name=""></th>
             <th width="40">ID</th>
+            <th>订单号</th>
             <th>出金金额</th>
             <th>手续费</th>
             <th>实际到账</th>
@@ -48,7 +50,7 @@
         <tbody>
         {empty name="datas.data"}
         <tr class="text-c admin-lists">
-            <td colspan="10">暂时没有匹配到数据</td>
+            <td colspan="11">暂时没有匹配到数据</td>
         </tr>
         {/empty}
 
@@ -56,6 +58,7 @@
         <tr class="text-c admin-lists">
             <td width="25"><input type="checkbox" value="{$item.id}" name=""></td>
             <td width="40">{$item.id}</td>
+            <td>{$item.out_sn}</td>
             <td>{$item.amount | default='0.00'}</td>
             <td>{$item.poundage | default='0.00'}</td>
             <td>{$item.actual | default='0.00'}</td>

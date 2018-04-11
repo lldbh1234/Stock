@@ -105,13 +105,35 @@ class Record extends Base
         return view();
     }
 
+    //代理商出金列表
     public function proxyWithdrawLists()
     {
         $_res = $this->_logic->pageProxyWithdrawLists(input(''));
+        $pageAmount = array_sum(collection($_res['lists']['data'])->column("amount"));
+        $pageActual = array_sum(collection($_res['lists']['data'])->column("actual"));
+        $pagePoundage = array_sum(collection($_res['lists']['data'])->column("poundage"));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalAmount", $_res['totalAmount']);
+        $this->assign("totalActual", $_res['totalActual']);
+        $this->assign("totalPoundage", $_res['totalPoundage']);
+        $this->assign("pageAmount", $pageAmount);
+        $this->assign("pageActual", $pageActual);
+        $this->assign("pagePoundage", $pagePoundage);
         $this->assign("search", input(""));
         return view();
+    }
+
+    //代理商出金详情
+    public function proxyWithdrawDetail($id = null)
+    {
+        $withdraw = $this->_logic->proxyWithdrawById($id);
+        if($withdraw){
+            $this->assign("withdraw", $withdraw);
+            return view();
+        }else{
+            return "非法操作！";
+        }
     }
 
     // 递延费扣除记录

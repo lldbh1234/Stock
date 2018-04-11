@@ -345,6 +345,9 @@ Route::group([], function() {
             Route::any('niuren', 'admin/Record/niuren'); //牛人
             Route::any('manager', 'admin/Record/manager'); // 经纪人返点
             Route::any('proxy', 'admin/Record/proxy'); // 后台代理商
+            Route::any('proxy-withdraw', 'admin/Record/proxyWithdrawLists'); // 后台代理商出金列表
+            Route::any('proxy-withdraw-detail', 'admin/Record/proxyWithdrawDetail'); // 后台代理商出金详情
+            Route::post('do-proxy-withdraw', 'admin/Record/doProxyWithdraw'); // 后台代理商出金操作
             Route::any('defer', 'admin/Record/defer'); // 递延费自动扣除
             Route::any('my', 'admin/Record/my'); // 我的返佣记录
         });

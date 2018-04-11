@@ -4,6 +4,7 @@ namespace app\admin\logic;
 
 use app\admin\model\Admin;
 use app\admin\model\AdminRecord;
+use app\admin\model\AdminWithdraw;
 use app\admin\model\DeferRecord;
 use app\admin\model\User;
 use app\admin\model\UserManagerRecord;
@@ -296,6 +297,79 @@ class RecordLogic
         $lists = $_lists->toArray();
         $pages = $_lists->render();
         return compact("lists", "pages", "totalMoney");
+    }
+
+    public function pageProxyWithdrawLists($filter = [], $pageSize = null)
+    {
+        $where = Admin::manager();
+        $hasWhere = [];
+        if(isset($where['admin_id'])){
+            $where['stock_admin_withdraw.admin_id'] = $where['admin_id'];
+            unset($where['admin_id']);
+        }
+        // 订单号
+        if(isset($filter['trade_no']) && is_numeric($filter['trade_no'])){
+            $where["stock_admin_withdraw.out_sn"] = $filter['trade_no'];
+        }
+        // 代理商
+        if(isset($filter['proxy']) && is_numeric($filter['proxy'])){
+            $_proxy = trim($filter['proxy']);
+            $hasWhere["nickname|username"] = ["LIKE", "%{$_proxy}%"];
+        }
+        // 手机
+        if(isset($filter['mobile']) && is_numeric($filter['mobile'])){
+            $hasWhere["mobile"] = trim($filter['mobile']);
+        }
+        // 状态
+        if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,2,-1])){//状态
+            $where['stock_admin_withdraw.state'] = $filter['state'];
+        }
+        // 申请时间
+        if(isset($filter['create_begin']) || isset($filter['create_end'])){
+            if(!empty($filter['create_begin']) && !empty($filter['create_end'])){
+                $_start = strtotime($filter['create_begin']);
+                $_end = strtotime($filter['create_end']);
+                $where['stock_admin_withdraw.create_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['create_begin'])){
+                $_start = strtotime($filter['create_begin']);
+                $where['stock_admin_withdraw.create_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['create_end'])){
+                $_end = strtotime($filter['create_end']);
+                $where['stock_admin_withdraw.create_at'] = ["ELT", $_end];
+            }
+        }
+        // 审核时间
+        if(isset($filter['update_begin']) || isset($filter['update_end'])){
+            if(!empty($filter['update_begin']) && !empty($filter['update_end'])){
+                $_start = strtotime($filter['update_begin']);
+                $_end = strtotime($filter['update_end']);
+                $where['stock_admin_withdraw.update_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['update_begin'])){
+                $_start = strtotime($filter['update_begin']);
+                $where['stock_admin_withdraw.update_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['update_end'])){
+                $_end = strtotime($filter['update_end']);
+                $where['stock_admin_withdraw.update_at'] = ["ELT", $_end];
+            }
+        }
+        $pageSize = $pageSize ? : config("page_size");
+        $totalAmount = AdminWithdraw::hasWhere("belongsToAdmin", $hasWhere)->where($where)->sum("amount");
+        $totalActual = AdminWithdraw::hasWhere("belongsToAdmin", $hasWhere)->where($where)->sum("actual");
+        $totalPoundage = AdminWithdraw::hasWhere("belongsToAdmin", $hasWhere)->where($where)->sum("poundage");
+        $_lists = AdminWithdraw::hasWhere("belongsToAdmin", $hasWhere)
+                    ->with(["belongsToAdmin", "hasOneUpdateBy"])
+                    ->where($where)
+                    ->order("id DESC")
+                    ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalAmount", "totalActual", "totalPoundage");
+    }
+
+    public function proxyWithdrawById($id)
+    {
+        $withdraw = AdminWithdraw::with("belongsToAdmin,hasOneUpdateBy")->find($id);
+        return $withdraw ? $withdraw->toArray() : [];
     }
 
     public function pageDeferRecord($filter = [], $pageSize = null)

@@ -28,9 +28,9 @@ class AdminWithdraw extends BaseModel
         return json_decode($value, true);
     }
 
-    public function hasOneAdmin()
+    public function belongsToAdmin()
     {
-        return $this->hasOne('\app\\common\\model\\Admin', 'admin_id', 'admin_id');
+        return $this->belongsTo('\app\\common\\model\\Admin', 'admin_id', 'admin_id');
     }
 
     public function hasOneUpdateBy()
