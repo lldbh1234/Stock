@@ -136,6 +136,28 @@ class Record extends Base
         }
     }
 
+    // 代理商出金操作
+    public function doProxyWithdraw()
+    {
+        if(request()->isPost())
+        {
+            $validate = \think\Loader::validate('AdminWithDraw');
+            if(!$validate->scene('do')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $id = input('post.id/d');
+                $state = input('post.state/d');
+                list($res, $msg) = $this->_logic->doProxyWithdraw($id, $state);
+                if($res){
+                    return $this->ok();
+                } else {
+                    return $this->fail($msg);
+                }
+            }
+        }
+        return $this->fail("系统提示：非法操作！");
+    }
+
     // 递延费扣除记录
     public function defer()
     {

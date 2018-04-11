@@ -10,6 +10,8 @@ use app\admin\model\User;
 use app\admin\model\UserManagerRecord;
 use app\admin\model\UserNiurenRecord;
 use app\admin\model\UserRecharge;
+use app\common\payment\paymentLLpay;
+use think\Db;
 
 class RecordLogic
 {
@@ -299,6 +301,7 @@ class RecordLogic
         return compact("lists", "pages", "totalMoney");
     }
 
+    // 代理商出金记录
     public function pageProxyWithdrawLists($filter = [], $pageSize = null)
     {
         $where = Admin::manager();
@@ -366,10 +369,66 @@ class RecordLogic
         return compact("lists", "pages", "totalAmount", "totalActual", "totalPoundage");
     }
 
+    // 代理商出金详情
     public function proxyWithdrawById($id)
     {
         $withdraw = AdminWithdraw::with("belongsToAdmin,hasOneUpdateBy")->find($id);
         return $withdraw ? $withdraw->toArray() : [];
+    }
+
+    public function doProxyWithdraw($id, $state)
+    {
+        Db::startTrans();
+        try{
+            Db::rollback();
+            $withdraw = AdminWithdraw::find($id);
+            if($state == 1){
+                // 审核通过
+                // 代付接口
+                $withdrawData = [
+                    "tradeNo" => $withdraw->out_sn,
+                    "amount" => $withdraw->actual,
+                    "createAt" => $withdraw->create_at,
+                    "name" => $withdraw->remark["name"],
+                    "card" => $withdraw->remark["card"],
+                    "info"  => "58好策略代理商佣金提现",
+                    "notify" => url("index/Notify/proxyPayment", "", true, true)
+                ];
+                $response = (new paymentLLpay())->payment($withdrawData);
+                if($response['ret_code'] == '0000'){
+                    // 代付申请成功
+                    // 订单状态更改
+                    $data = [
+                        "id" => $id,
+                        "state" => $state,
+                        "update_by" => isLogin()
+                    ];
+                    AdminWithdraw::update($data);
+                }else{
+                    // 代付申请失败
+                    Db::rollback();
+                    return [false, "代付平台错误：{$response['ret_msg']}！"];
+                }
+            }elseif($state == -1){
+                // 审核拒绝
+                // 订单状态更改
+                $data = [
+                    "id" => $id,
+                    "state" => $state,
+                    "update_by" => isLogin()
+                ];
+                AdminWithdraw::update($data);
+                // 用户余额回退
+                $admin = Admin::find($withdraw->admin_id);
+                $admin->setInc("total_fee", $withdraw->amount);
+            }
+            Db::commit();
+            return [true, '操作成功！'];
+        }catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return [false, '系统提示：异常错误！'];
+        }
     }
 
     public function pageDeferRecord($filter = [], $pageSize = null)

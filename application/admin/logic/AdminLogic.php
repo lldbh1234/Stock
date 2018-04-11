@@ -266,8 +266,7 @@ class AdminLogic
 
     public function pageAdminWithdraws($adminId, $filter = [], $pageSize = null)
     {
-        $where = ["admin_id" => $adminId, "state" => ["NEQ", -1]];
-
+        $where = ["admin_id" => $adminId];
         if(isset($filter['trade_no']) && !empty($filter['trade_no'])){ //订单号
             $where['out_sn'] = $filter['trade_no'];
         }

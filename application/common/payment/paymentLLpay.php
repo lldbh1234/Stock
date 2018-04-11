@@ -29,9 +29,9 @@ class paymentLLpay
             "money_order" => $withdraw['amount'],
             "acct_name" => $withdraw['name'],
             "card_no" => $withdraw['card'],
-            "info_order" => "58好策略余额提现",
+            "info_order" => isset($withdraw['info']) ? $withdraw['info'] : "58好策略余额提现",
             "flag_card" => "0",
-            "notify_url" => $this->notifyUrl,
+            "notify_url" => isset($withdraw['notify']) ? $withdraw['notify'] : $this->notifyUrl,
             "platform" => "",
             "api_version" => "1.0"
         ];
