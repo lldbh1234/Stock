@@ -76,7 +76,7 @@ class Home extends Controller
                         $data['nickname'] = $nickname . substr($data["mobile"],-4);
                         $data['face'] = config("default_face");
                         $data['admin_id'] = $admin['admin_id'];
-                        $data['parent_id'] = input("post.pid/d", 0);
+                        $data['parent_id'] = input("post.parent_id/d", 0);
                         $userId = (new UserLogic())->createUser($data);
                         if($userId > 0){
                             $user = (new UserLogic())->userById($userId);
