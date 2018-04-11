@@ -107,9 +107,9 @@ class Base extends Controller
                 ->setForegroundColor(array('r' => 0, 'g' => 0, 'b' => 0, 'a' => 0))
                 ->setBackgroundColor(array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 0))
 //            ->setBackgroundColor(array('r' => 255, 'g' => 0, 'b' => 0, 'a' => 0))
-                ->setLabel('经纪人：' . $userInfo['username'], '.')
+                //->setLabel('经纪人：' . $userInfo['username'], '.')
                 ->setLabelFontSize(16)
-                ->setLogoPath($_SERVER['DOCUMENT_ROOT'] . trim($userInfo['face']))
+                //->setLogoPath($_SERVER['DOCUMENT_ROOT'] . trim($userInfo['face']))
                 ->setWriterByName('png');
             if(!file_exists('./upload/manager_qrcode/')){
                 mkdir('./upload/manager_qrcode/');

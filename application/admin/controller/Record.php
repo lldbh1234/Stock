@@ -105,6 +105,15 @@ class Record extends Base
         return view();
     }
 
+    public function proxyWithdrawLists()
+    {
+        $_res = $this->_logic->pageProxyWithdrawLists(input(''));
+        $this->assign("datas", $_res['lists']);
+        $this->assign("pages", $_res['pages']);
+        $this->assign("search", input(""));
+        return view();
+    }
+
     // 递延费扣除记录
     public function defer()
     {
