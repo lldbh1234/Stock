@@ -93,11 +93,47 @@ class Index extends Base
             $provinces = $_regionLogic->regionByParentId();
             $citys = $_regionLogic->regionByParentId($provinces[0]['id']);
         }
+        $callback = input("?get.callback") ? base64_decode(input("get.callback")) : "";
         $this->assign("admin", $admin);
         $this->assign("banks", $banks);
         $this->assign("provinces", $provinces);
         $this->assign("citys", $citys);
+        $this->assign("callback", $callback);
         return view("card");
+    }
+
+    public function withdraw()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Withdraw');
+            if(!$validate->scene('do')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $_adminLogic = new AdminLogic();
+                $money = input("post.money/f");
+                $admin = $_adminLogic->adminIncCard($this->adminId);
+                $remark = [
+                    "bank" => $admin['has_one_card']['bank_name'],
+                    "card" => $admin['has_one_card']['bank_card'],
+                    "name" => $admin['has_one_card']['bank_user'],
+                    "addr" => $admin['has_one_card']['bank_address'],
+                ];
+                $withdrawId = $_adminLogic->createAdminWithdraw($this->adminId, $money, $remark);
+                if($withdrawId > 0){
+                    return $this->ok();
+                }else{
+                    return $this->fail("提现申请失败！");
+                }
+            }
+        }
+        $admin = (new AdminLogic())->adminIncCard($this->adminId);
+        $bind = $admin['has_one_card'] ? 1 : 0;
+        $callback = url("admin/Index/withdraw");
+        $redirect = url("admin/Index/myCard", ["callback" => base64_encode($callback)]);
+        $this->assign("bind", $bind);
+        $this->assign("admin", $admin);
+        $this->assign("redirect", $redirect);
+        return view();
     }
 
     public function getRegion()

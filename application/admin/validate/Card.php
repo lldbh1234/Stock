@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\validate;
 
+use app\admin\logic\AdminLogic;
 use app\admin\logic\BankLogic;
 use app\admin\logic\RegionLogic;
 use think\Validate;
@@ -8,7 +9,7 @@ use think\Validate;
 class Card extends Validate
 {
     protected $rule = [
-        'bank_user' => "require|max:32",
+        'bank_user' => "require|max:32|checkCard",
         'bank_name' => 'require|checkBank',
         'bank_province' => 'require|checkProvince',
         'bank_city' => 'require|checkCity',
@@ -21,6 +22,7 @@ class Card extends Validate
     protected $message = [
         'bank_user.require' => '持卡人姓名不能为空！',
         'bank_user.max'     => '持卡人姓名最大32个字符！',
+        'bank_user.checkCard' => '银行卡信息不可修改！',
         'bank_name.require' => '请选择开户银行！',
         'bank_name.checkBank'   => '开户银行不存在！',
         'bank_province.require' => '请选择所在省份！',
@@ -39,6 +41,12 @@ class Card extends Validate
     protected $scene = [
         'modify'  => ['bank_user', 'bank_name', 'bank_province', 'bank_city', 'bank_address', 'bank_card', 'id_card', 'bank_mobile'],
     ];
+
+    public function checkCard()
+    {
+        $admin = (new AdminLogic())->adminIncCard(isLogin());
+        return $admin['has_one_card'] ? false : true;
+    }
 
     public function checkBank($value, $rule, $data)
     {

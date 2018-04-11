@@ -1,0 +1,93 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}绑定银行卡{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 个人中心
+    <span class="c-gray en">&gt;</span> 佣金提现
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<article class="page-container">
+    <form class="form form-horizontal" id="form-team-user-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">可提现金额：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="text" class="input-text" value="{$admin.total_fee|number_format=2}" disabled>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>提现金额：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="text" class="input-text" value="" placeholder="请输入提现金额" name="money">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>到账银行：</label>
+            <div class="formControls col-xs-8 col-sm-7"> <span class="select-box" style="width:50%;">
+			<select class="select" name="card">
+                {notempty name="admin.has_one_card"}
+                    <option value="{$admin.has_one_card.id}">{$admin.has_one_card.bank_name}（尾号{$admin.has_one_card.bank_card|substr=-4}）</option>
+                {/notempty}
+			</select>
+			</span> </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"></label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <span class="c-danger">注意：每笔提现扣除2元手续费。</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" id="withdraw-btn" value="&nbsp;&nbsp;提现&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+$(function(){
+    $('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox-blue',
+        radioClass: 'iradio-blue',
+        increaseArea: '20%'
+    });
+
+    var _bind = "{$bind|default=0}";
+    if(_bind == "0"){
+        var _jump = "{$redirect}";
+        layer.msg('请先绑定银行卡！', {time: 500}, function(){
+            window.location.href = _jump;
+        });
+    }
+
+    $("#withdraw-btn").click(function () {
+        var _url = "{:url('admin/Index/withdraw')}",
+            _oData = $("form").serialize();
+        _ajaxPost(_url, _oData, function(res){
+            if(res.state){ // 登录成功
+                layer.msg('申请提现成功，请等待审核！', {time: 1000}, function(){
+                    if(res.data && res.data.url){
+                        window.location.href = res.data.url;
+                    }else{
+                        window.location.reload();
+                    }
+                });
+            }else{
+                layer.msg(res.info);
+            }
+        });
+    });
+});
+</script>
+{/block}

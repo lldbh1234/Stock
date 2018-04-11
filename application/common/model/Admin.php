@@ -107,4 +107,10 @@ class Admin extends BaseModel
     {
         return $this->hasOne("\\app\\common\\model\\AdminCard", "admin_id", "admin_id");
     }
+
+    // 提现
+    public function hasManyWithdraw()
+    {
+        return $this->hasMany("\\app\\common\\model\\AdminWithdraw", "admin_id", "admin_id");
+    }
 }

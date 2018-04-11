@@ -171,6 +171,7 @@ Route::group([], function() {
         Route::any('userinfo','admin/Index/userinfo');
         Route::any('my-card','admin/Index/myCard');
         Route::post('get-region', 'admin/Index/getRegion');
+        Route::any('withdraw','admin/Index/withdraw'); //提现
         Route::any('password','admin/Index/password');
         Route::any('login', 'admin/Home/login');
         Route::any('logout', 'admin/Home/logout');

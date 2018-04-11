@@ -209,7 +209,7 @@ class AdminLogic
             }else{
                 $user->hasOneCard()->save($data);
             }
-            $llpayUserId = "PROXY{$adminId}";
+            /*$llpayUserId = "PROXY{$adminId}";
             $llpayBanks = (new authLlpay())->bankBindList($llpayUserId);
             if($llpayBanks){
                 $newCardNo = substr($data['bank_card'], -4);
@@ -225,13 +225,42 @@ class AdminLogic
                         }
                     }
                 }
-            }
+            }*/
             Db::commit();
             return true;
         } catch (\Exception $e){
             Db::rollback();
             return false;
         }
+    }
+
+    public function createAdminWithdraw($adminId, $money, $remark)
+    {
+        $admin = Admin::find($adminId);
+        if($admin){
+            Db::startTrans();
+            try{
+                $admin->setDec("total_fee", $money);
+                $data = [
+                    "amount"    => $money,
+                    "actual"    => $money - cf('withdraw_poundage', config('withdraw_poundage')),
+                    "poundage"  => cf('withdraw_poundage', config('withdraw_poundage')),
+                    "out_sn"    => createStrategySn(),
+                    "remark"    => json_encode($remark),
+                ];
+                $res = $admin->hasManyWithdraw()->save($data);
+                $pk = model("AdminWithdraw")->getPk();
+                // 提交事务
+                Db::commit();
+                return $res->$pk;
+            } catch (\Exception $e) {
+                // 回滚事务
+                dump($e->getMessage());
+                Db::rollback();
+                return 0;
+            }
+        }
+        return 0;
     }
 
     public function adminUpdate($data)

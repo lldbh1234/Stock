@@ -133,6 +133,13 @@ if(!function_exists("timeAgo")) {
     }
 }
 
+if(!function_exists("createStrategySn")){
+    function createStrategySn()
+    {
+        return date("YmdHis") . isLogin() . randomString(6, true);
+    }
+}
+
 if(!function_exists("cf"))
 {
     function cf($alias, $default='')

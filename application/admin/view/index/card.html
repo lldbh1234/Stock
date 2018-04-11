@@ -16,13 +16,13 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>持卡人姓名：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$admin.has_one_card.bank_user|default=''}" placeholder="持卡人姓名" name="bank_user">
+                <input type="text" class="input-text" value="{$admin.has_one_card.bank_user|default=''}" placeholder="持卡人姓名" name="bank_user" {if condition="$admin.has_one_card"}disabled{/if}>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>开户银行：</label>
             <div class="formControls col-xs-8 col-sm-7"> <span class="select-box" style="width:50%;">
-			<select class="select" name="bank_name">
+			<select class="select" name="bank_name" {if condition="$admin.has_one_card"}disabled{/if}>
                 {volist name="banks" id="item"}
                     <option value="{$item.name}" {eq name="item.name" value="$admin.has_one_card.bank_name"}selected{/eq}>{$item.name}</option>
                 {/volist}
@@ -32,7 +32,7 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所在省份：</label>
             <div class="formControls col-xs-8 col-sm-7"> <span class="select-box" style="width:50%;">
-			<select class="select" name="bank_province">
+			<select class="select" name="bank_province" {if condition="$admin.has_one_card"}disabled{/if}>
                 {volist name="provinces" id="item"}
                     <option value="{$item.id}" {eq name="item.id" value="$admin.has_one_card.bank_province"}selected{/eq}>{$item.name}</option>
                 {/volist}
@@ -42,7 +42,7 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所在城市：</label>
             <div class="formControls col-xs-8 col-sm-7"> <span class="select-box" style="width:50%;">
-			<select class="select" name="bank_city">
+			<select class="select" name="bank_city" {if condition="$admin.has_one_card"}disabled{/if}>
                 {volist name="citys" id="item"}
                     <option value="{$item.id}" {eq name="item.id" value="$admin.has_one_card.bank_city"}selected{/eq}>{$item.name}</option>
                 {/volist}
@@ -52,31 +52,32 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>支行名称：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$admin.has_one_card.bank_address|default=''}" placeholder="支行名称" name="bank_address">
+                <input type="text" class="input-text" value="{$admin.has_one_card.bank_address|default=''}" placeholder="支行名称" name="bank_address" {if condition="$admin.has_one_card"}disabled{/if}>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>银行卡号：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$admin.has_one_card.bank_card|default=''}" placeholder="请输入银行卡号" name="bank_card">
+                <input type="text" class="input-text" value="{$admin.has_one_card.bank_card|default=''}" placeholder="请输入银行卡号" name="bank_card" {if condition="$admin.has_one_card"}disabled{/if}>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>身份证号：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$admin.has_one_card.id_card|default=''}" placeholder="请输入身份证号" name="id_card">
+                <input type="text" class="input-text" value="{$admin.has_one_card.id_card|default=''}" placeholder="请输入身份证号" name="id_card" {if condition="$admin.has_one_card"}disabled{/if}>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>预留手机号：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="{$admin.has_one_card.bank_mobile|default=''}" placeholder="请输入银行预留手机号" name="bank_mobile">
+                <input type="text" class="input-text" value="{$admin.has_one_card.bank_mobile|default=''}" placeholder="请输入银行预留手机号" name="bank_mobile" {if condition="$admin.has_one_card"}disabled{/if}>
             </div>
         </div>
+        {if condition="!$admin.has_one_card"}
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"></label>
             <div class="formControls col-xs-8 col-sm-7">
-                <span class="text-danger">注意：银行卡绑定后不可修改，请仔细核对信息</span>
+                <span class="c-danger">注意：银行卡绑定后不可修改，请仔细核对信息</span>
             </div>
         </div>
         <div class="row cl">
@@ -84,6 +85,7 @@
                 <input class="btn btn-primary radius" type="button" id="bth-submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
             </div>
         </div>
+        {/if}
     </form>
 </article>
 {/block}
@@ -125,6 +127,7 @@ $(function(){
         });
     });
 
+    {if condition="!$admin.has_one_card"}
     $("#bth-submit").click(function(){
         var _oData = $("form").serialize(),
             _url = '{:url("admin/Index/myCard")}',
@@ -135,16 +138,22 @@ $(function(){
                     layer.msg(_resp.info);
                 } else {
                     layer.msg('操作成功！', {time: 500}, function(){
-                        if(_resp.data && _resp.data.url){
-                            parent.window.location.href = _resp.data.url;
+                        var _callback = "{$callback|default=''}";
+                        if(_callback == ''){
+                            if(res.data.url){
+                                window.location.href = res.data.url;
+                            }else{
+                                window.location.reload();
+                            }
                         }else{
-                            parent.layer.closeAll();
+                            window.location.href = _callback;
                         }
                     });
                 }
             };
         _ajaxPost(_url, _oData, _func);
     });
+    {/if}
 });
 </script>
 {/block}
