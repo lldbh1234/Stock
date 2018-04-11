@@ -29,6 +29,7 @@ Route::post('captcha','index/Home/captcha'); // 验证码
 Route::any('register','index/Home/register');
 Route::any('forget','index/Home/forget');
 Route::any('logout','index/Home/logout');
+Route::post('members','index/Home/getMember'); // 微会员
 Route::group("index", function () {
     Route::any('/$','index/Index/index');
     Route::any('index', 'index/Index/index');

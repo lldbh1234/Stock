@@ -43,6 +43,20 @@ class Home extends Controller
         }
     }
 
+    public function getMember()
+    {
+        if(request()->isPost()){
+            $username = input("post.username/s");
+            $members = (new UserLogic())->userMembers($username);
+            if($members){
+                return $this->ok($members);
+            }else{
+                return $this->fail("请输入正确的手机号！");
+            }
+        }
+        return $this->fail("系统提示：非法操作！");
+    }
+
     public function register()
     {
         if(isLogin()){

@@ -2,6 +2,7 @@
 namespace app\index\logic;
 
 use app\common\payment\authLlpay;
+use app\index\model\Admin;
 use app\index\model\UserManagerRecord;
 use app\index\model\UserNiuren;
 use app\index\model\Order;
@@ -174,6 +175,24 @@ class UserLogic
             Db::rollback();
             return false;
         }
+    }
+
+    public function userMembers($username)
+    {
+        $ringAdminIds = User::where(["username" => $username])->column("admin_id") ? : [-1];
+        $ringAdmins = Admin::with("hasOneParent")->where(["admin_id" => ["IN", $ringAdminIds]])->select();
+        $members = [];
+        if($ringAdmins){
+            $ringAdmins = collection($ringAdmins)->toArray();
+            array_filter($ringAdmins, function ($item) use (&$members){
+                $members[] = [
+                    "admin_id" => $item["has_one_parent"]["admin_id"],
+                    "nickname" => $item["has_one_parent"]["nickname"],
+                    "username" => $item["has_one_parent"]["username"],
+                ];
+            });
+        }
+        return $members;
     }
 
     public function userIncAdmin($userId)
