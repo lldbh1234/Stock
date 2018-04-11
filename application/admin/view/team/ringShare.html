@@ -1,0 +1,27 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}推广链接{/block}
+
+{block name="body"}
+<article class="page-container">
+    <form class="form form-horizontal" id="form-team-user-add">
+        <div class="row cl">
+            <label class="form-label col-xs-5 col-sm-4">机构码：</label>
+            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$admin.code}</p></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-5 col-sm-4">推广链接：</label>
+            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$shareUrl}</p></div>
+        </div>
+    </form>
+</article>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+</script>
+{/block}

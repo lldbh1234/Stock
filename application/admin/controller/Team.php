@@ -430,6 +430,20 @@ class Team extends Base
         }
     }
 
+    // 推广链接
+    public function ringShare($id = null)
+    {
+        $admin = $this->_logic->teamAdminById($id, "ring");
+        if($admin){
+            $shareUrl = url('index/Home/register', ['_c' => base64_encode($admin['code'])], true, true);
+            $this->assign("admin", $admin);
+            $this->assign("shareUrl", $shareUrl);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
     /*public function rebate()
     {
         if(request()->isPost()){

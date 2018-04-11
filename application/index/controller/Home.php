@@ -98,6 +98,10 @@ class Home extends Controller
                     $this->assign("ring_code", $parent['has_one_admin']['code']);
                     $this->assign("pid", $pid);
                 }
+            }else{
+                if(input("?_c")){
+                    $this->assign("ring_code", base64_decode(input("_c")));
+                }
             }
             return view();
         }

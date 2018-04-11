@@ -56,6 +56,13 @@
                 <input type="input" class="input-text" value="{$admin.code}" disabled />
             </div>
         </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">推广链接：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="input" id="share-url" class="input-text" value="{:url('index/Home/register', ['_c' => base64_encode($admin['code'])], true, true)}" disabled />
+                <p class="textarea-numberbar"><a id="share-dom" href="javascript:void(0);" style="color: #00a0e9;text-decoration: underline;">复制</a></p>
+            </div>
+        </div>
         {/if}
     </form>
 </article>
@@ -67,5 +74,18 @@
 
 {block name="script"}
 <script>
+    $(function(){
+        $("#share-dom").click(function(){
+            var Url2=document.getElementById("share-url").value;
+            var oInput = document.createElement('input');
+            oInput.value = Url2;
+            document.body.appendChild(oInput);
+            oInput.select(); // 选择对象
+            document.execCommand("Copy"); // 执行浏览器复制命令
+            oInput.className = 'oInput';
+            oInput.style.display='none';
+            layer.msg('推广链接已复制到剪切板！', {time: 500});
+        });
+    });
 </script>
 {/block}

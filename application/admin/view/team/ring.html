@@ -55,10 +55,10 @@
             <th>递延费返点（%）</th>
             <th>保证金</th>
             <th>手续费总计</th>
-            <th>邀请码</th>
+            <th>机构码</th>
             <th>创建时间</th>
             <th>状态</th>
-            <th width="120">操作</th>
+            <th width="160">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -90,6 +90,9 @@
                 {/if}
                 {if condition="in_array('admin/Team/ringPoint', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-primary size-MINI radius" type="button" title="返点修改" onclick="ring_point('返点修改','{:url("admin/Team/ringPoint", ['id' => $item.admin_id])}','','340');" value="返点">
+                {/if}
+                {if condition="in_array('admin/Team/ringShare', $Think.session.ACCESS_LIST)"}
+                <input class="btn btn-secondary size-MINI radius" type="button" title="推广链接" onclick="ring_share('推广链接','{:url("admin/Team/ringShare", ['id' => $item.admin_id])}','','240');" value="推广">
                 {/if}
                 {if condition="in_array('admin/Team/recharge', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-warning size-MINI radius" type="button" title="保证金充值" onclick="admin_recharge(this,{$item.admin_id});" value="充值">
@@ -124,6 +127,12 @@
 
     {if condition="in_array('admin/Team/ringPoint', $Think.session.ACCESS_LIST)"}
     function ring_point(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    {/if}
+
+    {if condition="in_array('admin/Team/ringShare', $Think.session.ACCESS_LIST)"}
+    function ring_share(title,url,w,h){
         layer_show(title,url,w,h);
     }
     {/if}

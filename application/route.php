@@ -198,6 +198,7 @@ Route::group([], function() {
             Route::any('settle-point', 'admin/Team/settlePoint');
             Route::any('operate-point', 'admin/Team/operatePoint');
             Route::any('ring-point', 'admin/Team/ringPoint');// 返点修改
+            Route::any('ring-share', 'admin/Team/ringShare');// 推广链接
             //Route::post('rebate', 'admin/Team/rebate');
             //Route::any('create', 'admin/Team/createUser'); //添加用户
         });
