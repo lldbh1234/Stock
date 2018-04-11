@@ -60,6 +60,7 @@ class Admin extends BaseModel
                 // 微圈
                 $where['admin_id'] = manager()['admin_id'];
                 $userIds = User::where($where)->column("user_id");
+                $userIds = $userIds ? : [-1];
             }else{
                 if(!in_array(manager()['role'], [self::SERVICE_ROLE_ID, self::FINANCE_ROLE_ID])){
                     // 组织架构
@@ -74,6 +75,7 @@ class Admin extends BaseModel
                     } while (true);
                     $where['admin_id'] = ["IN", $arr];
                     $userIds = User::where($where)->column("user_id");
+                    $userIds = $userIds ? : [-1];
                 }
             }
         }
