@@ -51,19 +51,12 @@
         </div>
         {if condition="$admin.role EQ 5"}
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">邀请码：</label>
+            <label class="form-label col-xs-4 col-sm-3">机构码：</label>
             <div class="formControls col-xs-8 col-sm-7">
                 <input type="input" class="input-text" value="{$admin.code}" disabled />
             </div>
         </div>
         {/if}
-        {in name="admin.role" value="2,3,4,5"}
-        <div class="row cl">
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <input class="btn btn-success radius" type="button" id="withdraw-btn" value="&nbsp;&nbsp;手续费提现&nbsp;&nbsp;">
-            </div>
-        </div>
-        {/in}
     </form>
 </article>
 {/block}
