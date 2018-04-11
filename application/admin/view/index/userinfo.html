@@ -74,6 +74,7 @@
 
 {block name="script"}
 <script>
+    {if condition="$admin.role EQ 5"}
     $(function(){
         $("#share-dom").click(function(){
             var Url2=document.getElementById("share-url").value;
@@ -87,5 +88,6 @@
             layer.msg('推广链接已复制到剪切板！', {time: 500});
         });
     });
+    {/if}
 </script>
 {/block}
