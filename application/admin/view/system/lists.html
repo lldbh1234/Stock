@@ -59,10 +59,17 @@
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">提现手续费：</label>
+                    <label class="form-label col-xs-4 col-sm-2">用户提现手续费：</label>
                     <div class="formControls col-xs-2 col-sm-4">
-                        <input type="text" id="withdraw_poundage" name="withdraw_poundage" placeholder="每笔提现手续费" value="{$lists.withdraw_poundage.val | default=''}" class="input-text">
-                        <p class="textarea-numberbar" style="color: #b3abab;">元</p>
+                        <input type="text" id="withdraw_poundage" name="withdraw_poundage" placeholder="用户提现手续费（元/笔）" value="{$lists.withdraw_poundage.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">元/笔</p>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">代理商提现手续费：</label>
+                    <div class="formControls col-xs-2 col-sm-4">
+                        <input type="text" id="proxy_withdraw_poundage" name="proxy_withdraw_poundage" placeholder="代理商提现手续费（%/笔）" value="{$lists.proxy_withdraw_poundage.val | default=''}" class="input-text">
+                        <p class="textarea-numberbar" style="color: #b3abab;">%/笔</p>
                     </div>
                 </div>
             </div>
@@ -99,13 +106,6 @@
                     <label class="form-label col-xs-4 col-sm-2">经纪人默认递延费返点率：</label>
                     <div class="formControls col-xs-2 col-sm-9">
                         <input type="text" id="manager_defer_point" name="manager_defer_point" placeholder="经纪人默认递延费返点率" value="{$lists.manager_defer_point.val | default=''}" class="input-text">
-                        <p class="textarea-numberbar" style="color: #b3abab;">%</p>
-                    </div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">用户平仓盈利分红比例：</label>
-                    <div class="formControls col-xs-2 col-sm-9">
-                        <input type="text" id="bonus_rate" name="bonus_rate" placeholder="用户平仓盈利分红比例" value="{$lists.bonus_rate.val | default=''}" class="input-text">
                         <p class="textarea-numberbar" style="color: #b3abab;">%</p>
                     </div>
                 </div>

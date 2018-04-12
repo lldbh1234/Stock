@@ -242,10 +242,12 @@ class AdminLogic
             Db::startTrans();
             try{
                 $admin->setDec("total_fee", $money);
+                $rate = cf('proxy_withdraw_poundage', config('proxy_withdraw_poundage'));
+                $poundage = round($money * $rate / 100, 2);
                 $data = [
                     "amount"    => $money,
-                    "actual"    => $money - cf('withdraw_poundage', config('withdraw_poundage')),
-                    "poundage"  => cf('withdraw_poundage', config('withdraw_poundage')),
+                    "actual"    => $money - $poundage,
+                    "poundage"  => $poundage,
                     "out_sn"    => createStrategySn(),
                     "remark"    => json_encode($remark),
                 ];
