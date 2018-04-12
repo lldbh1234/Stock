@@ -17,7 +17,7 @@ class User extends BaseModel
 
     protected function setCreateAtAttr()
     {
-        return request()->time();
+        return time();
     }
 
     // 微圈

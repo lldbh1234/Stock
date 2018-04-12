@@ -9,12 +9,12 @@ class UserWithdraw extends BaseModel
 
     protected function setCreateAtAttr()
     {
-        return request()->time();
+        return time();
     }
 
     protected function setUpdateAtAttr()
     {
-        return request()->time();
+        return time();
     }
 
     public function hasOneUser()

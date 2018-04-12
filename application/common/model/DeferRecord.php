@@ -10,7 +10,7 @@ class DeferRecord extends BaseModel
 
     protected function setCreateAtAttr()
     {
-        return request()->time();
+        return time();
     }
 
     public function belongsToUser()

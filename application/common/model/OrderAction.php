@@ -16,7 +16,7 @@ class OrderAction extends BaseModel
 
     protected function setActTimeAttr()
     {
-        return request()->time();
+        return time();
     }
 
     public function belongsToOrder()
