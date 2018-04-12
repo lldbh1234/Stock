@@ -124,8 +124,12 @@ class Stock extends Validate
                 $total = $deposit["money"] * $lever["multiple"]; // 申请总配资款 = 保证金 * 杠杆倍数
                 $realTotal = $total * $usage / 100; // 实际可使用最大配资款(95%)
                 $hand = floor($realTotal / $data['price'] / 100) * 100; // 买入股数(整百)
-                $min = $data['price'] - ($deposit["money"] / $hand); // (买入价-止损价)*买入手数=损失总金额 so====> 最小止损价=买入价-(保证金/买入手数)
-                return $value < $min ? "止损金额最小可设置为" . number_format($max, 2) : true;
+                if($hand < 100){
+                    return "建仓数量最低100股起！";
+                }else{
+                    $min = $data['price'] - ($deposit["money"] / $hand); // (买入价-止损价)*买入手数=损失总金额 so====> 最小止损价=买入价-(保证金/买入手数)
+                    return $value < $min ? "止损金额最小可设置为" . number_format($max, 2) : true;
+                }
             }
         }else{
             return "止损金额必须小于策略委托价！";
