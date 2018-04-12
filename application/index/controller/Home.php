@@ -37,8 +37,6 @@ class Home extends Controller
                     }
                 }
             }
-            $members = (new AdminLogic())->allMemberLists();
-            $this->assign("members", $members);
             return view();
         }
     }
@@ -130,8 +128,6 @@ class Home extends Controller
                     }
                 }
             }
-            $members = (new AdminLogic())->allMemberLists();
-            $this->assign("members", $members);
             return view();
         }
     }
