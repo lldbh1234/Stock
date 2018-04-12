@@ -38,10 +38,7 @@
 		<div class="risk_content">
 			<p class="risk_title">选择登录会员单位</p>
 			<div class="risk_text">
-				<ul>
-					{volist name="members" id="item"}
-					<li data-id="{$item.admin_id}">{$item.nickname|default=$item.username}</li>
-					{/volist}
+				<ul class="institution_list">
 				</ul>
 			</div>
 		</div>
@@ -88,7 +85,21 @@
 				$alert("请输入正确的手机号");
 				return false;
 			}
-			$(".risk_mask").show();
+            var url = '{:url("index/Home/getMember")}',
+                mobile = phoneNum.val();
+            $ajaxCustom(url, {username:mobile}, function(res){
+                if(res.state){ // 登录成功
+                    var _html = "";
+                    for(var _key in res.data){
+                        var _name = res.data[_key].nickname ? res.data[_key].nickname : res.data[_key].username;
+                        _html += '<li data-id="' + res.data[_key].admin_id + '">' + _name + '</li>';
+                    }
+                    $(".institution_list").empty().append($(_html));
+                    $(".risk_mask").show();
+                }else{
+                    $alert(res.info);
+                }
+            });
 		});
 	</script>
 
