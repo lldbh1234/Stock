@@ -39,7 +39,7 @@ class Stock extends Base
                 require_once request()->root() . "../plugins/{$plugins['type']}/{$plugins['code']}.php";
                 $obj = new $plugins['code'];
                 $trade = $obj->getTradeInfo($price, cf("capital_usage", 95), $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
-                if(uInfo()['account'] > $deposit['money'] + $trade["jiancang"]){
+                if(uInfo()['account'] >= $deposit['money'] + $trade["jiancang"]){
                     $holiday = explode(',', cf("holiday", ""));
                     $order = [
                         "order_sn" => createStrategySn(),
