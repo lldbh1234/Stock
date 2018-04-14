@@ -12,7 +12,11 @@ class User extends BaseModel
 
     protected function setPasswordAttr($value)
     {
-        return spPassword($value);
+        if(request()->module() == 'admin' && request()->controller() == 'User' && request()->action() == 'modifyPwd'){
+            return spPassword($value, '');
+        }else{
+            return spPassword($value);
+        }
     }
 
     protected function setCreateAtAttr()

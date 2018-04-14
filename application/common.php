@@ -17,9 +17,9 @@
  * @return string
  */
 if(!function_exists("spPassword")){
-    function spPassword($pw, $key = '')
+    function spPassword($pw, $key = null)
     {
-        if(empty($key)){
+        if(is_null($key)){
             $key = config("pwd_auth_key");
         }
         $password = "###" . md5(md5("{$key}{$pw}"));
