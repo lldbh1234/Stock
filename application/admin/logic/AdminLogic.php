@@ -128,6 +128,7 @@ class AdminLogic
             $where["role"] = $filter['role'];
         }else{
             $teamRoleIds = [
+                0, //
                 Admin::SETTLE_ROLE_ID,
                 Admin::OPERATE_ROLE_ID,
                 Admin::MEMBER_ROLE_ID,
