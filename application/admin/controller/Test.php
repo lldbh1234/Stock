@@ -31,6 +31,7 @@ class Test extends Controller
                 "order_id" => $val['order_id'],
                 "original_free" => workTimestamp($val['belongs_to_mode']['free'], $holiday, strtotime(date("Y-m-d 14:40", $val['create_at'])))
             ];
+            dump($_data);
             $_res = $_orderLogic->updateOrder($_data);
             dump($_res);
         }
