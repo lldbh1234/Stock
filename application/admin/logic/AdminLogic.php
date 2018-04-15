@@ -36,13 +36,14 @@ class AdminLogic
     // 不包括组织架构的角色列表
     public function allAdminRoles()
     {
-        $adminRoles = [
-            Admin::ADMIN_ROLE_ID,
-            Admin::SERVICE_ROLE_ID,
-            Admin::FINANCE_ROLE_ID,
+        $teamRoleIds = [
+            Admin::SETTLE_ROLE_ID,
+            Admin::OPERATE_ROLE_ID,
+            Admin::MEMBER_ROLE_ID,
+            Admin::RING_ROLE_ID
         ];
         $where = [
-            "id"    => ["IN", $adminRoles],
+            "id"    => ["NOT IN", $teamRoleIds],
             "show"  => 1
         ];
         $lists = Role::where($where)->select();
