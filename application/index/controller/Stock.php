@@ -41,6 +41,7 @@ class Stock extends Base
                 $trade = $obj->getTradeInfo($price, cf("capital_usage", 95), $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
                 if(uInfo()['account'] >= $deposit['money'] + $trade["jiancang"]){
                     $holiday = explode(',', cf("holiday", ""));
+                    $timestamp = workTimestamp($mode['free'], $holiday, strtotime(date("Y-m-d 14:40", request()->time())));
                     $order = [
                         "order_sn" => createStrategySn(),
                         "user_id" => $this->user_id,
@@ -53,7 +54,8 @@ class Stock extends Base
                         "hand"  => $trade["hand"],
                         "jiancang_fee" => $trade["jiancang"],
                         "defer" => $trade["defer"],
-                        "free_time" => workTimestamp($mode['free'], $holiday, strtotime(date("Y-m-d 14:40", request()->time()))),
+                        "free_time" => $timestamp,
+                        "original_free" => $timestamp,
                         "is_defer" => input("post.defer/d"),
                         "stop_profit_price" => input("post.profit/f"),
                         "stop_profit_point" => round((input("post.profit/f") - $price) / $price * 100, 2),

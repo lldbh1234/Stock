@@ -75,10 +75,10 @@
                 <td class="text-l">{$order.create_at|date="Y-m-d H:i", ###}</td>
             </tr>
             <tr>
-                <th class="text-r">是否对冲：</th>
+                <!--<th class="text-r">是否对冲：</th>
                 <td class="text-l {if condition='$order.is_hedging neq 0'}c-green{else /}c-red{/if}">
                     {$order.is_hedging_text}
-                </td>
+                </td>-->
                 <th class="text-r">操作员：</th>
                 <td class="text-l">
                     {if condition="$order.has_one_operator"}
@@ -87,8 +87,16 @@
                     -
                     {/if}
                 </td>
+                <th class="text-r">买入时间：</th>
+                <td class="text-l">
+                    {if condition="$order.has_one_operator"}
+                    {$order.update_at|date="Y-m-d H:i", ###}
+                    {else /}
+                    -
+                    {/if}
+                </td>
             </tr>
-            <tr>
+            <!--<tr>
                 <th class="text-r">买入时间：</th>
                 <td class="text-l">
                     {if condition="$order.has_one_operator"}
@@ -99,7 +107,7 @@
                 </td>
                 <th class="text-r"></th>
                 <td class="text-l"></td>
-            </tr>
+            </tr>-->
 		</tbody>
 	</table>
 	</div>

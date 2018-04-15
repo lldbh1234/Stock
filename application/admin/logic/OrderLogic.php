@@ -17,7 +17,7 @@ class OrderLogic
         $state ? is_array($state) ? $where['stock_order.state'] = ["IN", $state] : $where['stock_order.state'] = $state : $where['stock_order.state'] = ["NEQ", 5];
         $pageSize = $pageSize ? : config("page_size");
         $lists = Order::hasWhere("hasOneUser", $hasWhere)
-                    ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]]])
+                    ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "belongsToMode"])
                     ->where($where)
                     ->order("order_id DESC")
                     ->paginate($pageSize);
@@ -25,7 +25,7 @@ class OrderLogic
         $defer = [1 => '是', 0 => '否'];
         $follow = [1 => '是', 0 => '否'];
         $hedging = [1 => '是', 0 => '否'];
-        $state = [1 => '委托建仓', 2 => '平仓', 3 => '持仓', 4 => '委托平仓', 5 => '作废'];
+        $state = [1 => '委托建仓', 2 => '平仓', 3 => '持仓', 4 => '委托平仓', 5 => '作废', 6=> '强制平仓'];
         array_filter($records['data'], function(&$item) use ($defer, $follow, $state, $hedging){
             $item['is_defer_text'] = $defer[$item['is_defer']];
             $item['state_text'] = $state[$item['state']];
@@ -282,7 +282,7 @@ class OrderLogic
         }
         $pageSize = $pageSize ? : config("page_size");
         $lists = Order::hasWhere("hasOneUser", $hasWhere)
-            ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator"])
+            ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator", "belongsToMode"])
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);

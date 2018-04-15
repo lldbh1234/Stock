@@ -23,9 +23,17 @@ class Test extends Controller
 
     public function test()
     {
-        $job = new DeferJob();
-        $res = $job->handle(1);
-        dump($res);
+        $_orderLogic = new OrderLogic();
+        $orders = $_orderLogic->pageOrderLists(null, [], 100);
+        $holiday = explode(',', cf("holiday", ""));
+        foreach ($orders['lists']['data'] as $key=>$val){
+            $_data = [
+                "order_id" => $val['order_id'],
+                "original_free" => workTimestamp($val['belongs_to_mode']['free'], $holiday, strtotime(date("Y-m-d 14:40", $val['create_at'])))
+            ];
+            $_res = $_orderLogic->updateOrder($_data);
+            dump($_res);
+        }
         exit;
         $withdraw = [
             "tradeNo" => "20180402214505",

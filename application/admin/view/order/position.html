@@ -27,13 +27,13 @@
 		<div class="text-l mt-5">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-			<span class="select-box radius" style="width:100px;height: 31px;">
+			<!--<span class="select-box radius" style="width:100px;height: 31px;">
 				<select class="select radius" name="is_hedging" size="1">
 					<option value="">是否对冲</option>
 					<option value="1" {if condition="isset($search.is_hedging) AND $search.is_hedging heq '1'"}selected{/if}>是</option>
 					<option value="0" {if condition="isset($search.is_hedging) AND $search.is_hedging heq '0'"}selected{/if}>否</option>
 				</select>
-			</span>
+			</span>-->
 			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
 		</div>
 	</form>
@@ -63,7 +63,9 @@
 			<th>微圈</th>
 			<th>经纪人</th>
 			<th width="70">下单时间</th>
-			<th>是否对冲</th>
+			<th>交易模式</th>
+			<th>免息截止日期</th>
+			<!--<th>是否对冲</th>-->
 			<th width="120">操作</th>
 		</tr>
 		</thead>
@@ -88,13 +90,15 @@
 			<td>{$item.has_one_user.has_one_admin.username|default='无'}</td>
 			<td>{$item.has_one_user.has_one_parent.username|default='无'}</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
-			<td>
+			<td>{$item.belongs_to_mode.name|default='-'}</td>
+			<td>{$item.original_free|date="Y-m-d H:i", ###}</td>
+			<!--<td>
 				{if condition="$item.is_hedging eq 1"}
 				<span class="label label-success radius">{$item.is_hedging_text}</span>
 				{else /}
 				<span class="label label-danger radius">{$item.is_hedging_text}</span>
 				{/if}
-			</td>
+			</td>-->
 			<td>
 				{if condition="in_array('admin/Order/positionDetail', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-secondary size-MINI radius" type="button" title="策略详情" onclick="show_detail('策略详情', '{:url("admin/Order/positionDetail", ['id' => $item.order_id])}')" value="详情">
