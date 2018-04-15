@@ -70,6 +70,7 @@
 			<th>建仓费</th>
 			<th>递延费</th>
 			<th>平仓类型</th>
+			<th>交易模式</th>
 			<th>买入时间</th>
 			<th>操作</th>
 		</tr>
@@ -104,6 +105,7 @@
 			<td>{$item.jiancang_fee|number_format=2}</td>
 			<td>{$item.defer|number_format=2}</td>
 			<td>{$item.force_type_text}</td>
+			<td>{$item.belongs_to_mode.name|default='-'}</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
 			<td>
 				{if condition="in_array('admin/Order/forceSell', $Think.session.ACCESS_LIST)"}

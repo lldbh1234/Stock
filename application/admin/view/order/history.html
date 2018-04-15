@@ -54,6 +54,7 @@
 			<th>卖出手数</th>
 			<th>盈亏</th>
 			<th>买入时间</th>
+			<th>交易模式</th>
 			<th>卖出时间</th>
 			<th width="80">操作</th>
 		</tr>
@@ -83,6 +84,7 @@
 				{/if}
 			</td>
 			<td>{$item.create_at|date="Y-m-d H:i", ###}</td>
+			<td>{$item.belongs_to_mode.name|default='-'}</td>
 			<td>{if condition="$item.update_at gt 0"}{$item.update_at|date="Y-m-d H:i", ###}{else /}-{/if}</td>
 			<td>
 				{if condition="in_array('admin/Order/historyDetail', $Think.session.ACCESS_LIST)"}

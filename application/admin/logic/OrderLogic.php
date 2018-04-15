@@ -111,7 +111,7 @@ class OrderLogic
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);*/
         $lists = Order::hasWhere("hasOneUser", $hasWhere)
-            ->with(["hasOneUser", "hasOneOperator"])
+            ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);
@@ -212,7 +212,7 @@ class OrderLogic
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);*/
         $lists = Order::hasWhere("hasOneUser", $hasWhere)
-            ->with(["hasOneUser", "hasOneOperator"])
+            ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);
@@ -390,7 +390,7 @@ class OrderLogic
                     ->order("order_id DESC")
                     ->paginate($pageSize, false, ['query'=>request()->param()]);*/
         $lists = Order::hasWhere("hasOneUser", $hasWhere)
-            ->with(["hasOneUser"])
+            ->with(["hasOneUser", "belongsToMode"])
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);
