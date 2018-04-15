@@ -127,12 +127,13 @@ class AdminLogic
         if(isset($filter['role']) && !empty($filter['role'])){
             $where["role"] = $filter['role'];
         }else{
-            $adminRoles = [
-                Admin::ADMIN_ROLE_ID,
-                Admin::SERVICE_ROLE_ID,
-                Admin::FINANCE_ROLE_ID,
+            $teamRoleIds = [
+                Admin::SETTLE_ROLE_ID,
+                Admin::OPERATE_ROLE_ID,
+                Admin::MEMBER_ROLE_ID,
+                Admin::RING_ROLE_ID
             ];
-            $where['role'] = ["IN", $adminRoles];
+            $where['role'] = ["NOT IN", $teamRoleIds];
         }
         // 状态
         if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
@@ -148,7 +149,13 @@ class AdminLogic
         if(manager()['admin_id'] == Admin::ADMINISTRATOR_ID){
             return 0;
         }else{
-            if(in_array(manager()['role'], [Admin::SERVICE_ROLE_ID, Admin::FINANCE_ROLE_ID])){
+            $teamRoleIds = [
+                self::SETTLE_ROLE_ID,
+                self::OPERATE_ROLE_ID,
+                self::MEMBER_ROLE_ID,
+                self::RING_ROLE_ID
+            ];
+            if(!in_array(manager()['role'], $teamRoleIds)){
                 return 0;
             }else{
                 return manager()['admin_id'];
