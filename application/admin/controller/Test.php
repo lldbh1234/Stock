@@ -25,6 +25,8 @@ class Test extends Controller
     {
         $_orderLogic = new OrderLogic();
         $orders = $_orderLogic->pageOrderLists(null, [], 100);
+        dump($orders);
+        exit;
         $holiday = explode(',', cf("holiday", ""));
         foreach ($orders['lists']['data'] as $key=>$val){
             $_data = [
