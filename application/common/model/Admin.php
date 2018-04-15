@@ -26,10 +26,17 @@ class Admin extends BaseModel
                 // 微圈
                 $where['admin_id'] = manager()['admin_id'];
             }else{
+                $proxyRoleIds = [
+                    self::SETTLE_ROLE_ID,
+                    self::OPERATE_ROLE_ID,
+                    self::MEMBER_ROLE_ID,
+                    self::RING_ROLE_ID
+                ];
                 /*if(manager()['role'] == self::ADMIN_ROLE_ID){
                     // 超级超级管理员
                     $where['admin_id'] = ["NEQ", self::ADMINISTRATOR_ID];
-                }else*/if(!in_array(manager()['role'], [self::SERVICE_ROLE_ID, self::FINANCE_ROLE_ID])){
+                }else*/ //if(!in_array(manager()['role'], [self::SERVICE_ROLE_ID, self::FINANCE_ROLE_ID])){
+                if(in_array(manager()['role'], $proxyRoleIds)){
                     // 组织架构
                     $idArr = $arr = [manager()['admin_id']];
                     do {
@@ -62,7 +69,13 @@ class Admin extends BaseModel
                 $userIds = User::where($where)->column("user_id");
                 $userIds = $userIds ? : [-1];
             }else{
-                if(!in_array(manager()['role'], [self::SERVICE_ROLE_ID, self::FINANCE_ROLE_ID])){
+                $proxyRoleIds = [
+                    self::SETTLE_ROLE_ID,
+                    self::OPERATE_ROLE_ID,
+                    self::MEMBER_ROLE_ID,
+                    self::RING_ROLE_ID
+                ];
+                if(in_array(manager()['role'], $proxyRoleIds)){
                     // 组织架构
                     $idArr = $arr = [manager()['admin_id']];
                     do {

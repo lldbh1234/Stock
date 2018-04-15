@@ -23,29 +23,9 @@ class Test extends Controller
 
     public function test()
     {
-        $_orderLogic = new OrderLogic();
-        $orders = $_orderLogic->pageOrderLists(null, [], 100);
-        $holiday = explode(',', cf("holiday", ""));
-        foreach ($orders['lists']['data'] as $key=>$val){
-            $_data = [
-                "order_id" => $val['order_id'],
-                "original_free" => workTimestamp($val['belongs_to_mode']['free'], $holiday, strtotime(date("Y-m-d 14:40", $val['create_at'])))
-            ];
-            dump($val['belongs_to_mode']['free']);
-            dump($val['create_at']);
-            dump($_data);
-            //$_res = $_orderLogic->updateOrder($_data);
-            //dump($_res);
-        }
-        exit;
-        $withdraw = [
-            "tradeNo" => "20180402214505",
-            "amount" => 30,
-            "name"  => "梁健",
-            "card" => "6217004220033901731"
-        ];
-        $html = (new paymentLLpay())->payment($withdraw);
-        dump($html);
+        $_logic = new AdminLogic();
+        $tree = $_logic->ringFamilyTree(6);
+        dump($tree);
         exit;
         $order = (new OrderLogic())->getAllBy();
         $c70 = [];
