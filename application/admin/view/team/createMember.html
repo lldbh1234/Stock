@@ -29,7 +29,7 @@
                 <span class="select-box">
                     <select class="select" name="pid">
                         {volist name="parent" id="item"}
-                        <option value="{$item.admin_id}">{$item.nickname|default=$item.username}</option>
+                        <option value="{$item.admin_id}">{$item.username}</option>
                         {/volist}
                     </select>
                 </span>

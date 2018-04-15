@@ -68,7 +68,7 @@
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
             <td>{$item.out_sn}</td>
-            <td>{$item.belongs_to_admin.nickname|default=$item.belongs_to_admin.username}</td>
+            <td>{$item.belongs_to_admin.username}</td>
             <td>{$item.belongs_to_admin.mobile}</td>
             <td>{$item.amount|number_format=2}</td>
             <td>{$item.poundage|number_format=2}</td>

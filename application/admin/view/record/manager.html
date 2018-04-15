@@ -55,7 +55,7 @@
         <tbody>
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
-            <td>{$item.belongs_to_manager.nickname|default=$item.belongs_to_manager.username}</td>
+            <td>{$item.belongs_to_manager.username}</td>
             <td>{$item.belongs_to_manager.mobile}</td>
             <td>{$item.belongs_to_manager.has_one_admin.username|default='无'}</td>
             <td>{$item.belongs_to_manager.has_one_admin.has_one_parent.username|default='无'}</td>
