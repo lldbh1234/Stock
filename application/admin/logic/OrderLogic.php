@@ -235,14 +235,14 @@ class OrderLogic
             $where["stock_order.name"] = ["LIKE", "%{$_name}%"];
         }
         // 微圈
-        if(isset($filter['ring']) && !empty($filter['ring'])){
+        /*if(isset($filter['ring']) && !empty($filter['ring'])){
             $_ring = trim($filter['ring']);
             $_where = ["username" => ["LIKE", "%{$_ring}%"]];
             $adminIds = Admin::where($_where)->column("admin_id");
             $hasWhere["admin_id"] = ["IN", $adminIds];
-        }
+        }*/
         // 微会员
-        if(isset($filter['member']) && !empty($filter['member'])){
+        /*if(isset($filter['member']) && !empty($filter['member'])){
             $_member = trim($filter['member']);
             $_where = ["username" => ["LIKE", "%{$_member}%"]];
             $memberAdminIds = Admin::where($_where)->column("admin_id") ? : [-1];
@@ -254,14 +254,14 @@ class OrderLogic
                 $userIds = array_intersect($userIds, $myUserIds);
             }
             $where["stock_order.user_id"] = ["IN", $userIds];
-        }
+        }*/
         // 经纪人
-        if(isset($filter['manager']) && !empty($filter['manager'])){
+        /*if(isset($filter['manager']) && !empty($filter['manager'])){
             $_manager = trim($filter['manager']);
             $_where = ["username" => ["LIKE", "%{$_manager}%"]];
             $managerUserIds = User::where($_where)->column("user_id") ? : [-1];
             $hasWhere["parent_id"] = ["IN", $managerUserIds];
-        }
+        }*/
         // 提交时间
         if(isset($filter['create_begin']) || isset($filter['create_end'])){
             if(!empty($filter['create_begin']) && !empty($filter['create_end'])){
@@ -277,12 +277,17 @@ class OrderLogic
             }
         }
         // 是否对冲
-        if(isset($filter['is_hedging']) && is_numeric($filter['is_hedging'])){
+        /*if(isset($filter['is_hedging']) && is_numeric($filter['is_hedging'])){
             $hasWhere["stock_order.is_hedging"] = $filter['is_hedging'];
-        }
+        }*/
         $pageSize = $pageSize ? : config("page_size");
-        $lists = Order::hasWhere("hasOneUser", $hasWhere)
+        /*$lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator", "belongsToMode"])
+            ->where($where)
+            ->order("order_id DESC")
+            ->paginate($pageSize, false, ['query'=>request()->param()]);*/
+        $lists = Order::hasWhere("hasOneUser", $hasWhere)
+            ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);
@@ -389,7 +394,7 @@ class OrderLogic
         $where = ["order_id" => $orderId];
         $myUserIds ? $where["user_id"] = ["IN", $myUserIds] : null;
         is_null($state) ? null : $where["state"] = is_array($state) ? ["IN", $state] : $state;
-        $order = Order::with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator"])
+        $order = Order::with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator", "belongsToMode"])
                     ->where($where)
                     ->find();
         return $order ? $order->toArray() : [];

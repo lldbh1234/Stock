@@ -75,6 +75,12 @@
                 <td class="text-l">{$order.create_at|date="Y-m-d H:i", ###}</td>
             </tr>
             <tr>
+                <th class="text-r">交易模式：</th>
+                <td class="text-l">{$order.belongs_to_mode.name|default='-'}</td>
+                <th class="text-r">免息截止日期：</th>
+                <td class="text-l">{$order.original_free|date="Y-m-d H:i", ###}</td>
+            </tr>
+            <tr>
                 <!--<th class="text-r">是否对冲：</th>
                 <td class="text-l {if condition='$order.is_hedging neq 0'}c-green{else /}c-red{/if}">
                     {$order.is_hedging_text}
