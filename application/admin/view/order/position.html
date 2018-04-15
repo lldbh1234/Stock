@@ -106,11 +106,11 @@
 				{if condition="in_array('admin/Order/positionRebate', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_rebate('返点记录', '{:url("admin/Order/positionRebate", ['id' => $item.order_id])}')" value="返点">
 				{/if}
-				{eq name="$item.is_hedging" value="0"}
+				<!--{eq name="$item.is_hedging" value="0"}
 				{if condition="in_array('admin/Order/hedging', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-warning size-MINI radius" type="button" title="对冲" onclick="hedging_ok({$item.order_id}, {$item.price})" value="对冲">
 				{/if}
-				{/eq}
+				{/eq}-->
 			</td>
 		</tr>
 		{/volist}
