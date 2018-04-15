@@ -19,11 +19,11 @@
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
 		</div>
-		<div class="text-l mt-5">
+		<!--<div class="text-l mt-5">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
-		</div>
+		</div>-->
 		<div class="text-l mt-5">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
@@ -46,9 +46,9 @@
 			<th>手机号</th>
 			<th>股票代码</th>
 			<th>股票名称</th>
-			<th>微会员</th>
+			<!--<th>微会员</th>
 			<th>微圈</th>
-			<th>经纪人</th>
+			<th>经纪人</th>-->
 			<th>买入价</th>
 			<th>卖出价</th>
 			<th>卖出手数</th>
@@ -67,9 +67,9 @@
 			<td>{$item.has_one_user.mobile}</td>
 			<td>{$item.code}</td>
 			<td>{$item.name}</td>
-			<td>{$item.has_one_user.has_one_admin.has_one_parent.username|default='无'}</td>
+			<!--<td>{$item.has_one_user.has_one_admin.has_one_parent.username|default='无'}</td>
 			<td>{$item.has_one_user.has_one_admin.username|default='无'}</td>
-			<td>{$item.has_one_user.has_one_parent.username|default='无'}</td>
+			<td>{$item.has_one_user.has_one_parent.username|default='无'}</td>-->
 			<td>{$item.price|number_format=2}</td>
 			<td>{$item.sell_price|number_format=2}</td>
 			<td>{$item.sell_hand|intval}</td>

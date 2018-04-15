@@ -93,6 +93,12 @@
                     <td class="text-l">{$order.has_one_user.has_one_parent.username|default='-'}</td>
                 </tr>
                 <tr>
+                    <th class="text-r">交易模式：</th>
+                    <td class="text-l">{$order.belongs_to_mode.name|default='-'}</td>
+                    <th class="text-r">免息截止日期：</th>
+                    <td class="text-l">{$order.original_free|date="Y-m-d H:i", ###}</td>
+                </tr>
+                <tr>
                     <th class="text-r">买入时间：</th>
                     <td class="text-l">{$order.create_at|date="Y-m-d H:i", ###}</td>
                     <th class="text-r">卖出时间：</th>
