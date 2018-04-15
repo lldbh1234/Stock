@@ -50,8 +50,8 @@ class Admin extends BaseModel
                     $where['admin_id'] = ["IN", $arr];
                 }else{
                     // 财务、客服
-                    $where['admin_id'] = ["NEQ", self::ADMINISTRATOR_ID];
-                    $where['role'] = ["NEQ", self::ADMIN_ROLE_ID];
+                    //$where['admin_id'] = ["NEQ", self::ADMINISTRATOR_ID];
+                    //$where['role'] = ["NEQ", self::ADMIN_ROLE_ID];
                 }
             }
         }
