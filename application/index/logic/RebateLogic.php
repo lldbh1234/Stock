@@ -18,16 +18,18 @@ class RebateLogic
             $rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $money * $point / 100), 0, -1)); //分成金额
             // 牛人总收入增加
             $niuren = User::find($niurenUserId);
-            $niuren->hasOneNiuren->setInc('income', $rebateMoney);
-            // 牛人可转收入增加
-            $niuren->hasOneNiuren->setInc('sure_income', $rebateMoney);
-            // 牛人收入明细
-            $rData = [
-                "money" => $rebateMoney,
-                "type"  => 0,
-                "order_id" => $orderId,
-            ];
-            $niuren->hasManyNiurenRecord()->save($rData);
+            if($niuren){
+                $niuren->hasOneNiuren->setInc('income', $rebateMoney);
+                // 牛人可转收入增加
+                $niuren->hasOneNiuren->setInc('sure_income', $rebateMoney);
+                // 牛人收入明细
+                $rData = [
+                    "money" => $rebateMoney,
+                    "type"  => 0,
+                    "order_id" => $orderId,
+                ];
+                $niuren->hasManyNiurenRecord()->save($rData);
+            }
             // 订单标识为已结算订单
             Order::update(["order_id" => $orderId, "niuren_rebate" => 1]);
             Db::commit();
