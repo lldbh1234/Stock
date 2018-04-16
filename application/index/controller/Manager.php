@@ -226,43 +226,18 @@ class Manager extends Base
     }
     public function removeCapital()
     {
-        $uid = $this->user_id;
         //查询当前用户是否属于经纪人
         if(uInfo()['is_manager'] == 1/* && uInfo()['manager_state'] == 2*/)
         {
             //查询当前用户可转收入
             $managerLogic = new UserManagerLogic();
-            $managerInfo = $managerLogic->getInfoByUid($this->user_id);
-            if($managerInfo && $managerInfo['sure_income'] > 0)
-            {
-                $amount = $managerInfo['sure_income'];
-                //转出
-                $updateArr = [
-                    'id'                => $managerInfo['id'],
-                    'sure_income'       => 0,
-                    'already_income'    => $managerInfo['sure_income']+$managerInfo['already_income'],
-                ];
-                if($managerLogic->updateManager($updateArr))
-                {
-                    $userRecordLogic = new UserRecordLogic();
-                    //记录日志
-                    $userRecordLogic->insert([
-                        'user_id' => $this->user_id,
-                        'type'      => 10,
-                        'amount'    => $amount,
-                        'direction' => 1,
-                        'create_at' => time(),
-                    ]);
-                    return $this->ok([], '系统提示：转出成功！');
-                }
-
-
+            list($res, $msg) = $managerLogic->incomeTransfer($this->user_id);
+            if($res){
+                return $this->ok($msg);
             }else{
-                return $this->fail("系统提示：当前用户无可转收入！");
+                return $this->fail($msg);
             }
         }
         return $this->fail("系统提示：非法操作！");
-
-
     }
 }

@@ -61,7 +61,7 @@
 
                 <ul class="clear_fl manager_inpu">
                     <li>
-                        <p class="m_key">实时收入</p>
+                        <p class="m_key">当日收入</p>
                         <p class="m_value">{$user.realtime_income | default=0.00}</p>
                     </li>
                     <li>
@@ -77,7 +77,7 @@
                     </li>
                     <li class="border_bottom">
                         <p class="m_key">已转收入</p>
-                        <p class="m_value">{$user.already_income | default=0.00}</p>
+                        <p class="m_value">{$user.has_one_manager.already_income | default=0.00}</p>
                     </li>
                 </ul>
 
@@ -146,15 +146,13 @@
                 _oData = {};
             $ajaxCustom(_url, _oData, function(res){
                 if(res.state){
-                    layer.msg(res.info, {icon: 1});
-                    setTimeout(window.location.reload(), 2000);
+                    layer.msg(res.info, {time: 500}, function () {
+                        window.location.reload();
+                    });
                 }else{
-//                    $alert(res.info);
                     layer.msg(res.info);
                 }
             });
-
-
         }, function(){
          //取消了
         });
