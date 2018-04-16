@@ -19,9 +19,9 @@ class RebateLogic
             // 牛人总收入增加
             $niuren = User::find($niurenUserId);
             if($niuren){
-                $niuren->hasOneNiuren->setInc('income', $rebateMoney);
+                $niuren->hasOneNiuren()->setInc('income', $rebateMoney);
                 // 牛人可转收入增加
-                $niuren->hasOneNiuren->setInc('sure_income', $rebateMoney);
+                $niuren->hasOneNiuren()->setInc('sure_income', $rebateMoney);
                 // 牛人收入明细
                 $rData = [
                     "money" => $rebateMoney,
