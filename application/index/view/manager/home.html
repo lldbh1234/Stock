@@ -146,7 +146,7 @@
                 _oData = {};
             $ajaxCustom(_url, _oData, function(res){
                 if(res.state){
-                    layer.msg(res.info, {time: 500}, function () {
+                    layer.msg("转出成功！", {time: 500}, function () {
                         window.location.reload();
                     });
                 }else{
