@@ -39,6 +39,7 @@ class UserWithdrawLogic
         $lists = UserWithdraw::hasWhere("hasOneUser", $hasWhere)
             ->with(['hasOneUser', 'hasOneAdmin'])
             ->where($where)
+            ->order("id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
