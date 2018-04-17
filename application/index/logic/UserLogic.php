@@ -486,8 +486,9 @@ class UserLogic
         try{
             // 修改止盈止损
             $profitPoint = round((($profit - $order["price"]) / $order["price"] * 100), 2);
-            $lossPoint = round((($order["price"] - $loss) / $order["price"] * 100), 2);
-            $lossDiffPoint = $lossPoint - $order['stop_loss_point'];
+            $lossPoint = round((($order["price"] - $loss) / $order["price"] * 100), 2); //新止损点
+            $originalLossPoint = $order['stop_loss_point'] >= 8 ? $order['stop_loss_point'] : 8; //旧止损点
+            $lossDiffPoint = $lossPoint - $originalLossPoint;
             $data = [
                 "order_id" => $order["order_id"],
                 "stop_profit_price" => $profit,
