@@ -34,6 +34,21 @@ class UserWithdrawLogic
             $where['state'] = $filter['state'];
         }
 
+        // 提现时间
+        if(isset($filter['begin']) || isset($filter['end'])){
+            if(!empty($filter['begin']) && !empty($filter['end'])){
+                $_start = strtotime($filter['begin']);
+                $_end = strtotime($filter['end']);
+                $where['stock_user_withdraw.create_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['begin'])){
+                $_start = strtotime($filter['begin']);
+                $where['stock_user_withdraw.create_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['end'])){
+                $_end = strtotime($filter['end']);
+                $where['stock_user_withdraw.create_at'] = ["ELT", $_end];
+            }
+        }
+
         $pageSize = $pageSize ? : config("page_size");
         //推荐人-微圈-微会员
         $lists = UserWithdraw::hasWhere("hasOneUser", $hasWhere)

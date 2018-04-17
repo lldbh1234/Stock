@@ -510,7 +510,8 @@ class OrderLogic
             $order = Order::with("belongsToMode")->find($orderId)->toArray();
             $data = [
                 "order_id" => $order["order_id"],
-                "state" => 2
+                "state" => 2,
+                "update_by" => isLogin()
             ];
             Order::update($data);
             if($order["profit"] > 0){

@@ -22,7 +22,8 @@
         <input type="text" class="input-text" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
         <input type="text" class="input-text" style="width:170px;" placeholder="结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-        <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+        <button type="submit" class="btn btn-success" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+        <button type="button" class="btn btn-success" id="today-btn">今日流水</button>
     </div>
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -90,5 +91,16 @@
 {block name="script"}
 <script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script>
+$(function () {
+    $("#today-btn").click(function(){
+        var _myDate = new Date(),
+            _todayDate = _myDate.toLocaleDateString().replace(/[\/]/g,'-'),
+            _todayStart = _todayDate + " 00:00",
+            _todayEnd = _todayDate + " 23:59";
+        $("input[name='begin']").val(_todayStart);
+        $("input[name='end']").val(_todayEnd);
+        $("#search-btn").trigger("click");
+    });
+});
 </script>
 {/block}

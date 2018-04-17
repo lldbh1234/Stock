@@ -32,7 +32,8 @@
             <input type="text" class="input-text radius" style="width:170px;" placeholder="申请结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
             <input type="text" class="input-text radius ml-10" style="width:170px;" placeholder="审核开始时间" name="update_begin" value="{$search.update_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
             <input type="text" class="input-text radius" style="width:170px;" placeholder="审核结束时间" name="update_end" value="{$search.update_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-            <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+            <button type="submit" class="btn btn-success radius" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+            <button type="button" class="btn btn-success radius" id="today-btn">今日流水</button>
         </div>
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -177,5 +178,17 @@
         });
     }
     {/if}
+
+    $(function () {
+        $("#today-btn").click(function () {
+            var _myDate = new Date(),
+                _todayDate = _myDate.toLocaleDateString().replace(/[\/]/g, '-'),
+                _todayStart = _todayDate + " 00:00",
+                _todayEnd = _todayDate + " 23:59";
+            $("input[name='create_begin']").val(_todayStart);
+            $("input[name='create_end']").val(_todayEnd);
+            $("#search-btn").trigger("click");
+        });
+    });
 </script>
 {/block}
