@@ -631,7 +631,8 @@
         context.find(".diefu span").html( lossRate + "%" );
 
         if( type == 1 ){
-            context.attr("data-lossrate", lossRate);
+            var data_lossR = lossRate <= -8 ? lossRate : -8;
+            context.attr("data-lossrate", data_lossR);
         }else{
             var diffLossRate =  oldLossRate - lossRate;
         //补充保证金
