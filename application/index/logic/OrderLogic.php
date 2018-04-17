@@ -144,6 +144,14 @@ class OrderLogic
         return $orders ? collection($orders)->toArray() : [];
     }
 
+    public function allSellOrders()
+    {
+        $todayStart = strtotime(date("Y-m-d"));
+        $where = ["state" => 3, "create_at" => ["LT", $todayStart]];
+        $orders = Order::where($where)->select();
+        return $orders ? collection($orders)->toArray() : [];
+    }
+
     // 自动递延，扣除用户余额
     public function handleDeferByUserAccount($order, $managerId, $admins)
     {

@@ -125,7 +125,7 @@ class Cron extends Controller
     {
         set_time_limit(0);
         if(checkStockTradeTime()){
-            $orders = (new OrderLogic())->orderByState($state = 3);
+            $orders = (new OrderLogic())->allSellOrders();
             if($orders){
                 foreach ($orders as $order){
                     /*$sellData = [
