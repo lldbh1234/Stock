@@ -635,7 +635,7 @@
         }else{
             var diffLossRate =  oldLossRate - lossRate;
         //补充保证金
-            if( lossRate < 8 && diffLossRate > 0){
+            if( lossRate < -8 && diffLossRate > 0){
                 var originaldeposit = parseFloat( context.attr("data-originaldeposit") );
                 var buchong = originaldeposit * diffLossRate / 100;
                 buchong = buchong < 0?0 : buchong;
