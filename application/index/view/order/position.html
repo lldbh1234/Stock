@@ -640,6 +640,8 @@
                 var buchong = originaldeposit * diffLossRate / 100;
                 buchong = buchong < 0?0 : buchong;
                 $(".bazhengjin_count span").html(buchong.toFixed(2));
+            }else{
+                $(".bazhengjin_count span").html("0.00");
             }
         }
         
