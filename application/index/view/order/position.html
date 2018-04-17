@@ -504,7 +504,7 @@
      });
 
      //修改止盈止损
-     $("body").on("tap", ".modify_point", function(){
+     $("body").on("click", ".modify_point", function(){
         var context = $(this).parents("li");
         var accountBalance = $(".h_re_banlance").data("balance"); //账户余额
         accountBalance = accountBalance.split(",");
