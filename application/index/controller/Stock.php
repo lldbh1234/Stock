@@ -62,6 +62,7 @@ class Stock extends Base
                         "stop_loss_price" => input("post.loss/f"),
                         "stop_loss_point" => round(($price - input("post.loss/f")) / $price * 100, 2),
                         "deposit"   => $deposit['money'],
+                        "original_deposit" => $deposit['money'],
                         "state"     => 3, // 下单即持仓
                         "is_follow" => $followId ? 1 : 0,
                         "follow_id" => $followId,

@@ -485,15 +485,45 @@ class UserLogic
         Db::startTrans();
         try{
             // 修改止盈止损
+            $profitPoint = round((($profit - $order["price"]) / $order["price"] * 100), 2);
+            $lossPoint = round((($order["price"] - $loss) / $order["price"] * 100), 2);
+            $lossDiffPoint = $lossPoint - $order['stop_loss_point'];
             $data = [
                 "order_id" => $order["order_id"],
                 "stop_profit_price" => $profit,
-                "stop_profit_point" => round((($profit - $order["price"]) / $order["price"] * 100), 2),
+                "stop_profit_point" => $profitPoint,
                 "stop_loss_price" => $loss,
-                "stop_loss_point" => round((($order["price"] - $loss) / $order["price"] * 100), 2)
+                "stop_loss_point" => $lossPoint
             ];
             Order::update($data);
-            $deposit = $order["deposit"]; //保证金
+            if($lossPoint > 8 && $lossDiffPoint > 0){
+                // 所需补充的金额
+                $_deposit = $order["original_deposit"] * $lossDiffPoint / 100;
+                // 补充完后的保证金
+                // $deposit = $order["deposit"] + $_deposit;
+                if($_deposit > 0){
+                    $user = User::find($userId);
+                    if($user && $user['account'] >= $_deposit){
+                        Order::where(["order_id" => $order["order_id"]])->setInc("deposit", $_deposit);
+                        // 余额减少
+                        $user->setDec("account", $_deposit);
+                        // 锁定余额增加
+                        $user->setInc("blocked_account", $_deposit);
+                        // 资金明细
+                        $rData = [
+                            "type" => 4,
+                            "amount" => $_deposit,
+                            "remark" => json_encode(['orderId' => $order["order_id"]]),
+                            "direction" => 2
+                        ];
+                        $user->hasManyRecord()->save($rData);
+                    }else{
+                        Db::rollback();
+                        return false;
+                    }
+                }
+            }
+            /*$deposit = $order["deposit"]; //保证金
             $_deposit = ($order["price"] - $loss) * $order['hand']; //调整后的保证金
             if($_deposit > $deposit){
                 $diff = $_deposit - $deposit;
@@ -516,7 +546,7 @@ class UserLogic
                     Db::rollback();
                     return false;
                 }
-            }
+            }*/
             Db::commit();
             return true;
         } catch(\Exception $e) {

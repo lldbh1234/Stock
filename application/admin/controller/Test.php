@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use app\admin\logic\OrderLogic;
 use app\admin\logic\StockLogic;
 use app\common\payment\paymentLLpay;
+use app\common\quotation\sina;
 use app\index\job\DeferJob;
 use app\index\job\RebateJob;
 use app\index\logic\AdminLogic;
@@ -23,6 +24,10 @@ class Test extends Controller
 
     public function test()
     {
+        $_logic = new \app\index\logic\StockLogic();
+        $aa = $_logic->realData(['600555']);
+        dump($aa);
+        exit;
         $_logic = new AdminLogic();
         $tree = $_logic->ringFamilyTree(6);
         dump($tree);
