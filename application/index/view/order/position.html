@@ -636,19 +636,10 @@
             var diffLossRate =  oldLossRate - lossRate;
         //补充保证金
             if( lossRate < 8 && diffLossRate > 0){
-                var oldBaozheng = parseFloat( $(".bazhengjin_count span").html());
                 var originaldeposit = parseFloat( context.attr("data-originaldeposit") );
                 var buchong = originaldeposit * diffLossRate / 100;
                 buchong = buchong < 0?0 : buchong;
                 $(".bazhengjin_count span").html(buchong.toFixed(2));
-
-                var _id = context.data("id");
-                var dispositDom = $(".position" + _id).find(".banzhengjin");
-
-                var oldDCount = parseFloat( dispositDom.html() );
-                var newDCount = oldDCount + buchong - oldBaozheng;
-
-                dispositDom.html( newDCount.toFixed(2) );
             }
         }
         
@@ -727,6 +718,13 @@
 
                 context.attr("data-profit", profit);
                 context.attr("data-loss", loss);
+
+
+                var buchong = parseFloat( $(".bazhengjin_count span").html() );
+                var dispositDom = $(".position" + id).find(".banzhengjin");
+                var oldDCount = parseFloat( dispositDom.html() );
+                var newDCount = oldDCount + buchong;
+                dispositDom.html( newDCount.toFixed(2) );
 
 
                 var timer = setTimeout(function(){
