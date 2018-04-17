@@ -327,7 +327,7 @@
 		swipeBack: true //启用右滑关闭功能
 	})
 	//选项卡
-	 mui('body').on('click', 'nav a', function() {
+	 mui('body').on('tap', 'nav a', function() {
         var data_href = this.getAttribute("data-href");
         var href = this.getAttribute("href");
         var url=data_href;
@@ -337,7 +337,7 @@
         window.location.href = url;
      });
 
-     mui('body').on('click', '.strategy_top a', function() {
+     mui('body').on('tap', '.strategy_top a', function() {
         var data_href = this.getAttribute("data-href");
         var href = this.getAttribute("href");
         var url=data_href;
@@ -348,7 +348,7 @@
      });
 
 
-     mui('body').on('click', '.postion_tab a', function() {
+     mui('body').on('tap', '.postion_tab a', function() {
         var data_href = this.getAttribute("data-href");
         var href = this.getAttribute("href");
         var url=data_href;
@@ -419,7 +419,7 @@
 
 
      //充值保证金
-     $("body").on("click", ".add_money", function(){
+     $("body").on("tap", ".add_money", function(){
         var context = $(this).parents("li");
         var baohzengjin = context.find(".banzhengjin").html();
         baohzengjin = baohzengjin.split(",");
@@ -504,7 +504,7 @@
      });
 
      //修改止盈止损
-     $("body").on("click", ".modify_point", function(){
+     $("body").on("tap", ".modify_point", function(){
         var context = $(this).parents("li");
         var accountBalance = $(".h_re_banlance").data("balance"); //账户余额
         accountBalance = accountBalance.split(",");
@@ -597,7 +597,7 @@
         $(".bazhengjin_count span").html(buchong.toFixed(2));
      }
 
-     $(".control_point").on("click", ".count_btn", function(){
+     $(".control_point").on("tap", ".count_btn", function(){
         var context = $(this).parents(".control_point");
         var val = parseFloat( context.find(".now_count").val() );
         var buyPrice = parseFloat( $(".profit_loss_mask").data("buyprice"));
@@ -617,7 +617,7 @@
      });
 
      //平仓
-     $("body").on("click", ".sell_position_btn", function(){
+     $("body").on("tap", ".sell_position_btn", function(){
         var context = $(this).parents("li");
         var id = context.data("id");
         layer.open({
