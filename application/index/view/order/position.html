@@ -231,7 +231,7 @@
                             <input  class="now_count lossCount">
                             <span class="plus_btn count_btn">+</span>
                         </p>
-                        <p class="rt fudong diefu">跌幅约 <span>-11.83%</span></p>
+                        <p class="rt fudong diefu">跌幅约 <span></span></p>
                     </div>
 
                     <div class="clear_fl add_banzhengjin">
@@ -518,8 +518,9 @@
         baohzengjin = baohzengjin.join("");
         baohzengjin = parseFloat(baohzengjin);
 
+        var originaldeposit = context.data("originaldeposit");
         var _id = context.data("id");
-        $(".profit_loss_mask").attr("data-id", _id);
+        $(".profit_loss_mask").attr("data-id", _id).attr("data-originaldeposit", originaldeposit);
 
         //止盈止损点
         var profit = parseFloat(context.attr("data-profit"));
@@ -535,7 +536,9 @@
 
 
         $(".profit_loss_mask").show().attr("data-baozhengjin", baohzengjin).attr("data-count", count).attr("data-buyPrice", buyPrice).attr("data-nowPrice", nowPrice);
-        calcNum();
+        calcNum( 1 );
+
+        $(".bazhengjin_count span").html("0.00");
      }
 
      //修改止盈止损
@@ -605,10 +608,11 @@
         // }
 
 
-        context.find(".fudong").find("span").html( rate + "%" );
+        // context.find(".fudong").find("span").html( rate + "%" );
+        calcNum();
     });
 
-     function calcNum(){
+     function calcNum( type ){
         var context = $(".profit_loss_mask");
 
         var profit = parseFloat( context.find(".profitCount").val() );
@@ -621,15 +625,33 @@
 
         var count = parseFloat( context.data("count") );
 
+
+        oldLossRate =  parseFloat( context.attr("data-lossrate") );
         context.find(".zhangfu span").html( "+" + profitRate + "%" );
         context.find(".diefu span").html( lossRate + "%" );
 
+        if( type == 1 ){
+            context.attr("data-lossrate", lossRate);
+        }else{
+            var diffLossRate =  oldLossRate - lossRate;
         //补充保证金
-        var sumCount = Math.ceil( (buyPrice - loss) * count );
-        var buchong = sumCount - baozhengjin;
-        buchong = buchong < 0?0 : buchong;
+            if( lossRate < 8 && diffLossRate > 0){
+                var oldBaozheng = parseFloat( $(".bazhengjin_count span").html());
+                var originaldeposit = parseFloat( context.attr("data-originaldeposit") );
+                var buchong = originaldeposit * diffLossRate / 100;
+                buchong = buchong < 0?0 : buchong;
+                $(".bazhengjin_count span").html(buchong.toFixed(2));
 
-        $(".bazhengjin_count span").html(buchong.toFixed(2));
+                var _id = context.data("id");
+                var dispositDom = $(".position" + _id).find(".banzhengjin");
+
+                var oldDCount = parseFloat( dispositDom.html() );
+                var newDCount = oldDCount + buchong - oldBaozheng;
+
+                dispositDom.html( newDCount.toFixed(2) );
+            }
+        }
+        
      }
 
      $(".control_point").on("tap", ".count_btn", function(){
@@ -740,7 +762,7 @@
                 }else{
                     className = "green";
                 }
-              html += '<li class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
+              html += '<li data-originalDeposit="' + data.orders[key].original_deposit + '"  class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
                     <h1 class="clear_fl">\
                         <span class="lf">' + data.orders[key].name + ' '+ data.orders[key].code +'</span>\
                         <span class="rt"> <span class="p_key"></span>'+ data.orders[key].create_at_text +'</span>\
