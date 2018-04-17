@@ -503,9 +503,9 @@
         }
      });
 
-     //修改止盈止损
-     $("body").on("click", ".modify_point", function(){
-        var context = $(this).parents("li");
+
+     function modifyPoint(that){
+        var context = $(that).parents("li");
         var accountBalance = $(".h_re_banlance").data("balance"); //账户余额
         accountBalance = accountBalance.split(",");
         accountBalance = accountBalance.join("");
@@ -536,7 +536,42 @@
 
         $(".profit_loss_mask").show().attr("data-baozhengjin", baohzengjin).attr("data-count", count).attr("data-buyPrice", buyPrice).attr("data-nowPrice", nowPrice);
         calcNum();
-     });
+     }
+
+     //修改止盈止损
+     // $("body").on("click", ".modify_point", function(){
+     //    var context = $(this).parents("li");
+     //    var accountBalance = $(".h_re_banlance").data("balance"); //账户余额
+     //    accountBalance = accountBalance.split(",");
+     //    accountBalance = accountBalance.join("");
+     //    accountBalance = parseFloat(accountBalance);
+     //    //数量
+     //    var count = parseFloat( context.find(".g_count").html() );
+     //    //保证金
+     //    var baohzengjin = context.find(".banzhengjin").html();
+     //    baohzengjin = baohzengjin.split(",");
+     //    baohzengjin = baohzengjin.join("");
+     //    baohzengjin = parseFloat(baohzengjin);
+
+     //    var _id = context.data("id");
+     //    $(".profit_loss_mask").attr("data-id", _id);
+
+     //    //止盈止损点
+     //    var profit = parseFloat(context.attr("data-profit"));
+     //    var loss = parseFloat(context.attr("data-loss"));
+     //    var nowPrice = parseFloat( context.find(".p_now_price").html() );
+
+     //    //买入价
+     //    var buyPrice = context.find(".buy_price").html();
+
+     //    $(".profitCount").val( profit.toFixed(2) ).attr("data-initValue", profit.toFixed(2));
+     //    $(".lossCount").val( loss.toFixed(2) ).attr("data-initValue", loss.toFixed(2));
+     //    $(".account_balance span").html( accountBalance.toFixed(2) );
+
+
+     //    $(".profit_loss_mask").show().attr("data-baozhengjin", baohzengjin).attr("data-count", count).attr("data-buyPrice", buyPrice).attr("data-nowPrice", nowPrice);
+     //    calcNum();
+     // });
 
 
      $(".now_count").change(function(){
@@ -759,7 +794,7 @@
                     <div class="clear_fl p_control_panel">\
                         <p class="rt">\
                            <!-- <span class="add_money lf" data-order-id="' + data.orders[key].order_id + '">补充保证金</span> -->\
-                            <span class="modify_point lf" data-order-id="' + data.orders[key].order_id + '">修改止盈止损</span>\
+                            <span onclick="modifyPoint(this)" class="modify_point lf" data-order-id="' + data.orders[key].order_id + '">修改止盈止损</span>\
                             <span class="sell_position_btn lf" data-order-id="' + data.orders[key].order_id + '">平仓</span>\
                         </p>\
                     </div>\
