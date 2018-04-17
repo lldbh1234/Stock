@@ -322,10 +322,16 @@
 		for( var key in lever_ids ){
 			$(".beishu_options").find("[data-id='" + lever_ids[key] + "']").show();
 		}
+		$(".beishu_options").find("[data-id='" + lever_ids[0] + "']").trigger("click");
 	});
 
 	$(function(){
 		$(".pattern_options span:first-child").trigger("click");
+
+		// $(".x_y_options span:nth-child(1)").addClass("active");
+		// $(".pattern_options span:nth-child(1)").addClass("active");
+		// $(".beishu_options span:nth-child(1)").addClass("active");
+		calcNum(true);
 	});
 
 
@@ -336,7 +342,7 @@
 		calcNum()
 	});
 
-	$(".beishu_options").on("tap" , "span" , function(){
+	$(".beishu_options").on("click" , "span" , function(){
 		$(this).addClass("active").siblings(".active").removeClass("active");
 		calcNum()
 	});
@@ -370,14 +376,6 @@
 
 	});
 
-	$(function(){
-		$(".x_y_options span:nth-child(1)").addClass("active");
-		$(".pattern_options span:nth-child(1)").addClass("active");
-		$(".beishu_options span:nth-child(1)").addClass("active");
-		calcNum(true);
-
-		// $(".plus_btn").trigger("click");
-	});
 
 	$(".now_count").change(function(){
 		var context = $(this).parents(".control_point");
