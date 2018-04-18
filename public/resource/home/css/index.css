@@ -459,10 +459,10 @@ border-bottom: 1px solid #DADADA
 	margin-left: 6px;
 }
 .red{
-	color: red!important;
+	color: #e60012 !important;
 }
-.red{
-	color: green!important;
+.green{
+	color: #19B777 !important;
 }
 .mui-icon-celue{
 	top: -12px;
