@@ -91,4 +91,9 @@ class Index extends Base
         }
         return $this->fail("非法操作");
     }
+
+    public function help()
+    {
+        return view();
+    }
 }

@@ -34,6 +34,7 @@ Route::group("index", function () {
     Route::any('/$','index/Index/index');
     Route::any('index', 'index/Index/index');
     Route::post('get-region', 'index/Index/getRegion');
+    Route::any('help', 'index/Index/help');
 });
 
 Route::group("notify", function () {

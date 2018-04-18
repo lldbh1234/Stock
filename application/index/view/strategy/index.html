@@ -88,8 +88,8 @@
                         <p class="shares_code">{$item.code}</p>
                         <p class="shares_price {egt name='item.px_change' value='0'}red{/egt}">{$item.last_px}</p>
                         <p class="shares_detail">
-                            <span class="{egt name='item.px_change' value='0'}red{/egt}">{$item.px_change}</span>
-                            <span class="{egt name='item.px_change' value='0'}red{/egt}">{$item.px_change_rate}%</span>
+                            <span class="{egt name='item.px_change' value='0'}red{else /}green{/egt}">{$item.px_change}</span>
+                            <span class="{egt name='item.px_change' value='0'}red{else /}green{/egt}">{$item.px_change_rate}%</span>
                         </p>
                     </a>
                 </li>
