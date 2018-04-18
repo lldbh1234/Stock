@@ -104,10 +104,10 @@
 				{/if}
 				{elseif condition="$item.state eq 4" /}
 				{if condition="in_array('admin/Order/sellOk', $Think.session.ACCESS_LIST)"}
-				<input class="btn btn-success size-MINI radius" type="button" title="平仓成功" onclick="sell_ok({$item.order_id}, this);" value="平仓">
+				<input class="btn btn-success size-MINI radius" type="button" title="平仓成功" onclick="sell_ok({$item.order_id}, this);" value="确认">
 				{/if}
 				{if condition="in_array('admin/Order/sellFail', $Think.session.ACCESS_LIST)"}
-				<input class="btn btn-danger size-MINI radius" type="button" title="平仓失败" onclick="sell_fail({$item.order_id}, this);" value="撤销">
+				<input class="btn btn-danger size-MINI radius" type="button" title="平仓失败" onclick="sell_fail({$item.order_id}, this);" value="取消">
 				{/if}
 				{/if}
 			</td>
