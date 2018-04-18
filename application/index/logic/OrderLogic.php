@@ -176,7 +176,7 @@ class OrderLogic
             }
             array_filter($yieldLists, function (&$item) use ($userCounts){
                 $item['win'] = round($item['win_count'] / $userCounts[$item['user_id']] * 100, 2);
-                $item['yield'] = round($item['yield'], 2);
+                $item['yield'] = round($item['yield'] * 100, 2);
             });
             return $yieldLists;
         }
