@@ -359,7 +359,7 @@ function isTradingTime(){
 
 
     //搜索历史
-        $("body").on("click", ".zixuan_list li", function(){
+        $("body").on("tap", ".zixuan_list li", function(){
             var code = $(this).find(".zi_name span+span").html();
             var storage = window.localStorage;
             if( storage.searchHistory ){
