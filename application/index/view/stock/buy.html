@@ -133,7 +133,7 @@
 						中建58好策略交易居间服务协议
 	            	</p>
 	            </div>
-	            <p class="read_risk_btn">确认</p>
+	            <p onclick="hideProtocal();" class="read_risk_btn">确认</p>
 	        </div>
 	    </div>
 	    <!-- end -->
@@ -333,6 +333,9 @@
 {block name="script"}
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
+	function hideProtocal(){
+		$(".protocal").hide();
+	}
 	function showProtocal(){
 		$(".protocal").show();
 	}
