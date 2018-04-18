@@ -89,15 +89,15 @@
 	.no_arrow {
 		background: #fff!important;
 	}
-	.protocal{
-		display: block;
-	}
 	.risk_text{
-		max-height: 280px;
+		max-height: 300px;
 		overflow: auto;
 	}
 	.risk_content {
 	    margin-top: 200px;
+	}
+	.agree_con span{
+		  color: #007aff;
 	}
 </style>
 {/block}
@@ -316,7 +316,7 @@
 					<input type="checkbox" id="agree" value="on" checked="">
 					已阅读并同意相关
 				</label>
-				<a href="#/Agreement"><span>合作协议</span></a>
+				<span onclick="showProtocal();">合作协议</span>
 			</div>
 		</section>
 {/block}
@@ -327,6 +327,9 @@
 {block name="script"}
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
+	function showProtocal(){
+		$(".protocal").show();
+	}
 	$(".intro_btn").click(function(){
 		$(this).find(".risk_mask").show();
 	});
