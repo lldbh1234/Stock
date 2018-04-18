@@ -378,7 +378,9 @@ function isTradingTime(){
             }else{
                 storage.searchHistory = code;
             }
-            window.location.href = "/stock/home.html?code=" + code;
+            if( $("#searchInput").val() != "" ){
+                window.location.href = "/stock/home.html?code=" + code;
+            }
         });
 </script>
 {/block}
