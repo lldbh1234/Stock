@@ -44,6 +44,10 @@ class OrderLogic
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
         //$where['stock_order.state'] = ["IN", [1, 4]];
         $where['stock_order.state'] = 4;
+        // 策略ID
+        if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
+            $where["stock_order.order_id"] = trim($filter['id']);
+        }
         // 昵称
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
             $_nickname = trim($filter['nickname']);
@@ -131,6 +135,10 @@ class OrderLogic
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
         $where['stock_order.state'] = 2;
+        // 策略ID
+        if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
+            $where["stock_order.order_id"] = trim($filter['id']);
+        }
         // 昵称
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
             $_nickname = trim($filter['nickname']);
@@ -226,6 +234,10 @@ class OrderLogic
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
         $where['stock_order.state'] = 3;
+        // 策略ID
+        if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
+            $where["stock_order.order_id"] = trim($filter['id']);
+        }
         // 昵称
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
             $_nickname = trim($filter['nickname']);
@@ -319,6 +331,10 @@ class OrderLogic
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
         $where['stock_order.state'] = 6;
+        // 策略ID
+        if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
+            $where["stock_order.order_id"] = trim($filter['id']);
+        }
         // 昵称
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
             $_nickname = trim($filter['nickname']);

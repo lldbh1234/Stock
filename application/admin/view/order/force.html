@@ -17,6 +17,7 @@
 <div class="page-container">
 	<form action="" method="get">
 		<div class="text-l">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="策略ID" name="id" value="{$search.id|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
@@ -65,8 +66,8 @@
 			<th>止损</th>
 			<th>卖出价</th>
 			<th>卖出数量</th>
-			<th>盈亏</th>
 			<th>保证金</th>
+			<th>盈亏</th>
 			<th>建仓费</th>
 			<th>递延费</th>
 			<th>平仓类型</th>
@@ -92,6 +93,7 @@
 			<td>{$item.stop_loss_price|number_format=2}</td>
 			<td>{$item.sell_price|number_format=2}</td>
 			<td>{$item.sell_hand|intval}</td>
+			<td>{$item.deposit|number_format=2}</td>
 			<td>
 				{if condition="$item.profit LT 0"}
 				<font style="color: #1eb83f;">{$item.profit|number_format=2}</font>
@@ -101,7 +103,6 @@
 				<font style="color: #CC0000;">{$item.profit|number_format=2}</font>
 				{/if}
 			</td>
-			<td>{$item.deposit|number_format=2}</td>
 			<td>{$item.jiancang_fee|number_format=2}</td>
 			<td>{$item.defer|number_format=2}</td>
 			<td>{$item.force_type_text}</td>
