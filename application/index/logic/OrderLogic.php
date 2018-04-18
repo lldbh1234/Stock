@@ -156,9 +156,24 @@ class OrderLogic
     // 所有最牛达人
     public function allYieldOrders($filter = [], $limit = 5)
     {
+        $where = ['state' => 2, 'profit' => ['GT', 0]];
+        // 平仓时间
+        if(isset($filter['begin']) || isset($filter['end'])){
+            if(!empty($filter['begin']) && !empty($filter['end'])){
+                $_start = strtotime($filter['begin']);
+                $_end = strtotime($filter['end']);
+                $where['update_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['begin'])){
+                $_start = strtotime($filter['begin']);
+                $where['update_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['end'])){
+                $_end = strtotime($filter['end']);
+                $where['update_at'] = ["ELT", $_end];
+            }
+        }
         $userYieldLists = Order::with("hasOneUser")
                             ->field(["user_id", "COUNT(order_id)" => "win_count", "SUM(profit) / SUM(deposit)" => "yield"])
-                            ->where(['state' => 2, 'profit' => ['GT', 0]])
+                            ->where($where)
                             ->group("user_id")
                             ->order(["yield" => "DESC"])
                             ->limit($limit)
@@ -175,6 +190,7 @@ class OrderLogic
                 $userCounts[$val['user_id']] = $val['order_count'];
             }
             array_filter($yieldLists, function (&$item) use ($userCounts){
+                $item['count'] = $userCounts[$item['user_id']];
                 $item['win'] = round($item['win_count'] / $userCounts[$item['user_id']] * 100, 2);
                 $item['yield'] = round($item['yield'] * 100, 2);
             });

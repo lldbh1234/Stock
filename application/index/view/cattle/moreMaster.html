@@ -38,17 +38,18 @@
         {volist name="$bestUserList" id="vo"}
         <li>
             <div class="clear_fl">
-                <a href="{:url('index/Cattle/niurenDetail', ['uid' => $vo.user_id])}" class="lf">
-                <img class="lf user_pic" src="{$vo.face | default='__RESOURCE__/img/default-user-img.png'}">
-                <p class="lf user_name">{$vo.nickname | default=$vo.username} <img src="__RESOURCE__/img/niuren.png"></p>
+                <!--<a href="{:url('index/Cattle/niurenDetail', ['uid' => $vo.has_one_user.user_id])}" class="lf">-->
+                <a href="javascript:void(0);" class="lf">
+                <img class="lf user_pic" src="{$vo.has_one_user.face|default='__RESOURCE__/img/default-user-img.png'}">
+                <p class="lf user_name">{$vo.has_one_user.nickname|default=$vo.has_one_user.username} <img src="__RESOURCE__/img/niuren.png"></p>
                 </a>
-                <a href="javascript:void(0)" onclick="follow('{$vo.user_id}', this);" class="rt guanzhu_btn {in name='vo.user_id' value='$followIds'}active{/in}"></a>
+                <a href="javascript:void(0)" onclick="follow('{$vo.has_one_user.user_id}', this);" class="rt guanzhu_btn {in name='vo.has_one_user.user_id' value='$followIds'}active{/in}"></a>
             </div>
             <div class="clear_fl daren_info">
-                <p class="lf celueshu">策略数: <span>{$vo.pulish_strategy | default=0}</span></p>
+                <p class="lf celueshu">策略数: <span>{$vo.count|default=0}</span></p>
                 <div class="rt celue_right">
-                    <p class="lf celueshu">胜算率 <span>{$vo.strategy_win | default=0}%</span></p>
-                    <p class="lf celueshu">收益率 <span>{$vo.strategy_yield | default=0}%</span></p>
+                    <p class="lf celueshu">胜算率 <span>{$vo.win|number_format=2}%</span></p>
+                    <p class="lf celueshu">收益率 <span>{$vo.yield|number_format=2}%</span></p>
                 </div>
             </div>
         </li>

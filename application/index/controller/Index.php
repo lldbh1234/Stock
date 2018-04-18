@@ -23,6 +23,8 @@ class Index extends Base
         $userFollowLogic = new UserFollowLogic();
         $userNoticeLogic = new UserNoticeLogic();
         $lists = [];
+
+        // 自选
         $stocks = $userLogic->userOptional($this->user_id);
         if($stocks){
             $codes = array_column($stocks, "code");
@@ -32,19 +34,16 @@ class Index extends Base
             });
         }
 
-        $bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
+        // 最牛达人
+        /*$bestUserList =  $userLogic->getAllBy(['is_niuren' => 1]);
         foreach($bestUserList as $k => $v)
         {
             $bestUserList[$k] = array_merge($v, $userLogic->userDetail($v['user_id'], ['state' => 2]));//抛出
         }
         $bestUserList = collection($bestUserList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
-        })->slice(0,5)->toArray();//排序
-//        $bestUserList = collection($bestUserList)->sort(function($a,$b)
-//        {
-//            if ($a['strategy_yield']==$b['strategy_yield']) return 0;
-//            return ($a['strategy_yield']>$b['strategy_yield'])?-1:1;
-//        })->toArray();//排序
+        })->slice(0,5)->toArray();*/
+        $bestUserList = $orderLogic->allYieldOrders();
 
         $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
         $bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
@@ -55,19 +54,15 @@ class Index extends Base
         }
         foreach($bestStrategyList as $k => $v)
         {
-
             $sell_price = isset($codeInfo[$v['code']]['last_px']) ? $codeInfo[$v['code']]['last_px'] : $v['price'];
             $bestStrategyList[$k]['strategy_yield'] = round(($sell_price-$v['price'])/$v['price']*100, 2);
             $bestStrategyList[$k]['profit'] = round(($sell_price-$v['price'])*$v['hand'], 2);
-
         }
-
         $bestStrategyList = collection($bestStrategyList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
         })->slice(0,5)->toArray();//排序
         $userNotice = $userNoticeLogic->getAllBy(['user_id' => $this->user_id, 'read' => 1]);
         $userNotice = count($userNotice);
-
 
         $this->assign('bestUserList', $bestUserList);
         $this->assign('bestStrategyList', $bestStrategyList);

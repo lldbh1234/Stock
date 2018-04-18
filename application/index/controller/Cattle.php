@@ -173,15 +173,34 @@ class Cattle extends Base
         }
         return $this->fail('系统提示：非法操作');
     }
+
     public function moreMaster()
     {
-        $userLogic = new UserLogic();
+        //$userLogic = new UserLogic();
         $userFollowLogic = new UserFollowLogic();
 
-        $map = ['is_niuren' => 1];
-        $orderMap = ['state' => 2];//抛出
+        //$map = ['is_niuren' => 1];
+        //$orderMap = ['state' => 2];//抛出
         $type = !empty(input('type') && in_array(input('type'), [1,2,3])) ? input('type'): 1;
-//        if($type == 1){
+        $filter = [];
+        switch ($type){
+            case '1':
+                break;
+            case '2':
+                // 日
+                $filter['begin'] = date('Y-m-d 00:00:00');
+                $filter['end'] = date('Y-m-d 23:59:59');
+                break;
+            case '3':
+                //月
+                $filter['begin'] = date('Y-m-01 00:00:00');
+                $filter['end'] = date("Y-m-t 23:59:59");
+                break;
+            default:
+                break;
+        }
+        $bestUserList = (new OrderLogic())->allYieldOrders($filter, 10);
+/*//        if($type == 1){
 //
 //        }
         if($type == 2){//日
@@ -198,13 +217,14 @@ class Cattle extends Base
         }
         $bestUserList = collection($bestUserList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
-        })->toArray();//排序
+        })->toArray();//排序*/
         $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
         $this->assign('type', $type);
         $this->assign('followIds', $followIds);
         $this->assign('bestUserList', $bestUserList);
         return view();
     }
+
     public function moreStrategy()
     {
         $orderLogic = new OrderLogic();
