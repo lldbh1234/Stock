@@ -144,12 +144,43 @@ class OrderLogic
         return $orders ? collection($orders)->toArray() : [];
     }
 
+    // 所有需检测爆仓、止盈止损的订单
     public function allSellOrders()
     {
         $todayStart = strtotime(date("Y-m-d"));
         $where = ["state" => 3, "create_at" => ["LT", $todayStart]];
         $orders = Order::where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
+    }
+
+    // 所有最牛达人
+    public function allYieldOrders($filter = [], $limit = 5)
+    {
+        $userYieldLists = Order::with("hasOneUser")
+                            ->field(["user_id", "COUNT(order_id)" => "win_count", "(SUM(sell_price) - SUM(price)) / SUM(price)" => "yield"])
+                            ->where(['state' => 2, 'profit' => ['GT', 0]])
+                            ->group("user_id")
+                            ->order(["yield" => "DESC"])
+                            ->limit($limit)
+                            ->select();
+        if($userYieldLists){
+            $yieldLists = collection($userYieldLists)->toArray();
+            $userIds = array_column($yieldLists, "user_id");
+            $userOrderCounts = Order::field(['user_id', "COUNT(order_id)" => "order_count"])
+                                ->where(['state' => 2, "user_id" => ["IN", $userIds]])
+                                ->group("user_id")
+                                ->select();
+            $userCounts = [];
+            foreach ($userOrderCounts as $val){
+                $userCounts[$val['user_id']] = $val['order_count'];
+            }
+            array_filter($yieldLists, function (&$item) use ($userCounts){
+                $item['win'] = round($item['win_count'] / $userCounts[$item['user_id']] * 100, 2);
+                $item['yield'] = round($item['yield'], 2);
+            });
+            return $yieldLists;
+        }
+        return [];
     }
 
     // 自动递延，扣除用户余额

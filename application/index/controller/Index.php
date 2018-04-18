@@ -22,7 +22,6 @@ class Index extends Base
         $orderLogic = new OrderLogic();
         $userFollowLogic = new UserFollowLogic();
         $userNoticeLogic = new UserNoticeLogic();
-
         $lists = [];
         $stocks = $userLogic->userOptional($this->user_id);
         if($stocks){

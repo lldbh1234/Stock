@@ -24,6 +24,10 @@ class Test extends Controller
 
     public function test()
     {
+        $_logic = new \app\index\logic\OrderLogic();
+        $res = $_logic->allYieldOrders();
+        dump($res);
+        exit;
         $_logic = new \app\index\logic\StockLogic();
         $aa = $_logic->realData(['600555']);
         dump($aa);
