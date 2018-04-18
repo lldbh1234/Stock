@@ -1,10 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引新手指引
-</body>
-</html>
+{extend name="layouts/layout_index" /}
+
+{block name="title"}
+首页
+{/block}
+
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="__RESOURCE__/css/person.css">
+<style type="text/css">
+h1{
+	text-align: center;
+	font-size: 26px;
+	color:#ff0200;
+	margin-top: 20px;
+}
+h2{
+	font-size: 16px;
+	height: 44px;
+	line-height: 44px;
+}
+.help_con{
+	padding: 0 16px;
+}
+img{
+	width: 100%;
+}
+</style>
+{/block}
+
+{block name="content"}
+	<header class="header_con">
+        <a href="{:url('index/Index/index')}" class="lf">
+            <img src="__RESOURCE__/img/call_back.png">
+        </a>
+        <p>新手指引</p>
+    </header>
+	<h1>58好策略新手指引</h1>
+	<div class="help_con">
+		<h2>1，什么是策略人，什么是投资人</h2>
+		<img src="__RESOURCE__/img/help1.jpg">
+		<h2>2，58好策略交易规则</h2>
+		<img src="__RESOURCE__/img/help2.jpg">
+		<h2>3，58好策略的规则</h2>
+		<img src="__RESOURCE__/img/help3.jpg">
+		<h2>4，操作方法</h2>
+		<img src="__RESOURCE__/img/help4.jpg">
+	</div>
+	
+{/block}
+
+{block name="nav"}
+
+{/block}
+
+
+{block name="script"}
+
+{/block}
