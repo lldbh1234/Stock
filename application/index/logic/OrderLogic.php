@@ -157,7 +157,7 @@ class OrderLogic
     public function allYieldOrders($filter = [], $limit = 5)
     {
         $userYieldLists = Order::with("hasOneUser")
-                            ->field(["user_id", "COUNT(order_id)" => "win_count", "(SUM(profit) - SUM(deposit)) / SUM(deposit)" => "yield"])
+                            ->field(["user_id", "COUNT(order_id)" => "win_count", "SUM(profit) / SUM(deposit)" => "yield"])
                             ->where(['state' => 2, 'profit' => ['GT', 0]])
                             ->group("user_id")
                             ->order(["yield" => "DESC"])
