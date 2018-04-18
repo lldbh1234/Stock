@@ -190,12 +190,18 @@ function refreshTimeLine(){
 
             
             //更新页面数据
+            var rateClassName = "";
+            if( res.data.px_change >= 0 ){
+                rateClassName = "red";
+            }else{
+                rateClassName = "green";
+            }
             var html = '<div class="clear_fl g_info">\
                 <div class="lf">\
-                                            <p class="g_price">' + res.data.last_px + '</p>\
+                                            <p class="g_price ' + rateClassName + '">' + res.data.last_px + '</p>\
                     <p class="g_rate clear_fl">\
-                        <span class="lf">' + res.data.px_change + '</span>\
-                        <span class="lf">'+ res.data.px_change_rate +'%</span>\
+                        <span class="lf ' + rateClassName + '">' + res.data.px_change + '</span>\
+                        <span class="lf ' + rateClassName + '">'+ res.data.px_change_rate +'%</span>\
                     </p>\
                                         </div>\
                 <ul class="rt g_price_detail clear_fl">\
