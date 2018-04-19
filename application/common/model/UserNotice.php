@@ -9,5 +9,8 @@ class UserNotice extends BaseModel
 
     protected $insert = ['create_at'];
 
-
+    protected function setCreateAtAttr()
+    {
+        return time();
+    }
 }
