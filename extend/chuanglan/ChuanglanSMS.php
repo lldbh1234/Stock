@@ -16,12 +16,10 @@ class ChuanglanSMS {
 
     //创蓝发送短信接口URL, 如无必要，该参数可不用修改
     const API_SEND_URL='http://sms.253.com/msg/send';
-
     //创蓝短信余额查询接口URL, 如无必要，该参数可不用修改
     const API_BALANCE_QUERY_URL='http://sms.253.com/msg/balance';
-
+    const API_VARIABLE_URL = 'http://smssh1.253.com/msg/variable/json';
     const API_ACCOUNT = 'N3034303'; //创蓝账号 替换成你自己的账号
-
     const API_PASSWORD= 'nRrXdYaczSed34'; //创蓝密码 替换成你自己的密码
 
     public $account;
@@ -53,6 +51,25 @@ class ChuanglanSMS {
                      );
         
         $result = $this->curlPost( self::API_SEND_URL , $postArr);
+        return $result;
+    }
+
+    /**
+     * 发送变量短信
+     *
+     * @param string $msg 			短信内容
+     * @param string $params 	最多不能超过1000个参数组
+     */
+    public function sendVariableSMS( $msg, $params) {
+        //创蓝接口参数
+        $postArr = array (
+            'account' => $this->account,
+            'password' => $this->password,
+            'msg' => $msg,
+            'params' => $params,
+            'report' => 'true'
+        );
+        $result = $this->curlPost2( self::API_VARIABLE_URL, $postArr);
         return $result;
     }
     
@@ -96,6 +113,41 @@ class ChuanglanSMS {
         curl_setopt ( $ch, CURLOPT_URL, $url );
         curl_setopt ( $ch, CURLOPT_POSTFIELDS, $postFields );
         $result = curl_exec ( $ch );
+        curl_close ( $ch );
+        return $result;
+    }
+
+    /**
+     * 通过CURL发送HTTP请求
+     * @param string $url  //请求URL
+     * @param array $postFields //请求参数
+     * @return mixed
+     */
+    private function curlPost2($url,$postFields){
+        $postFields = json_encode($postFields);
+        $ch = curl_init ();
+        curl_setopt( $ch, CURLOPT_URL, $url );
+        curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json; charset=utf-8'
+            )
+        );
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt( $ch, CURLOPT_POST, 1 );
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, $postFields);
+        curl_setopt( $ch, CURLOPT_TIMEOUT,1);
+        curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $ret = curl_exec ( $ch );
+        if (false == $ret) {
+            $result = curl_error(  $ch);
+        } else {
+            $rsp = curl_getinfo( $ch, CURLINFO_HTTP_CODE);
+            if (200 != $rsp) {
+                $result = "请求状态 ". $rsp . " " . curl_error($ch);
+            } else {
+                $result = $ret;
+            }
+        }
         curl_close ( $ch );
         return $result;
     }

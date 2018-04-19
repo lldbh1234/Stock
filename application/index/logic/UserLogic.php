@@ -363,7 +363,7 @@ class UserLogic
             $where = [];
             $where['order_id'] = is_array($id) ? ["IN", $id] : $id;
             $state ? is_array($state) ? $where['state'] = ["IN", $state]: $where['state'] = $state : null;
-            $orders = User::find($userId)->hasManyOrder()->where($where)->select();
+            $orders = User::find($userId)->hasManyOrder()->with("belongsToMode")->where($where)->select();
             return $orders ? collection($orders)->toArray() : [];
         } catch(\Exception $e) {
             return [];
@@ -433,7 +433,7 @@ class UserLogic
     public function userOrderSelling($order)
     {
         if($order){
-            $data = [
+            /*$data = [
                 "order_id" => $order["order_id"],
                 "sell_price" => $order["last_px"],
                 "sell_hand" => $order["hand"],
@@ -441,7 +441,66 @@ class UserLogic
                 "profit" => ($order["last_px"] - $order["price"]) * $order["hand"],
                 "state" => 4
             ];
-            return Order::update($data);
+            return Order::update($data);*/
+            Db::startTrans();
+            try{
+                $data = [
+                    "order_id" => $order["order_id"],
+                    "sell_price" => $order["last_px"],
+                    "sell_hand" => $order["hand"],
+                    "sell_deposit" => $order["hand"] * $order["last_px"],
+                    "profit" => ($order["last_px"] - $order["price"]) * $order["hand"],
+                    //"state" => 4
+                    "state" => 2
+                ];
+                Order::update($data);
+                if($data["profit"] > 0){
+                    // 盈利
+                    $bonus_rate = isset($order['belongs_to_mode']['point']) ? $order['belongs_to_mode']['point'] : 0;
+                    $bonus = round($data["profit"] * (1 - $bonus_rate / 100), 2);
+                    // 用户资金
+                    $user = User::find($order['user_id']);
+                    $user->setInc("account", $order['deposit'] + $bonus);
+                    // 冻结资金
+                    $user->setDec("blocked_account", $order['deposit']);
+                    // 资金明细(保证金)
+                    $rData = [
+                        "type" => 4,
+                        "amount" => $order['deposit'],
+                        "remark" => json_encode(['orderId' => $order["order_id"]]),
+                        "direction" => 1
+                    ];
+                    $user->hasManyRecord()->save($rData);
+                    // 资金明细(分红)
+                    $rData = [
+                        "type" => 7,
+                        "amount" => $bonus,
+                        "remark" => json_encode(['orderId' => $order["order_id"]]),
+                        "direction" => 1
+                    ];
+                    $user->hasManyRecord()->save($rData);
+                }else{
+                    // 亏损
+                    // 用户资金
+                    $user = User::find($order['user_id']);
+                    $user->setInc("account", $order['deposit'] + $data["profit"]);
+                    // 冻结资金
+                    $user->setDec("blocked_account", $order['deposit']);
+                    // 资金明细(保证金)
+                    $rData = [
+                        "type" => 4,
+                        "amount" => $order['deposit'] + $data["profit"],
+                        "remark" => json_encode(['orderId' => $order["order_id"]]),
+                        "direction" => 1
+                    ];
+                    $user->hasManyRecord()->save($rData);
+                }
+                Db::commit();
+                return true;
+            } catch (\Exception $e){
+                Db::rollback();
+                return false;
+            }
         }else{
             return false;
         }
@@ -560,8 +619,7 @@ class UserLogic
         try{
             $where = [];
             isset($type) ? is_array($type) ? $where["type"] = ["IN", $type] : $where["type"] = $type : null;
-
-            $res = User::find($userId)->hasManyRecord()->where($where)->paginate($pageSize);
+            $res = User::find($userId)->hasManyRecord()->where($where)->order(["create_at" => "DESC"])->paginate($pageSize);
             return $res ? $res->toArray() : [];
         } catch(\Exception $e) {
             return [];

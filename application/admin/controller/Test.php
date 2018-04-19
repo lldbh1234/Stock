@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 use app\admin\logic\OrderLogic;
 use app\admin\logic\StockLogic;
+use app\common\libraries\Sms;
 use app\common\payment\paymentLLpay;
 use app\common\quotation\sina;
 use app\index\job\DeferJob;
@@ -24,6 +25,10 @@ class Test extends Controller
 
     public function test()
     {
+        $_libraries = new Sms();
+        $res = $_libraries->sendLoss("15934854815", "600114");
+        dump($res);
+        exit;
         $_logic = new \app\index\logic\OrderLogic();
         $res = $_logic->allYieldOrders();
         dump($res);
