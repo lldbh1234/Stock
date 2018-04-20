@@ -508,9 +508,14 @@
 		}
 	}
 
+	var flag = false; // 是否已经提交建仓
 	//建仓
 	$(".sub_pay_btn").click(function(e){
 		e.preventDefault();
+		if( flag ){
+			$alert("订单已经提交");
+			return false;
+		}
 		if( $(this).hasClass("disabled") ){
 			//余额不足，跳转到充值
 			window.location.href = "/user/recharge.html";
@@ -540,6 +545,7 @@
 		}
 
 		var _url = "{:url('index/Stock/stockBuy')}";
+		flag = true;
         $ajaxCustom(_url, params, function(res){
             if(res.state){ 
             	$alert("建仓成功");
@@ -551,6 +557,7 @@
                 }
             }else{
                 $alert(res.info);
+                flag = false;
             }
         });
 
