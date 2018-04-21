@@ -135,7 +135,7 @@ class Cattle extends Base
         //满足条件
         if($this->_logic->updateUser(['user_id' => $this->user_id, 'is_niuren' => 1]))
         {
-            (new UserNiuren())->saveAll(['user_id' => $this->user_id, ]);
+            (new UserNiuren())->save(['user_id' => $this->user_id, ]);
             return $this->ok();
         }
         return $this->fail('系统提示：申请失败');
