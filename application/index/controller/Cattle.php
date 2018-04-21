@@ -428,37 +428,19 @@ class Cattle extends Base
     public function removeCapital()
     {
         //查询当前用户是否属于牛人
+
         if(uInfo()['is_niuren'] == 1 /*&& uInfo()['manager_state'] == 2*/)
         {
-            //查询当前用户可转收入
             $niurenLogic = new UserNiurenLogic();
-            $niurenInfo = $niurenLogic->getInfoByUid($this->user_id);
-            if($niurenInfo && $niurenInfo['sure_income'] > 0)
-            {
-                $amount = $niurenInfo['sure_income'];
-                //转出
-                $updateArr = [
-                    'id'                => $niurenInfo['id'],
-                    'sure_income'       => 0,
-                    'already_income'    => $niurenInfo['sure_income']+$niurenInfo['already_income'],
-                ];
-                if($niurenLogic->updateManager($updateArr))
-                {
-                    $userRecordLogic = new UserRecordLogic();
-                    //记录日志
-                    $userRecordLogic->insert([
-                        'user_id' => $this->user_id,
-                        'type'      => 9,
-                        'amount'    => $amount,
-                        'direction' => 1,
-                        'create_at' => time(),
-                    ]);
-                    return $this->ok([], '系统提示：转出成功！');
-                }
+            list($res, $msg) = $niurenLogic->incomeTransfer($this->user_id);
+            if($res){
 
+                return $this->ok($msg);
 
             }else{
-                return $this->fail("系统提示：当前用户无可转收入！");
+
+                return $this->fail($msg);
+
             }
         }
         return $this->fail("系统提示：非法操作！");
