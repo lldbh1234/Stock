@@ -123,7 +123,7 @@ class User extends Base
     {
         $withdraw = (new UserWithdrawLogic())->getWithdrawById($id);
         if($withdraw){
-            $state = [0=>"待审核", 1=>"审核通过",-1=>"审核拒绝"];
+            $state = [0=>"待审核", 1=>"审核通过",-1=>"审核拒绝",2=>"已到账"];
             $withdraw['remark'] = json_decode($withdraw['remark'], true);
             $withdraw['state_text'] = $state[$withdraw['state']];
             $this->assign("withdraw", $withdraw);
