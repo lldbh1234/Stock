@@ -28,13 +28,14 @@ class UserLogic
         Db::startTrans();
         try{
             self::updateUser($data);
-            UserNiuren::save(['user_id' => $data['user_id']]);
+            (new UserNiuren)->save(['user_id' => $data['user_id']]);
             // 提交事务
             Db::commit();
             return true;
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
+            file_put_contents('./bruce.log', $e->getMessage().PHP_EOL, FILE_APPEND);
             return false;
         }
 
