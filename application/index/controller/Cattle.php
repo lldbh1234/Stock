@@ -86,6 +86,7 @@ class Cattle extends Base
             $this->assign('userInfo', $userInfo);
             return view();
         }
+
         //不是牛人
         $userDetail         = $this->_logic->userDetail($this->user_id);
         $pulish_strategy    = $this->conf['pulish_strategy'];//发布策略次数
