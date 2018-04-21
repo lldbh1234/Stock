@@ -61,7 +61,7 @@ if(!function_exists("checkStockTradeTime"))
         if(((date('G') == 11 && date('i') > 30) || date('G') > 11) && date('G') < 13){
             return false;
         }
-        if(date('G') >= 15){
+        if(date('G') > 15 || (date('G') == 15 &&  date('i') >= 1)){
             return false;
         }
         $holiday = explode(',', cf("holiday", ""));

@@ -3,6 +3,7 @@ namespace app\index\validate;
 
 use app\index\logic\BankLogic;
 use app\index\logic\RegionLogic;
+use app\index\logic\SmsLogic;
 use think\Validate;
 
 class Card extends Validate
@@ -16,6 +17,7 @@ class Card extends Validate
         'bank_card' => ["require", "regex" => "/^(\d{16}|\d{19})$/i"],
         'id_card'   => 'require|checkIdCard',
         'bank_mobile' => ["require", "regex" => "/^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/i"],
+        'code'  => 'require|checkCode',
     ];
 
     protected $message = [
@@ -34,10 +36,12 @@ class Card extends Validate
         'id_card.checkIdCard'   => '身份证号格式错误！',
         'bank_mobile.require'   => '请输入预留手机号！',
         'bank_mobile.regex'     => '预留手机号格式错误！',
+        'code.require'  => '短信验证码不能为空！',
+        'code.checkCode' => '短信验证码错误！',
     ];
 
     protected $scene = [
-        'modify'  => ['bank_user', 'bank_name', 'bank_province', 'bank_city', 'bank_address', 'bank_card', 'id_card', 'bank_mobile'],
+        'modify'  => ['bank_user', 'bank_name', 'bank_province', 'bank_city', 'bank_address', 'bank_card', 'id_card', 'bank_mobile', 'code'],
     ];
 
     public function checkBank($value, $rule, $data)
@@ -56,6 +60,12 @@ class Card extends Validate
     {
         $city = (new RegionLogic())->regionById($value);
         return $city ? $city['parent_id'] == $data['bank_province'] ? true : false : false;
+    }
+
+    protected function checkCode($value, $rule, $data)
+    {
+        $mobile = uInfo()['mobile'];
+        return (new SmsLogic())->verify($mobile, $value, "card");
     }
 
     public function checkIdCard($value, $rule, $data)

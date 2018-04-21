@@ -39,6 +39,7 @@
 		</header>
 		<div class="personal">
 		    <form id="with-drawForm" method="post">
+				<input type="hidden" id="user-mobile" value="{$user.mobile}">
 				<div class="boxflex1 mt10 clearfloat">
 			        <div class="withdrawal-name">持卡人姓名</div>
 			        <div class="withdrawal-con">
@@ -123,6 +124,14 @@
 						</div>        
 					</div>
 			    </div>
+
+				<div class="boxflex1 mt10 clearfloat">
+					<div class="withdrawal-name">验证码</div>
+					<div class="withdrawal-con yanzheng" tabindex="1">
+						<input type="text" id="user-verifycode" class="control-style" placeholder="输入短信验证码" name="code">
+					</div>
+					<div class="get-btn" id="verifyCodeBtn">获取验证码</div>
+				</div>
 		   		
 			    <!--<div class="withdrawal-tips">
 			        <ul>添加规则：
@@ -132,7 +141,6 @@
 			            <li></li>
 			        </ul>
 			    </div>-->
-
 			    <div class="recharge-btn" style="margin-top: 50px;" id="submitBtn">提交</div>
 			</form>
 		</div>
@@ -188,6 +196,38 @@
                         window.location.href = _callback;
 					}
                 }, 1000);
+            }else{
+                $alert(res.info);
+            }
+        });
+    });
+
+    // 验证码
+    $("#verifyCodeBtn").click(function () {
+        if( $(this).hasClass("disabled") ){
+            return false;
+        }
+        var that = this;
+        var _url = "{:url('index/Home/captcha')}",
+            _mobile = $("#user-mobile").val(),
+            _oData = {mobile:_mobile, act:"card"};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ // 登录成功
+                $alert("发送成功");
+                //$("input[name='code']").val(res.data.code);
+                //倒计时
+                var time = 60;
+                $(that).addClass("disabled").html( time + " s");;
+                var timer = setInterval(function(){
+                    if( time == 0 ){
+                        $(that).html("获取验证码").removeClass("disabled");
+                        clearInterval( timer );
+                        timer = null;
+                        return false;
+                    }
+                    time --;
+                    $(that).html( time + " s");
+                },1000);
             }else{
                 $alert(res.info);
             }
