@@ -35,7 +35,6 @@ class UserLogic
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
-            file_put_contents('./bruce.log', $e->getMessage().PHP_EOL, FILE_APPEND);
             return false;
         }
 
