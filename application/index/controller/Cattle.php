@@ -133,9 +133,9 @@ class Cattle extends Base
         if($userDetail['strategy_win'] < $strategy_win) return $this->fail('系统提示：策略胜算率不满足申请条件');
         if($userDetail['strategy_yield'] < $strategy_yield) return $this->fail('系统提示：策略收益率不满足申请条件');
         //满足条件
-        if($this->_logic->updateUser(['user_id' => $this->user_id, 'is_niuren' => 1]))
+
+        if($this->_logic->saveNiuRen(['user_id' => $this->user_id, 'is_niuren' => 1]))
         {
-            (new UserNiuren())->save(['user_id' => $this->user_id, ]);
             return $this->ok();
         }
         return $this->fail('系统提示：申请失败');
