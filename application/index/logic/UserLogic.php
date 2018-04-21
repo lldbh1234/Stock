@@ -23,6 +23,22 @@ class UserLogic
     {
         return User::update($data);
     }
+    public function saveNiuRen($data=[])
+    {
+        Db::startTrans();
+        try{
+            self::updateUser($data);
+            (new UserNiuren)->save(['user_id' => $data['user_id']]);
+            // 提交事务
+            Db::commit();
+            return true;
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return false;
+        }
+
+    }
 
     public function userById($userId)
     {

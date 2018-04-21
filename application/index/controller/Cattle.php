@@ -86,6 +86,7 @@ class Cattle extends Base
             $this->assign('userInfo', $userInfo);
             return view();
         }
+
         //不是牛人
         $userDetail         = $this->_logic->userDetail($this->user_id);
         $pulish_strategy    = $this->conf['pulish_strategy'];//发布策略次数
@@ -132,9 +133,9 @@ class Cattle extends Base
         if($userDetail['strategy_win'] < $strategy_win) return $this->fail('系统提示：策略胜算率不满足申请条件');
         if($userDetail['strategy_yield'] < $strategy_yield) return $this->fail('系统提示：策略收益率不满足申请条件');
         //满足条件
-        if($this->_logic->updateUser(['user_id' => $this->user_id, 'is_niuren' => 1]))
+
+        if($this->_logic->saveNiuRen(['user_id' => $this->user_id, 'is_niuren' => 1]))
         {
-            (new UserNiuren())->saveAll(['user_id' => $this->user_id, ]);
             return $this->ok();
         }
         return $this->fail('系统提示：申请失败');
@@ -427,37 +428,19 @@ class Cattle extends Base
     public function removeCapital()
     {
         //查询当前用户是否属于牛人
+
         if(uInfo()['is_niuren'] == 1 /*&& uInfo()['manager_state'] == 2*/)
         {
-            //查询当前用户可转收入
             $niurenLogic = new UserNiurenLogic();
-            $niurenInfo = $niurenLogic->getInfoByUid($this->user_id);
-            if($niurenInfo && $niurenInfo['sure_income'] > 0)
-            {
-                $amount = $niurenInfo['sure_income'];
-                //转出
-                $updateArr = [
-                    'id'                => $niurenInfo['id'],
-                    'sure_income'       => 0,
-                    'already_income'    => $niurenInfo['sure_income']+$niurenInfo['already_income'],
-                ];
-                if($niurenLogic->updateManager($updateArr))
-                {
-                    $userRecordLogic = new UserRecordLogic();
-                    //记录日志
-                    $userRecordLogic->insert([
-                        'user_id' => $this->user_id,
-                        'type'      => 9,
-                        'amount'    => $amount,
-                        'direction' => 1,
-                        'create_at' => time(),
-                    ]);
-                    return $this->ok([], '系统提示：转出成功！');
-                }
+            list($res, $msg) = $niurenLogic->incomeTransfer($this->user_id);
+            if($res){
 
+                return $this->ok($msg);
 
             }else{
-                return $this->fail("系统提示：当前用户无可转收入！");
+
+                return $this->fail($msg);
+
             }
         }
         return $this->fail("系统提示：非法操作！");
