@@ -34,6 +34,8 @@
                 <p class="c-success" style="margin-top: 3px;">{$withdraw.state_text|default=''}</p>
                 {elseif condition="$withdraw.state EQ -1" /}
                 <p class="c-error" style="margin-top: 3px;">{$withdraw.state_text|default=''}</p>
+                {elseif condition="$withdraw.state EQ 2" /}
+                <p class="c-success" style="margin-top: 3px;">{$withdraw.state_text|default=''}</p>
                 {/if}
             </div>
         </div>
