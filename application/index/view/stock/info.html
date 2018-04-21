@@ -99,18 +99,18 @@
 
 		<div class="stock-price f-right mui-row" id="stock-price">
             <ul class="sell mui-col-xs-6 mui-row clear_fl">
-                <li class=""><em>卖⑤</em><b class="red">{$quotation.offer_grp[12]|default='--'}</b><i>{$quotation.offer_grp[14]|default='--'}</i></li>
-                <li class=""><em>卖④</em><b class="red">{$quotation.offer_grp[9]|default='--'}</b><i>{$quotation.offer_grp[11]|default='--'}</i></li>
-                <li class=""><em>卖③</em><b class="red">{$quotation.offer_grp[6]|default='--'}</b><i>{$quotation.offer_grp[8]|default='--'}</i></li>
-                <li class=""><em>卖②</em><b class="red">{$quotation.offer_grp[3]|default='--'}</b><i>{$quotation.offer_grp[5]|default='--'}</i></li>
-                <li class=""><em>卖①</em><b class="red">{$quotation.offer_grp[0]|default='--'}</b><i>{$quotation.offer_grp[2]|default='--'}</i></li>
+                <li class=""><em>卖⑤</em><b class="red">{$quotation.offer_grp[12]|default='--'}</b><i>{$quotation.offer_grp[13] / 100|intval}</i></li>
+                <li class=""><em>卖④</em><b class="red">{$quotation.offer_grp[9]|default='--'}</b><i>{$quotation.offer_grp[10] / 100|intval}</i></li>
+                <li class=""><em>卖③</em><b class="red">{$quotation.offer_grp[6]|default='--'}</b><i>{$quotation.offer_grp[7] / 100|intval}</i></li>
+                <li class=""><em>卖②</em><b class="red">{$quotation.offer_grp[3]|default='--'}</b><i>{$quotation.offer_grp[4] / 100|intval}</i></li>
+                <li class=""><em>卖①</em><b class="red">{$quotation.offer_grp[0]|default='--'}</b><i>{$quotation.offer_grp[1] / 100|intval}</i></li>
             </ul>
             <ul class="buy mui-col-xs-6 mui-row clear_fl">
-                <li><em>买①</em><b class="red">{$quotation.bid_grp[0]|default='--'}</b><i>{$quotation.bid_grp[2]|default='--'}</i></li>
-                <li><em>买②</em><b class="red">{$quotation.bid_grp[3]|default='--'}</b><i>{$quotation.bid_grp[5]|default='--'}</i></li>
-                <li><em>买③</em><b class="red">{$quotation.bid_grp[6]|default='--'}</b><i>{$quotation.bid_grp[8]|default='--'}</i></li>
-                <li><em>买④</em><b class="red">{$quotation.bid_grp[9]|default='--'}</b><i>{$quotation.bid_grp[11]|default='--'}</i></li>
-                <li><em>买⑤</em><b class="red">{$quotation.bid_grp[12]|default='--'}</b><i>{$quotation.bid_grp[14]|default='--'}</i></li>
+                <li><em>买①</em><b class="red">{$quotation.bid_grp[0]|default='--'}</b><i>{$quotation.bid_grp[1] / 100|intval}</i></li>
+                <li><em>买②</em><b class="red">{$quotation.bid_grp[3]|default='--'}</b><i>{$quotation.bid_grp[4] / 100|intval}</i></li>
+                <li><em>买③</em><b class="red">{$quotation.bid_grp[6]|default='--'}</b><i>{$quotation.bid_grp[7] / 100|intval}</i></li>
+                <li><em>买④</em><b class="red">{$quotation.bid_grp[9]|default='--'}</b><i>{$quotation.bid_grp[10] / 100|intval}</i></li>
+                <li><em>买⑤</em><b class="red">{$quotation.bid_grp[12]|default='--'}</b><i>{$quotation.bid_grp[13] / 100|intval}</i></li>
             </ul>
     	</div>
 

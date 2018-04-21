@@ -25,21 +25,9 @@ class Test extends Controller
 
     public function test()
     {
-        $_libraries = new Sms();
-        $res = $_libraries->sendLoss("15934854815", "600114");
-        dump($res);
-        exit;
-        $_logic = new \app\index\logic\OrderLogic();
-        $res = $_logic->allYieldOrders();
-        dump($res);
-        exit;
         $_logic = new \app\index\logic\StockLogic();
-        $aa = $_logic->realData(['600555']);
-        dump($aa);
-        exit;
-        $_logic = new AdminLogic();
-        $tree = $_logic->ringFamilyTree(6);
-        dump($tree);
+        $res = $_logic->quotationBySina("600000");
+        dump($res);
         exit;
         $order = (new OrderLogic())->getAllBy();
         $c70 = [];

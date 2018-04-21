@@ -336,7 +336,7 @@ class Order extends Base
                 $order = $this->_userLogic->userOrderById($this->user_id, $orderId, 3);
                 $order = reset($order);
                 if($order){
-                    $quotation = (new StockLogic())->simpleData($order['code']);
+                    /*$quotation = (new StockLogic())->simpleData($order['code']);
                     if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
                         $order['last_px'] = $quotation[$order['code']]['last_px'];
                         $res = $this->_userLogic->userOrderSelling($order);
@@ -347,6 +347,21 @@ class Order extends Base
                         }
                     }else{
                         return $this->fail("平仓申请提交失败！");
+                    }*/
+                    while (true){
+                        $quotation = (new StockLogic())->quotationBySina($order['code']);
+                        if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
+                            $order['sell_px'] = $quotation[$order['code']]['sell_px'];
+                            $res = $this->_userLogic->userOrderSelling($order);
+                            if($res){
+                                return $this->ok();
+                            }else{
+                                return $this->fail("平仓申请提交失败！");
+                            }
+                            break;
+                        }else{
+                            continue;
+                        }
                     }
                 }else{
                     return $this->fail("系统提示：非法操作！");

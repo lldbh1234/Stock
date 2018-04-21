@@ -151,10 +151,10 @@ class AdminLogic
             return 0;
         }else{
             $teamRoleIds = [
-                self::SETTLE_ROLE_ID,
-                self::OPERATE_ROLE_ID,
-                self::MEMBER_ROLE_ID,
-                self::RING_ROLE_ID
+                Admin::SETTLE_ROLE_ID,
+                Admin::OPERATE_ROLE_ID,
+                Admin::MEMBER_ROLE_ID,
+                Admin::RING_ROLE_ID
             ];
             if(!in_array(manager()['role'], $teamRoleIds)){
                 return 0;
