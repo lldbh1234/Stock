@@ -40,6 +40,7 @@
             <th>昵称</th>
             <th>真实姓名</th>
             <th>手机号</th>
+            <th>微圈</th>
             <th>盈利返点（%）</th>
             <th>建仓费返点（%）</th>
             <th>递延费返点（%）</th>
@@ -53,7 +54,7 @@
         <tbody>
         {empty name="datas.data"}
         <tr class="text-c admin-lists">
-            <td colspan="11">暂时没有匹配到数据</td>
+            <td colspan="12">暂时没有匹配到数据</td>
         </tr>
         {/empty}
         {volist name="datas.data" id="item"}
@@ -64,6 +65,7 @@
             <td>{$item.has_one_user.nickname}</td>
             <td>{$item.realname}</td>
             <td>{$item.mobile}</td>
+            <td>{$item.has_one_user.has_one_admin.username}</td>
             <td>{$item.point}</td>
             <td>{$item.jiancang_point}</td>
             <td>{$item.defer_point}</td>

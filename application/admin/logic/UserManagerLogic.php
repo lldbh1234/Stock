@@ -28,9 +28,9 @@ class UserManagerLogic
         }
         $pageSize = $pageSize ? : config("page_size");
         //
-        $lists = UserManager::with(['hasOneUser', 'hasOneAdmin'])
-            ->where($where)
-            ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = UserManager::with(['hasOneUser' => ['hasOneAdmin'], 'hasOneAdmin'])
+                    ->where($where)
+                    ->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 

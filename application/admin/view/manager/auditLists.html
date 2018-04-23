@@ -41,6 +41,7 @@
             <th>昵称</th>
             <th>真实姓名</th>
             <th>手机号</th>
+            <th>微圈</th>
             <th>申请时间</th>
             <th>审核时间</th>
             <th>审核人</th>
@@ -62,6 +63,7 @@
             <td>{$item.has_one_user.nickname}</td>
             <td>{$item.realname}</td>
             <td>{$item.mobile}</td>
+            <td>{$item.has_one_user.has_one_admin.username}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
             <td>{if condition="$item.update_at gt 0"}{$item.update_at|date='Y-m-d H:i:s', ###}{/if}</td>
             <td>{$item.has_one_admin.username}</td>
