@@ -209,8 +209,8 @@ class Cron extends Controller
     {
         set_time_limit(0);
         //if(checkStockTradeTime()){
-            $orders = (new OrderLogic())->allPositionOrders();
-            dump($orders);
+            //$orders = (new OrderLogic())->allPositionOrders();
+            //dump($orders);
             $orders = (new OrderLogic())->allPositionOrders("order_id");
             dump($orders);
         //}
