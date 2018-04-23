@@ -44,7 +44,7 @@ class Home extends Controller
     public function getMember()
     {
         if(request()->isPost()){
-            $username = input("post.username/s");
+            $username = input("post.username/s", "", "trim");
             $members = (new UserLogic())->userMembers($username);
             if($members){
                 return $this->ok($members);

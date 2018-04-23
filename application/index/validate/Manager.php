@@ -8,7 +8,7 @@ use app\index\logic\SmsLogic;
 class Manager extends Validate
 {
     protected $rule = [
-        'mobile'    => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
+        'mobile'    => 'require|regex:/^[1][3,4,5,7,8,9][0-9]{9}$/',
         'realname'  => "require|max:32",
         'coding'    => 'require|checkCoding',
         'code'      => 'require|checkCode|checkUserAmount',
