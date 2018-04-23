@@ -203,4 +203,13 @@ class Cron extends Controller
             }
         }
     }
+
+    // 最优持仓,2小时运行一次
+    public function scanBestOrders()
+    {
+        set_time_limit(0);
+        if(checkStockTradeTime()){
+
+        }
+    }
 }

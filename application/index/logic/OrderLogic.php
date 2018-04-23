@@ -153,6 +153,12 @@ class OrderLogic
         return $orders ? collection($orders)->toArray() : [];
     }
 
+    // 所有持仓订单
+    public function allPosition()
+    {
+
+    }
+
     // 所有最牛达人
     public function allYieldOrders($filter = [], $limit = 5)
     {
