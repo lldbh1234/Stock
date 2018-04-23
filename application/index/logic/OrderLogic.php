@@ -157,7 +157,7 @@ class OrderLogic
     public function allPositionOrders($signField = null)
     {
         $where = ["state" => 3];
-        if(is_null($signField)){
+        if(!is_null($signField)){
             return Order::where($where)->column($signField);
         }else{
             $orders = Order::where($where)->select();
