@@ -68,24 +68,26 @@
         <table class="table table-border table-bordered radius text-c">
             <thead class="text-c">
             <tr>
-                <th class="f-14" colspan="4">代理商返点记录</th>
+                <th class="f-14" colspan="5">代理商返点记录</th>
             </tr>
             <tr>
-                <th style="width: 25%;">代理商</th>
-                <th style="width: 25%;">返点类型</th>
-                <th style="width: 25%;">返点金额</th>
-                <th style="width: 25%;">结算时间</th>
+                <th style="width: 20%;">代理商</th>
+                <th style="width: 20%;">代理类型</th>
+                <th style="width: 20%;">返点类型</th>
+                <th style="width: 20%;">返点金额</th>
+                <th style="width: 20%;">结算时间</th>
             </tr>
             </thead>
             <tbody class="text-c">
             {empty name="order.has_many_proxy_record"}
             <tr>
-                <td colspan="4">暂无代理商返点记录</td>
+                <td colspan="5">暂无代理商返点记录</td>
             </tr>
             {else /}
             {volist name="order.has_many_proxy_record" id="vo"}
             <tr class="text-c">
-                <td>{$vo.belongs_to_admin.nickname|default=$vo.belongs_to_admin.username}</td>
+                <td>{$vo.belongs_to_admin.username|default=$vo.belongs_to_admin.nickname}</td>
+                <td>{$vo.belongs_to_admin.has_one_role.name}</td>
                 <td>{$vo.type_text}</td>
                 <td>{$vo.money|number_format=2}</td>
                 <td>{$vo.create_at|date='Y-m-d H:i:s', ###}</td>

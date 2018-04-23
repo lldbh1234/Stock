@@ -453,7 +453,7 @@ class OrderLogic
                         [
                             "hasManyNiurenRecord" => ["belongsToNiuren"],
                             "hasManyManagerRecord" => ["belongsToManager"],
-                            "hasManyProxyRecord" => ["belongsToAdmin"],
+                            "hasManyProxyRecord" => ["belongsToAdmin" => ["hasOneRole"]],
                         ]
                     )
                     ->where($where)
