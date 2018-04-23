@@ -1,15 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/4/23
- * Time: 22:17
- */
-
 namespace app\index\logic;
 
 
+use app\index\model\Best;
+
 class BestLogic
 {
-
+    public function saveBest($data)
+    {
+        $best = Best::find($data['order_id']);
+        if($best){
+            return Best::update($data);
+        }else{
+            return Best::create($data);
+        }
+    }
 }

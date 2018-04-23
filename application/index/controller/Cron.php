@@ -208,12 +208,14 @@ class Cron extends Controller
     public function scanBestOrders()
     {
         set_time_limit(0);
-        //if(checkStockTradeTime()){
-            //$orders = (new OrderLogic())->allPositionOrders();
-            //dump($orders);
+        if(checkStockTradeTime()){
             $orders = (new OrderLogic())->allPositionOrders("order_id");
-            dump($orders);
-        //}
+            if($orders){
+                foreach ($orders as $orderId){
+                    Queue::push('app\index\job\BestOrderJob@handleBestOrder', $orderId, null);
+                }
+            }
+        }
     }
 
     // 删除最优持仓中已平仓的策略
