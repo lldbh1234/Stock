@@ -43,6 +43,7 @@ class Index extends Base
         $bestUserList = collection($bestUserList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
         })->slice(0,5)->toArray();*/
+        // 最牛达人 modify by liang
         $bestUserList = $orderLogic->allYieldOrders();
 
         $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
