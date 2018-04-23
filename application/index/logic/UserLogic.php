@@ -462,10 +462,10 @@ class UserLogic
             try{
                 $data = [
                     "order_id" => $order["order_id"],
-                    "sell_price" => $order["sell_px"],
+                    "sell_price" => $order["buy_px"], // 平仓价格为买1价
                     "sell_hand" => $order["hand"],
-                    "sell_deposit" => $order["hand"] * $order["sell_px"],
-                    "profit" => ($order["sell_px"] - $order["price"]) * $order["hand"],
+                    "sell_deposit" => $order["hand"] * $order["buy_px"],
+                    "profit" => ($order["buy_px"] - $order["price"]) * $order["hand"],
                     "state" => 2
                 ];
                 Order::update($data);
