@@ -204,12 +204,27 @@ class Cron extends Controller
         }
     }
 
-    // 最优持仓,2小时运行一次
+    // 最优持仓数据统计,2小时运行一次
     public function scanBestOrders()
     {
         set_time_limit(0);
-        if(checkStockTradeTime()){
+        //if(checkStockTradeTime()){
+            $orders = (new OrderLogic())->allPositionOrders();
+            dump($orders);
+            $orders = (new OrderLogic())->allPositionOrders("order_id");
+            dump($orders);
+        //}
+    }
 
-        }
+    // 删除最优持仓中已平仓的策略
+    public function scanClearBest()
+    {
+
+    }
+
+    // 清除队列表数据
+    public function clearJobTable()
+    {
+        Db::name("stock_jobs")->query("truncate table stock_jobs");
     }
 }

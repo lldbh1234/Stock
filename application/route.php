@@ -132,7 +132,10 @@ Route::group("cron", function () {
     Route::any('sell', 'index/Cron/scanOrderSell'); // 订单爆仓、止盈、止损
     Route::any('niuren-rebate', 'index/Cron/handleNiurenRebate'); // 牛人返点
     Route::any('proxy-rebate', 'index/Cron/handleProxyRebate'); // 代理商返点
-    Route::any('jiancang', 'index/Cron/handleJiancangRebate'); // 建仓费
+    Route::any('jiancang', 'index/Cron/handleJiancangRebate'); // 建仓费返点
+    Route::any('best-order', 'index/Cron/scanBestOrders'); // 最优持仓列表统计
+    Route::any('clear-best', 'index/Cron/scanClearBest'); // 删除最优持仓中已平仓的策略
+    Route::any('clear-job', 'index/Cron/clearJobTable'); // 清除队列表数据
 });
 //web
 Route::group([], function() {
