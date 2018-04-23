@@ -217,6 +217,7 @@ class RecordLogic
         $_lists = UserManagerRecord::hasWhere("belongsToManager", $hasWhere)
                     ->with(["belongsToManager" => ["hasOneAdmin" => ["hasOneParent"]], "belongsToOrder"])
                     ->where($where)
+                    ->order("id DESC")
                     ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
