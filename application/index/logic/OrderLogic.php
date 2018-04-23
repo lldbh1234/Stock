@@ -153,6 +153,18 @@ class OrderLogic
         return $orders ? collection($orders)->toArray() : [];
     }
 
+    // 所有持仓订单
+    public function allPositionOrders($signField = null)
+    {
+        $where = ["state" => 3];
+        if(is_null($signField)){
+            return Order::where($where)->column($signField);
+        }else{
+            $orders = Order::where($where)->select();
+            return $orders ? collection($orders)->toArray() : [];
+        }
+    }
+
     // 所有最牛达人
     public function allYieldOrders($filter = [], $limit = 5)
     {

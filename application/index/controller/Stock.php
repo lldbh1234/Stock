@@ -47,6 +47,7 @@ class Stock extends Base
                         "user_id" => $this->user_id,
                         "product_id" => $mode['product_id'],
                         "mode_id" => $modeId,
+                        "lever" => $lever['multiple'],
                         "code"  => $code,
                         "name"  => $stock['name'],
                         "full_code" => $stock['full_code'],
