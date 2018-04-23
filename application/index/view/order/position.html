@@ -682,9 +682,10 @@
                 $ajaxCustom(_url, _oData, function(res){
                     if(res.state){ 
                         context.remove();
+                        $alert("平仓成功");
                         layer.close(index);
                     }else{
-                        alert(res.info);
+                        $alert(res.info);
                         layer.close(index);
                     }
                 });
