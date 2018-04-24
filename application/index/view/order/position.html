@@ -520,7 +520,9 @@
 
         var originaldeposit = context.data("originaldeposit");
         var _id = context.data("id");
-        $(".profit_loss_mask").attr("data-id", _id).attr("data-originaldeposit", originaldeposit);
+        var lever = context.data("lever");
+
+        $(".profit_loss_mask").attr("data-id", _id).attr("data-originaldeposit", originaldeposit).attr("data-lever", lever);
 
         //止盈止损点
         var profit = parseFloat(context.attr("data-profit"));
@@ -638,7 +640,8 @@
         //补充保证金
             if( lossRate < -8 && diffLossRate > 0){
                 var originaldeposit = parseFloat( context.attr("data-originaldeposit") );
-                var buchong = originaldeposit * diffLossRate / 100;
+                var lever = parseFloat( context.attr("data-lever") );
+                var buchong = originaldeposit * diffLossRate * lever / 100;
                 buchong = buchong < 0?0 : buchong;
                 $(".bazhengjin_count span").html(buchong.toFixed(2));
             }else{
@@ -764,7 +767,7 @@
                 }else{
                     className = "green";
                 }
-              html += '<li data-originalDeposit="' + data.orders[key].original_deposit + '"  class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
+              html += '<li data-lever="' + data.orders[key].lever + '" data-originalDeposit="' + data.orders[key].original_deposit + '"  class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
                     <h1 class="clear_fl">\
                         <span class="lf">' + data.orders[key].name + ' '+ data.orders[key].code +'</span>\
                         <span class="rt"> <span class="p_key"></span>'+ data.orders[key].create_at_text +'</span>\
