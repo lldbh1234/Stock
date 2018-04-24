@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\BestLogic;
 use think\Controller;
 use think\Db;
 use think\Queue;
@@ -208,23 +209,29 @@ class Cron extends Controller
     public function scanBestOrders()
     {
         set_time_limit(0);
-        if(checkStockTradeTime()){
+        //if(checkStockTradeTime()){
             $orders = (new OrderLogic())->allPositionOrders("order_id");
             if($orders){
                 foreach ($orders as $orderId){
                     Queue::push('app\index\job\BestOrderJob@handleBestOrder', $orderId, null);
                 }
             }
+        //}
+    }
+
+    // 删除最优持仓中已平仓的策略，交易时间段10分钟运行一次
+    public function scanClearBest()
+    {
+        set_time_limit(0);
+        if(checkStockTradeTime()){
+            $orderIds = (new OrderLogic())->allPositionOrders("order_id");
+            if($orderIds){
+                (new BestLogic())->deleteClosedOrders($orderIds);
+            }
         }
     }
 
-    // 删除最优持仓中已平仓的策略
-    public function scanClearBest()
-    {
-
-    }
-
-    // 清除队列表数据
+    // 清除队列表数据，每晚23:50执行一次
     public function clearJobTable()
     {
         Db::name("stock_jobs")->query("truncate table stock_jobs");
