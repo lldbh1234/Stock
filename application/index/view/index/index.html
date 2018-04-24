@@ -224,23 +224,23 @@
 										<span class="strategy__code___VWYep">{$vo.code}</span>
 									</a>
 									<div class="rt">
-										<img class="lf user_pic" src="{$vo.has_one_user.face | default='__RESOURCE__/img/default-user-img.png'}">
-										<p class="lf user_name">{$vo.has_one_user.nickname | default=$vo.has_one_user.username} <img src="__RESOURCE__/img/niuren.png"></p>
+										<img class="lf user_pic" src="{$vo.has_one_user.face|default='__RESOURCE__/img/default-user-img.png'}">
+										<p class="lf user_name">{$vo.has_one_user.nickname|default=$vo.has_one_user.username} <img src="__RESOURCE__/img/niuren.png"></p>
 									</div>
 								</div>
 								<div class="flex_nowrap strategy_info">
 									<div>
-										<h1>{$vo.strategy_yield | default='0'}%</h1>
+										<h1>{$vo.yield * 100|number_format=2}%</h1>
 										<p>收益率</p>
 									</div>
 									<div>
 										<p>
 											<span class="key">买价</span>
-											<span class="value">{$vo.price | default='0.00'}</span>
+											<span class="value">{$vo.price|number_format=2}</span>
 										</p>
 										<p>
 											<span class="key">盈亏</span>
-											<span class="value red">{$vo.profit | default='0.00'}</span>
+											<span class="value red">{$vo.profit|number_format=2}</span>
 										</p>
 									</div>
 									<div>
@@ -249,8 +249,8 @@
 											<span class="value">{$vo.deposit|number_format=2}</span>
 										</p>
 										<p>
-											<span class="key">数量</span>
-											<span class="value">{$vo.sell_hand | default='0'}</span>
+											<span class="key">倍率</span>
+											<span class="value">{$vo.lever|default=1}</span>
 										</p>
 									</div>
 								</div>

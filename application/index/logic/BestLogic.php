@@ -21,4 +21,14 @@ class BestLogic
     {
         return Best::where(["order_id" => ["NOT IN", $orderIds]])->delete();
     }
+
+    public function bestPositions($limit = 5)
+    {
+        $order = Best::with("hasOneUser")
+                ->field(["*", "`profit`/`deposit`" => "yield"])
+                ->order(["yield" => "DESC"])
+                ->limit($limit)
+                ->select();
+        return $order ? collection($order)->toArray() : [];
+    }
 }

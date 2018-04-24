@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\BestLogic;
 use app\index\logic\OrderLogic;
 use app\index\logic\RegionLogic;
 use app\index\logic\StockLogic;
@@ -47,7 +48,8 @@ class Index extends Base
         $bestUserList = $orderLogic->allYieldOrders();
 
         $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
-        $bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
+        // 最优持仓
+        /*$bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
         $codes = $orderLogic->getCodesBy(['state' => 3]);//持仓
         $codeInfo = [];
         if($codes){
@@ -61,7 +63,9 @@ class Index extends Base
         }
         $bestStrategyList = collection($bestStrategyList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
-        })->slice(0,5)->toArray();//排序
+        })->slice(0,5)->toArray();//排序*/
+        // 最优持仓
+        $bestStrategyList = (new BestLogic())->bestPositions();
         $userNotice = $userNoticeLogic->getAllBy(['user_id' => $this->user_id, 'read' => 1]);
         $userNotice = count($userNotice);
 
