@@ -223,12 +223,12 @@ class Cron extends Controller
     public function scanClearBest()
     {
         set_time_limit(0);
-        if(checkStockTradeTime()){
+        //if(checkStockTradeTime()){
             $orderIds = (new OrderLogic())->allPositionOrders("order_id");
             if($orderIds){
                 (new BestLogic())->deleteClosedOrders($orderIds);
             }
-        }
+        //}
     }
 
     // 清除队列表数据，每晚23:50执行一次
