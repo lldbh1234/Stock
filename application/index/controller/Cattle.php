@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\BestLogic;
 use app\index\logic\OrderLogic;
 use app\index\logic\StockLogic;
 use app\index\logic\UserFollowLogic;
@@ -228,7 +229,7 @@ class Cattle extends Base
 
     public function moreStrategy()
     {
-        $orderLogic = new OrderLogic();
+        /*$orderLogic = new OrderLogic();
 
         $bestStrategyList =  $orderLogic->getAllBy(['state' => 3]);
 
@@ -246,7 +247,8 @@ class Cattle extends Base
 
         $bestStrategyList = collection($bestStrategyList)->sort(function ($a, $b){
             return $b['strategy_yield'] - $a['strategy_yield'];
-        })->toArray();//排序
+        })->toArray();//排序*/
+        $bestStrategyList = (new BestLogic())->bestPositions(20);
         $this->assign('bestStrategyList', $bestStrategyList);
         return view();
     }
