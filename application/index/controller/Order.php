@@ -20,7 +20,7 @@ class Order extends Base
     // 持仓
     public function position()
     {
-        $field = "order_id,mode_id,code,name,price,deposit,original_deposit,defer,hand,stop_loss_price,stop_profit_price,create_at";
+        $field = "order_id,mode_id,code,name,price,deposit,original_deposit,lever,defer,hand,stop_loss_price,stop_profit_price,create_at";
         if(request()->isPost()){
             $orders = $this->_userLogic->pageUserOrder($this->user_id, $state = 3, $field);
             if($orders['data']){

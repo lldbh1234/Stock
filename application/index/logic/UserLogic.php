@@ -573,7 +573,7 @@ class UserLogic
             Order::update($data);
             if($lossPoint > 8 && $lossDiffPoint > 0){
                 // 所需补充的金额
-                $_deposit = $order["original_deposit"] * $lossDiffPoint / 100;
+                $_deposit = $order["original_deposit"] * $order['lever'] * $lossDiffPoint / 100;
                 // 补充完后的保证金
                 // $deposit = $order["deposit"] + $_deposit;
                 if($_deposit > 0){
