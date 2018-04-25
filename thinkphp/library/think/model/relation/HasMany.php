@@ -167,6 +167,26 @@ class HasMany extends Relation
             ],
         ])->fetchSql()->count();
     }
+	
+	/**
+     * 创建关联统计子查询
+     * @access public
+     * @param \Closure $closure 闭包
+     * @return string
+     */
+    public function getRelationSumQuery($closure, $field)
+    {
+        if ($closure) {
+            call_user_func_array($closure, [ & $this->query]);
+        }
+        $localKey = $this->localKey ?: $this->parent->getPk();
+        return $this->query->where([
+            $this->foreignKey => [
+                'exp',
+                '=' . $this->parent->getTable() . '.' . $localKey,
+            ],
+        ])->fetchSql()->sum($field);
+    }
 
     /**
      * 一对多 关联模型预查询

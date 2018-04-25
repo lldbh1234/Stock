@@ -393,8 +393,18 @@ class AdminLogic
                     [
                         "hasOneParent" => function($query){
                             $query->field("password", true);
+                        },
+                        "hasManyWithdraw" => function($_query){
+                            $_query->field(["admin_id", "SUM(`amount`)" => "total_withdraw"])->where(["state" => ["NEQ", -1]]);
                         }
                     ])
+                    ->withSum(
+                        [
+                            "hasManyWithdraw" => function($_query){
+                                $_query->where(["state" => ["NEQ", -1]]);
+                            }
+                        ], "amount"
+                    )
                     ->field("password", true)
                     ->where($where)
                     ->paginate($pageSize, false, ['query'=>request()->param()]);

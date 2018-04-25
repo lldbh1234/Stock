@@ -25,6 +25,12 @@ class Test extends Controller
 
     public function test()
     {
+        $managerUserId = 0;
+        $adminId = 6;
+        $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
+        $handleRes = (new RebateLogic())->handleProxyRebate($managerUserId, $adminIds, 999, 500);
+        dump($handleRes);
+        exit;
         Queue::push('app\index\job\SellJob@handleTestJob', 104, null);
         exit;
         $res = cache("test_loss");

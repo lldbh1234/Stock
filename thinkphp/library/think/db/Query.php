@@ -1972,6 +1972,37 @@ class Query
     }
 
     /**
+     * 关联统计
+     * @author Liangjian
+     * @param $relation
+     * @param $field
+     * @param bool $subQuery
+     * @return $this
+     */
+    public function withSum($relation, $field, $subQuery = true)
+    {
+        if (!$subQuery) {
+            $this->options['with_sum'] = $relation;
+        } else {
+            $relations = is_string($relation) ? explode(',', $relation) : $relation;
+            if (!isset($this->options['field'])) {
+                $this->field('*');
+            }
+            foreach ($relations as $key => $relation) {
+                $closure = false;
+                if ($relation instanceof \Closure) {
+                    $closure  = $relation;
+                    $relation = $key;
+                }
+                $relation = Loader::parseName($relation, 1, false);
+                $count    = '(' . $this->model->$relation()->getRelationSumQuery($closure, $field) . ')';
+                $this->field([$count => Loader::parseName($relation) . '_sum']);
+            }
+        }
+        return $this;
+    }
+
+    /**
      * 关联预加载中 获取关联指定字段值
      * example:
      * Model::with(['relation' => function($query){

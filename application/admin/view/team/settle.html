@@ -53,6 +53,7 @@
             <th>递延费返点（%）</th>
             <th>保证金</th>
             <th>账户余额</th>
+            <th>提现合计</th>
             <th>收入合计</th>
             <th>创建时间</th>
             <th>状态</th>
@@ -72,6 +73,7 @@
             <td>{$item.defer_point}</td>
             <td>{$item.deposit|number_format=2}</td>
             <td>{$item.total_fee|number_format=2}</td>
+            <td>{$item.has_many_withdraw_sum|number_format=2}</td>
             <td>{$item.total_income|number_format=2}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
             <td>
