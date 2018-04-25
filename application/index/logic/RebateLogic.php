@@ -79,8 +79,10 @@ class RebateLogic
                     //$rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $money * $realPoint), 0, -1)); //分成金额
                     $rebateMoney = round($money * $realPoint, 2);
                     $admin = Admin::find($admin['admin_id']);
-                    // 代理商手续费增加
+					// 代理商账户余额增加
                     $admin->setInc('total_fee', $rebateMoney);
+					// 代理商总收入记录增加
+					$admin->setInc('total_income', $rebateMoney);
                     // 代理商收入明细
                     $rData = [
                         "money" => $rebateMoney, //返点金额
@@ -141,8 +143,10 @@ class RebateLogic
                     //$rebateMoney = sprintf("%.2f", substr(sprintf("%.3f", $fee * $point / 100), 0, -1)); //分成金额
                     $rebateMoney = round($fee * $realPoint, 2);
                     $admin = Admin::find($admin['admin_id']);
-                    // 代理商手续费增加
+					// 代理商账户余额增加
                     $admin->setInc('total_fee', $rebateMoney);
+					// 代理商总收入记录增加
+					$admin->setInc('total_income', $rebateMoney);
                     // 代理商收入明细
                     $rData = [
                         "money" => $rebateMoney, //返点金额

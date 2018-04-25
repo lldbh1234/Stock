@@ -54,7 +54,8 @@
             <th>建仓费返点（%）</th>
             <th>递延费返点（%）</th>
             <th>保证金</th>
-            <th>手续费总计</th>
+            <th>账户余额</th>
+            <th>收入合计</th>
             <th>创建时间</th>
             <th>状态</th>
             <th width="120">操作</th>
@@ -74,6 +75,7 @@
             <td>{$item.defer_point}</td>
             <td>{$item.deposit|number_format=2}</td>
             <td>{$item.total_fee|number_format=2}</td>
+            <td>{$item.total_income|number_format=2}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
             <td>
                 {if condition="$item.status.value eq 0"}

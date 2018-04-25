@@ -357,6 +357,10 @@ class AdminLogic
         if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
             $where["status"] = $filter['status'];
         }
+        // 机构码
+        if(isset($filter['code']) && !empty($filter['code'])){
+            $where["code"] = trim($filter['code']);
+        }
         // 上级结算中心
         if(isset($filter['settle']) && !empty($filter['settle'])){
             $_where = [

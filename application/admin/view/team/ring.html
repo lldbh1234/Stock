@@ -18,6 +18,7 @@
         <input type="text" class="input-text" style="width:170px;" placeholder="真名" name="nickname" value="{$search.nickname|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="上级微会员" name="member" value="{$search.member|default=''}">
+        <input type="text" class="input-text" style="width:170px;" placeholder="机构码" name="code" value="{$search.code|default=''}">
         <span class="select-box" style="width:70px;height: 31px;">
             <select class="select" name="status" size="1">
                 <option value="">状态</option>
@@ -54,7 +55,8 @@
             <th>建仓费返点（%）</th>
             <th>递延费返点（%）</th>
             <th>保证金</th>
-            <th>手续费总计</th>
+            <th>账户余额</th>
+            <th>收入合计</th>
             <th>机构码</th>
             <th>创建时间</th>
             <th>状态</th>
@@ -75,6 +77,7 @@
             <td>{$item.defer_point}</td>
             <td>{$item.deposit|number_format=2}</td>
             <td>{$item.total_fee|number_format=2}</td>
+            <td>{$item.total_income|number_format=2}</td>
             <td>{$item.code}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
             <td>
