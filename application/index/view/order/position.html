@@ -619,7 +619,7 @@
 
         var profit = parseFloat( context.find(".profitCount").val() );
         var loss = parseFloat( context.find(".lossCount").val() );
-        var buyPrice = parseFloat( context.data("buyprice") );
+        var buyPrice = parseFloat( context.attr("data-buyprice") );
         var baozhengjin = parseFloat( context.data("baozhengjin") );
 
         var profitRate = ((profit - buyPrice) * 100 / buyPrice).toFixed(2);
