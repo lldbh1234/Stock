@@ -351,7 +351,9 @@ class Order extends Base
                     while (true){
                         $quotation = (new StockLogic())->quotationBySina($order['code']);
                         if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
-                            $order['buy_px'] = $quotation[$order['code']]['buy_px']; // 平仓按买1价处理
+                            $last_px = $quotation[$order['code']]['last_px']; // 最新价
+                            $buy_px = $quotation[$order['code']]['buy_px']; // 平仓按买1价处理
+                            $order['buy_px'] = $last_px - $buy_px > 0.02 ? $buy_px + 0.02 : $buy_px; //买1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
                             $res = $this->_userLogic->userOrderSelling($order);
                             if($res){
                                 return $this->ok();
