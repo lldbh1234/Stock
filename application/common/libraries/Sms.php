@@ -5,10 +5,12 @@ use chuanglan\ChuanglanSMS;
 
 class Sms
 {
+    const SING_NAME = "58好策略";
+
     public function send($mobile, $code, $act = "register")
     {
         $engine = new ChuanglanSMS();
-        $result = $engine->sendSMS($mobile, '【58好策略】您好，您的验证码是' . $code);
+        $result = $engine->sendSMS($mobile, '【' . self::SING_NAME . '】您好，您的验证码是' . $code);
         $result = $engine->execResult($result);
         if (isset($result[1]) && $result[1] == 0) {
             $sessKey = "{$mobile}_{$act}";
@@ -22,7 +24,7 @@ class Sms
     public function sendLoss($mobile, $vars)
     {
         $engine = new ChuanglanSMS();
-        $msg = '【58好策略】您的策略{$var}即将达到止损，请即时处理！';
+        $msg = '【' . self::SING_NAME . '】您的策略{$var}即将达到止损，请即时处理！';
         $vars = is_array($vars) ? implode(',', $vars) : $vars;
         $params = "{$mobile},{$vars}";
         $result = $engine->sendVariableSMS($msg, $params);

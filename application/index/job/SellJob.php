@@ -2,7 +2,9 @@
 namespace app\index\job;
 
 use app\index\logic\OrderLogic;
+use app\index\logic\SmsLogic;
 use app\index\logic\StockLogic;
+use app\index\logic\UserLogic;
 use think\queue\Job;
 
 class SellJob
@@ -34,25 +36,30 @@ class SellJob
             $quotation = (new StockLogic())->quotationBySina($order['code']);
             if(isset($quotation[$order['code']])){
                 $lastPx = $quotation[$order['code']]['last_px']; //最新价
-                $lossTotal = ($order['price'] - $lastPx) * $order['hand']; //损失总金额
+                $buyPx = $quotation[$order['code']]['buy_px']; //买1价
+                $sellPx = $quotation[$order['code']]['sell_px']; //卖1价
+                //$lossTotal = ($order['price'] - $lastPx) * $order['hand']; //损失总金额
+                $lossTotal = ($order['price'] - $buyPx) * $order['hand']; //止损按买1
                 if($lossTotal >= $order['deposit']){
                     // 爆仓
                     $data = [
                         "order_id"  => $order["order_id"],
-                        "sell_price" => $lastPx,
+                        "sell_price" => $buyPx,
                         "sell_hand" => $order["hand"],
-                        "sell_deposit" => $lastPx * $order["hand"],
-                        "profit"    => ($lastPx - $order["price"]) * $order["hand"],
+                        "sell_deposit" => $buyPx * $order["hand"],
+                        "profit"    => ($buyPx - $order["price"]) * $order["hand"],
                         "state"     => 6,
                         "force_type" => 1 // 强制平仓类型；1-爆仓，2-到达止盈止损，3-非自动递延，4-递延费无法扣除
                     ];
                     $res = (new OrderLogic())->orderUpdate($data);
                     return $res ? true : false;
                 }else{
-                    if($lastPx >= $order['stop_profit_price']){
+                    //$lastPx >= $order['stop_profit_price']
+                    if($sellPx >= $order['stop_profit_price']){ //止盈按卖1
                         // 到达止盈
                         //$sellPrice = $order['stop_profit_price'];
-                        $sellPrice = $lastPx;
+                        //$sellPrice = $lastPx;
+                        $sellPrice = $sellPx; //止盈按卖1
                         $data = [
                             "order_id"  => $order["order_id"],
                             "sell_price" => $sellPrice,
@@ -64,10 +71,11 @@ class SellJob
                         ];
                         $res = (new OrderLogic())->orderUpdate($data);
                         return $res ? true : false;
-                    }elseif ($lastPx <= $order['stop_loss_price']){
+                    }elseif ($buyPx <= $order['stop_loss_price']){ //止损按买1
                         // 到达止损
                         //$sellPrice = $order['stop_loss_price'];
-                        $sellPrice = $lastPx;
+                        //$sellPrice = $lastPx;
+                        $sellPrice = $buyPx; //止损按买1
                         $data = [
                             "order_id"  => $order["order_id"],
                             "sell_price" => $sellPrice,
@@ -80,6 +88,22 @@ class SellJob
                         $res = (new OrderLogic())->orderUpdate($data);
                         return $res ? true : false;
                     }else{
+                        // 止损提醒
+                        $realLoss = $order['price'] - $buyPx; // 实际损失的钱
+                        $planLoss = $order['price'] - $order['stop_loss_price']; //预计损失的钱
+                        $lossRate = $realLoss / $planLoss * 100;
+                        if($lossRate >= 70){ //实际损失达到预计损失的70%短信提醒
+                            $isNotice = cache("loss_{$order['order_id']}");
+                            if(!$isNotice){
+                                $cacheEnd = strtotime(date("Y-m-d 15:05:00"));
+                                $cacheExpire = $cacheEnd - time();
+                                if($cacheExpire > 0){
+                                    $user = (new UserLogic())->userById($order['user_id']);
+                                    (new SmsLogic())->notice($user['mobile'], $order['code']);
+                                    cache("loss_{$order['order_id']}", true, $cacheExpire);
+                                }
+                            }
+                        }
                         return true;
                     }
                 }

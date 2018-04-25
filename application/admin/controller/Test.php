@@ -25,6 +25,11 @@ class Test extends Controller
 
     public function test()
     {
+        Queue::push('app\index\job\SellJob@handleTestJob', 104, null);
+        exit;
+        $res = cache("test_loss");
+        dump($res);
+        exit;
         $_logic = new \app\index\logic\StockLogic();
         $res = $_logic->quotationBySina("600000");
         dump($res);
