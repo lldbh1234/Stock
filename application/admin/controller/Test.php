@@ -26,8 +26,8 @@ class Test extends Controller
 
     public function test()
     {
-        $job = new SellJob();
-        $res = $job->handleSell(307);
+        /*$job = new SellJob();
+        $res = $job->handleSell(12);
         dump($res);
         exit;
         $managerUserId = 0;
@@ -35,8 +35,8 @@ class Test extends Controller
         $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
         $handleRes = (new RebateLogic())->handleProxyRebate($managerUserId, $adminIds, 999, 500);
         dump($handleRes);
-        exit;
-        Queue::push('app\index\job\SellJob@handleTestJob', 104, null);
+        exit;*/
+        Queue::push('app\index\job\SellJob@handleSellOrder', 12, null);
         exit;
         $res = cache("test_loss");
         dump($res);
