@@ -89,21 +89,21 @@ class SellJob
                         return $res ? true : false;
                     }else{
                         // 止损提醒
-                        $realLoss = $order['price'] - $buyPx; // 实际损失的钱
-                        $planLoss = $order['price'] - $order['stop_loss_price']; //预计损失的钱
-                        $lossRate = $realLoss / $planLoss * 100;
-                        if($lossRate >= 70){ //实际损失达到预计损失的70%短信提醒
-                            $isNotice = cache("loss_{$order['order_id']}");
-                            if(!$isNotice){
-                                $cacheEnd = strtotime(date("Y-m-d 15:05:00"));
-                                $cacheExpire = $cacheEnd - time();
-                                if($cacheExpire > 0){
-                                    $user = (new UserLogic())->userById($order['user_id']);
-                                    (new SmsLogic())->notice($user['mobile'], $order['code']);
-                                    cache("loss_{$order['order_id']}", true, $cacheExpire);
-                                }
-                            }
-                        }
+                        //$realLoss = $order['price'] - $buyPx; // 实际损失的钱
+                        //$planLoss = $order['price'] - $order['stop_loss_price']; //预计损失的钱
+                        //$lossRate = $realLoss / $planLoss * 100;
+                        //if($lossRate >= 70){ //实际损失达到预计损失的70%短信提醒
+                        //    $isNotice = cache("loss_{$order['order_id']}");
+                        //    if(!$isNotice){
+                        //        $cacheEnd = strtotime(date("Y-m-d 15:05:00"));
+                        //        $cacheExpire = $cacheEnd - time();
+                        //        if($cacheExpire > 0){
+                         //           $user = (new UserLogic())->userById($order['user_id']);
+                        //            (new SmsLogic())->notice($user['mobile'], $order['code']);
+                        //            cache("loss_{$order['order_id']}", true, $cacheExpire);
+                        //        }
+                        //    }
+                        //}
                         return true;
                     }
                 }
