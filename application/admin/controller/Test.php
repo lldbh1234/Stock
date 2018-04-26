@@ -8,6 +8,7 @@ use app\common\payment\paymentLLpay;
 use app\common\quotation\sina;
 use app\index\job\DeferJob;
 use app\index\job\RebateJob;
+use app\index\job\SellJob;
 use app\index\logic\AdminLogic;
 use app\index\logic\RebateLogic;
 use app\index\logic\UserLogic;
@@ -25,6 +26,10 @@ class Test extends Controller
 
     public function test()
     {
+        $job = new SellJob();
+        $res = $job->handleSell(307);
+        dump($res);
+        exit;
         $managerUserId = 0;
         $adminId = 6;
         $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
