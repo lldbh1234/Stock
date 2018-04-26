@@ -38,7 +38,11 @@ class Index extends Base
 
         }
         $admin = (new AdminLogic())->adminIncRole($this->adminId);
+        list($jiangcang, $defer, $profit) = (new AdminLogic())->myPoint($this->adminId);
         $this->assign("admin", $admin);
+        $this->assign("jiangcang", $jiangcang);
+        $this->assign("defer", $defer);
+        $this->assign("profit", $profit);
         return view();
     }
 

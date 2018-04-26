@@ -28,19 +28,22 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">盈利返点：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="input" class="input-text" value="{$admin.point}%" disabled />
+                <input type="input" class="input-text" value="{$profit*100|number_format=2}%" disabled />
+                <p class="textarea-numberbar" style="color: #dedede">用户总产生费用比例</p>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">建仓费返点：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="input" class="input-text" value="{$admin.jiancang_point}%" disabled />
+                <input type="input" class="input-text" value="{$jiangcang*100|number_format=2}%" disabled />
+                <p class="textarea-numberbar" style="color: #dedede">用户总产生费用比例</p>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">递延费返点：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="input" class="input-text" value="{$admin.defer_point}%" disabled />
+                <input type="input" class="input-text" value="{$defer*100|number_format=2}%" disabled />
+                <p class="textarea-numberbar" style="color: #dedede">用户总产生费用比例</p>
             </div>
         </div>
         <div class="row cl">

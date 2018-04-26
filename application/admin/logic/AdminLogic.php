@@ -9,6 +9,7 @@ use think\Db;
 
 class AdminLogic
 {
+    protected $familyTree;
     public function pageRoleLists($pageSize = null)
     {
         $pageSize = $pageSize ? : config("page_size");
@@ -322,6 +323,41 @@ class AdminLogic
             Admin::RING_ROLE_ID
         ];
         return in_array($roleId, $proxyRoleIds);
+    }
+
+    public function myPoint($adminId)
+    {
+        $proxyRoleIds = [
+            Admin::SETTLE_ROLE_ID,
+            Admin::OPERATE_ROLE_ID,
+            Admin::MEMBER_ROLE_ID,
+            Admin::RING_ROLE_ID
+        ];
+        $admins = Admin::where(["role" => ["IN", $proxyRoleIds]])->column("admin_id,pid,point,jiancang_point,defer_point");
+        $this->familyTree = [];
+        $this->_familyTree($admins, $adminId);
+        if($this->familyTree){
+            $jiangcang = 1;
+            $defer = 1;
+            $profit = 1;
+            foreach ($this->familyTree as $val){
+                $jiangcang = $jiangcang * $val['jiancang_point'] / 100;
+                $defer = $defer * $val['defer_point'] / 100;
+                $profit = $profit * $val['point'] / 100;
+            }
+            return [$jiangcang, $defer, $profit];
+        }
+        return [0, 0, 0];
+    }
+
+    private function _familyTree($admins, $admin_id, $field = "pid")
+    {
+        foreach ($admins as $key=>$val){
+            if($val['admin_id'] == $admin_id){
+                $this->familyTree[$admin_id] = $val;
+                $this->_familyTree($admins, $val[$field], $field);
+            }
+        }
     }
 
     public function pageTeamLists($role = "settle", $filter = [], $pageSize = null)

@@ -1,6 +1,7 @@
 <?php
 namespace app\index\job;
 
+use app\index\logic\SmsLogic;
 use app\index\logic\UserLogic;
 use think\queue\Job;
 
@@ -100,6 +101,21 @@ class UserNotice
      */
     public function sendSms($data)
     {
+        if(isset($data['Act'])){
+            if($data['Act'] == "Loss"){
+                // 止损短信提醒
+                $isNotice = cache("loss_{$data['OrderId']}");
+                if(!$isNotice){
+                    $cacheEnd = strtotime(date("Y-m-d 15:01:00"));
+                    $cacheExpire = $cacheEnd - time();
+                    if($cacheExpire > 0){
+                        $user = (new UserLogic())->userById($data['UserId']);
+                        (new SmsLogic())->notice($user['mobile'], $data['Code']);
+                        cache("loss_{$data['OrderId']}", true, $cacheExpire);
+                    }
+                }
+            }
+        }
         return true;
     }
 }
