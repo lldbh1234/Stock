@@ -64,11 +64,14 @@ class UserLogic
         }
 
         $pageSize = $pageSize ? : config("page_size");
+        $totalAccount = User::with(["hasOneParent", "hasOneAdmin", "hasOneAdmin.hasOneParent"])->where($where)->sum("account");
         //推荐人-微圈-微会员
-        $lists = User::with(["hasOneParent", "hasOneAdmin", "hasOneAdmin.hasOneParent"])
-            ->where($where)
-            ->paginate($pageSize, false, ['query'=>request()->param()]);
-        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+        $_lists = User::with(["hasOneParent", "hasOneAdmin", "hasOneAdmin.hasOneParent"])
+                    ->where($where)
+                    ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalAccount");
     }
     public function getOne($id)
     {

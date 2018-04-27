@@ -9,6 +9,8 @@ use app\index\logic\OrderLogic;
 
 class Cron extends Controller
 {
+    // php think queue:work --daemon
+    // php think queue:work --queue SellOrderQueue --daemon
     // 抓取板块行情指数
     public function grabPlateIndex()
     {
@@ -139,7 +141,7 @@ class Cron extends Controller
                         "deposit"   => $order["deposit"], // 保证金
                     ];*/
                     //Queue::push('app\index\job\SellJob@handleSellOrder', $sellData, null);
-                    Queue::push('app\index\job\SellJob@handleSellOrder', $order["order_id"], null);
+                    Queue::push('app\index\job\SellJob@handleSellOrder', $order["order_id"], "SellOrderQueue");
                 }
             }
         }

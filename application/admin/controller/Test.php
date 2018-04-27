@@ -36,7 +36,7 @@ class Test extends Controller
         $handleRes = (new RebateLogic())->handleProxyRebate($managerUserId, $adminIds, 999, 500);
         dump($handleRes);
         exit;*/
-        Queue::push('app\index\job\SellJob@handleSellOrder', 12, null);
+        Queue::push('app\index\job\SellJob@handleSellOrder', 12, "helloJobQueue");
         exit;
         $res = cache("test_loss");
         dump($res);

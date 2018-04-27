@@ -32,7 +32,9 @@
     </div>
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
-
+        <span class="l">
+            <span class="c-blue">余额总计： <strong>￥{$totalAccount|number_format=2}</strong></span>
+        </span>
         <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
     </div>
     <table class="table table-border table-bordered table-hover table-bg">
@@ -59,7 +61,7 @@
         <tr class="text-c admin-lists">
             <td colspan="12">暂时没有匹配到数据</td>
         </tr>
-        {/empty}
+        {else /}
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
             <td width="25"><input type="checkbox" value="{$item.user_id}" name=""></td>
@@ -89,6 +91,21 @@
             </td>
         </tr>
         {/volist}
+        <tr class="text-c admin-lists">
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td><strong>{$pageAccount|number_format=2}</strong></td>
+            <td>-</td>
+            <td>-</td>
+            <td class="f-14">-</td>
+        </tr>
+        {/empty}
         </tbody>
     </table>
     {$pages}

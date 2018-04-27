@@ -25,8 +25,11 @@ class User extends Base
     public function lists()
     {
         $_res = $this->userLogic->pageUserLists(input(''));
+        $pageAccount = array_sum(collection($_res['lists']['data'])->column("account"));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalAccount", $_res['totalAccount']);
+        $this->assign("pageAccount", $pageAccount);
         $this->assign("search", input(""));
         return view();
     }
