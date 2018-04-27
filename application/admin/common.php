@@ -66,6 +66,27 @@ if(!function_exists("workTimestamp")){
     }
 }
 
+if(!function_exists("workDay")){
+    function workDay($startTimestamp, $endTimestamp, $holiday = [])
+    {
+        $length = 0;
+        for ($i = $endTimestamp; $i >= $startTimestamp; $i = $i - 86400){
+            $week = date("w", $i);
+            $date = date("Y-m-d", $i);
+            if($week == 0 || $week == 6){
+                // 周末
+                continue;
+            }
+            if(in_array($date, $holiday)){
+                // 节假日
+                continue;
+            }
+            $length++;
+        }
+        return $length;
+    }
+}
+
 if(!function_exists("dd")){
     function dd($array)
     {
