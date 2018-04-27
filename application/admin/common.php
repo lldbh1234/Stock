@@ -70,9 +70,11 @@ if(!function_exists("workDay")){
     function workDay($startTimestamp, $endTimestamp, $holiday = [])
     {
         $length = 0;
-        for ($i = $endTimestamp; $i >= $startTimestamp; $i = $i - 86400){
+        for ($i = $endTimestamp; $i > $startTimestamp; $i = $i - 86400){
             $week = date("w", $i);
             $date = date("Y-m-d", $i);
+            dump($week);
+            dump($date);
             if($week == 0 || $week == 6){
                 // 周末
                 continue;
@@ -82,6 +84,7 @@ if(!function_exists("workDay")){
                 continue;
             }
             $length++;
+            dump($length);
         }
         return $length;
     }

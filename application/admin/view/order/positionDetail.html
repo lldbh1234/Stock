@@ -59,8 +59,14 @@
             <tr>
                 <th class="text-r">建仓费：</th>
                 <td class="text-l">{$order.jiancang_fee|number_format=2}</td>
-                <th class="text-r">递延费：</th>
+                <th class="text-r">递延费/天：</th>
                 <td class="text-l">{$order.defer|number_format=2}</td>
+            </tr>
+            <tr>
+                <th class="text-r">递延费总计：</th>
+                <td class="text-l">{$order.total_defer|number_format=2}</td>
+                <th class="text-r"></th>
+                <td class="text-l"></td>
             </tr>
             <tr>
                 <th class="text-r">微会员：</th>

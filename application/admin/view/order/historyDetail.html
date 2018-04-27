@@ -81,30 +81,32 @@
                     <td class="text-l">{$order.jiancang_fee|number_format=2}</td>
                 </tr>
                 <tr>
-                    <th class="text-r">递延费：</th>
+                    <th class="text-r">递延费/天：</th>
                     <td class="text-l">{$order.defer|number_format=2}</td>
+                    <th class="text-r">递延费总计：</th>
+                    <td class="text-l">{$order.total_defer|number_format=2}</td>
+                </tr>
+                <tr>
                     <th class="text-r">微会员：</th>
                     <td class="text-l">{$order.has_one_user.has_one_admin.has_one_parent.username|default='-'}</td>
-                </tr>
-                <tr>
                     <th class="text-r">微圈：</th>
                     <td class="text-l">{$order.has_one_user.has_one_admin.username|default='-'}</td>
+                </tr>
+                <tr>
                     <th class="text-r">经纪人：</th>
                     <td class="text-l">{$order.has_one_user.has_one_parent.username|default='-'}</td>
-                </tr>
-                <tr>
                     <th class="text-r">交易模式：</th>
                     <td class="text-l">{$order.belongs_to_mode.name|default='-'}</td>
+                </tr>
+                <tr>
                     <th class="text-r">免息截止日期：</th>
                     <td class="text-l">{$order.original_free|date="Y-m-d H:i", ###}</td>
-                </tr>
-                <tr>
                     <th class="text-r">买入时间：</th>
                     <td class="text-l">{$order.create_at|date="Y-m-d H:i", ###}</td>
-                    <th class="text-r">卖出时间：</th>
-                    <td class="text-l">{$order.update_at|date="Y-m-d H:i", ###}</td>
                 </tr>
                 <tr>
+                    <th class="text-r">卖出时间：</th>
+                    <td class="text-l">{$order.update_at|date="Y-m-d H:i", ###}</td>
                     <th class="text-r">操作员：</th>
                     <td class="text-l">
                         {if condition="$order.has_one_operator"}
@@ -113,8 +115,6 @@
                         -
                         {/if}
                     </td>
-                    <th class="text-r"></th>
-                    <td class="text-l"></td>
                 </tr>
             </tbody>
         </table>

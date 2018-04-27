@@ -63,8 +63,11 @@ class Order extends Base
     {
         $order = $this->_logic->orderIncUserById($id, $state = 2);
         if($order){
+            $holiday = explode(',', cf('holiday', ''));
+            $workDay = workDay($order['original_free'], $order['free_time'], $holiday);
             $forceType = [0 => '委托平仓', 1 => '爆仓', 2 => '止盈止损', 3 => '非自动递延', 4 => '余额不足'];
             $order['force_type_text'] = $forceType[$order['force_type']];
+            $order['total_defer'] = $workDay * $order['defer'];
             $this->assign("order", $order);
             return view();
         }
@@ -116,10 +119,13 @@ class Order extends Base
         $order = $this->_logic->orderIncUserById($id, $state = 3);
         if($order){
             $hedging = [1 => '是', 0 => '否'];
+            $holiday = explode(',', cf('holiday', ''));
+            $workDay = workDay($order['original_free'], $order['free_time'], $holiday);
             $quotation = (new StockLogic())->stockQuotationBySina($order['code']);
             $order['is_hedging_text'] = $hedging[$order['is_hedging']];
             $order['last_px'] = isset($quotation[$order['code']]['last_px']) ? number_format($quotation[$order['code']]['last_px'], 2) : '-';
             $order['pl'] = isset($quotation[$order['code']]['last_px']) ? number_format(($order['last_px'] - $order['price']) * $order['hand'], 2) : "-";
+            $order['total_defer'] = $workDay * $order['defer'];
             $this->assign("order", $order);
             return view();
         }
