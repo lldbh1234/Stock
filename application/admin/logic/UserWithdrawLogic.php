@@ -50,13 +50,18 @@ class UserWithdrawLogic
         }
 
         $pageSize = $pageSize ? : config("page_size");
+        $totalAmount = UserWithdraw::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("amount");
+        $totalActual = UserWithdraw::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("actual");
+        $totalPoundage = UserWithdraw::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("poundage");
         //推荐人-微圈-微会员
-        $lists = UserWithdraw::hasWhere("hasOneUser", $hasWhere)
-            ->with(['hasOneUser', 'hasOneAdmin'])
-            ->where($where)
-            ->order("id DESC")
-            ->paginate($pageSize, false, ['query'=>request()->param()]);
-        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+        $_lists = UserWithdraw::hasWhere("hasOneUser", $hasWhere)
+                ->with(['hasOneUser', 'hasOneAdmin'])
+                ->where($where)
+                ->order("id DESC")
+                ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalAmount", "totalActual", "totalPoundage");
     }
 
     public function withdrawById($id)

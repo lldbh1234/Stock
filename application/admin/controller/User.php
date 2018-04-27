@@ -118,6 +118,9 @@ class User extends Base
         $_res = (new UserWithdrawLogic())->pageUserWithdrawLists(input(''));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalAmount", $_res['totalAmount']);
+        $this->assign("totalActual", $_res['totalActual']);
+        $this->assign("totalPoundage", $_res['totalPoundage']);
         $this->assign("search", input(""));
         return view();
     }
