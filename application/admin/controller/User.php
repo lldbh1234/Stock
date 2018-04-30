@@ -76,6 +76,29 @@ class User extends Base
                 break;
             case '4':
                 //出金记录
+                $_res = $this->userLogic->pageUserWithdrawByUserId($id, input(""), 10);
+                if($_res){
+                    $pageAmount = array_sum(collection($_res['lists']['data'])->column("amount"));
+                    $pageActual = array_sum(collection($_res['lists']['data'])->column("actual"));
+                    $pagePoundage = array_sum(collection($_res['lists']['data'])->column("poundage"));
+                    $state = [0 => '待审核', '1' => '代付中', 2=> '已到账', -1 => '已拒绝'];
+                    array_filter($_res['lists']['data'], function(&$_item) use ($state){
+                        $_item['state_text'] = $state[$_item['state']];
+                        $_item['remark'] = json_decode($_item['remark'], true);
+                    });
+                    $this->assign("datas", $_res['lists']);
+                    $this->assign("pages", $_res['pages']);
+                    $this->assign("pageAmount", $pageAmount);
+                    $this->assign("pageActual", $pageActual);
+                    $this->assign("pagePoundage", $pagePoundage);
+                    $this->assign("totalAmount", $_res['totalAmount']);
+                    $this->assign("totalActual", $_res['totalActual']);
+                    $this->assign("totalPoundage", $_res['totalPoundage']);
+                    $this->assign("search", input(""));
+                    return view("userDetail4");
+                }else{
+                    return "非法操作！";
+                }
                 break;
             case '5':
                 // 入金记录

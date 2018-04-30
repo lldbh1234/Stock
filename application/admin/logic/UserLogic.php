@@ -5,6 +5,7 @@ use app\admin\model\User;
 use app\admin\model\Admin;
 use app\admin\model\UserGive;
 use app\admin\model\UserRecharge;
+use app\admin\model\UserWithdraw;
 use think\Db;
 
 class UserLogic
@@ -115,6 +116,44 @@ class UserLogic
             $_lists = UserRecharge::where($where)
                         ->order("id DESC")
                         ->paginate($pageSize, false, ['query'=>request()->param()]);
+            $lists = $_lists->toArray();
+            $pages = $_lists->render();
+            return compact("lists", "pages", "totalAmount", "totalActual", "totalPoundage");
+        }
+    }
+
+    public function pageUserWithdrawByUserId($userId, $filter = [], $pageSize = null)
+    {
+        $myUserIds = Admin::userIds();
+        if($myUserIds && !in_array($userId, $myUserIds)){
+            return [];
+        }else{
+            $where = ["user_id" => $userId, "state" => ["IN", [0, 1, 2]]];
+            if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,2])){//状态
+                $where['state'] = $filter['state'];
+            }
+            // 提现时间
+            if(isset($filter['begin']) || isset($filter['end'])){
+                if(!empty($filter['begin']) && !empty($filter['end'])){
+                    $_start = strtotime($filter['begin']);
+                    $_end = strtotime($filter['end']);
+                    $where['create_at'] = ["BETWEEN", [$_start, $_end]];
+                }elseif(!empty($filter['begin'])){
+                    $_start = strtotime($filter['begin']);
+                    $where['create_at'] = ["EGT", $_start];
+                }elseif(!empty($filter['end'])){
+                    $_end = strtotime($filter['end']);
+                    $where['create_at'] = ["ELT", $_end];
+                }
+            }
+            $pageSize = $pageSize ? : config("page_size");
+            $totalAmount = UserWithdraw::where($where)->sum("amount");
+            $totalActual = UserWithdraw::where($where)->sum("actual");
+            $totalPoundage = UserWithdraw::where($where)->sum("poundage");
+            //推荐人-微圈-微会员
+            $_lists = UserWithdraw::where($where)
+                    ->order("id DESC")
+                    ->paginate($pageSize, false, ['query'=>request()->param()]);
             $lists = $_lists->toArray();
             $pages = $_lists->render();
             return compact("lists", "pages", "totalAmount", "totalActual", "totalPoundage");

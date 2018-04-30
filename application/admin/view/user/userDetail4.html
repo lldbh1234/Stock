@@ -18,14 +18,22 @@
             <span data-href="{:url('admin/User/Detail', ['id' => input('id')])}">基本信息</span>
             <span data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 2])}">当前持仓</span>
             <span data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 3])}">历史交易</span>
-            <span data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 4])}">出金记录</span>
-            <span class="current" data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 5])}">入金记录</span>
+            <span class="current" data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 4])}">出金记录</span>
+            <span data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 5])}">入金记录</span>
             <span data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 6])}">资金记录</span>
         </div>
         <form action="" method="get">
             <div class="text-l mt-20">
                 <input type="hidden" name="id" value="{:input('id')}" />
-                <input type="hidden" name="type" value="5" />
+                <input type="hidden" name="type" value="4" />
+                <span class="select-box radius" style="width:100px;height: 31px;">
+                    <select class="select radius" name="state" size="1">
+                        <option value="">状态</option>
+                        <option value="0" {if condition="isset($search.state) AND $search.state heq '0'"}selected{/if}>待审核</option>
+                        <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>代付中</option>
+                        <option value="2" {if condition="isset($search.state) AND $search.state heq '2'"}selected{/if}>已到账</option>
+                    </select>
+                </span>
                 <input type="text" class="input-text radius" style="width:170px;" placeholder="开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
                 <input type="text" class="input-text radius" style="width:170px;" placeholder="结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
                 <button type="submit" class="btn btn-success radius" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
@@ -33,36 +41,50 @@
             </div>
         </form>
         <div class="cl pd-5 bg-1 bk-gray mt-15">
-		<span class="l">
-            <span class="c-blue">充值总计： <strong>￥{$totalAmount|number_format=2}</strong></span>
-        </span>
-            <span class="r">共充值：<strong>{$datas.total}</strong> 笔</span>
+            <span class="l">
+                <span class="c-blue">出金总计： <strong>￥{$totalAmount|number_format=2}</strong></span>
+                <span class="c-green ml-15">到账总计：<strong>￥{$totalActual|number_format=2}</strong></span>
+                <span class="c-orange ml-15">手续费总计：<strong>￥{$totalPoundage|number_format=2}</strong></span>
+            </span>
+            <span class="r">共出金：<strong>{$datas.total}</strong> 笔</span>
         </div>
         <table class="table table-border table-bordered table-hover table-bg">
             <thead>
             <tr class="text-c">
-                <th>充值订单号</th>
-                <th>外部订单号</th>
-                <th>充值金额</th>
-                <th>支付方式</th>
-                <th>充值时间</th>
+                <th>订单号</th>
+                <th>出金金额</th>
+                <th>手续费</th>
+                <th>实际到账</th>
+                <th>到账银行</th>
+                <th>银行卡号</th>
+                <th>持卡人</th>
+                <th>状态</th>
+                <th>申请时间</th>
             </tr>
             </thead>
             <tbody>
             {volist name="datas.data" id="item"}
             <tr class="text-c admin-lists">
-                <td>{$item.trade_no}</td>
-                <td>{$item.out_trade_no}</td>
+                <td>{$item.out_sn}</td>
                 <td>{$item.amount|number_format=2}</td>
-                <td>{$item.type_text}</td>
+                <td>{$item.poundage|number_format=2}</td>
+                <td>{$item.actual|number_format=2}</td>
+                <td>{$item.remark.bank|default='-'}</td>
+                <td>{$item.remark.card|default='-'}</td>
+                <td>{$item.remark.name|default='-'}</td>
+                <td>{$item.state_text}</td>
                 <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
             </tr>
             {/volist}
             {gt name="datas.total" value="0"}
             <tr class="text-c admin-lists">
                 <td>-</td>
-                <td>-</td>
                 <td><strong>{$pageAmount|number_format=2}</strong></td>
+                <td><strong>{$pagePoundage|number_format=2}</strong></td>
+                <td><strong>{$pageActual|number_format=2}</strong></td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
             </tr>

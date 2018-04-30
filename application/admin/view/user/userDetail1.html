@@ -62,7 +62,7 @@
                 <td>{$user.has_one_admin.has_one_parent.has_one_parent.username|default='-'}</td>
             </tr>
             <tr>
-                <td>所属结算中</td>
+                <td>所属结算中心</td>
                 <td>{$user.has_one_admin.has_one_parent.has_one_parent.has_one_parent.username|default='-'}</td>
             </tr>
             </tbody>
@@ -84,7 +84,7 @@
             increaseArea: '20%'
         });
 
-        $("#tab-system span").click(function(){
+        $(".tabBar span").click(function(){
             var _url = $(this).data("href");
             window.location.href = _url;
         });

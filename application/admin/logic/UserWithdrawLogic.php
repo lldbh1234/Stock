@@ -30,8 +30,8 @@ class UserWithdrawLogic
             $hasWhere["mobile"] = trim($filter['mobile']);
         }
 
-        if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,-1])){//状态
-            $where['state'] = $filter['state'];
+        if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,-1,2])){//状态
+            $where['stock_user_withdraw.state'] = $filter['state'];
         }
 
         // 提现时间
