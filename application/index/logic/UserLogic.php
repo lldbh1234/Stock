@@ -77,6 +77,15 @@ class UserLogic
                 ];
                 $res = $user->hasManyWithdraw()->save($data);
                 $pk = model("UserWithdraw")->getPk();
+                // 资金明细
+                $rData = [
+                    "type" => 6,
+                    "amount" => $money,
+                    "account" => $user->account,
+                    "remark" => json_encode(['tradeNo' => $data["out_sn"]]),
+                    "direction" => 2
+                ];
+                $user->hasManyRecord()->save($rData);
                 // 提交事务
                 Db::commit();
                 return $res->$pk;
@@ -145,12 +154,16 @@ class UserLogic
             }
 
             $poundage = cf('manager_poundage', 88);
-            $rData = [
-                "type" => 8,
-                "amount" => $poundage,
-                "direction" => 2
-            ];
-            $user->hasManyRecord()->save($rData);
+			if($poundage > 0){
+				$user->setDec("account", $poundage);
+				$rData = [
+					"type" => 8,
+					"amount" => $poundage,
+					"account" => $user->account,
+					"direction" => 2
+				];
+				$user->hasManyRecord()->save($rData);
+			}
             Db::commit();
             return true;
         }catch (\Exception $e){
@@ -400,21 +413,24 @@ class UserLogic
             Order::update($data);
             // 用户资金
             $user = User::find($order['user_id']);
-            $user->setInc("account", $order['jiancang_fee'] + $order['deposit']);
+            $user->setInc("account", $order['deposit']);
             // 冻结资金
             $user->setDec("blocked_account", $order['deposit']);
             // 资金明细(保证金)
             $rData = [
                 "type" => 4,
                 "amount" => $order['deposit'],
+				"account" => $user->account,
                 "remark" => json_encode(['orderId' => $order["order_id"]]),
                 "direction" => 1
             ];
             $user->hasManyRecord()->save($rData);
             // 资金明细(建仓费)
+			$user->setInc("account", $order['jiancang_fee']);
             $rData = [
                 "type" => 0,
                 "amount" => $order['jiancang_fee'],
+				"account" => $user->account,
                 "remark" => json_encode(['orderId' => $order["order_id"]]),
                 "direction" => 1
             ];
@@ -476,21 +492,24 @@ class UserLogic
                     $bonus = round($data["profit"] * (1 - $bonus_rate / 100), 2);
                     // 用户资金
                     $user = User::find($order['user_id']);
-                    $user->setInc("account", $order['deposit'] + $bonus);
+                    $user->setInc("account", $order['deposit']);
                     // 冻结资金
                     $user->setDec("blocked_account", $order['deposit']);
                     // 资金明细(保证金)
                     $rData = [
                         "type" => 4,
                         "amount" => $order['deposit'],
+						"account" => $user->account,
                         "remark" => json_encode(['orderId' => $order["order_id"]]),
                         "direction" => 1
                     ];
                     $user->hasManyRecord()->save($rData);
                     // 资金明细(分红)
+					$user->setInc("account", $bonus);
                     $rData = [
                         "type" => 7,
                         "amount" => $bonus,
+						"account" => $user->account,
                         "remark" => json_encode(['orderId' => $order["order_id"]]),
                         "direction" => 1
                     ];
@@ -506,6 +525,7 @@ class UserLogic
                     $rData = [
                         "type" => 4,
                         "amount" => $order['deposit'] + $data["profit"],
+						"account" => $user->account,
                         "remark" => json_encode(['orderId' => $order["order_id"]]),
                         "direction" => 1
                     ];
@@ -538,6 +558,7 @@ class UserLogic
             $rData = [
                 "type" => 4,
                 "amount" => $deposit,
+				"account" => $user->account,
                 "remark" => json_encode(['orderId' => $orderId]),
                 "direction" => 2
             ];
@@ -589,6 +610,7 @@ class UserLogic
                         $rData = [
                             "type" => 4,
                             "amount" => $_deposit,
+							"account" => $user->account,
                             "remark" => json_encode(['orderId' => $order["order_id"]]),
                             "direction" => 2
                         ];
@@ -614,6 +636,7 @@ class UserLogic
                     $rData = [
                         "type" => 4,
                         "amount" => $diff,
+						"account" => $user->account,
                         "remark" => json_encode(['orderId' => $order["order_id"]]),
                         "direction" => 2
                     ];

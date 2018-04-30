@@ -40,6 +40,7 @@ class UserManagerLogic
                 $_rData = [
                     'user_id'   => $userId,
                     'type'      => 10,
+					"account"	=> $user->account,
                     'amount'    => $manager->sure_income,
                     'direction' => 1,
                 ];

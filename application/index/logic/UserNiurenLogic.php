@@ -39,6 +39,7 @@ class UserNiurenLogic
                     'user_id'   => $userId,
                     'type'      => 9,
                     'amount'    => $niuren->sure_income,
+					"account"	=> $user->account,
                     'direction' => 1,
                 ];
                 $user->hasManyRecord()->save($_rData);

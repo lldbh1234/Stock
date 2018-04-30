@@ -44,12 +44,17 @@ class UserManagerLogic
             }else{
                 // 拒绝，回退申请手续费
                 $poundage = cf('manager_poundage', 88);
-                $rData = [
-                    "type" => 8,
-                    "amount" => $poundage,
-                    "direction" => 1
-                ];
-                User::find($where['user_id'])->hasManyRecord()->save($rData);
+				if($poundage > 0){
+				    $user = User::find($where['user_id']);
+                    $user->setInc("account", $poundage);
+					$rData = [
+						"type" => 8,
+						"amount" => $poundage,
+                        "account" => $user->account,
+						"direction" => 1
+					];
+                    $user->hasManyRecord()->save($rData);
+				}
             }
             Db::commit();
             return true;

@@ -77,7 +77,6 @@ class Manager extends Base
     {
         if(request()->isPost())
         {
-
             $validate = \think\Loader::validate('UserManager');
             if(!$validate->scene('user_audit')->check(input("post."))){
                 return $this->fail($validate->getError());

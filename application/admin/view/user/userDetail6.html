@@ -51,10 +51,18 @@
             {volist name="datas.data" id="item"}
             <tr class="text-c admin-lists">
                 <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
-                <td>{$item.remark.orderId|default='-'}</td>
+                <td>
+                    {if condition="isset($item.remark.orderId)"}
+                    {$item.remark.orderId}
+                    {elseif condition="isset($item.remark.tradeNo)"}
+                    {$item.remark.tradeNo}
+                    {else /}
+                    -
+                    {/if}
+                </td>
                 <td>{$item.type_text}</td>
                 <td>{eq name="item.direction" value="1"}+{else /}-{/eq}{$item.amount|number_format=2}</td>
-                <td>-</td>
+                <td>{$item.account|number_format=2}</td>
             </tr>
             {/volist}
             </tbody>

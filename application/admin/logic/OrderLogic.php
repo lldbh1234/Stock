@@ -492,21 +492,24 @@ class OrderLogic
             Order::update($data);
             // 用户资金
             $user = User::find($order['user_id']);
-            $user->setInc("account", $order['jiancang_fee'] + $order['deposit']);
+            $user->setInc("account", $order['deposit']);
             // 冻结资金
             $user->setDec("blocked_account", $order['deposit']);
             // 资金明细(保证金)
             $rData = [
                 "type" => 4,
                 "amount" => $order['deposit'],
+				"account" => $user->account,
                 "remark" => json_encode(['orderId' => $order["order_id"]]),
                 "direction" => 1
             ];
             $user->hasManyRecord()->save($rData);
             // 资金明细(建仓费)
+			$user->setInc("account", $order['jiancang_fee']);
             $rData = [
                 "type" => 0,
                 "amount" => $order['jiancang_fee'],
+				"account" => $user->account,
                 "remark" => json_encode(['orderId' => $order["order_id"]]),
                 "direction" => 1
             ];
@@ -536,21 +539,24 @@ class OrderLogic
                 $bonus = round($order["profit"] * (1 - $bonus_rate / 100), 2);
                 // 用户资金
                 $user = User::find($order['user_id']);
-                $user->setInc("account", $order['deposit'] + $bonus);
+                $user->setInc("account", $order['deposit']);
                 // 冻结资金
                 $user->setDec("blocked_account", $order['deposit']);
                 // 资金明细(保证金)
                 $rData = [
                     "type" => 4,
                     "amount" => $order['deposit'],
+					"account" => $user->account,
                     "remark" => json_encode(['orderId' => $order["order_id"]]),
                     "direction" => 1
                 ];
                 $user->hasManyRecord()->save($rData);
                 // 资金明细(分红)
+				$user->setInc("account", $bonus);
                 $rData = [
                     "type" => 7,
                     "amount" => $bonus,
+					"account" => $user->account,
                     "remark" => json_encode(['orderId' => $order["order_id"]]),
                     "direction" => 1
                 ];
@@ -566,6 +572,7 @@ class OrderLogic
                 $rData = [
                     "type" => 4,
                     "amount" => $order['deposit'] + $order["profit"],
+					"account" => $user->account,
                     "remark" => json_encode(['orderId' => $order["order_id"]]),
                     "direction" => 1
                 ];
@@ -603,21 +610,24 @@ class OrderLogic
                 $bonus = round($profit * (1 - $bonus_rate / 100), 2);
                 // 用户资金
                 $user = User::find($order['user_id']);
-                $user->setInc("account", $order['deposit'] + $bonus);
+                $user->setInc("account", $order['deposit']);
                 // 冻结资金
                 $user->setDec("blocked_account", $order['deposit']);
                 // 资金明细(保证金)
                 $rData = [
                     "type" => 4,
                     "amount" => $order['deposit'],
+					"account" => $user->account,
                     "remark" => json_encode(['orderId' => $order["order_id"]]),
                     "direction" => 1
                 ];
                 $user->hasManyRecord()->save($rData);
                 // 资金明细(分红)
+				$user->setInc("account", $bonus);
                 $rData = [
                     "type" => 7,
                     "amount" => $bonus,
+					"account" => $user->account,
                     "remark" => json_encode(['orderId' => $order["order_id"]]),
                     "direction" => 1
                 ];
@@ -635,6 +645,7 @@ class OrderLogic
                     $rData = [
                         "type" => 4,
                         "amount" => $account,
+						"account" => $user->account,
                         "remark" => json_encode(['orderId' => $order["order_id"]]),
                         "direction" => 1
                     ];

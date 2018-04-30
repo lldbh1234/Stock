@@ -3,6 +3,8 @@ namespace app\admin\controller;
 
 use app\admin\logic\OrderLogic;
 use app\admin\logic\StockLogic;
+use app\admin\model\UserRecord;
+use app\admin\model\UserWithdraw;
 use app\common\libraries\Sms;
 use app\common\payment\paymentLLpay;
 use app\common\quotation\sina;
@@ -26,6 +28,35 @@ class Test extends Controller
 
     public function test()
     {
+        /*set_time_limit(0);
+        $lists = UserRecord::group("user_id")->column("user_id");
+        foreach ($lists as $value){
+            $_lists = UserRecord::where(["user_id" => $value])->order(["create_at" => "ASC"])->select();
+            $_lists = collection($_lists)->toArray();
+            foreach ($_lists as $key => $vo){
+                if($key == 0){
+                    $account = $vo['direction'] == 1 ? $vo['amount'] : -$vo['amount'];
+                }else{
+                    $account = $vo['direction'] == 1 ? $_lists[$key-1]['account'] + $vo['amount'] : $_lists[$key-1]['account'] - $vo['amount'];
+                }
+                $data = [
+                    "id" => $vo['id'],
+                    "account" => $account,
+                ];
+                UserRecord::update($data);
+            }
+        }
+        exit;*/
+        $lists = UserWithdraw::select();
+        $lists = collection($lists)->toArray();
+        $sql = "INSERT INTO `stock_user_record` (`user_id`, `type`, `amount`, `remark`, `direction`, `create_at`) VALUES ";
+        foreach ($lists as $vo){
+            $remark = json_encode(["tradeNo" => $vo['out_sn']]);
+            $sql .= "({$vo['user_id']}, 6, {$vo['amount']}, '{$remark}', 2, {$vo['create_at']}),";
+        }
+        $sql = rtrim($sql, ',') . ';';
+        echo $sql;
+        exit;
         $order = \app\admin\model\Order::select();
         $order = collection($order)->toArray();
         $holiday = explode(',', cf("holiday", ""));

@@ -118,6 +118,7 @@ class UserWithdrawLogic
                 $rData = [
                     "type" => 6,
                     "amount" => $withdraw->amount,
+					"account" => $user->account,
                     "remark" => json_encode(['tradeNo' => $withdraw->out_sn]),
                     "direction" => 1
                 ];

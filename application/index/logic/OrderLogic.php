@@ -17,18 +17,21 @@ class OrderLogic
             $res = Order::create($data);
             $pk = model("Order")->getPk();
             $user = User::find($data['user_id']);
-            $user->setDec("account", $data['jiancang_fee'] + $data['deposit']);
+            $user->setDec("account", $data['deposit']);
             $user->setInc("blocked_account", $data['deposit']);
             $rData = [
                 "type" => 4,
                 "amount" => $data['deposit'],
+				"account" => $user->account,
                 "remark" => json_encode(['orderId' => $res->$pk]),
                 "direction" => 2
             ];
             $user->hasManyRecord()->save($rData);
+			$user->setDec("account", $data['jiancang_fee']);
             $rData = [
                 "type" => 0,
                 "amount" => $data['jiancang_fee'],
+				"account" => $user->account,
                 "remark" => json_encode(['orderId' => $res->$pk]),
                 "direction" => 2
             ];
@@ -232,6 +235,7 @@ class OrderLogic
             $rData = [
                 "type" => 1,
                 "amount" => $order['defer'],
+				"account" => $user->account,
                 "remark" => json_encode(['orderId' => $order['order_id']]),
                 "direction" => 2
             ];
