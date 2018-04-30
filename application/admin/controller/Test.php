@@ -36,7 +36,7 @@ class Test extends Controller
                 "order_id" => $vo["order_id"],
                 "defer_total" => $defer_total
             ];
-            $res = \app\admin\model\Order::update($data) ? true : false;
+            $res = model("Order")->isUpdate(true)->save($data) ? true : false;
             dump($res);
         }
         exit;
