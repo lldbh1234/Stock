@@ -73,6 +73,25 @@ class User extends Base
                 break;
             case '3':
                 //历史交易
+                $_res = $this->userLogic->pageUserOrderByUserId($id, 2, input(""), 10);
+                if($_res){
+                    $pageProfit = array_sum(collection($_res['lists']['data'])->column("profit"));
+                    $pageDeposit = array_sum(collection($_res['lists']['data'])->column("deposit"));
+                    $pageJiancang = array_sum(collection($_res['lists']['data'])->column("jiancang_fee"));
+                    $this->assign("datas", $_res['lists']);
+                    $this->assign("pages", $_res['pages']);
+                    $this->assign("pageProfit", $pageProfit);
+                    $this->assign("pageDeposit", $pageDeposit);
+                    $this->assign("pageJiancang", $pageJiancang);
+                    $this->assign("totalProfit", $_res['totalProfit']);
+                    $this->assign("totalDeposit", $_res['totalDeposit']);
+                    $this->assign("totalJiancang", $_res['totalJiancang']);
+                    $this->assign("totalDefer", $_res['totalDefer']);
+                    $this->assign("search", input(""));
+                    return view("userDetail3");
+                }else{
+                    return "非法操作！";
+                }
                 break;
             case '4':
                 //出金记录

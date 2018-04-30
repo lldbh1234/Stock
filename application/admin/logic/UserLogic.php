@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\logic;
 
+use app\admin\model\Order;
 use app\admin\model\User;
 use app\admin\model\Admin;
 use app\admin\model\UserGive;
@@ -157,6 +158,43 @@ class UserLogic
             $lists = $_lists->toArray();
             $pages = $_lists->render();
             return compact("lists", "pages", "totalAmount", "totalActual", "totalPoundage");
+        }
+    }
+
+    public function pageUserOrderByUserId($userId, $state, $filter = [], $pageSize = null)
+    {
+        $myUserIds = Admin::userIds();
+        if($myUserIds && !in_array($userId, $myUserIds)){
+            return [];
+        }else{
+            $where = ["user_id" => $userId, "state" => $state];
+            // 卖出时间
+            if(isset($filter['sell_begin']) || isset($filter['sell_end'])){
+                if(!empty($filter['sell_begin']) && !empty($filter['sell_end'])){
+                    $_start = strtotime($filter['sell_begin']);
+                    $_end = strtotime($filter['sell_end']);
+                    $where['update_at'] = ["BETWEEN", [$_start, $_end]];
+                }elseif(!empty($filter['sell_begin'])){
+                    $_start = strtotime($filter['sell_begin']);
+                    $where['update_at'] = ["EGT", $_start];
+                }elseif(!empty($filter['sell_end'])){
+                    $_end = strtotime($filter['sell_end']);
+                    $where['update_at'] = ["ELT", $_end];
+                }
+            }
+            $pageSize = $pageSize ? : config("page_size");
+            $totalProfit = Order::where($where)->sum("profit");
+            $totalDeposit = Order::where($where)->sum("deposit");
+            $totalJiancang = Order::where($where)->sum("jiancang_fee");
+            $totalDefer = Order::where($where)->sum("defer_total");
+            //推荐人-微圈-微会员
+            $_lists = Order::with(["belongsToMode"])
+                        ->where($where)
+                        ->order(["update_at" => "DESC", "order_id" => "DESC"])
+                        ->paginate($pageSize, false, ['query'=>request()->param()]);
+            $lists = $_lists->toArray();
+            $pages = $_lists->render();
+            return compact("lists", "pages", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
         }
     }
 

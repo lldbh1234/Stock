@@ -26,6 +26,20 @@ class Test extends Controller
 
     public function test()
     {
+        $order = \app\admin\model\Order::select();
+        $order = collection($order)->toArray();
+        $holiday = explode(',', cf("holiday", ""));
+        foreach ($order as $vo){
+            $day = workDay($vo['original_free'], $vo['free_time'], $holiday);
+            $defer_total = $day * $vo['defer'];
+            $data = [
+                "order_id" => $vo["order_id"],
+                "defer_total" => $defer_total
+            ];
+            $res = \app\admin\model\Order::update($data) ? true : false;
+            dump($res);
+        }
+        exit;
         /*$job = new SellJob();
         $res = $job->handleSell(12);
         dump($res);

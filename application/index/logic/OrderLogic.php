@@ -221,7 +221,8 @@ class OrderLogic
             $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
             $data = [
                 "order_id"  => $order['order_id'],
-                "free_time" => $timestamp
+                "free_time" => $timestamp,
+                "defer_total" => $order['defer_total'] + $order['defer']
             ];
             Order::update($data);
             // 用户余额减少
