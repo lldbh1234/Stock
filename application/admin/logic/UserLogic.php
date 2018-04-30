@@ -4,11 +4,11 @@ namespace app\admin\logic;
 use app\admin\model\User;
 use app\admin\model\Admin;
 use app\admin\model\UserGive;
+use app\admin\model\UserRecharge;
 use think\Db;
 
 class UserLogic
 {
-
     public function pageUserLists($filter = [], $pageSize = null)
     {
         $where = Admin::manager();
@@ -73,6 +73,54 @@ class UserLogic
         $pages = $_lists->render();
         return compact("lists", "pages", "totalAccount");
     }
+
+    public function userById($userId)
+    {
+        $user = User::find($userId);
+        return $user ? $user->toArray() : [];
+    }
+
+    public function userIncFamily($userId)
+    {
+        $where = Admin::manager();
+        $user = User::with(["hasOneParent", "hasOneAdmin" => ["hasOneParent" => ["hasOneParent" => ["hasOneParent"]]]])->where($where)->find($userId);
+        return $user ? $user->toArray() : [];
+    }
+
+    public function pageUserRechargeByUserId($userId, $filter = [], $pageSize = null)
+    {
+        $myUserIds = Admin::userIds();
+        if($myUserIds && !in_array($userId, $myUserIds)){
+            return [];
+        }else{
+            $where = ["state" => 1, "user_id" => $userId];
+            // 充值时间
+            if(isset($filter['begin']) || isset($filter['end'])){
+                if(!empty($filter['begin']) && !empty($filter['end'])){
+                    $_start = strtotime($filter['begin']);
+                    $_end = strtotime($filter['end']);
+                    $where['create_at'] = ["BETWEEN", [$_start, $_end]];
+                }elseif(!empty($filter['begin'])){
+                    $_start = strtotime($filter['begin']);
+                    $where['create_at'] = ["EGT", $_start];
+                }elseif(!empty($filter['end'])){
+                    $_end = strtotime($filter['end']);
+                    $where['create_at'] = ["ELT", $_end];
+                }
+            }
+            $pageSize = $pageSize ? : config("page_size");
+            $totalAmount = UserRecharge::where($where)->sum("amount");
+            //$totalActual = UserRecharge::where($where)->sum("actual");
+            //$totalPoundage = UserRecharge::where($where)->sum("poundage");
+            $_lists = UserRecharge::where($where)
+                        ->order("id DESC")
+                        ->paginate($pageSize, false, ['query'=>request()->param()]);
+            $lists = $_lists->toArray();
+            $pages = $_lists->render();
+            return compact("lists", "pages", "totalAmount", "totalActual", "totalPoundage");
+        }
+    }
+
     public function getOne($id)
     {
         $data = User::where(['user_id' => $id])->find();
@@ -84,7 +132,6 @@ class UserLogic
     }
     public function setInc($data)
     {
-
         if(isset($data['user_id']) && isset($data['number']))
         {
             // 启动事务
@@ -107,7 +154,6 @@ class UserLogic
             }
         }
         return false;
-
     }
 
 }

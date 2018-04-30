@@ -45,6 +45,7 @@ class UserLogic
         $user = User::find($userId);
         return $user ? $user->toArray() : [];
     }
+
     public function getAllBy($where=[])
     {
         $map = [];

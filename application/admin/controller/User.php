@@ -55,6 +55,58 @@ class User extends Base
         return view();
     }
 
+    public function detail($id = null, $type = 1)
+    {
+        switch ($type){
+            case '1':
+                // 基本信息
+                $user = $this->userLogic->userIncFamily($id);
+                if($user){
+                    $this->assign("user", $user);
+                    return view("userDetail1");
+                }else{
+                    return "非法操作！";
+                }
+                break;
+            case '2':
+                //当前持仓
+                break;
+            case '3':
+                //历史交易
+                break;
+            case '4':
+                //出金记录
+                break;
+            case '5':
+                // 入金记录
+                $_res = $this->userLogic->pageUserRechargeByUserId($id, input(""), 10);
+                if($_res){
+                    $pageAmount = array_sum(collection($_res['lists']['data'])->column("amount"));
+                    $type = [0 => "支付宝", 1 => "微信", 2 => "连连支付"];
+                    array_filter($_res['lists']['data'], function(&$_item) use ($type){
+                        $_item['type_text'] = $type[$_item['type']];
+                    });
+                    $this->assign("datas", $_res['lists']);
+                    $this->assign("pages", $_res['pages']);
+                    $this->assign("totalAmount", $_res['totalAmount']);
+                    //$this->assign("totalActual", $_res['totalActual']);
+                    //$this->assign("totalPoundage", $_res['totalPoundage']);
+                    $this->assign("pageAmount", $pageAmount);
+                    $this->assign("search", input(""));
+                    return view("userDetail5");
+                }else{
+                    return "非法操作！";
+                }
+                break;
+            case '6':
+                // 资金记录
+                break;
+            default:
+                return "非法操作！";
+                break;
+        }
+    }
+
     public function modifyPwd()
     {
         if(request()->isPost())

@@ -53,7 +53,7 @@
             <!--<th>总亏损</th>-->
             <th>注册时间</th>
             <th>状态</th>
-            <th width="100">操作</th>
+            <th width="160">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -85,6 +85,7 @@
                 {if condition="in_array('admin/User/modify', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-primary size-MINI radius" type="button" title="会员编辑" onclick="admin_edit('会员编辑','{:url("admin/User/modify", ['user_id' => $item.user_id])}','','500')" value="编辑">
                 {/if}
+                <input class="btn btn-success size-MINI radius" type="button" title="详细信息" onclick="user_detail(' ','{:url("admin/User/Detail", ['id' => $item.user_id])}')" value="详细信息">
                 {if condition="in_array('admin/User/modifyPwd', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-warning size-MINI radius" type="button" title="修改密码" onclick="admin_pwd(this, '{$item.user_id}')" value="修改密码">
                 {/if}
@@ -124,6 +125,15 @@
         layer_show(title,url,w,h);
     }
     {/if}
+
+    function user_detail(title,url) {
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
+        });
+        layer.full(index);
+    }
 
     {if condition="in_array('admin/User/modifyPwd', $Think.session.ACCESS_LIST)"}
     function admin_pwd(_obj, _id)
