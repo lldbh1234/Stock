@@ -142,6 +142,19 @@ class User extends Base
                 break;
             case '6':
                 // 资金记录
+                $_res = $this->userLogic->pageUserRecordByUserId($id, input(""), 10);
+                if($_res){
+                    $type = config("user_record_type");
+                    array_filter($_res['lists']['data'], function(&$_item) use ($type){
+                        $_item['type_text'] = $type["{$_item['type']}_{$_item['direction']}"];
+                        $_item['remark'] = json_decode($_item['remark'], true) ? json_decode($_item['remark'], true) : $_item['remark'];
+                    });
+                    $this->assign("datas", $_res['lists']);
+                    $this->assign("pages", $_res['pages']);
+                    return view("userDetail6");
+                }else{
+                    return "非法操作！";
+                }
                 break;
             default:
                 return "非法操作！";

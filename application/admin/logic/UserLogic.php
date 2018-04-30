@@ -6,6 +6,7 @@ use app\admin\model\User;
 use app\admin\model\Admin;
 use app\admin\model\UserGive;
 use app\admin\model\UserRecharge;
+use app\admin\model\UserRecord;
 use app\admin\model\UserWithdraw;
 use think\Db;
 
@@ -195,6 +196,37 @@ class UserLogic
             $lists = $_lists->toArray();
             $pages = $_lists->render();
             return compact("lists", "pages", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
+        }
+    }
+
+    public function pageUserRecordByUserId($userId, $filter = [], $pageSize = null)
+    {
+        $myUserIds = Admin::userIds();
+        if($myUserIds && !in_array($userId, $myUserIds)){
+            return [];
+        }else{
+            $where = ["user_id" => $userId];
+            // 产生时间
+            if(isset($filter['begin']) || isset($filter['end'])){
+                if(!empty($filter['begin']) && !empty($filter['end'])){
+                    $_start = strtotime($filter['begin']);
+                    $_end = strtotime($filter['end']);
+                    $where['create_at'] = ["BETWEEN", [$_start, $_end]];
+                }elseif(!empty($filter['begin'])){
+                    $_start = strtotime($filter['begin']);
+                    $where['create_at'] = ["EGT", $_start];
+                }elseif(!empty($filter['end'])){
+                    $_end = strtotime($filter['end']);
+                    $where['create_at'] = ["ELT", $_end];
+                }
+            }
+            $pageSize = $pageSize ? : config("page_size");
+            $_lists = UserRecord::where($where)
+                    ->order(["id" => "DESC"])
+                    ->paginate($pageSize, false, ['query'=>request()->param()]);
+            $lists = $_lists->toArray();
+            $pages = $_lists->render();
+            return compact("lists", "pages");
         }
     }
 
