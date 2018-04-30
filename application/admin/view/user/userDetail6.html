@@ -25,7 +25,7 @@
         <form action="" method="get">
             <div class="text-l mt-20">
                 <input type="hidden" name="id" value="{:input('id')}" />
-                <input type="hidden" name="type" value="5" />
+                <input type="hidden" name="type" value="6" />
                 <input type="text" class="input-text radius" style="width:170px;" placeholder="开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
                 <input type="text" class="input-text radius" style="width:170px;" placeholder="结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
                 <button type="submit" class="btn btn-success radius" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>

@@ -222,7 +222,7 @@ class UserLogic
             }
             $pageSize = $pageSize ? : config("page_size");
             $_lists = UserRecord::where($where)
-                    ->order(["create_at" => "DESC"])
+                    ->order(["create_at" => "DESC", "id" => "DESC"])
                     ->paginate($pageSize, false, ['query'=>request()->param()]);
             $lists = $_lists->toArray();
             $pages = $_lists->render();

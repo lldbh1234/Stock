@@ -37,7 +37,8 @@ class Test extends Controller
                 if($key == 0){
                     $account = $vo['direction'] == 1 ? $vo['amount'] : -$vo['amount'];
                 }else{
-                    $account = $vo['direction'] == 1 ? $_lists[$key-1]['account'] + $vo['amount'] : $_lists[$key-1]['account'] - $vo['amount'];
+                    $_vo= UserRecord::find($_lists[$key-1]['id']);
+                    $account = $vo['direction'] == 1 ? $_vo->account + $vo['amount'] : $_vo->account - $vo['amount'];
                 }
                 $data = [
                     "id" => $vo['id'],
@@ -45,6 +46,7 @@ class Test extends Controller
                 ];
                 UserRecord::update($data);
             }
+            break;
         }
         exit;
         $lists = UserWithdraw::select();
