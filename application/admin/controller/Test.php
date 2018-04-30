@@ -28,7 +28,7 @@ class Test extends Controller
 
     public function test()
     {
-        /*set_time_limit(0);
+        set_time_limit(0);
         $lists = UserRecord::group("user_id")->column("user_id");
         foreach ($lists as $value){
             $_lists = UserRecord::where(["user_id" => $value])->order(["create_at" => "ASC"])->select();
@@ -46,7 +46,7 @@ class Test extends Controller
                 UserRecord::update($data);
             }
         }
-        exit;*/
+        exit;
         $lists = UserWithdraw::select();
         $lists = collection($lists)->toArray();
         $sql = "INSERT INTO `stock_user_record` (`user_id`, `type`, `amount`, `remark`, `direction`, `create_at`) VALUES ";
