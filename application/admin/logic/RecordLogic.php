@@ -82,8 +82,20 @@ class RecordLogic
         $totalAmount = UserRecharge::hasWhere("belongsToUser", $hasWhere)->where($where)->sum("amount");
         $totalActual = UserRecharge::hasWhere("belongsToUser", $hasWhere)->where($where)->sum("actual");
         $totalPoundage = UserRecharge::hasWhere("belongsToUser", $hasWhere)->where($where)->sum("poundage");
+        $tableCols = Admin::tableColumnShow();
+        if($tableCols['settle'] == 1){
+            $with = ["belongsToUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent" => ["hasOneParent" => ["hasOneParent"]]]]];
+        }elseif($tableCols['operate'] == 1){
+            $with = ["belongsToUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent" => ["hasOneParent"]]]];
+        }elseif($tableCols['member'] == 1){
+            $with = ["belongsToUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]]];
+        }elseif ($tableCols['ring'] == 1){
+            $with = ["belongsToUser" => ["hasOneParent", "hasOneAdmin"]];
+        }else{
+            $with = ["belongsToUser" => ["hasOneParent"]];
+        }
         $_lists = UserRecharge::hasWhere("belongsToUser", $hasWhere)
-                    ->with(["belongsToUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]]])
+                    ->with($with)
                     ->where($where)
                     ->order("id DESC")
                     ->paginate($pageSize, false, ['query'=>request()->param()]);

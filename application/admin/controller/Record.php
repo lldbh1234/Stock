@@ -36,6 +36,7 @@ class Record extends Base
     public function recharge()
     {
         $res = $this->_logic->pageUserRechargeList(input(""));
+        $tableCols = (new AdminLogic())->tableColumnShow($this->adminId);
         $pageAmount = array_sum(collection($res['lists']['data'])->column("amount"));
         $pageActual = array_sum(collection($res['lists']['data'])->column("actual"));
         $pagePoundage = array_sum(collection($res['lists']['data'])->column("poundage"));
@@ -47,6 +48,7 @@ class Record extends Base
         $this->assign("pageAmount", $pageAmount);
         $this->assign("pageActual", $pageActual);
         $this->assign("pagePoundage", $pagePoundage);
+        $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
     }

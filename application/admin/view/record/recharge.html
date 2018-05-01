@@ -40,8 +40,18 @@
             <th>充值订单号</th>
             <th>充值人</th>
             <th>手机号</th>
-            <th>微圈</th>
+            {eq name="tableCols.settle" value="1"}
+            <th>结算中心</th>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <th>运营中心</th>
+            {/eq}
+            {eq name="tableCols.member" value="1"}
             <th>微会员</th>
+            {/eq}
+            {eq name="tableCols.ring" value="1"}
+            <th>微圈</th>
+            {/eq}
             <th>经纪人</th>
             <th>充值金额</th>
             <!--<th>到账金额</th>
@@ -55,8 +65,18 @@
             <td>{$item.trade_no}</td>
             <td>{$item.belongs_to_user.nickname|default=$item.belongs_to_user.username}</td>
             <td>{$item.belongs_to_user.mobile}</td>
-            <td>{$item.belongs_to_user.has_one_admin.username|default='无'}</td>
+            {eq name="tableCols.settle" value="1"}
+            <td>{$item.belongs_to_user.has_one_admin.has_one_parent.has_one_parent.has_one_parent.username|default='无'}</td>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <td>{$item.belongs_to_user.has_one_admin.has_one_parent.has_one_parent.username|default='无'}</td>
+            {/eq}
+            {eq name="tableCols.member" value="1"}
             <td>{$item.belongs_to_user.has_one_admin.has_one_parent.username|default='无'}</td>
+            {/eq}
+            {eq name="tableCols.ring" value="1"}
+            <td>{$item.belongs_to_user.has_one_admin.username|default='无'}</td>
+            {/eq}
             <td>{$item.belongs_to_user.has_one_parent.username|default='无'}</td>
             <td>{$item.amount|number_format=2}</td>
             <!--<td>{$item.actual|number_format=2}</td>
@@ -69,8 +89,18 @@
             <td>-</td>
             <td>-</td>
             <td>-</td>
+            {eq name="tableCols.settle" value="1"}
             <td>-</td>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
             <td>-</td>
+            {/eq}
+            {eq name="tableCols.member" value="1"}
+            <td>-</td>
+            {/eq}
+            {eq name="tableCols.ring" value="1"}
+            <td>-</td>
+            {/eq}
             <td>-</td>
             <td><strong>{$pageAmount|number_format=2}</strong></td>
             <!--<td><strong>{$pageActual|number_format=2}</strong></td>
