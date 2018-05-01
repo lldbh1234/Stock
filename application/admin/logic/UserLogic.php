@@ -199,6 +199,14 @@ class UserLogic
         }
     }
 
+    public function userIncOrder($userId, $state = 1)
+    {
+        $user = User::with(["hasManyOrder" => function($query) use ($state){
+                    $query->where(["state" => $state]);
+                }])->find($userId);
+        return $user ? $user->toArray() : [];
+    }
+
     public function pageUserRecordByUserId($userId, $filter = [], $pageSize = null)
     {
         $myUserIds = Admin::userIds();

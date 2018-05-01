@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\logic\StockLogic;
 use app\admin\logic\UserGiveLogic;
 use app\admin\logic\UserLogic;
 use app\admin\logic\UserWithdrawLogic;
@@ -70,6 +71,27 @@ class User extends Base
                 break;
             case '2':
                 //当前持仓
+                $_res = $this->userLogic->pageUserOrderByUserId($id, 3, input(""), 10);
+                if($_res){
+                    if($_res['lists']['data']){
+                        $codes = array_column($_res['lists']['data'], "code");
+                        $quotation = (new StockLogic())->stockQuotationBySina($codes);
+                        array_filter($_res['lists']['data'], function(&$item) use ($quotation){
+                            $item['last_px'] = isset($quotation[$item['code']]['last_px']) ? number_format($quotation[$item['code']]['last_px'], 2) : '-';
+                            $item['pl'] = isset($quotation[$item['code']]['last_px']) ? number_format(($item['last_px'] - $item['price']) * $item['hand'], 2) : "-";
+                        });
+                    }
+                    $this->assign("datas", $_res['lists']);
+                    $this->assign("pages", $_res['pages']);
+                    $this->assign("totalProfit", $_res['totalProfit']);
+                    $this->assign("totalDeposit", $_res['totalDeposit']);
+                    $this->assign("totalJiancang", $_res['totalJiancang']);
+                    $this->assign("totalDefer", $_res['totalDefer']);
+                    $this->assign("search", input(""));
+                    return view("userDetail2");
+                }else{
+                    return "非法操作！";
+                }
                 break;
             case '3':
                 //历史交易
@@ -144,6 +166,7 @@ class User extends Base
                 // 资金记录
                 $_res = $this->userLogic->pageUserRecordByUserId($id, input(""), 10);
                 if($_res){
+                    $capital = $this->_userCapital($id);
                     $type = config("user_record_type");
                     array_filter($_res['lists']['data'], function(&$_item) use ($type){
                         $_item['type_text'] = $type["{$_item['type']}_{$_item['direction']}"];
@@ -151,6 +174,8 @@ class User extends Base
                     });
                     $this->assign("datas", $_res['lists']);
                     $this->assign("pages", $_res['pages']);
+                    $this->assign("capital", $capital);
+                    $this->assign("search", input(""));
                     return view("userDetail6");
                 }else{
                     return "非法操作！";
@@ -160,6 +185,31 @@ class User extends Base
                 return "非法操作！";
                 break;
         }
+    }
+
+    // 资金详情
+    private function _userCapital($userId)
+    {
+        $capital = [
+            "netAssets" => 0, //净资产
+            "expendableFund" => 0, //可用资金
+            "floatPL" => 0, //浮动盈亏
+            "marketValue" => 0, //持仓市值
+        ];
+        $user = $this->userLogic->userIncOrder($userId, $state = 3);
+        $codes = array_column($user["has_many_order"], "code");
+        if($codes){
+            $quotation = (new StockLogic())->stockQuotationBySina($codes);
+            array_filter($user["has_many_order"], function($item) use ($quotation, &$capital){
+                $floatPL = ($quotation[$item['code']]['last_px'] - $item['price']) * $item['hand'];
+                $marketValue = $item['hand'] * $quotation[$item['code']]['last_px'];
+                $capital['floatPL'] += $floatPL;
+                $capital['marketValue'] += $marketValue;
+            });
+        }
+        $capital['expendableFund'] = $user['account']; //可用资金
+        $capital['netAssets'] = $capital['expendableFund'] + $user['blocked_account'] + $capital['floatPL']; //净资产
+        return $capital;
     }
 
     public function modifyPwd()

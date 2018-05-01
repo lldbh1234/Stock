@@ -22,6 +22,27 @@
             <span data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 5])}">入金记录</span>
             <span class="current" data-href="{:url('admin/User/Detail', ['id' => input('id'), 'type' => 6])}">资金记录</span>
         </div>
+        <table class="table table-border table-bordered table-bg mt-20">
+            <thead class="text-c">
+            <tr>
+                <th colspan="4" scope="col">资金详情</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th width="25%">净资产</th>
+                <th width="25%">可用资金</th>
+                <th width="25%">持仓市值</th>
+                <th width="25%">浮动盈亏</th>
+            </tr>
+            <tr>
+                <td>{$capital.netAssets|number_format=2}</td>
+                <td>{$capital.expendableFund|number_format=2}</td>
+                <td>{$capital.marketValue|number_format=2}</td>
+                <td>{$capital.floatPL|number_format=2}</td>
+            </tr>
+            </tbody>
+        </table>
         <form action="" method="get">
             <div class="text-l mt-20">
                 <input type="hidden" name="id" value="{:input('id')}" />
