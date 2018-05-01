@@ -40,9 +40,26 @@
         <tr class="text-c">
             <th>昵称</th>
             <th>手机号</th>
+            {eq name="tableCols.settle" value="1"}
+            <th>结算中心</th>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <th>运营中心</th>
+            {/eq}
+            {eq name="tableCols.member" value="1"}
+            <th>微会员</th>
+            {/eq}
+            {eq name="tableCols.ring" value="1"}
+            <th>微圈</th>
+            {/eq}
             <th>递延金额</th>
             <th>扣除方式</th>
             <th>策略ID</th>
+            <th>股票名称</th>
+            <th>股票代码</th>
+            <th>保证金</th>
+            <th>交易模式</th>
+            <th>倍率</th>
             <th>结算时间</th>
         </tr>
         </thead>
@@ -51,9 +68,26 @@
         <tr class="text-c admin-lists">
             <td>{$item.belongs_to_user.nickname|default=$item.belongs_to_user.username}</td>
             <td>{$item.belongs_to_user.mobile}</td>
+            {eq name="tableCols.settle" value="1"}
+            <td>{$item.belongs_to_user.has_one_admin.has_one_parent.has_one_parent.has_one_parent.username}</td>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <td>{$item.belongs_to_user.has_one_admin.has_one_parent.has_one_parent.username}</td>
+            {/eq}
+            {eq name="tableCols.member" value="1"}
+            <td>{$item.belongs_to_user.has_one_admin.has_one_parent.username}</td>
+            {/eq}
+            {eq name="tableCols.ring" value="1"}
+            <td>{$item.belongs_to_user.has_one_admin.username}</td>
+            {/eq}
             <td>{$item.money|number_format=2}</td>
             <td>{$item.type_text}</td>
             <td>{$item.order_id}</td>
+            <td>{$item.belongs_to_order.name}</td>
+            <td>{$item.belongs_to_order.code}</td>
+            <td>{$item.belongs_to_order.original_deposit}</td>
+            <td>{$item.belongs_to_order.belongs_to_mode.name|default='-'}</td>
+            <td>{$item.belongs_to_order.lever}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
         </tr>
         {/volist}
@@ -61,7 +95,24 @@
         <tr class="text-c admin-lists">
             <td>-</td>
             <td>-</td>
+            {eq name="tableCols.settle" value="1"}
+            <td>-</td>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <td>-</td>
+            {/eq}
+            {eq name="tableCols.member" value="1"}
+            <td>-</td>
+            {/eq}
+            {eq name="tableCols.ring" value="1"}
+            <td>-</td>
+            {/eq}
             <td><strong>{$pageMoney|number_format=2}</strong></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
             <td>-</td>
             <td>-</td>
             <td>-</td>

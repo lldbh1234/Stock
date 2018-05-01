@@ -95,6 +95,37 @@ class Admin extends BaseModel
         return $userIds;
     }
 
+    public static function tableColumnShow()
+    {
+        $_self = manager();
+        $cols = ["settle" => 1, "operate" => 1, "member" => 1, "ring" => 1];
+        if($_self['admin_id'] != Admin::ADMINISTRATOR_ID){
+            $proxyRoleIds = [
+                Admin::SETTLE_ROLE_ID,
+                Admin::OPERATE_ROLE_ID,
+                Admin::MEMBER_ROLE_ID,
+                Admin::RING_ROLE_ID
+            ];
+            if(in_array($_self['role'], $proxyRoleIds)){
+                // 代理商
+                if($_self['role'] == Admin::SETTLE_ROLE_ID){
+                    // 结算中心
+                    $cols = ["settle" => 0, "operate" => 1, "member" => 1, "ring" => 1];
+                }elseif($_self['role'] == Admin::OPERATE_ROLE_ID){
+                    // 运营中心
+                    $cols = ["settle" => 0, "operate" => 0, "member" => 1, "ring" => 1];
+                }elseif ($_self['role'] == Admin::MEMBER_ROLE_ID){
+                    // 微会员
+                    $cols = ["settle" => 0, "operate" => 0, "member" => 0, "ring" => 1];
+                }else{
+                    // 微圈
+                    $cols = ["settle" => 0, "operate" => 0, "member" => 0, "ring" => 0];
+                }
+            }
+        }
+        return $cols;
+    }
+
     public function hasOneRole()
     {
         return $this->hasOne("\\app\\common\\model\\Role", "id", "role");

@@ -51,6 +51,12 @@ class AdminLogic
         return $lists ? collection($lists)->toArray() : [];
     }
 
+    // 页面列显示
+    public function tableColumnShow()
+    {
+        return Admin::tableColumnShow();
+    }
+
     public function allRoles()
     {
         $lists = Role::select();

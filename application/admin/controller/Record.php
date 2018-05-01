@@ -167,10 +167,12 @@ class Record extends Base
             $item["type_text"] = $type[$item["type"]];
         });
         $pageMoney = array_sum(collection($res['lists']['data'])->column("money"));
+        $tableCols = (new AdminLogic())->tableColumnShow($this->adminId);
         $this->assign("datas", $res['lists']);
         $this->assign("pages", $res['pages']);
         $this->assign("pageMoney", $pageMoney);
         $this->assign("totalMoney", $res['totalMoney']);
+        $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
     }

@@ -469,10 +469,22 @@ class RecordLogic
         if(isset($filter['type']) && is_numeric($filter['type'])){
             $where["stock_defer_record.type"] = $filter['type'];
         }
+        $tableCols = Admin::tableColumnShow();
+        if($tableCols['settle'] == 1){
+            $with = ["belongsToUser" => ["hasOneAdmin" => ["hasOneParent" => ["hasOneParent" => ["hasOneParent"]]]], "belongsToOrder" => ["belongsToMode"]];
+        }elseif($tableCols['operate'] == 1){
+            $with = ["belongsToUser" => ["hasOneAdmin" => ["hasOneParent" => ["hasOneParent"]]], "belongsToOrder" => ["belongsToMode"]];
+        }elseif($tableCols['member'] == 1){
+            $with = ["belongsToUser" => ["hasOneAdmin" => ["hasOneParent"]], "belongsToOrder" => ["belongsToMode"]];
+        }elseif ($tableCols['ring'] == 1){
+            $with = ["belongsToUser" => ["hasOneAdmin"], "belongsToOrder" => ["belongsToMode"]];
+        }else{
+            $with = ["belongsToUser", "belongsToOrder" => ["belongsToMode"]];
+        }
         $pageSize = $pageSize ? : config("page_size");
         $totalMoney = DeferRecord::hasWhere("belongsToUser", $hasWhere)->where($where)->sum("money");
         $_lists = DeferRecord::hasWhere("belongsToUser", $hasWhere)
-                        ->with(["belongsToUser"])
+                        ->with($with)
                         ->where($where)
                         ->order("id DESC")
                         ->paginate($pageSize, false, ['query'=>request()->param()]);
