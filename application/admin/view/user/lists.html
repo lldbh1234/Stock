@@ -85,8 +85,8 @@
                 {if condition="in_array('admin/User/modify', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-primary size-MINI radius" type="button" title="会员编辑" onclick="admin_edit('会员编辑','{:url("admin/User/modify", ['user_id' => $item.user_id])}','','500')" value="编辑">
                 {/if}
-                {if condition="in_array('admin/User/Detail', $Think.session.ACCESS_LIST)"}
-                <input class="btn btn-success size-MINI radius" type="button" title="详细信息" onclick="user_detail(' ','{:url("admin/User/Detail", ['id' => $item.user_id])}')" value="详细信息">
+                {if condition="in_array('admin/User/detail', $Think.session.ACCESS_LIST)"}
+                <input class="btn btn-success size-MINI radius" type="button" title="详细信息" onclick="user_detail(' ','{:url("admin/User/detail", ['id' => $item.user_id])}')" value="详细信息">
                 {/if}
                 {if condition="in_array('admin/User/modifyPwd', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-warning size-MINI radius" type="button" title="修改密码" onclick="admin_pwd(this, '{$item.user_id}')" value="修改密码">
