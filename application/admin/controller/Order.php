@@ -54,6 +54,9 @@ class Order extends Base
         $_res = $this->_logic->pageHistoryOrders(input(""));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalProfit", $_res['totalProfit']);
+        $this->assign("totalJiancang", $_res['totalJiancang']);
+        $this->assign("totalDefer", $_res['totalDefer']);
         $this->assign("search", input(""));
         return view();
     }
@@ -97,8 +100,17 @@ class Order extends Base
                 $item['pl'] = isset($quotation[$item['code']]['last_px']) ? number_format(($item['last_px'] - $item['price']) * $item['hand'], 2) : "-";
             });
         }
+        $pageDeposit = array_sum(collection($_res['lists']['data'])->column("deposit"));
+        $pageJiancang = array_sum(collection($_res['lists']['data'])->column("jiancang_fee"));
+        $pageDefer = array_sum(collection($_res['lists']['data'])->column("defer_total"));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalDeposit", $_res['totalDeposit']);
+        $this->assign("totalJiancang", $_res['totalJiancang']);
+        $this->assign("totalDefer", $_res['totalDefer']);
+        $this->assign("pageDeposit", $pageDeposit);
+        $this->assign("pageJiancang", $pageJiancang);
+        $this->assign("pageDefer", $pageDefer);
         $this->assign("search", input(""));
         return view();
     }

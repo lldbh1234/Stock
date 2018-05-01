@@ -214,17 +214,23 @@ class OrderLogic
             }
         }
         $pageSize = $pageSize ? : config("page_size");
+        $totalProfit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("profit");
+        $totalDeposit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("deposit");
+        $totalJiancang = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("jiancang_fee");
+        $totalDefer = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("defer_total");
         /*$lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator"])
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);*/
-        $lists = Order::hasWhere("hasOneUser", $hasWhere)
+        $_lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);
-        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
     }
 
     public function pagePositionOrders($filter = [], $pageSize = null)
@@ -308,19 +314,24 @@ class OrderLogic
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);*/
-        $lists = Order::hasWhere("hasOneUser", $hasWhere)
-            ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
-            ->where($where)
-            ->order("order_id DESC")
-            ->paginate($pageSize, false, ['query'=>request()->param()]);
-        $records = $lists->toArray();
+        $totalProfit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("profit");
+        $totalDeposit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("deposit");
+        $totalJiancang = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("jiancang_fee");
+        $totalDefer = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("defer_total");
+        $_lists = Order::hasWhere("hasOneUser", $hasWhere)
+                    ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
+                    ->where($where)
+                    ->order("order_id DESC")
+                    ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
         $hedging = [1 => '是', 0 => '否'];
         $state = [1 => '委托建仓', 2 => '平仓', 3 => '持仓', 4 => '委托平仓', 5 => '作废'];
-        array_filter($records['data'], function(&$item) use ($state, $hedging){
+        array_filter($lists['data'], function(&$item) use ($state, $hedging){
             $item['state_text'] = $state[$item['state']];
             $item['is_hedging_text'] = $hedging[$item['is_hedging']];
         });
-        return ["lists" => $records, "pages" => $lists->render()];
+        return compact("lists", "pages", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
     }
 
     // 强制平仓列表
