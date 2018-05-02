@@ -17,7 +17,15 @@
         <input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="真名" name="nickname" value="{$search.nickname|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+        {eq name="tableCols.settle" value="1"}
+        <input type="text" class="input-text" style="width:170px;" placeholder="上级结算中心" name="settle" value="{$search.settle|default=''}">
+        {/eq}
+        {eq name="tableCols.operate" value="1"}
+        <input type="text" class="input-text" style="width:170px;" placeholder="上级运营中心" name="operate" value="{$search.operate|default=''}">
+        {/eq}
+        {eq name="tableCols.member" value="1"}
         <input type="text" class="input-text" style="width:170px;" placeholder="上级微会员" name="member" value="{$search.member|default=''}">
+        {/eq}
         <input type="text" class="input-text" style="width:170px;" placeholder="机构码" name="code" value="{$search.code|default=''}">
         <span class="select-box" style="width:70px;height: 31px;">
             <select class="select" name="status" size="1">
@@ -50,7 +58,15 @@
             <th>登录名</th>
             <th>真名</th>
             <th>手机号</th>
+            {eq name="tableCols.settle" value="1"}
+            <th>上级结算中心</th>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <th>上级运营中心</th>
+            {/eq}
+            {eq name="tableCols.member" value="1"}
             <th>上级微会员</th>
+            {/eq}
             <th>盈利返点（%）</th>
             <th>建仓费返点（%）</th>
             <th>递延费返点（%）</th>
@@ -72,7 +88,15 @@
             <td>{$item.username}</td>
             <td>{$item.nickname}</td>
             <td>{$item.mobile}</td>
+            {eq name="tableCols.settle" value="1"}
+            <td>{$item.has_one_parent.has_one_parent.has_one_parent.username}</td>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <td>{$item.has_one_parent.has_one_parent.username}</td>
+            {/eq}
+            {eq name="tableCols.member" value="1"}
             <td>{$item.has_one_parent.username}</td>
+            {/eq}
             <td>{$item.point}</td>
             <td>{$item.jiancang_point}</td>
             <td>{$item.defer_point}</td>

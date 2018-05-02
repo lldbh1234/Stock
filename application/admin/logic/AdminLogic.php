@@ -366,6 +366,152 @@ class AdminLogic
         }
     }
 
+    // 分页微会员列表
+    public function pageMemberLists($filter = [], $pageSize = null)
+    {
+        $where = Admin::manager();
+        $where['role'] = Admin::MEMBER_ROLE_ID;
+        // 登录名
+        if(isset($filter['username']) && !empty($filter['username'])){
+            $where["username"] = trim($filter['username']);
+        }
+        // 昵称
+        if(isset($filter['nickname']) && !empty($filter['nickname'])){
+            $where["nickname"] = ["LIKE", "%{$filter['nickname']}%"];
+        }
+        // 手机号
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){
+            $where["mobile"] = trim($filter['mobile']);
+        }
+        // 状态
+        if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
+            $where["status"] = $filter['status'];
+        }
+        // 结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = [
+                "username" => trim($filter['settle']),
+                "role" => Admin::SETTLE_ROLE_ID
+            ];
+            $settle = Admin::where($_where)->find();
+            $operates = $settle ? $settle->hasManyChildren()->column("admin_id") : [];
+            $where["pid"] = ["IN", $operates];
+        }
+        // 运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = [
+                "username" => trim($filter['operate']),
+                "role" => Admin::OPERATE_ROLE_ID
+            ];
+            $parents = Admin::where($_where)->column("admin_id");
+            $parents = isset($operates) ? array_intersect($operates, $parents) : $parents;
+            $where["pid"] = ["IN", $parents];
+        }
+        $pageSize = $pageSize ? : config("page_size");
+        $tableCols = Admin::tableColumnShow();
+        if($tableCols['settle'] == 1){
+            $with = ["hasOneParent" => ["hasOneParent"]];
+        }else{
+            $with = ["hasOneParent"];
+        }
+        $_lists = Admin::with($with)
+            ->withSum(
+                [
+                    "hasManyWithdraw" => function($_query){
+                        $_query->where(["state" => ["NEQ", -1]]);
+                    }
+                ], "amount"
+            )
+            ->field("password", true)
+            ->where($where)
+            ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages");
+    }
+
+    // 分页微圈列表
+    public function pageRingLists($filter = [], $pageSize = null)
+    {
+        $where = Admin::manager();
+        $where['role'] = Admin::RING_ROLE_ID;
+        // 登录名
+        if(isset($filter['username']) && !empty($filter['username'])){
+            $where["username"] = trim($filter['username']);
+        }
+        // 昵称
+        if(isset($filter['nickname']) && !empty($filter['nickname'])){
+            $where["nickname"] = ["LIKE", "%{$filter['nickname']}%"];
+        }
+        // 手机号
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){
+            $where["mobile"] = trim($filter['mobile']);
+        }
+        // 状态
+        if(isset($filter['status']) && is_numeric($filter['status']) && in_array($filter['status'], [0,1])){
+            $where["status"] = $filter['status'];
+        }
+        // 机构码
+        if(isset($filter['code']) && !empty($filter['code'])){
+            $where["code"] = trim($filter['code']);
+        }
+        // 结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = [
+                "username" => trim($filter['settle']),
+                "role" => Admin::SETTLE_ROLE_ID
+            ];
+            $settle = Admin::where($_where)->find();
+            $operates = $settle ? $settle->hasManyChildren()->column("admin_id") : [];
+            $members = Admin::where(["pid" => ["IN", $operates]])->column("admin_id");
+            $where["pid"] = ["IN", $members];
+        }
+        // 运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = [
+                "username" => trim($filter['operate']),
+                "role" => Admin::OPERATE_ROLE_ID
+            ];
+            $operate = Admin::where($_where)->find();
+            $tempMembers = $operate ? $operate->hasManyChildren()->column("admin_id") : [];
+            $parents = isset($members) ? array_intersect($members, $tempMembers) : $tempMembers;
+            $where["pid"] = ["IN", $parents];
+        }
+        // 微会员
+        if(isset($filter['member']) && !empty($filter['member'])){
+            $_where = [
+                "username" => trim($filter['member']),
+                "role" => Admin::MEMBER_ROLE_ID
+            ];
+            $members = Admin::where($_where)->column("admin_id");
+            $parents = isset($parents) ? array_intersect($members, $parents) : $members;
+            $where["pid"] = ["IN", $parents];
+        }
+        $pageSize = $pageSize ? : config("page_size");
+        $tableCols = Admin::tableColumnShow();
+        if($tableCols['settle'] == 1){
+            $with = ["hasOneParent" => ["hasOneParent" => ["hasOneParent"]]];
+        }elseif($tableCols['operate'] == 1){
+            $with = ["hasOneParent" => ["hasOneParent"]];
+        }else{
+            $with = ["hasOneParent"];
+        }
+        $_lists = Admin::with($with)
+            ->withSum(
+                [
+                    "hasManyWithdraw" => function($_query){
+                        $_query->where(["state" => ["NEQ", -1]]);
+                    }
+                ], "amount"
+            )
+            ->field("password", true)
+            ->where($where)
+            ->paginate($pageSize, false, ['query'=>request()->param()]);
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages");
+    }
+
     public function pageTeamLists($role = "settle", $filter = [], $pageSize = null)
     {
         $where = Admin::manager();
@@ -385,7 +531,7 @@ class AdminLogic
         }
         // 登录名
         if(isset($filter['username']) && !empty($filter['username'])){
-            $where["username"] = ["LIKE", "%{$filter['username']}%"];
+            $where["username"] = trim($filter['username']);
         }
         // 昵称
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
@@ -406,7 +552,7 @@ class AdminLogic
         // 上级结算中心
         if(isset($filter['settle']) && !empty($filter['settle'])){
             $_where = [
-                "username" => ["LIKE", "%{$filter['settle']}%"],
+                "username" => trim($filter['settle']),
                 "role" => Admin::SETTLE_ROLE_ID
             ];
             $parents = Admin::where($_where)->column("admin_id");
@@ -431,15 +577,7 @@ class AdminLogic
             $where["pid"] = ["IN", $parents];
         }
         $pageSize = $pageSize ? : config("page_size");
-        $lists = Admin::with(
-                    [
-                        "hasOneParent" => function($query){
-                            $query->field("password", true);
-                        },
-                        "hasManyWithdraw" => function($_query){
-                            $_query->field(["admin_id", "SUM(`amount`)" => "total_withdraw"])->where(["state" => ["NEQ", -1]]);
-                        }
-                    ])
+        $lists = Admin::with(["hasOneParent"])
                     ->withSum(
                         [
                             "hasManyWithdraw" => function($_query){

@@ -33,18 +33,23 @@ class Team extends Base
 
     public function member()
     {
-        $_res = $this->_logic->pageTeamLists("member", input(""));
+        //$_res = $this->_logic->pageTeamLists("member", input(""));
+        $_res = $this->_logic->pageMemberLists(input(""));
+        $tableCols = $this->_logic->tableColumnShow();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
     }
 
     public function ring()
     {
-        $_res = $this->_logic->pageTeamLists("ring", input(""));
+        $_res = $this->_logic->pageRingLists(input(""));
+        $tableCols = $this->_logic->tableColumnShow();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
     }

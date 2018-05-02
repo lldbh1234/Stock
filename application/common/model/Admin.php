@@ -136,6 +136,11 @@ class Admin extends BaseModel
         return $this->hasOne("\\app\\common\\model\\Admin", "admin_id", "pid");
     }
 
+    public function hasManyChildren()
+    {
+        return $this->hasMany("\\app\\common\\model\\Admin", "pid", "admin_id");
+    }
+
     public function hasOneWechat()
     {
         return $this->hasOne("\\app\\common\\model\\AdminWechat", "admin_id", "admin_id");
