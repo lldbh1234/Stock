@@ -14,7 +14,8 @@
 <div class="page-container">
     <form action="" method="get">
     <div class="text-l">
-        <input type="text" class="input-text radius" style="width:170px;" placeholder="代理商" name="nickname" value="{$search.nickname|default=''}">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="代理商ID" name="admin_id" value="{$search.admin_id|default=''}">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="代理商登录名" name="username" value="{$search.username|default=''}">
         <span class="select-box radius" style="width:110px;height: 31px;">
             <select class="select radius" name="role" size="1">
                 <option value="">代理商类型</option>
@@ -45,7 +46,9 @@
     <table class="table table-border table-bordered table-hover table-bg">
         <thead>
         <tr class="text-c">
-            <th>代理商</th>
+            <th>代理商ID</th>
+            <th>代理商登录名</th>
+            <th>代理商名称</th>
             <th>代理商类型</th>
             <th>返点金额</th>
             <th>返点类型</th>
@@ -56,7 +59,9 @@
         <tbody>
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
-            <td>{$item.belongs_to_admin.nickname|default=$item.belongs_to_admin.username}</td>
+            <td>{$item.admin_id}</td>
+            <td>{$item.belongs_to_admin.username}</td>
+            <td>{$item.belongs_to_admin.nickname}</td>
             <td>{$item.role_text}</td>
             <td>{$item.money|number_format=2}</td>
             <td>{$item.type_text}</td>
@@ -66,6 +71,8 @@
         {/volist}
         {gt name="datas.total" value="0"}
         <tr class="text-c admin-lists">
+            <td>-</td>
+            <td>-</td>
             <td>-</td>
             <td>-</td>
             <td><strong>{$pageMoney|number_format=2}</strong></td>

@@ -86,7 +86,7 @@ class UserLogic
     public function userIncFamily($userId)
     {
         $where = Admin::manager();
-        $user = User::with(["hasOneParent", "hasOneAdmin" => ["hasOneParent" => ["hasOneParent" => ["hasOneParent"]]]])->where($where)->find($userId);
+        $user = User::with(["hasOneParent", "hasOneCard", "hasOneAdmin" => ["hasOneParent" => ["hasOneParent" => ["hasOneParent"]]]])->where($where)->find($userId);
         return $user ? $user->toArray() : [];
     }
 

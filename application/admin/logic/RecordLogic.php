@@ -275,10 +275,14 @@ class RecordLogic
             $where['stock_admin_record.admin_id'] = $where['admin_id'];
             unset($where['admin_id']);
         }
-        // 代理商
-        if(isset($filter['nickname']) && !empty($filter['nickname'])){
-            $_nickname = trim($filter['nickname']);
-            $hasWhere["nickname|username"] = ["LIKE", "%{$_nickname}%"];
+        // 代理商登录名
+        if(isset($filter['username']) && !empty($filter['username'])){
+            $_username = trim($filter['username']);
+            $hasWhere["username"] = ["LIKE", "%{$_username}%"];
+        }
+        // 代理商ID
+        if(isset($filter['admin_id']) && !empty($filter['admin_id'])){
+            $hasWhere["admin_id"] = trim($filter['admin_id']);
         }
         // 代理商类型
         if(isset($filter['role']) && is_numeric($filter['role'])){

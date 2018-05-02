@@ -42,6 +42,14 @@
                 <td>{$user.account|number_format=2}</td>
             </tr>
             <tr>
+                <td>银行卡号</td>
+                <td>{$user.has_one_card.bank_card|default='-'}</td>
+            </tr>
+            <tr>
+                <td>持卡人姓名</td>
+                <td>{$user.has_one_card.bank_user|default='-'}</td>
+            </tr>
+            <tr>
                 <td>经纪人</td>
                 <td>{$user.has_one_parent.nickname|default='-'}</td>
             </tr>
