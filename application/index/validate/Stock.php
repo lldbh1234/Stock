@@ -53,27 +53,32 @@ class Stock extends Validate
 
     protected function checkCode($value, $rule, $data)
     {
-        $stock = (new StockLogic())->stockByCode($value);
-        if($stock){
-            $quotation = (new StockLogic())->quotationBySina($value);
-            if(isset($quotation[$value]) && !empty($quotation[$value])){
-                $changeRate = $quotation[$value]["px_change_rate"];
-                $profitRate = cf('max_profit_rate', 9.5);
-                if($changeRate >= $profitRate){
-                    return "最大可购买涨幅为{$profitRate}的股票";
-                }else{
-                    if(strpos($quotation[$value]['prod_name'], "ST") !== false){
-                        $stRate = cf('max_st_rate', 4.5);
-                        if($changeRate >= $stRate){
-                            return "ST股票最大可购买涨幅为{$stRate}";
+        $suspension = explode(",", cf("suspension", ""));
+        if(in_array($value, $suspension)){
+            return "股票停牌，无法买入！";
+        }else{
+            $stock = (new StockLogic())->stockByCode($value);
+            if($stock){
+                $quotation = (new StockLogic())->quotationBySina($value);
+                if(isset($quotation[$value]) && !empty($quotation[$value])){
+                    $changeRate = $quotation[$value]["px_change_rate"];
+                    $profitRate = cf('max_profit_rate', 9.5);
+                    if($changeRate >= $profitRate){
+                        return "最大可购买涨幅为{$profitRate}的股票";
+                    }else{
+                        if(strpos($quotation[$value]['prod_name'], "ST") !== false){
+                            $stRate = cf('max_st_rate', 4.5);
+                            if($changeRate >= $stRate){
+                                return "ST股票最大可购买涨幅为{$stRate}";
+                            }
                         }
+                        return true;
                     }
-                    return true;
                 }
+                return true;
             }
-            return true;
+            return false;
         }
-        return false;
     }
 
     protected function checkTradeTime($value, $rule, $data)

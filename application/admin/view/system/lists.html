@@ -89,6 +89,13 @@
                     </div>
                 </div>
                 <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">停牌股票：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <textarea name="suspension" cols="" rows="" class="textarea" placeholder="停牌股票列表，多个用英文逗号分割" >{$lists.suspension.val | default=''}</textarea>
+                        <p class="textarea-numberbar" style="color: #b3abab;">例：600000，多个用英文逗号分割</p>
+                    </div>
+                </div>
+                <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">经纪人默认盈利返点率：</label>
                     <div class="formControls col-xs-2 col-sm-9">
                         <input type="text" id="manager_point" name="manager_point" placeholder="经纪人默认盈利返点率" value="{$lists.manager_point.val | default=''}" class="input-text">
