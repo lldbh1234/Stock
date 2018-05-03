@@ -33,7 +33,7 @@ class Test extends Controller
         if($stocks){
             $codes = array_column($stocks, "code");
             dump($codes);
-            $lists = (new StockLogic())->simpleData($codes);
+            $lists = (new \app\index\logic\StockLogic())->simpleData($codes);
             foreach ($stocks as $key => &$item){
                 if(isset($lists[$item['code']])){
                     $item['quotation'] = $lists[$item['code']];
