@@ -30,18 +30,20 @@ class StockLogic
     public function simpleData($codes)
     {
         $codes = $this->_fullCodeByCodes($codes);
-        $result = $this->_sinaQuotation->real($codes);
         $response = [];
-        foreach ($result as $key => $value){
-            $response[$key] = [
-                "code"      => $value['code'],
-                "data_timestamp" => $value['data_timestamp'],
-                "shares_per_hand" => 100,
-                "prod_name" => $value['prod_name'],
-                "last_px"   => $value['last_px'],
-                "px_change" => $value['px_change'],
-                "px_change_rate" => $value['px_change_rate']
-            ];
+        if($codes){
+            $result = $this->_sinaQuotation->real($codes);
+            foreach ($result as $key => $value){
+                $response[$key] = [
+                    "code"      => $value['code'],
+                    "data_timestamp" => $value['data_timestamp'],
+                    "shares_per_hand" => 100,
+                    "prod_name" => $value['prod_name'],
+                    "last_px"   => $value['last_px'],
+                    "px_change" => $value['px_change'],
+                    "px_change_rate" => $value['px_change_rate']
+                ];
+            }
         }
         return $response;
         /*$codes = $this->_handleCodes($codes);
