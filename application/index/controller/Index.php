@@ -30,9 +30,13 @@ class Index extends Base
         if($stocks){
             $codes = array_column($stocks, "code");
             $lists = (new StockLogic())->simpleData($codes);
-            array_filter($stocks, function(&$item) use ($lists){
-                $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
-            });
+            foreach ($stocks as $key => &$item){
+                if(isset($lists[$item['code']])){
+                    $item['quotation'] = $lists[$item['code']];
+                }else{
+                    unset($stocks[$key]);
+                }
+            }
         }
 
         // 最牛达人
