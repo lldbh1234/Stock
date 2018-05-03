@@ -33,14 +33,14 @@ class Test extends Controller
         if($stocks){
             $codes = array_column($stocks, "code");
             dump($codes);
-            $lists = (new \app\index\logic\StockLogic())->simpleData($codes);
-            array_filter($stocks, function(&$item) use ($lists){
+            $lists = (new StockLogic())->simpleData($codes);
+            foreach ($stocks as $key => &$item){
                 if(isset($lists[$item['code']])){
                     $item['quotation'] = $lists[$item['code']];
                 }else{
                     unset($item);
                 }
-            });
+            }
         }
         dump($stocks);
         exit;
