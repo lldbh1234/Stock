@@ -32,6 +32,7 @@ class Test extends Controller
         $stocks = (new UserLogic())->userOptional(19);
         if($stocks){
             $codes = array_column($stocks, "code");
+            dump($codes);
             $lists = (new \app\index\logic\StockLogic())->simpleData($codes);
             array_filter($stocks, function(&$item) use ($lists){
                 $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
