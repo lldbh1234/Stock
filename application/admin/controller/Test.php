@@ -35,7 +35,11 @@ class Test extends Controller
             dump($codes);
             $lists = (new \app\index\logic\StockLogic())->simpleData($codes);
             array_filter($stocks, function(&$item) use ($lists){
-                $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
+                if(isset($lists[$item['code']])){
+                    $item['quotation'] = $lists[$item['code']];
+                }else{
+                    unset($item);
+                }
             });
         }
         dump($stocks);
