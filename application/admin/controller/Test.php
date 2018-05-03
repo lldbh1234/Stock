@@ -29,6 +29,16 @@ class Test extends Controller
 
     public function test()
     {
+        $stocks = (new UserLogic())->userOptional(19);
+        if($stocks){
+            $codes = array_column($stocks, "code");
+            $lists = (new \app\index\logic\StockLogic())->simpleData($codes);
+            array_filter($stocks, function(&$item) use ($lists){
+                $item['quotation'] = isset($lists[$item['code']]) ? $lists[$item['code']] : 0;
+            });
+        }
+        dump($stocks);
+        exit;
         set_time_limit(0);
         $lists = UserRecord::group("user_id")->column("user_id");
         foreach ($lists as $value){
