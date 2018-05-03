@@ -62,7 +62,6 @@ class Test extends Controller
                 ];
                 UserRecord::update($data);
             }
-            break;
         }
         exit;
         $lists = UserWithdraw::select();
