@@ -20,23 +20,36 @@
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
 		</div>
-		<!--<div class="text-l mt-5">
-			<input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
-			<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
-			<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
-		</div>-->
 		<div class="text-l mt-5">
+			{eq name="tableCols.settle" value="1"}
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="结算中心" name="settle" value="{$search.settle|default=''}">
+			{/eq}
+			{eq name="tableCols.operate" value="1"}
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="运营中心" name="operate" value="{$search.operate|default=''}">
+			{/eq}
+			{eq name="tableCols.member" value="1"}
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+			{/eq}
+			{eq name="tableCols.ring" value="1"}
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+			{/eq}
+			<!--<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">-->
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-			<!--<span class="select-box radius" style="width:100px;height: 31px;">
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+		</div>
+		<!--<div class="text-l mt-5">
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+			<span class="select-box radius" style="width:100px;height: 31px;">
 				<select class="select radius" name="is_hedging" size="1">
 					<option value="">是否对冲</option>
 					<option value="1" {if condition="isset($search.is_hedging) AND $search.is_hedging heq '1'"}selected{/if}>是</option>
 					<option value="0" {if condition="isset($search.is_hedging) AND $search.is_hedging heq '0'"}selected{/if}>否</option>
 				</select>
-			</span>-->
+			</span>
 			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
-		</div>
+		</div>-->
 	</form>
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">

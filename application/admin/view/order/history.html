@@ -19,16 +19,24 @@
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
-		</div>
-		<!--<div class="text-l mt-5">
-			<input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
-			<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
-			<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
-		</div>-->
-		<div class="text-l mt-5">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-			<input type="text" class="input-text radius ml-10" style="width:170px;" placeholder="卖出开始时间" name="sell_begin" value="{$search.sell_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+		</div>
+		<div class="text-l mt-5">
+			{eq name="tableCols.settle" value="1"}
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="结算中心" name="settle" value="{$search.settle|default=''}">
+			{/eq}
+			{eq name="tableCols.operate" value="1"}
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="运营中心" name="operate" value="{$search.operate|default=''}">
+			{/eq}
+			{eq name="tableCols.member" value="1"}
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+			{/eq}
+			{eq name="tableCols.ring" value="1"}
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+			{/eq}
+			<!--<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">-->
+			<input type="text" class="input-text radius" style="width:170px;" placeholder="卖出开始时间" name="sell_begin" value="{$search.sell_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="卖出结束时间" name="sell_end" value="{$search.sell_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
 			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
 		</div>

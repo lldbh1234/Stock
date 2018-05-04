@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+use app\admin\logic\AdminLogic;
 use think\Request;
 use app\admin\logic\OrderLogic;
 use app\admin\logic\StockLogic;
@@ -52,11 +53,13 @@ class Order extends Base
     public function history()
     {
         $_res = $this->_logic->pageHistoryOrders(input(""));
+        $tableCols = (new AdminLogic())->tableColumnShow();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("totalProfit", $_res['totalProfit']);
         $this->assign("totalJiancang", $_res['totalJiancang']);
         $this->assign("totalDefer", $_res['totalDefer']);
+        $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
     }
@@ -92,6 +95,7 @@ class Order extends Base
     public function position()
     {
         $_res = $this->_logic->pagePositionOrders(input(""));
+        $tableCols = (new AdminLogic())->tableColumnShow();
         if($_res['lists']['data']){
             $codes = array_column($_res['lists']['data'], "code");
             $quotation = (new StockLogic())->stockQuotationBySina($codes);
@@ -111,6 +115,7 @@ class Order extends Base
         $this->assign("pageDeposit", $pageDeposit);
         $this->assign("pageJiancang", $pageJiancang);
         $this->assign("pageDefer", $pageDefer);
+        $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
     }

@@ -95,6 +95,33 @@ class Admin extends BaseModel
         return $userIds;
     }
 
+    // 下级所有代理商ID
+    public static function childrenAdminIds($adminId)
+    {
+        $adminIds = [];
+        $admin = self::find($adminId);
+        if($admin){
+            $proxyRoleIds = [
+                self::SETTLE_ROLE_ID,
+                self::OPERATE_ROLE_ID,
+                self::MEMBER_ROLE_ID,
+                self::RING_ROLE_ID
+            ];
+            if(in_array($admin->role, $proxyRoleIds)){
+                $idArr = $adminIds = [$adminId];
+                do {
+                    $idArr = self::where(["pid" => ["IN", $idArr]])->column("admin_id");
+                    if (empty($idArr)) {
+                        break;
+                    } else {
+                        $adminIds = array_merge($adminIds, $idArr);
+                    }
+                } while (true);
+            }
+        }
+        return $adminIds;
+    }
+
     public static function tableColumnShow()
     {
         $_self = manager();
