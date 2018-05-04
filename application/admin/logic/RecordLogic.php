@@ -36,34 +36,55 @@ class RecordLogic
         if(isset($filter['mobile']) && !empty($filter['mobile'])){
             $hasWhere["mobile"] = trim($filter['mobile']);
         }
-        // 微圈
-        if(isset($filter['ring']) && !empty($filter['ring'])){
-            $_ring = trim($filter['ring']);
-            $_where = ["username" => ["LIKE", "%{$_ring}%"]];
-            $adminIds = Admin::where($_where)->column("admin_id");
-            $hasWhere["admin_id"] = ["IN", $adminIds];
+        // 结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = [
+                "username" => trim($filter['settle']),
+                "role" => Admin::SETTLE_ROLE_ID
+            ];
+            $settleId = Admin::where($_where)->value("admin_id");
+            $ringIds = Admin::childrenAdminIds($settleId);
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = [
+                "username" => trim($filter['operate']),
+                "role" => Admin::OPERATE_ROLE_ID
+            ];
+            $operateId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($operateId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
         }
         // 微会员
         if(isset($filter['member']) && !empty($filter['member'])){
-            $_member = trim($filter['member']);
-            $_where = ["username" => ["LIKE", "%{$_member}%"]];
-            $memberAdminIds = Admin::where($_where)->column("admin_id") ? : [-1];
-            $ringAdminIds = Admin::where(["pid" => ["IN", $memberAdminIds]])->column("admin_id") ? : [-1];
-            $adminIds = array_unique(array_merge($memberAdminIds, $ringAdminIds));
-            $adminIds = $adminIds ? : [-1];
-            $userIds = User::where(["admin_id" => ["IN", $adminIds]])->column("user_id");
-            if($myUserIds){
-                $userIds = array_intersect($userIds, $myUserIds);
-            }
-            $where["stock_user_recharge.user_id"] = ["IN", $userIds];
+            $_where = [
+                "username" => trim($filter['member']),
+                "role" => Admin::MEMBER_ROLE_ID
+            ];
+            $memberId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($memberId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微圈
+        if(isset($filter['ring']) && !empty($filter['ring'])){
+            $_where = [
+                "username" => trim($filter['ring']),
+                "role" => Admin::RING_ROLE_ID
+            ];
+            $tempRingIds = Admin::where($_where)->column("admin_id");
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
         }
         // 经纪人
-        if(isset($filter['manager']) && !empty($filter['manager'])){
+        /*if(isset($filter['manager']) && !empty($filter['manager'])){
             $_manager = trim($filter['manager']);
             $_where = ["username" => ["LIKE", "%{$_manager}%"]];
             $managerUserIds = User::where($_where)->column("user_id") ? : [-1];
             $hasWhere["parent_id"] = ["IN", $managerUserIds];
-        }
+        }*/
         // 充值时间
         if(isset($filter['begin']) || isset($filter['end'])){
             if(!empty($filter['begin']) && !empty($filter['end'])){
@@ -462,6 +483,48 @@ class RecordLogic
         // 手机号
         if(isset($filter['mobile']) && !empty($filter['mobile'])){
             $hasWhere["mobile"] = trim($filter['mobile']);
+        }
+        // 结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = [
+                "username" => trim($filter['settle']),
+                "role" => Admin::SETTLE_ROLE_ID
+            ];
+            $settleId = Admin::where($_where)->value("admin_id");
+            $ringIds = Admin::childrenAdminIds($settleId);
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = [
+                "username" => trim($filter['operate']),
+                "role" => Admin::OPERATE_ROLE_ID
+            ];
+            $operateId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($operateId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微会员
+        if(isset($filter['member']) && !empty($filter['member'])){
+            $_where = [
+                "username" => trim($filter['member']),
+                "role" => Admin::MEMBER_ROLE_ID
+            ];
+            $memberId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($memberId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微圈
+        if(isset($filter['ring']) && !empty($filter['ring'])){
+            $_where = [
+                "username" => trim($filter['ring']),
+                "role" => Admin::RING_ROLE_ID
+            ];
+            $tempRingIds = Admin::where($_where)->column("admin_id");
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
         }
         // 策略ID
         if(isset($filter['orderId']) && !empty($filter['orderId'])){

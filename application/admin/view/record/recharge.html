@@ -13,17 +13,28 @@
 </nav>
 <div class="page-container">
     <form action="" method="get">
-    <div class="text-c">
-        <input type="text" class="input-text" style="width:170px;" placeholder="充值订单号" name="trade_no" value="{$search.trade_no|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="充值人" name="nickname" value="{$search.nickname|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
-        <input type="text" class="input-text" style="width:170px;" placeholder="结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-        <button type="submit" class="btn btn-success" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
-        <button type="button" class="btn btn-success" id="today-btn">今日流水</button>
+    <div class="text-l">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="充值人" name="nickname" value="{$search.nickname|default=''}">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+        {eq name="tableCols.settle" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="结算中心" name="settle" value="{$search.settle|default=''}">
+        {/eq}
+        {eq name="tableCols.operate" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="运营中心" name="operate" value="{$search.operate|default=''}">
+        {/eq}
+        {eq name="tableCols.member" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+        {/eq}
+        {eq name="tableCols.ring" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+        {/eq}
+    </div>
+    <div class="text-l mt-5">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="充值订单号" name="trade_no" value="{$search.trade_no|default=''}">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+        <button type="submit" class="btn btn-success radius" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+        <button type="button" class="btn btn-success radius" id="today-btn">今日流水</button>
     </div>
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
