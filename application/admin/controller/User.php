@@ -286,15 +286,125 @@ class User extends Base
         return view();
     }
 
-    public function withdrawDetail($id = null)
+    public function withdrawDetail($id = null, $type = 1)
     {
         $withdraw = (new UserWithdrawLogic())->getWithdrawById($id);
-        if($withdraw){
-            $state = [0=>"待审核", 1=>"审核通过",-1=>"审核拒绝",2=>"已到账"];
-            $withdraw['remark'] = json_decode($withdraw['remark'], true);
-            $withdraw['state_text'] = $state[$withdraw['state']];
-            $this->assign("withdraw", $withdraw);
-            return view();
+        if($withdraw) {
+            switch ($type) {
+                case '1':
+                    //银行卡信息
+                    $state = [0=>"待审核", 1=>"审核通过",-1=>"审核拒绝",2=>"已到账"];
+                    $withdraw['remark'] = json_decode($withdraw['remark'], true);
+                    $withdraw['state_text'] = $state[$withdraw['state']];
+                    $this->assign("withdraw", $withdraw);
+                    return view();
+                    break;
+                case '2':
+                    // 代理信息
+                    $user = $this->userLogic->userIncFamily($withdraw['user_id']);
+                    if($user){
+                        $this->assign("user", $user);
+                        return view("withdrawDetail2");
+                    }else{
+                        return "非法操作！";
+                    }
+                    break;
+                case '3':
+                    // 当前持仓
+                    $_res = $this->userLogic->pageUserOrderByUserId($withdraw['user_id'], 3, input(""), 10);
+                    if($_res){
+                        if($_res['lists']['data']){
+                            $codes = array_column($_res['lists']['data'], "code");
+                            $quotation = (new StockLogic())->stockQuotationBySina($codes);
+                            array_filter($_res['lists']['data'], function(&$item) use ($quotation){
+                                $item['last_px'] = isset($quotation[$item['code']]['last_px']) ? number_format($quotation[$item['code']]['last_px'], 2) : '-';
+                                $item['pl'] = isset($quotation[$item['code']]['last_px']) ? number_format(($item['last_px'] - $item['price']) * $item['hand'], 2) : "-";
+                            });
+                        }
+                        $this->assign("datas", $_res['lists']);
+                        $this->assign("pages", $_res['pages']);
+                        $this->assign("totalProfit", $_res['totalProfit']);
+                        $this->assign("totalDeposit", $_res['totalDeposit']);
+                        $this->assign("totalJiancang", $_res['totalJiancang']);
+                        $this->assign("totalDefer", $_res['totalDefer']);
+                        $this->assign("search", input(""));
+                        return view("withdrawDetail3");
+                    }else{
+                        return "非法操作！";
+                    }
+                    break;
+                case '4':
+                    // 历史交易
+                    $_res = $this->userLogic->pageUserOrderByUserId($withdraw['user_id'], 2, input(""), 10);
+                    if($_res){
+                        $pageProfit = array_sum(collection($_res['lists']['data'])->column("profit"));
+                        $pageDeposit = array_sum(collection($_res['lists']['data'])->column("deposit"));
+                        $pageJiancang = array_sum(collection($_res['lists']['data'])->column("jiancang_fee"));
+                        $this->assign("datas", $_res['lists']);
+                        $this->assign("pages", $_res['pages']);
+                        $this->assign("pageProfit", $pageProfit);
+                        $this->assign("pageDeposit", $pageDeposit);
+                        $this->assign("pageJiancang", $pageJiancang);
+                        $this->assign("totalProfit", $_res['totalProfit']);
+                        $this->assign("totalDeposit", $_res['totalDeposit']);
+                        $this->assign("totalJiancang", $_res['totalJiancang']);
+                        $this->assign("totalDefer", $_res['totalDefer']);
+                        $this->assign("search", input(""));
+                        return view("withdrawDetail4");
+                    }else{
+                        return "非法操作！";
+                    }
+                    break;
+                case '5':
+                    // 入金记录
+                    $_res = $this->userLogic->pageUserRechargeByUserId($withdraw['user_id'], input(""), 10);
+                    if($_res){
+                        $pageAmount = array_sum(collection($_res['lists']['data'])->column("amount"));
+                        $type = [0 => "支付宝", 1 => "微信", 2 => "连连支付"];
+                        array_filter($_res['lists']['data'], function(&$_item) use ($type){
+                            $_item['type_text'] = $type[$_item['type']];
+                        });
+                        $this->assign("datas", $_res['lists']);
+                        $this->assign("pages", $_res['pages']);
+                        $this->assign("totalAmount", $_res['totalAmount']);
+                        //$this->assign("totalActual", $_res['totalActual']);
+                        //$this->assign("totalPoundage", $_res['totalPoundage']);
+                        $this->assign("pageAmount", $pageAmount);
+                        $this->assign("search", input(""));
+                        return view("withdrawDetail5");
+                    }else{
+                        return "非法操作！";
+                    }
+                    break;
+                case '6':
+                    // 出金记录
+                    $_res = $this->userLogic->pageUserWithdrawByUserId($withdraw['user_id'], input(""), 10);
+                    if($_res){
+                        $pageAmount = array_sum(collection($_res['lists']['data'])->column("amount"));
+                        $pageActual = array_sum(collection($_res['lists']['data'])->column("actual"));
+                        $pagePoundage = array_sum(collection($_res['lists']['data'])->column("poundage"));
+                        $state = [0 => '待审核', '1' => '代付中', 2=> '已到账', -1 => '已拒绝'];
+                        array_filter($_res['lists']['data'], function(&$_item) use ($state){
+                            $_item['state_text'] = $state[$_item['state']];
+                            $_item['remark'] = json_decode($_item['remark'], true);
+                        });
+                        $this->assign("datas", $_res['lists']);
+                        $this->assign("pages", $_res['pages']);
+                        $this->assign("pageAmount", $pageAmount);
+                        $this->assign("pageActual", $pageActual);
+                        $this->assign("pagePoundage", $pagePoundage);
+                        $this->assign("totalAmount", $_res['totalAmount']);
+                        $this->assign("totalActual", $_res['totalActual']);
+                        $this->assign("totalPoundage", $_res['totalPoundage']);
+                        $this->assign("search", input(""));
+                        return view("withdrawDetail6");
+                    }else{
+                        return "非法操作！";
+                    }
+                    break;
+                default:
+                    return '非法操作！';
+            }
         }else{
             return "非法操作！";
         }
