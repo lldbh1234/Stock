@@ -247,30 +247,40 @@ class UserLogic
     {
         return User::update($where);
     }
-    public function setInc($data)
-    {
-        if(isset($data['user_id']) && isset($data['number']))
-        {
-            // 启动事务
-            Db::startTrans();
-            try{
-                User::where(['user_id' => $data['user_id']])->setInc('account', $data['number']);
-                UserGive::create([
-                    'user_id'   => $data['user_id'],
-                    'amount'    => $data['number'],
-                    'create_at' => time(),
-                    'create_by' => isLogin()
-                ]);
-                // 提交事务
-                Db::commit();
-                return true;
-            } catch (\Exception $e) {
-                // 回滚事务
-                Db::rollback();
-                return false;
-            }
-        }
-        return false;
-    }
 
+    public function giveMoney($userId, $money, $remark = null)
+    {
+        // 启动事务
+        Db::startTrans();
+        try{
+            $user = User::find($userId);
+            // 余额增加
+            $user->setInc('account', $money);
+            // 赠金日志记录
+            $_gData = [
+                "user_id"   => $userId,
+                "amount"    => $money,
+                "remark"    => $remark,
+                "create_at" => time(),
+                "create_by" => isLogin()
+            ];
+            UserGive::create($_gData);
+            // 用户资金明细
+            $rData = [
+                "type" => 11,
+                "amount" => $money,
+                "account" => $user->account,
+                "direction" => 1
+            ];
+            $user->hasManyRecord()->save($rData);
+            // 提交事务
+            Db::commit();
+            return true;
+        } catch (\Exception $e) {
+            // 回滚事务
+            dump($e->getMessage());
+            Db::rollback();
+            return false;
+        }
+    }
 }

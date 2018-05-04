@@ -11,7 +11,8 @@ class User extends Validate
         'password'	=> 'require|length:6,16',
         'state'     => 'require|in:0,1',
         'parent_id' => 'is_manager',
-        'number'    => 'require|float|gt:0',
+        'money'    => 'require|float|gt:0',
+        'remark'    => 'max:255'
     ];
 
     protected $message = [
@@ -23,9 +24,10 @@ class User extends Validate
         'state.require'     => '系统提示：非法操作！',
         'state.in'          => '系统提示：非法操作！',
         'parent_id.is_manager' => '系统提示：当前填写邀请人不是经纪人',
-        'number.require'    => '请输入赠送金额！',
-        'number.float'      => '赠送金额为数字！',
-        'number.gt'         => '赠送金额必须大于0！',
+        'money.require'     => '请输入赠送金额！',
+        'money.float'       => '赠送金额为数字！',
+        'money.gt'          => '赠送金额必须大于0！',
+        'remark.max'        => '备注最大255个字符！',
     ];
 
     protected $scene = [
@@ -41,7 +43,8 @@ class User extends Validate
         ],
         'give' => [
             'user_id',
-            'number',
+            'money',
+            'remark'
         ],
     ];
     public function is_manager($value)

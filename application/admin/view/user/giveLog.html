@@ -34,7 +34,8 @@
             <th>昵称</th>
             <th>赠金金额</th>
             <th>赠金时间</th>
-            <th>赠金人ID</th>
+            <th>赠金人</th>
+            <th>备注</th>
         </tr>
         </thead>
         <tbody>
@@ -50,10 +51,10 @@
             <td>{$item.user_id}</td>
             <td>{$item.has_one_user.username}</td>
             <td>{$item.has_one_user.nickname}</td>
-            <td>{$item.amount|default='0.00'}</td>
+            <td>{$item.amount|number_format=2}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
-            <td>{$item.create_by}</td>
-
+            <td>{$item.has_one_create_by.username|default='-'}</td>
+            <td>{$item.remark|default=''}</td>
         </tr>
         {/volist}
         </tbody>
@@ -68,30 +69,6 @@
 
 {block name="script"}
 <script>
-
-    function admin_give(_obj, _id)
-    {
-        layer.prompt({
-            title: '会员赠金',
-            formType: 0,
-        }, function(_number, _prompt){
-            layer.close(_prompt);
-            var _oData = {user_id : _id, number : _number},
-                _url = '{:url("admin/User/giveAccount")}',
-                _loading = parent.layer.load(1),
-                _func = function (_resp) {
-                    parent.layer.close(_loading);
-                    if (!_resp.state) {
-                        layer.msg(_resp.info);
-                    } else {
-                        layer.msg('修改成功！', {time: 500}, function(){
-
-                        });
-                    }
-                };
-            _ajaxPost(_url, _oData, _func);
-        });
-    }
 
 </script>
 {/block}

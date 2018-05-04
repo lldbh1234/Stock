@@ -16,4 +16,8 @@ class UserGive extends BaseModel
         return $this->hasOne('\app\\common\\model\\User', 'user_id', 'user_id');
     }
 
+    public function hasOneCreateBy()
+    {
+        return $this->hasOne('\app\\common\\model\\Admin', 'admin_id', 'create_by');
+    }
 }

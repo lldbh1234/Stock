@@ -233,41 +233,45 @@ class User extends Base
     public function giveLists()
     {
         $_res = $this->userLogic->pageUserLists(input(''));
-
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("search", input(""));
         return view();
-
     }
-    public function giveAccount()
+
+    public function giveAccount($user_id = null)
     {
-        if(request()->isPost())
-        {
+        if(request()->isPost()){
             $validate = \think\Loader::validate('User');
             if(!$validate->scene('give')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
-
-                if($this->userLogic->setInc(input("post."))){
+                $userId = input("post.user_id/d");
+                $money = input("post.money/f");
+                $remark = input("post.remark/s");
+                if($this->userLogic->giveMoney($userId, $money, $remark)){
                     return $this->ok();
                 } else {
                     return $this->fail("操作失败！");
                 }
             }
-        };
-
+        }
+        $user = $this->userLogic->userById($user_id);
+        if($user){
+            $this->assign("user", $user);
+            return view();
+        }else{
+            return "非法操作！";
+        }
     }
 
     public function giveLog()
     {
         $_res = (new UserGiveLogic())->pageUserGiveLists(input(''));
-
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("search", input(""));
         return view();
-
     }
 
     public function withdrawLists()
