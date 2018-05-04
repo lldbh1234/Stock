@@ -6,6 +6,25 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
 	<link href="__RESOURCE__/css/mui.min.css" rel="stylesheet">
 	<link href="__RESOURCE__/css/person.css" rel="stylesheet">
+	<style type="text/css">
+		.scaner_btn{
+			color: #e4393c;
+		}
+		.erwema_mask{
+			width: 100%;
+			height: 100vh;
+			position: fixed;
+			left: 0;
+			top: 0;
+			z-index: 999999;
+			background: rgba(0,0,0,.5);
+			padding: 30% 15%;
+			display: none;
+		}
+		.erwema_mask img{
+			width: 100%;
+		}
+	</style>
 </head>
 <body>
 	<header class="has_back_top ">
@@ -45,12 +64,31 @@
 				提交注册表示您已经阅读并同意<span>用户协议</span>相关内容
 			</div>
 		</div>
+
+		<p style="text-align: center;">
+			<span class="scaner_btn">扫码关注公众号</span>
+		</p>
 	</form>
+	<div class="erwema_mask">
+		<img src="__RESOURCE__/img/1483943087.jpg">
+		<p style="background: #fff;text-align: center;color: #666;height: 50px;line-height: 50px;">app中请截图保存，用微信扫码关注公众号</p>
+	</div>
 
 	<script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
 	<script src="__RESOURCE__/js/mui.min.js"></script>
 	<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 	<script type="text/javascript">
+		$(".scaner_btn").click(function(){
+			$(".erwema_mask").show();
+		});
+		$(".erwema_mask img").click(function(e){
+			e.stopPropagation();
+		});
+		$(".erwema_mask").click(function(){
+			$(this).hide();
+		});
+
+
         $(".get_btn").click(function(){
             var _url = "{:url('index/Home/captcha')}",
 				_mobile = $("input[name='mobile']").val(),
