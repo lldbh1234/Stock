@@ -349,16 +349,19 @@ class RecordLogic
             unset($where['admin_id']);
         }
         // 订单号
-        if(isset($filter['trade_no']) && is_numeric($filter['trade_no'])){
+        if(isset($filter['trade_no']) && !empty($filter['trade_no'])){
             $where["stock_admin_withdraw.out_sn"] = $filter['trade_no'];
         }
         // 代理商
-        if(isset($filter['proxy']) && is_numeric($filter['proxy'])){
-            $_proxy = trim($filter['proxy']);
-            $hasWhere["nickname|username"] = ["LIKE", "%{$_proxy}%"];
+        if(isset($filter['proxy']) && !empty($filter['proxy'])){
+            $hasWhere["username"] = trim($filter['proxy']);
+        }
+        // 代理商ID
+        if(isset($filter['admin_id']) && is_numeric($filter['admin_id'])){
+            $hasWhere["admin_id"] = trim($filter['admin_id']);
         }
         // 手机
-        if(isset($filter['mobile']) && is_numeric($filter['mobile'])){
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){
             $hasWhere["mobile"] = trim($filter['mobile']);
         }
         // 状态
