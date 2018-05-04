@@ -29,39 +29,25 @@ class Test extends Controller
 
     public function test()
     {
-        $stocks = (new UserLogic())->userOptional(19);
-        if($stocks){
-            $codes = array_column($stocks, "code");
-            dump($codes);
-            $lists = (new \app\index\logic\StockLogic())->simpleData($codes);
-            dump($lists);
-            foreach ($stocks as $key => &$item){
-                if(isset($lists[$item['code']])){
-                    $item['quotation'] = $lists[$item['code']];
-                }else{
-                    unset($stocks[$key]);
-                }
-            }
-        }
-        dump($stocks);
-        exit;
         set_time_limit(0);
         $lists = UserRecord::group("user_id")->column("user_id");
         foreach ($lists as $value){
-            $_lists = UserRecord::where(["user_id" => $value])->order(["create_at" => "ASC"])->select();
-            $_lists = collection($_lists)->toArray();
-            foreach ($_lists as $key => $vo){
-                if($key == 0){
-                    $account = $vo['direction'] == 1 ? $vo['amount'] : -$vo['amount'];
-                }else{
-                    $_vo= UserRecord::find($_lists[$key-1]['id']);
-                    $account = $vo['direction'] == 1 ? $_vo->account + $vo['amount'] : $_vo->account - $vo['amount'];
+            if(in_array($value, [297, 374])){
+                $_lists = UserRecord::where(["user_id" => $value])->order(["create_at" => "ASC"])->select();
+                $_lists = collection($_lists)->toArray();
+                foreach ($_lists as $key => $vo){
+                    if($key == 0){
+                        $account = $vo['direction'] == 1 ? $vo['amount'] : -$vo['amount'];
+                    }else{
+                        $_vo= UserRecord::find($_lists[$key-1]['id']);
+                        $account = $vo['direction'] == 1 ? $_vo->account + $vo['amount'] : $_vo->account - $vo['amount'];
+                    }
+                    $data = [
+                        "id" => $vo['id'],
+                        "account" => $account,
+                    ];
+                    UserRecord::update($data);
                 }
-                $data = [
-                    "id" => $vo['id'],
-                    "account" => $account,
-                ];
-                UserRecord::update($data);
             }
         }
         exit;
