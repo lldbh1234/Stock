@@ -3,57 +3,77 @@
 {block name="title"}出金详情{/block}
 
 {block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 记录管理
+    <span class="c-gray en">&gt;</span> 代理商出金记录
+    <span class="c-gray en">&gt;</span> 出金详情
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
 <article class="page-container">
-    <form class="form form-horizontal" id="form-admin-add">
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">到账金额：</label>
-            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.actual|number_format=2}</p></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">开户行：</label>
-            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.remark.bank|default=''}</p></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">持卡人：</label>
-            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.remark.name|default=''}</p></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">银行卡号：</label>
-            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.remark.card|default=''}</p></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">支行名称：</label>
-            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.remark.addr|default=''}</p></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">状态：</label>
-            <div class="formControls col-xs-7 col-sm-6">
-                {if condition="$withdraw.state.value EQ 0"}
-                <p class="c-warning" style="margin-top: 3px;">{$withdraw.state.text|default=''}</p>
-                {elseif condition="$withdraw.state.value EQ 1" /}
-                <p class="c-success" style="margin-top: 3px;">{$withdraw.state.text|default=''}</p>
-                {elseif condition="$withdraw.state.value EQ 2" /}
-                <p class="c-success" style="margin-top: 3px;">{$withdraw.state.text|default=''}</p>
-                {elseif condition="$withdraw.state.value EQ -1" /}
-                <p class="c-error" style="margin-top: 3px;">{$withdraw.state.text|default=''}</p>
-                {/if}
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">申请时间：</label>
-            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.create_at|date='Y-m-d H:i', ###}</p></div>
-        </div>
-        {if condition="$withdraw.update_by NEQ 0"}
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">审核人：</label>
-            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.has_one_update_by.username|default=''}</p></div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-5 col-sm-4">审核时间：</label>
-            <div class="formControls col-xs-7 col-sm-6"><p style="margin-top: 3px;">{$withdraw.update_at|date='Y-m-d H:i', ###}</p></div>
-        </div>
-        {/if}
-    </form>
+    <div class="tabBar cl">
+        <span class="current" data-href="{:url('admin/Record/proxyWithdrawDetail', ['id' => input('id')])}">银行卡信息</span>
+        <span data-href="{:url('admin/Record/proxyWithdrawDetail', ['id' => input('id'), 'type' => 2])}">代理信息</span>
+    </div>
+    <table class="table table-border table-bordered table-bg mt-20">
+        <thead>
+            <tr>
+                <th colspan="2" scope="col">银行卡信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th width="30%">到账金额</th>
+                <td><span id="lbServerName">{$withdraw.actual|number_format=2}</span></td>
+            </tr>
+            <tr>
+                <td>开户行</td>
+                <td>{$withdraw.remark.bank|default=''}</td>
+            </tr>
+            <tr>
+                <td>持卡人</td>
+                <td>{$withdraw.remark.name|default=''}</td>
+            </tr>
+            <tr>
+                <td>银行卡号</td>
+                <td>{$withdraw.remark.card|default=''}</td>
+            </tr>
+            <tr>
+                <td>支行名称</td>
+                <td>{$withdraw.remark.addr|default=''}</td>
+            </tr>
+            <tr>
+                <td>状态</td>
+                <td>
+                    {if condition="$withdraw.state.value EQ 0"}
+                    <span class="c-warning">{$withdraw.state.text|default=''}</span>
+                    {elseif condition="$withdraw.state.value EQ 1" /}
+                    <span class="c-success">{$withdraw.state.text|default=''}</span>
+                    {elseif condition="$withdraw.state.value EQ -1" /}
+                    <span class="c-error">{$withdraw.state.text|default=''}</span>
+                    {elseif condition="$withdraw.state.value EQ 2" /}
+                    <span class="c-success">{$withdraw.state.text|default=''}</span>
+                    {/if}
+                </td>
+            </tr>
+            <tr>
+                <td>申请时间</td>
+                <td>{$withdraw.create_at|date='Y-m-d H:i', ###}</td>
+            </tr>
+            {if condition="$withdraw.update_by NEQ 0"}
+            <tr>
+                <td>审核人</td>
+                <td>{$withdraw.has_one_update_by.username|default=''}</td>
+            </tr>
+            <tr>
+                <td>审核时间</td>
+                <td>{$withdraw.update_at|date='Y-m-d H:i', ###}</td>
+            </tr>
+            {/if}
+        </tbody>
+    </table>
 </article>
 {/block}
 
@@ -63,5 +83,17 @@
 
 {block name="script"}
 <script>
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $(".tabBar span").click(function(){
+            var _url = $(this).data("href");
+            window.location.href = _url;
+        });
+    });
 </script>
 {/block}

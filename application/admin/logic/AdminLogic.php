@@ -57,6 +57,32 @@ class AdminLogic
         return Admin::tableColumnShow();
     }
 
+    public function proxyFamilyShow($adminId)
+    {
+        return Admin::proxyFamilyShow($adminId);
+    }
+
+    public function proxyFamily($adminId)
+    {
+        $show = Admin::proxyFamilyShow($adminId);
+        if($show['ring'] == 1){
+            $with = ["hasOneRole"];
+        }elseif ($show['member'] == 1){
+            // 微圈
+            $with = ["hasOneRole", "hasOneParent" => ["hasOneParent" => ["hasOneParent"]]];
+        }elseif ($show['operate'] == 1){
+            // 微会员
+            $with = ["hasOneRole", "hasOneParent" => ["hasOneParent"]];
+        }elseif ($show['settle'] == 1){
+            // 运营中心
+            $with = ["hasOneRole", "hasOneParent"];
+        }else{
+            $with = ["hasOneRole"];
+        }
+        $proxy = Admin::with($with)->find($adminId);
+        return $proxy ? $proxy->toArray() : [];
+    }
+
     public function allRoles()
     {
         $lists = Role::select();

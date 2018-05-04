@@ -122,6 +122,27 @@ class Admin extends BaseModel
         return $adminIds;
     }
 
+    public static function proxyFamilyShow($adminId)
+    {
+        $admin = self::find($adminId);
+        $cols = ["settle" => 0, "operate" => 0, "member" => 0, "ring" => 0];
+        if($admin){
+            if($admin->role == self::SETTLE_ROLE_ID){
+                // 结算中心
+            }elseif($admin->role == self::OPERATE_ROLE_ID){
+                // 运营中心
+                $cols = ["settle" => 1, "operate" => 0, "member" => 0, "ring" => 0];
+            }elseif($admin->role == self::MEMBER_ROLE_ID){
+                // 微会员
+                $cols = ["settle" => 1, "operate" => 1, "member" => 0, "ring" => 0];
+            }elseif($admin->role == self::RING_ROLE_ID){
+                // 微圈
+                $cols = ["settle" => 1, "operate" => 1, "member" => 1, "ring" => 0];
+            }
+        }
+        return $cols;
+    }
+
     public static function tableColumnShow()
     {
         $_self = manager();

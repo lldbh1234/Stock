@@ -127,12 +127,29 @@ class Record extends Base
     }
 
     //代理商出金详情
-    public function proxyWithdrawDetail($id = null)
+    public function proxyWithdrawDetail($id = null, $type = 1)
     {
         $withdraw = $this->_logic->proxyWithdrawById($id);
         if($withdraw){
-            $this->assign("withdraw", $withdraw);
-            return view();
+            switch ($type){
+                case "1":
+                    // 银行卡信息
+                    $this->assign("withdraw", $withdraw);
+                    return view();
+                    break;
+                case "2":
+                    // 代理信息
+                    $_adminLogic = new AdminLogic();
+                    $proxy = $_adminLogic->proxyFamily($withdraw['admin_id']);
+                    $familyShow = $_adminLogic->proxyFamilyShow($withdraw['admin_id']);
+                    $this->assign("proxy", $proxy);
+                    $this->assign("familyShow", $familyShow);
+                    return view("proxyWithdrawDetail2");
+                    break;
+                default:
+                    return "非法操作！";
+                    break;
+            }
         }else{
             return "非法操作！";
         }

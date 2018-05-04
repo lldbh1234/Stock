@@ -1,0 +1,90 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}出金详情{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 记录管理
+    <span class="c-gray en">&gt;</span> 代理商出金记录
+    <span class="c-gray en">&gt;</span> 出金详情
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<article class="page-container">
+    <div class="tabBar cl">
+        <span data-href="{:url('admin/Record/proxyWithdrawDetail', ['id' => input('id')])}">银行卡信息</span>
+        <span class="current" data-href="{:url('admin/Record/proxyWithdrawDetail', ['id' => input('id'), 'type' => 2])}">代理信息</span>
+    </div>
+    <table class="table table-border table-bordered table-bg mt-20">
+        <thead>
+            <tr>
+                <th colspan="2" scope="col">代理信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="30%">代理商登录名</td>
+                <td><span id="lbServerName">{$proxy.username|default=''}</span></td>
+            </tr>
+            <tr>
+                <td>代理商级别</td>
+                <td>{$proxy.has_one_role.name|default=''}</td>
+            </tr>
+            {if condition="$familyShow.member EQ 1"}
+            {// 微圈}
+            <tr>
+                <td>上级微会员</td>
+                <td>{$proxy.has_one_parent.username|default=''}</td>
+            </tr>
+            <tr>
+                <td>上级运营中心</td>
+                <td>{$proxy.has_one_parent.has_one_parent.username|default=''}</td>
+            </tr>
+            <tr>
+                <td>上级结算中心</td>
+                <td>{$proxy.has_one_parent.has_one_parent.has_one_parent.username|default=''}</td>
+            </tr>
+            {elseif condition="$familyShow.operate EQ 1" /}
+            {// 微会员}
+            <tr>
+                <td>上级运营中心</td>
+                <td>{$proxy.has_one_parent.username|default=''}</td>
+            </tr>
+            <tr>
+                <td>上级结算中心</td>
+                <td>{$proxy.has_one_parent.has_one_parent.username|default=''}</td>
+            </tr>
+            {elseif condition="$familyShow.settle EQ 1" /}
+            {// 运营中心}
+            <tr>
+                <td>上级结算中心</td>
+                <td>{$proxy.has_one_parent.username|default=''}</td>
+            </tr>
+            {/if}
+        </tbody>
+    </table>
+</article>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $(".tabBar span").click(function(){
+            var _url = $(this).data("href");
+            window.location.href = _url;
+        });
+    });
+</script>
+{/block}
