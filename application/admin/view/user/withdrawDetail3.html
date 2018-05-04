@@ -1,0 +1,134 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}会员详情{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 会员管理
+    <span class="c-gray en">&gt;</span> 会员出金列表
+    <span class="c-gray en">&gt;</span> 出金详情
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+    <div id="tab-system" class="HuiTab">
+        <div class="tabBar cl">
+            <span data-href="{:url('admin/User/withdrawDetail', ['id' => input('id')])}">银行卡信息</span>
+            <span data-href="{:url('admin/User/withdrawDetail', ['id' => input('id'), 'type' => 2])}">代理信息</span>
+            <span class="current" data-href="{:url('admin/User/withdrawDetail', ['id' => input('id'), 'type' => 3])}">当前持仓</span>
+            <span data-href="{:url('admin/User/withdrawDetail', ['id' => input('id'), 'type' => 4])}">历史交易</span>
+            <span data-href="{:url('admin/User/withdrawDetail', ['id' => input('id'), 'type' => 5])}">入金记录</span>
+            <span data-href="{:url('admin/User/withdrawDetail', ['id' => input('id'), 'type' => 6])}">出金记录</span>
+        </div>
+        <form action="" method="get">
+            <div class="text-l mt-20">
+                <input type="hidden" name="id" value="{:input('id')}" />
+                <input type="hidden" name="type" value="3" />
+                <input type="text" class="input-text radius" style="width:170px;" placeholder="开始时间" name="sell_begin" value="{$search.sell_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+                <input type="text" class="input-text radius" style="width:170px;" placeholder="结束时间" name="sell_end" value="{$search.sell_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+                <button type="submit" class="btn btn-success radius" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+                <button type="button" class="btn btn-success radius" id="today-btn">今日流水</button>
+            </div>
+        </form>
+        <div class="cl pd-5 bg-1 bk-gray mt-15">
+            <span class="l">
+                <span class="c-blue">保证金总计： <strong>￥{$totalDeposit|number_format=2}</strong></span>
+                <span class="c-green ml-15">建仓费总计：<strong>￥{$totalJiancang|number_format=2}</strong></span>
+                <span class="c-orange ml-15">递延费总计：<strong>￥{$totalDefer|number_format=2}</strong></span>
+            </span>
+            <span class="r">共有订单：<strong>{$datas.total}</strong> 笔</span>
+        </div>
+        <table class="table table-border table-bordered table-hover table-bg">
+            <thead>
+            <tr class="text-c">
+                <th>策略ID</th>
+                <th>股票代码</th>
+                <th>股票名称</th>
+                <th width="40">委托价</th>
+                <th>委托数量</th>
+                <th width="32">现价</th>
+                <th>保证金</th>
+                <th>盈亏</th>
+                <th>市值</th>
+                <th width="32">止盈</th>
+                <th width="32">止损</th>
+                <th>建仓费</th>
+                <th>递延费/天</th>
+                <th>递延费合计</th>
+                <th>下单时间</th>
+                <th>交易模式</th>
+                <th>免息截止日期</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="datas.data" id="item"}
+            <tr class="text-c admin-lists">
+                <td>{$item.order_id}</td>
+                <td>{$item.code}</td>
+                <td>{$item.name}</td>
+                <td>{$item.price|number_format=2}</td>
+                <td>{$item.hand|intval}</td>
+                <td>{$item.last_px|number_format=2}</td>
+                <td>{$item.deposit|number_format=2}</td>
+                <td>
+                    {if condition="$item.pl LT 0"}
+                    <font style="color: #1eb83f;">{$item.pl}</font>
+                    {elseif condition="$item.pl EQ 0" /}
+                    <font style="color: #CC0000;">{$item.pl}</font>
+                    {else /}
+                    <font style="color: #CC0000;">{$item.pl}</font>
+                    {/if}
+                </td>
+                <td>{$item.last_px * $item.hand|number_format=2}</td>
+                <td>{$item.stop_profit_price|number_format=2}</td>
+                <td>{$item.stop_loss_price|number_format=2}</td>
+                <td>{$item.jiancang_fee|number_format=2}</td>
+                <td>{$item.defer|number_format=2}</td>
+                <td>{$item.defer_total|number_format=2}</td>
+                <td>{$item.create_at|date="Y-m-d H:i", ###}</td>
+                <td>{$item.belongs_to_mode.name|default='-'}</td>
+                <td>{$item.original_free|date="Y-m-d H:i", ###}</td>
+            </tr>
+            {/volist}
+            {gt name="datas.total" value="0"}
+            {/gt}
+            </tbody>
+        </table>
+        {$pages}
+    </div>
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script language="javascript" type="text/javascript" src="__RESOURCE__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $(".tabBar span").click(function(){
+            var _url = $(this).data("href");
+            window.location.href = _url;
+        });
+
+        $("#today-btn").click(function(){
+            var _myDate = new Date(),
+                _todayDate = _myDate.toLocaleDateString().replace(/[\/]/g,'-'),
+                _todayStart = _todayDate + " 00:00",
+                _todayEnd = _todayDate + " 23:59";
+            $("input[name='sell_begin']").val(_todayStart);
+            $("input[name='sell_end']").val(_todayEnd);
+            $("#search-btn").trigger("click");
+        });
+    });
+</script>
+{/block}
