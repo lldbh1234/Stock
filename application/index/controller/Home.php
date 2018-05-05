@@ -171,4 +171,9 @@ class Home extends Controller
             return $this->fail("非法操作！");
         }
     }
+
+    public function protocol()
+    {
+        return view();
+    }
 }
