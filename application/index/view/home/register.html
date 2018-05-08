@@ -24,6 +24,105 @@
 		.erwema_mask img{
 			width: 100%;
 		}
+
+
+
+		.now_count{
+		width: 100%;
+		border: 1px solid #ededed;
+	    height: 30px;
+	    line-height: 30px;
+	    text-align: center;
+	    font-size: 12px;
+	    color: #333;
+	}
+	.risk_title{
+		text-align: left;
+	}
+	.read_risk_btn{
+		position: absolute;
+	    width: 100%;
+	    text-align: center;
+	    height: 40px;
+	    line-height: 40px;
+	    color: #fc5155;
+	    font-size: 14px;
+	    left: 0;
+	    bottom: 0;
+	    border-top: 1px solid #ececec;
+	    margin: 0;
+	    background: #fff;
+	}
+	.risk_text p {
+	    font-size: 12px;
+	    color: #333;
+	    line-height: 20px;
+	    text-align: justify;
+	    margin-bottom: 40px;
+	}
+	* {
+        -webkit-user-select: auto!important;
+    }
+    .x_y_options span {
+	    float: left;
+	    width: calc((100% - 24px) / 4);
+	    text-align: center;
+	    border: 1px solid #eaeaea;
+	    font-size: 13px;
+	    color: #999;
+	    height: 28px;
+	    line-height: 28px;
+	    margin-left: 6px;
+	    margin-bottom: 6px;
+	    position: relative;
+	    left: -6px;
+	}
+	.x_y_options span:nth-child(4n + 1) {
+	    margin-left: 6px;
+	}
+	.x_o_title {
+	    line-height: normal;
+	}
+	.pattern_options span, .beishu_options span {
+		width: calc((100% - 18px) / 3);
+		text-align: center;
+		border: 1px solid #eaeaea;
+		height: 28px;
+		line-height: 28px;
+		font-size: 12px;
+		color: #999;
+		float: left;
+		margin-bottom: 6px;
+		margin-left: 6px;
+		white-space: nowrap;
+	}
+	.pattern_options span+span, .beishu_options span+span {
+		margin-left: 6px;
+	}
+	.celue_pattern {
+		padding: 16px 0;
+		background: url(__RESOURCE__/img/right_arrow.png) no-repeat right 24px;
+		background-size: 7px 13px;
+	}
+	.no_arrow {
+		background: #fff!important;
+	}
+	.risk_text{
+		max-height: 240px;
+		overflow: auto;
+	}
+	.risk_content {
+	    margin-top: 130px;
+	}
+	.agree_con span{
+		  color: #007aff;
+	}
+	.read_risk_btn{
+		z-index: 999;
+	}
+	.protocal .risk_content{
+		height: 320px;
+	}
 	</style>
 </head>
 <body>
@@ -33,6 +132,32 @@
 			<img src="__RESOURCE__/img/back_icon.png">
 		</a>
 	</header>
+
+
+	<!-- 合作协议 - start -->
+	    <div class="risk_mask protocal">
+	        <div class="risk_content">
+	            <p class="risk_title">中建58好策略居间服务协议</p>
+	            <div class="risk_text">
+	            	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;策略人通过本平台参与沪深A股交易合作将涉及建仓费和履约保证金的发生。如策略人参与持仓时间为T＋1｜D的交易合作还将涉及延递费的发生。本平台主要为策略人与投资人做好，策略撮合.
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一条释义
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:  网站平台：由中建58好策略运营，为投资人与策略人做好居间服务，居间服务内容包括但不限于交易合作撮合与交易策略通知与交易信息发布等。
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2：投资人：指通过本网站注册或线下合作成为投资人用户，负责按股票投资策略并利用自有资金和证券账户进行交易的自然人。
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3：策略人：指向投资人发出策略提供方
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二条声明与承诺
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、本平台声明，以上所有涉及资费标准的数据，均为平台根据市场行情阶段性调整的实时标准，该数据具有一定浮动性。
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、平台关于以上资费标准不做不予调整的承诺，平台将根据客观的市场行情对资费标准进行适时调整，关于调整结果将及时告知所有平台用户，并将一如既往地尊重用户在新的资费条件下是否选择继续与平台合作的权利。
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中建私募证券投资管理（广州）有限公司
+	            	</p>
+	            	<p style="text-align: right;">
+	            		投资人与策略人交易合作协议<br/>
+						中建58好策略交易居间服务协议
+	            	</p>
+	            </div>
+	            <p onclick="hideProtocal();" class="read_risk_btn">确认</p>
+	        </div>
+	    </div>
+	    <!-- end -->
 
 	<form class="my_from">
 		<input name="parent_id" type="hidden" value="{$pid|default=0}" />
@@ -61,12 +186,12 @@
 				<input id="isRead" name="checkbox" value="Item 1" type="checkbox">
 			</div>
 			<div class="lf read_tip">
-				提交注册表示您已经阅读并同意<span data-href="{:url('index/Home/protocol')}">用户协议</span>相关内容
+				提交注册表示您已经阅读并同意<span style="color: #e4393c;" data-href="{:url('index/Home/protocol')}">用户协议</span>相关内容
 			</div>
 		</div>
 
 		<p style="text-align: center;">
-			<span class="scaner_btn">扫码关注公众号</span>
+			<span class="scaner_btn">扫码关注公众号<br/>APP下载</span>
 		</p>
 	</form>
 	<div class="erwema_mask">
@@ -87,6 +212,17 @@
 		$(".erwema_mask").click(function(){
 			$(this).hide();
 		});
+
+
+		$("body").on("click", ".read_risk_btn", function(){
+			$(this).parents(".risk_mask").hide();
+		});
+
+
+		$(".read_tip span").click(function(){
+			$(".protocal").show();
+		});
+
 
 
         $(".get_btn").click(function(){
