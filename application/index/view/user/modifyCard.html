@@ -44,7 +44,11 @@
 			        <div class="withdrawal-name">持卡人姓名</div>
 			        <div class="withdrawal-con">
 			            <div class="form-group field-userwithdraw-amount required">
+							{if condition="empty($user.has_one_card)"}
 							<input type="text" class="control-style" name="bank_user" value="{$user.has_one_card.bank_user|default=''}" placeholder="持卡人姓名">
+							{else /}
+							<input type="text" class="control-style" name="bank_user" value="{$user.has_one_card.bank_user|default=''}" placeholder="持卡人姓名" readonly>
+							{/if}
 							<div class="help-block"></div>
 						</div>        
 					</div>
