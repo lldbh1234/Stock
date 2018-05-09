@@ -26,9 +26,9 @@ class HuifuSubmit
             $sHtml .= "<input type='hidden' name='". $key ."' value='". $value ."'/>";
         }
         //submit按钮控件请不要含有name属性
-        //$sHtml = $sHtml . "<input type='submit' value='" . $button_name . "'></form>";
-        $sHtml = $sHtml . "<input type='submit' style='display:none;' value='" . $button_name . "'></form>";
-        $sHtml = $sHtml . "<script>document.forms['huifusubmit'].submit();</script>";
+        $sHtml = $sHtml . "<input type='submit' value='" . $button_name . "'></form>";
+        //$sHtml = $sHtml . "<input type='submit' style='display:none;' value='" . $button_name . "'></form>";
+        //$sHtml = $sHtml . "<script>document.forms['huifusubmit'].submit();</script>";
         return $sHtml;
     }
 }
