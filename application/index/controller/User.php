@@ -206,7 +206,7 @@ class User extends Base
                         }
                     }elseif ($way == 3){
                         // 汇付天下
-                        $amount = 1;
+                        $amount = 100;
                         $amount = sprintf("%.2f", $amount);
                         $html = (new huifuPay())->getCode($orderSn, $amount);
                         echo $html;
