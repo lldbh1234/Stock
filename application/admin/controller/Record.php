@@ -36,6 +36,10 @@ class Record extends Base
     public function recharge()
     {
         $res = $this->_logic->pageUserRechargeList(input(""));
+        $way = config('recharge_way');
+        array_filter($res['lists']['data'], function (&$_item) use ($way){
+            $_item['type_text'] = $way[$_item['type']];
+        });
         $tableCols = (new AdminLogic())->tableColumnShow($this->adminId);
         $pageAmount = array_sum(collection($res['lists']['data'])->column("amount"));
         $pageActual = array_sum(collection($res['lists']['data'])->column("actual"));

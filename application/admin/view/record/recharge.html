@@ -65,6 +65,7 @@
             {/eq}
             <th>经纪人</th>
             <th>充值金额</th>
+            <th>入金通道</th>
             <!--<th>到账金额</th>
             <th>手续费</th>-->
             <th>充值时间</th>
@@ -90,6 +91,7 @@
             {/eq}
             <td>{$item.belongs_to_user.has_one_parent.username|default='无'}</td>
             <td>{$item.amount|number_format=2}</td>
+            <td>{$item.type_text}</td>
             <!--<td>{$item.actual|number_format=2}</td>
             <td>{$item.poundage|number_format=2}</td>-->
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
@@ -114,6 +116,7 @@
             {/eq}
             <td>-</td>
             <td><strong>{$pageAmount|number_format=2}</strong></td>
+            <td>-</td>
             <!--<td><strong>{$pageActual|number_format=2}</strong></td>
             <td><strong>{$pagePoundage|number_format=2}</strong></td>-->
             <td>-</td>
