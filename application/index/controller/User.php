@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\common\payment\authLlpay;
+use app\common\payment\huifuPay;
 use app\index\logic\OrderLogic;
 use app\index\logic\RechargeLogic;
 use app\index\logic\RegionLogic;
@@ -170,7 +171,13 @@ class User extends Base
             }else{
                 $amount = input("post.amount");
                 $type = input("post.type", 1);
-                $way = $type == 1 ? 2 : 1; //支付通道，2-连连支付
+                if($type == 1){
+                    $way = 2; //支付通道，2-连连支付
+                }elseif ($type == 2){
+                    $way = 3; //支付通道，3-汇付天下
+                }else{
+                    return $this->fail("请选择支付通道！");
+                }
                 // 生成订单
                 $orderSn = (new RechargeLogic())->createRechargeOrder($this->user_id, $amount, $way);
                 if($orderSn){
@@ -197,6 +204,12 @@ class User extends Base
                         }else{
                             return $this->fail("请先绑定银行卡！");
                         }
+                    }elseif ($way == 3){
+                        // 汇付天下
+                        $amount = sprintf("%.2f", $amount);
+                        $html = (new huifuPay())->getCode($orderSn, $amount);
+                        echo $html;
+                        exit;
                     }
                 }else{
                     return $this->fail("充值订单创建失败！");

@@ -134,9 +134,18 @@ if(!function_exists("timeAgo")) {
 }
 
 if(!function_exists("createStrategySn")){
-    function createStrategySn()
+    function createStrategySn($length = 6)
     {
-        return date("YmdHis") . isLogin() . randomString(6, true);
+        return date("YmdHis") . isLogin() . randomString($length, true);
+    }
+}
+
+if(!function_exists("createStrategyShortSn")){
+    function createStrategyShortSn($length = 1)
+    {
+        $rand = isLogin() . randomString($length, true);
+        $rand = str_pad($rand, 8, "0", STR_PAD_LEFT);
+        return date("ymdHis") . $rand;
     }
 }
 

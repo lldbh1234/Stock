@@ -39,9 +39,9 @@ if(!function_exists("createOrderSn")){
 }
 
 if(!function_exists("createStrategySn")){
-    function createStrategySn()
+    function createStrategySn($length = 6)
     {
-        return date("YmdHis") . isLogin() . randomString(6, true);
+        return date("YmdHis") . isLogin() . randomString($length, true);
     }
 }
 

@@ -125,4 +125,12 @@ class Notify extends Controller
             //logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
         }
     }
+
+    public function huifuNotify()
+    {
+        $str = file_get_contents("php://input");
+        @file_put_contents("./pay.log", json_encode($str)."\r\n", FILE_APPEND);
+        @file_put_contents("./pay.log", "REQUEST:" . json_encode($_REQUEST)."\r\n", FILE_APPEND);
+        @file_put_contents("./pay.log", "POST:" . json_encode($_POST)."\r\n", FILE_APPEND);
+    }
 }

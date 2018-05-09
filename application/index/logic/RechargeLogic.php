@@ -17,9 +17,10 @@ class RechargeLogic
 
     public function createRechargeOrder($userId, $amount, $type)
     {
+        $tradeNo = $type == 3 ? createStrategyShortSn() : createStrategySn(); // 3汇付天下，订单号最长20位
         $data = [
             "user_id" => $userId,
-            "trade_no" => createStrategySn(),
+            "trade_no" => $tradeNo,
             "amount" => $amount,
             "type"  => $type,
         ];
