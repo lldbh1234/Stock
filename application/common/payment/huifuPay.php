@@ -16,6 +16,14 @@ class huifuPay
         $this->returnUrl = url("index/Index/index", "", true, true);
     }
 
+    public function validateCheckValue($parameter, $outValue)
+    {
+        $values = array_values($parameter);
+        $string = implode('', $values);
+        $myValue = strtoupper(md5("{$string}{$this->config['mac_key']}"));
+        return $myValue == $outValue;
+    }
+
     public function getCode($tradeNo, $amount)
     {
         $parameter = [

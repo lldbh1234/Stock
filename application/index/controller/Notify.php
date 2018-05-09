@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\common\payment\huifuPay;
 use app\common\payment\paymentLLpay;
 use app\index\logic\AdminWithdrawLogic;
 use app\index\logic\WithdrawLogic;
@@ -128,9 +129,40 @@ class Notify extends Controller
 
     public function huifuNotify()
     {
-        $str = file_get_contents("php://input");
-        @file_put_contents("./pay.log", json_encode($str)."\r\n", FILE_APPEND);
-        @file_put_contents("./pay.log", "REQUEST:" . json_encode($_REQUEST)."\r\n", FILE_APPEND);
-        @file_put_contents("./pay.log", "POST:" . json_encode($_POST)."\r\n", FILE_APPEND);
+        if(request()->isPost()){
+            @file_put_contents("./pay.log", "POST:" . json_encode($_POST)."\r\n", FILE_APPEND);
+            $reData = [
+                "resp_code" => $_POST['resp_code'],
+                "resp_desc" => $_POST['resp_desc'],
+                "cust_id" => $_POST['cust_id'],
+                "ord_id" => $_POST['ord_id'],
+                "platform_seq_id" => $_POST['platform_seq_id'],
+                "trans_amt" => $_POST['trans_amt'],
+                "mer_priv" => $_POST['mer_priv'],
+                "extension" => $_POST['extension']
+            ];
+            $huifu = new huifuPay();
+            $validate = $huifu->validateCheckValue($reData, $_POST['check_value']);
+            if($reData['resp_code'] == "000" && $validate){
+                $tradeNo = $reData["ord_id"];
+                $_rechargeLogic = new RechargeLogic();
+                $order = $_rechargeLogic->orderByTradeNo($tradeNo, 0);
+                if($order){
+                    // 有该笔充值订单
+                    $outTradeNo = $reData['platform_seq_id'];
+                    $res = $_rechargeLogic->rechargeComplete($tradeNo, $order['amount'], $order['user_id'], $outTradeNo);
+                    if(!$res){
+                        @file_put_contents("./pay.log", "failed1\r\n", FILE_APPEND);
+                    }
+                }
+                @file_put_contents("./pay.log", "success\r\n", FILE_APPEND);
+                exit("ECHO_SEQ_ID={$tradeNo}");
+            }else{
+                @file_put_contents("./pay.log", "SIGN ERROR\r\n", FILE_APPEND);
+                exit("SIGN ERROR");
+            }
+        }else{
+            exit("ERROR");
+        }
     }
 }
