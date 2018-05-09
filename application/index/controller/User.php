@@ -206,8 +206,8 @@ class User extends Base
                         }
                     }elseif ($way == 3){
                         // 汇付天下
-                        if($this->user_id != 1) return "通道维护！";
-                        $amount = 0.1;
+                        /*if($this->user_id != 1) return "通道维护！";
+                        $amount = 0.1;*/
                         $amount = sprintf("%.2f", $amount);
                         $html = (new huifuPay())->getCode($orderSn, $amount);
                         echo $html;
