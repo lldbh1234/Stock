@@ -43,6 +43,7 @@ class RechargeLogic
             $rData = [
                 "type" => 5,
                 "amount" => $amount,
+                "account" => $user->account,
                 "remark" => json_encode(['tradeNo' => $tradeNo]),
                 "direction" => 1
             ];
