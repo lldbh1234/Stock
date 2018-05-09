@@ -75,13 +75,11 @@
 					<span>快捷支付1</span>
 					<img src="__RESOURCE__/img/seleted.png" alt="" style="float:right;" class="check-payone checkPay">
 				</div>
-				{if condition="$uid EQ 1"}
 				<div class="boxflex1 paystyle checkImg2" style="border-top:0;" data-type="2">
 					<img src="__RESOURCE__/img/pay.png" style="width: 20px;">
-					<span>快捷支付2（通道维护，请勿使用）</span>
+					<span>快捷支付2</span>
 					<img src="__RESOURCE__/img/notseleted.png" alt="" style="float:right;" class="check-payone checkPay">
 				</div>
-				{/if}
 			</div>
 			<div class="recharge-btn" id="payBtn">立即充值</div>
 
@@ -153,6 +151,11 @@
                 setTimeout(function(){
 					window.location.href = _jump;
                 }, 1000);
+                return false;
+			}
+			var _type = $('#type').val();
+            if(_type == 2 && amount > 5000){
+                $alert("此通道单笔最大可充值5000元！");
                 return false;
 			}
             $("#payform").submit();

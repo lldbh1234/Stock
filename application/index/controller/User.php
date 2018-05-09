@@ -206,7 +206,6 @@ class User extends Base
                         }
                     }elseif ($way == 3){
                         // 汇付天下
-                        $amount = 100;
                         $amount = sprintf("%.2f", $amount);
                         $html = (new huifuPay())->getCode($orderSn, $amount);
                         echo $html;
@@ -223,7 +222,6 @@ class User extends Base
         $redirect = url("index/User/modifyCard", ["callback" => base64_encode($callback)]);
         $this->assign("bind", $bind);
         $this->assign("redirect", $redirect);
-        $this->assign("uid", $this->user_id);
         return view();
     }
 
