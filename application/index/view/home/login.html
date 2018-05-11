@@ -93,9 +93,11 @@
             $ajaxCustom(url, {username:mobile}, function(res){
                 if(res.state){ // 登录成功
 					var _html = "";
-					for(var _key in res.data){
-						var _name = res.data[_key].nickname ? res.data[_key].nickname : res.data[_key].username;
-						_html += '<li data-id="' + res.data[_key].admin_id + '">' + _name + '</li>';
+					if(res.data){
+                        for(var _key in res.data){
+                            var _name = res.data[_key].nickname ? res.data[_key].nickname : res.data[_key].username;
+                            _html += '<li data-id="' + res.data[_key].admin_id + '">' + _name + '</li>';
+                        }
 					}
 					$(".institution_list").empty().append($(_html));
 					$(".risk_mask").show();

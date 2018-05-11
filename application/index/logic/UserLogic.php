@@ -209,7 +209,7 @@ class UserLogic
 
     public function userMembers($username)
     {
-        $ringAdminIds = User::where(["username" => $username])->column("admin_id") ? : [-1];
+        $ringAdminIds = User::where(["username" => $username, "state" => 0])->column("admin_id") ? : [-1];
         $ringAdmins = Admin::with("hasOneParent")->where(["admin_id" => ["IN", $ringAdminIds]])->select();
         $members = [];
         if($ringAdmins){
