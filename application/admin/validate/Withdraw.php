@@ -10,7 +10,7 @@ use think\Validate;
 class Withdraw extends Validate
 {
     protected $rule = [
-        'money' => "require|float|gt:10|checkMoney|checkDateTime",
+        'money' => "require|float|gt:100|checkMoney|checkDateTime",
         'card'  => "require|checkCard",
     ];
 
@@ -18,7 +18,7 @@ class Withdraw extends Validate
         'money.checkDateTime' => '不在规定提现时间内！',
         'money.require' => '提现金额不能为空！',
         'money.float'   => '提现金额必须为数字！',
-        'money.gt'      => '提现金额必须大于10！',
+        'money.gt'      => '提现金额必须大于100！',
         'money.checkMoney' => '账户余额不足！',
         'card.require'  => '请选择到账银行！',
         'card.checkCard' => '到账银行不存在！',
