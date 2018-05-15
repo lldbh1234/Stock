@@ -17,6 +17,7 @@ use app\index\logic\RebateLogic;
 use app\index\logic\UserLogic;
 use llpay\payment\pay\LLpaySubmit;
 use think\Controller;
+use think\Db;
 use think\Queue;
 use think\Request;
 
@@ -29,6 +30,8 @@ class Test extends Controller
 
     public function test()
     {
+        return $this->huigun();
+        exit();
         set_time_limit(0);
         $lists = UserRecord::group("user_id")->column("user_id");
         foreach ($lists as $value){
@@ -119,6 +122,60 @@ class Test extends Controller
 
         Queue::push('app\job\demoJob@fire', $data, $queue);
         echo 'ok';
+    }
+    public function huigun()
+    {
+        //proxy
+        /*$sql1 = "SELECT sum(`money`) as money_count, admin_id FROM `stock_admin_record` where create_at >= '1526371200' group by `admin_id`";
+        $adminRecord = collection(Db::query($sql1))->toArray();
+//        $updateMoneySql = "";
+        foreach($adminRecord as $k => $v)
+        {
+            $money = $v['money_count'];
+            $admin_id = $v['admin_id'];
+            echo "UPDATE `stock_admin` SET `total_fee` = `total_fee`-$money , `total_income` = `total_income`-$money WHERE `admin_id` = $admin_id;"; echo "<br />";
+
+        }*/
+        //$sqlDel = "DELETE FROM `stock_admin_record` WHERE create_at >= '1526371200'";
+        //echo $sqlDel;
+        //user
+//        dump($updateMoneySql);
+//        $sql1 = "SELECT sum(`amount`) as `amount`, `user_id` FROM `stock_user_record` where create_at >= '1526371200' and type=10 group by user_id";
+//        $adminRecord = collection(Db::query($sql1))->toArray();
+//        foreach($adminRecord as $k => $v)
+//        {
+//            $money = $v['amount'];
+//            $admin_id = $v['user_id'];
+//            echo "UPDATE `stock_user` SET `account` = `account`-$money  WHERE `user_id` = $admin_id;"; echo "<br />";
+//
+//        }
+        //echo "DELETE FROM `stock_user_record` WHERE create_at >= '1526371200'";
+        //manager
+//        $sql1 = "SELECT sum(`money`) as money_count, user_id FROM `stock_user_manager_record` where create_at >= '1526371200' group by `user_id`";
+//        $adminRecord = collection(Db::query($sql1))->toArray();
+////        $updateMoneySql = "";
+//        foreach($adminRecord as $k => $v)
+//        {
+//            $money = $v['money_count'];
+//            $admin_id = $v['user_id'];
+//            echo "UPDATE `stock_user_manager` SET `income` = `income`-$money , `sure_income` = `sure_income`-$money WHERE `user_id` = $admin_id;"; echo "<br />";
+//
+//        }
+//        $sqlDel = "DELETE FROM `stock_user_manager_record` WHERE create_at >= '1526371200'";
+//        echo $sqlDel;
+        //order
+        $sql1 = "SELECT * from `stock_order` WHERE `state` = 2 AND `update_at` >= '1526313600' ";
+        $sql2 = "UPDATE `stock_order` SET `niuren_rebate` = 0,`proxy_rebate` = 0 WHERE `state` = 2 AND `update_at` >= '1526313600' ";
+        $adminRecord = collection(Db::query($sql1))->toArray();
+        foreach($adminRecord as $k => $v)
+        {
+            $money = $v['money_count'];
+            $admin_id = $v['user_id'];
+            echo "UPDATE `stock_user_manager` SET `income` = `income`-$money , `sure_income` = `sure_income`-$money WHERE `user_id` = $admin_id;"; echo "<br />";
+
+        }
+        $sqll = "UPDATE `stock_admin_record` SET `create_at` = '1526371200' where create_at >= '1526371200'";
+
     }
 
 }

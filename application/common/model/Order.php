@@ -9,17 +9,17 @@ class Order extends BaseModel
     protected $field = true;
 
     protected $insert = ['create_at'];
-    protected $update = ['update_at'];
+//    protected $update = ['update_at'];
 
     protected function setCreateAtAttr()
     {
         return time();
     }
 
-    protected function setUpdateAtAttr()
-    {
-        return time();
-    }
+//    protected function setUpdateAtAttr()
+//    {
+//        return time();
+//    }
 
     public function hasOneUser()
     {

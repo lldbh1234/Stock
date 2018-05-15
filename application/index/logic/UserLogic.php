@@ -483,7 +483,8 @@ class UserLogic
                     "sell_hand" => $order["hand"],
                     "sell_deposit" => $order["hand"] * $order["buy_px"],
                     "profit" => ($order["buy_px"] - $order["price"]) * $order["hand"],
-                    "state" => 2
+                    "state" => 2,
+                    'update_at' => time(),
                 ];
                 Order::update($data);
                 if($data["profit"] > 0){

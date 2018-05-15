@@ -658,7 +658,8 @@ class OrderLogic
                 "sell_deposit" => $sellPrice * $order['sell_hand'],
                 "profit" => $profit,
                 "state" => 2,
-                "update_by" => isLogin()
+                "update_by" => isLogin(),
+                'update_at' => time(),
             ];
             Order::update($data);
             // 分成
