@@ -152,8 +152,8 @@
 				<div class="lf b_gupiao_price">
 					<p class="b_gupiao_now_price">{$stock.last_px}</p>
 					<p class="b_gupiao_rate clear_lf">
-						<span class="lf">{$stock.px_change}</span>
-						<span class="rt">{$stock.px_change_rate}%</span>
+						<span class="lf px_change">{$stock.px_change}</span>
+						<span class="rt px_change_rate">{$stock.px_change_rate}%</span>
 					</p>
 				</div>
 				<span class="rt">行情</span>
@@ -601,6 +601,31 @@ function isTradingTime(){
 if( !isTradingTime() ){
 	$alert("当前时间不在交易时段内");
 }
+
+
+
+$(function(){
+	var timer = setInterval(function(){
+		code = $(".b_gupiao_code").html();
+        var _url = "{:url('index/Stock/simple')}",
+            _oData = {code: code};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ // 登录成功
+                for( var key in res.data ){
+                	var nowDate = res.data[key];
+                	$(".b_gupiao_now_price").html(nowDate.last_px);
+                	$(".agent_price").html(nowDate.last_px);
+                	$(".px_change").html(nowDate.px_change);
+                	$(".px_change_rate").html(nowDate.px_change_rate + "%");
+
+                	calcNum();
+                }
+            }else{
+                // $alert(res.info);
+            }
+        });
+	},2000);
+});
 
 </script>
 {/block}
