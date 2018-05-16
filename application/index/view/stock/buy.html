@@ -614,7 +614,7 @@ $(function(){
                 for( var key in res.data ){
                 	var nowDate = res.data[key];
                 	$(".b_gupiao_now_price").html(nowDate.last_px);
-                	$(".agent_price").html(nowDate.last_px);
+                	$(".agent_price").html(nowDate.sell_px);
                 	$(".px_change").html(nowDate.px_change);
                 	$(".px_change_rate").html(nowDate.px_change_rate + "%");
 
