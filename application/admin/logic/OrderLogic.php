@@ -659,7 +659,7 @@ class OrderLogic
                 "profit" => $profit,
                 "state" => 2,
                 "update_by" => isLogin(),
-                'update_at' => time(),
+                //'update_at' => time(),
             ];
             Order::update($data);
             // 分成
