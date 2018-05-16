@@ -52,6 +52,7 @@ class Order extends Base
     // 历史
     public function history()
     {
+        if(input('out_put') == 1) return $this->downExcel(input(""), date('Y-m-d H:i:s') .'平仓单-订单信息导出记录', 2);
         $_res = $this->_logic->pageHistoryOrders(input(""));
         $tableCols = (new AdminLogic())->tableColumnShow();
         $this->assign("datas", $_res['lists']);
@@ -94,6 +95,7 @@ class Order extends Base
     // 持仓
     public function position()
     {
+        if(input('out_put') == 1) return $this->downExcel(input(""), date('Y-m-d H:i:s') .'持仓单-订单信息导出记录');
         $_res = $this->_logic->pagePositionOrders(input(""));
         $tableCols = (new AdminLogic())->tableColumnShow();
         if($_res['lists']['data']){
@@ -380,5 +382,254 @@ class Order extends Base
         }else{
             return $this->fail("系统提示：非法操作！");
         }
+    }
+    public function downExcel($param=[], $title = '持仓单-订单信息统计表', $type=1)
+    {
+        ini_set("memory_limit", "10000M");
+        set_time_limit(0);
+        header("Content-type:application/vnd.ms-excel;charset=UTF-8");
+
+        require ROOT_PATH.'vendor/PHPExcel/Classes/PHPExcel.php';
+        //获取数据
+        if(1 == $type)
+        {
+            $data = $this->_logic->positionOrders($param);
+            if($data && isset($data['lists']))
+            {
+                $data = $data['lists'];
+            }else{
+                return $this->error('暂时没有导出的数据');
+            }
+
+            $codes = array_column($data, "code");
+            $quotation = (new StockLogic())->stockQuotationBySina($codes);
+            array_filter($data, function(&$item) use ($quotation){
+                $item['last_px'] = isset($quotation[$item['code']]['last_px']) ? number_format($quotation[$item['code']]['last_px'], 2) : '-';
+                $item['pl'] = isset($quotation[$item['code']]['last_px']) ? number_format(($item['last_px'] - $item['price']) * $item['hand'], 2) : "-";
+            });
+        }elseif (2 == $type) {
+            $data = $this->_logic->historyOrders($param);
+            if($data && isset($data['lists']))
+            {
+                $data = $data['lists'];
+            }else{
+                return $this->error('暂时没有导出的数据');
+            }
+
+        }
+
+        $n = 3;
+        //加载PHPExcel插件
+        $Excel = new \PHPExcel();
+        $Excel->setActiveSheetIndex(0);
+        //编辑表格    标题
+        $Excel->setActiveSheetIndex(0)->mergeCells('A1:G1');
+        $Excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $Excel->setActiveSheetIndex(0)->getStyle('A1')->getFont()->setSize(20);
+        $Excel->setActiveSheetIndex(0)->getStyle('A1')->getFont()->setName('黑体');
+        $Excel->getActiveSheet()->setCellValue('A1',$title);
+        //表头
+        $Excel->getActiveSheet()->getStyle('E')->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+        $Excel->setActiveSheetIndex(0)->getStyle('A2:G2')->getFont()->setBold(true);
+        $Excel->setActiveSheetIndex(0)->setCellValue('A2','策略ID');
+        $Excel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+        $Excel->setActiveSheetIndex(0)->setCellValue('B2','昵称');
+        $Excel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+        $Excel->setActiveSheetIndex(0)->setCellValue('C2','手机号');
+        $Excel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+        $Excel->setActiveSheetIndex(0)->setCellValue('D2','股票代码');
+        $Excel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
+        $Excel->setActiveSheetIndex(0)->setCellValue('E2','股票名称');
+        if(1 == $type)
+        {
+            $Excel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('F2','委托价');
+            $Excel->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('G2','委托数量');
+            $Excel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('H2','现价');
+            $Excel->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('I2','保证金');
+            $Excel->getActiveSheet()->getColumnDimension('I')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('J2','盈亏');
+            $Excel->getActiveSheet()->getColumnDimension('J')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('K2','市值');
+            $Excel->getActiveSheet()->getColumnDimension('K')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('L2','止盈');
+            $Excel->getActiveSheet()->getColumnDimension('L')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('M2','止损');
+            $Excel->getActiveSheet()->getColumnDimension('M')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('N2','建仓费');
+            $Excel->getActiveSheet()->getColumnDimension('N')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('O2','递延费/天');
+            $Excel->getActiveSheet()->getColumnDimension('O')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('P2','递延费合计');
+            $Excel->getActiveSheet()->getColumnDimension('P')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('Q2','下单时间');
+            $Excel->getActiveSheet()->getColumnDimension('Q')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('R2','交易模式');
+            $Excel->getActiveSheet()->getColumnDimension('R')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('S2','免息截止日期');
+
+        }elseif (2 == $type) {
+            $Excel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('F2','买入价');
+            $Excel->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('G2','卖出价	');
+            $Excel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('H2','卖出数量');
+            $Excel->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('I2','保证金');
+            $Excel->getActiveSheet()->getColumnDimension('I')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('J2','盈亏');
+            $Excel->getActiveSheet()->getColumnDimension('J')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('K2','穿仓金额');
+            $Excel->getActiveSheet()->getColumnDimension('K')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('L2','买入时间');
+            $Excel->getActiveSheet()->getColumnDimension('L')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('M2','交易模式');
+            $Excel->getActiveSheet()->getColumnDimension('M')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('N2','卖出时间');
+
+        }
+
+
+        $filePath = ROOT_PATH. 'excel/';
+        $num = 1;
+        $m = 1;
+
+        //内容
+        foreach ($data as $val) {
+            $Excel->setActiveSheetIndex(0)->setCellValue('A'.$n, $val['order_id']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('B'.$n, $val['has_one_user']['nickname']?:$val['has_one_user']['username']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('C'.$n, $val['has_one_user']['mobile']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('D'.$n, $val['code']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('E'.$n, $val['name']);
+            if(1 == $type)
+            {
+                $Excel->setActiveSheetIndex(0)->setCellValue('F'.$n, $val['price']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('G'.$n, $val['hand']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('H'.$n, @$val['last_px']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('I'.$n, $val['deposit']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('J'.$n, @$val['pl']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('K'.$n, $val['price']*$val['hand']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('L'.$n, $val['stop_profit_price']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('M'.$n, $val['stop_loss_price']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('N'.$n, $val['jiancang_fee']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('O'.$n, $val['defer']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('P'.$n, $val['defer_total']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('Q'.$n, date('Y-m-d H:i', $val['create_at']));
+                $Excel->setActiveSheetIndex(0)->setCellValue('R'.$n, $val['belongs_to_mode']['name']?:'-');
+                $Excel->setActiveSheetIndex(0)->setCellValue('S'.$n, date('Y-m-d H:i', $val['original_free']));
+            }elseif (2 == $type){
+                $Excel->setActiveSheetIndex(0)->setCellValue('F'.$n, $val['price']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('G'.$n, $val['sell_price']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('H'.$n, $val['sell_hand']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('I'.$n, $val['deposit']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('J'.$n, $val['profit']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('K'.$n, $val['deposit']+$val['profit']);
+                $Excel->setActiveSheetIndex(0)->setCellValue('L'.$n, date('Y-m-d H:i', $val['create_at']));
+                $Excel->setActiveSheetIndex(0)->setCellValue('M'.$n, $val['belongs_to_mode']['name']?:'-');
+                $Excel->setActiveSheetIndex(0)->setCellValue('N'.$n, $val['create_at'] ? date('Y-m-d H:i', $val['create_at']) : '-');
+            }
+
+            $n++;
+            $Excel->getActiveSheet()->getRowDimension($n+1)->setRowHeight(18);
+            if ($m != 0 && $m % 1000 == 0) {
+                //保存到服务器
+                $filename = $filePath . $num . '.xls';
+                $fp = fopen($filename, 'w+');
+                if (!is_writable($filename) ){
+                    die('文件:' . $filename . '不可写，请检查！');
+                }
+                $objWriter= \PHPExcel_IOFactory::createWriter($Excel,'Excel5');
+                $objWriter->save($filename);
+                fclose($fp);
+                $num++;
+                $n = 3;
+                $Excel = new \PHPExcel();
+                $Excel->setActiveSheetIndex(0);
+                //编辑表格    标题
+                $Excel->setActiveSheetIndex(0)->mergeCells('A1:G1');
+                $Excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $Excel->setActiveSheetIndex(0)->getStyle('A1')->getFont()->setSize(20);
+                $Excel->setActiveSheetIndex(0)->getStyle('A1')->getFont()->setName('黑体');
+                $Excel->getActiveSheet()->setCellValue('A1',$title);
+                //表头
+                $Excel->getActiveSheet()->getStyle('E')->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+                $Excel->setActiveSheetIndex(0)->getStyle('A2:G2')->getFont()->setBold(true);
+                $Excel->setActiveSheetIndex(0)->setCellValue('A2','策略ID');
+                $Excel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+                $Excel->setActiveSheetIndex(0)->setCellValue('B2','昵称');
+                $Excel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+                $Excel->setActiveSheetIndex(0)->setCellValue('C2','手机号');
+                $Excel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+                $Excel->setActiveSheetIndex(0)->setCellValue('D2','股票代码');
+                $Excel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
+                $Excel->setActiveSheetIndex(0)->setCellValue('E2','股票名称');
+                if(1 == $type) {
+                    $Excel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('F2', '委托价');
+                    $Excel->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('G2', '委托数量');
+                    $Excel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('H2', '现价');
+                    $Excel->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('I2', '保证金');
+                    $Excel->getActiveSheet()->getColumnDimension('I')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('J2', '盈亏');
+                    $Excel->getActiveSheet()->getColumnDimension('J')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('K2', '市值');
+                    $Excel->getActiveSheet()->getColumnDimension('K')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('L2', '止盈');
+                    $Excel->getActiveSheet()->getColumnDimension('L')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('M2', '止损');
+                    $Excel->getActiveSheet()->getColumnDimension('M')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('N2', '建仓费');
+                    $Excel->getActiveSheet()->getColumnDimension('N')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('O2', '递延费/天');
+                    $Excel->getActiveSheet()->getColumnDimension('O')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('P2', '递延费合计');
+                    $Excel->getActiveSheet()->getColumnDimension('P')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('Q2', '下单时间');
+                    $Excel->getActiveSheet()->getColumnDimension('Q')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('R2', '交易模式');
+                    $Excel->getActiveSheet()->getColumnDimension('R')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('S2', '免息截止日期');
+                }elseif (2 == $type) {
+                    $Excel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('F2','买入价');
+                    $Excel->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('G2','卖出价	');
+                    $Excel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('H2','卖出数量');
+                    $Excel->getActiveSheet()->getColumnDimension('H')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('I2','保证金');
+                    $Excel->getActiveSheet()->getColumnDimension('I')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('J2','盈亏');
+                    $Excel->getActiveSheet()->getColumnDimension('J')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('K2','穿仓金额');
+                    $Excel->getActiveSheet()->getColumnDimension('K')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('L2','买入时间');
+                    $Excel->getActiveSheet()->getColumnDimension('L')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('M2','交易模式');
+                    $Excel->getActiveSheet()->getColumnDimension('M')->setWidth(25);
+                    $Excel->setActiveSheetIndex(0)->setCellValue('N2','卖出时间');
+                }
+            }
+            $m++;
+        }
+        $filename = $filePath . $title . '.xls';
+        $fp = fopen($filename, 'w+');
+        if (!is_writable($filename)) {
+            die('文件:' . $filename . '不可写，请检查！');
+        }
+        $objWriter= \PHPExcel_IOFactory::createWriter($Excel, 'Excel5');
+        $objWriter->save($filename);
+        fclose($fp);
+        //压缩下载
+        require ROOT_PATH . 'vendor/PHPZip/PHPZip.php';
+        $archive = new \PHPZip();
+        $archive->ZipAndDownload($filePath, $title);
     }
 }
