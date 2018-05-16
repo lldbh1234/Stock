@@ -114,6 +114,12 @@ class UserNotice
                         cache("loss_{$data['OrderId']}", true, $cacheExpire);
                     }
                 }
+            }elseif($data['Act'] == "NonAuto"){
+                $user = (new UserLogic())->userById($data['UserId']);
+                (new SmsLogic())->notice($user['mobile'], $data['Code'], "nonAuto");
+            }elseif($data['Act'] == "Balance"){
+                $user = (new UserLogic())->userById($data['UserId']);
+                (new SmsLogic())->notice($user['mobile'], $data['Code'], "balance");
             }
         }
         return true;

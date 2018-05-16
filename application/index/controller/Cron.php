@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\index\logic\BestLogic;
+use app\index\logic\UserLogic;
 use think\Controller;
 use think\Db;
 use think\Queue;
@@ -99,6 +100,54 @@ class Cron extends Controller
                 // 回滚事务
                 Db::rollback();
                 echo "false";
+            }
+        }
+    }
+
+    // 未开启递延短信提醒
+    public function scanDeferNotice()
+    {
+        set_time_limit(0);
+        if(checkStockTradeTime()){
+            $orders = (new OrderLogic())->allPositionOrders(null, ['is_defer' => 0]);
+            if($orders){
+                foreach ($orders as $order){
+                    if($order['is_defer'] == 0){
+                        // 未开启自动递延
+                        $smsData = [
+                            "Act"   => "NonAuto",
+                            "Code"  => $order['code'],
+                            "UserId" => $order['user_id'],
+                            "OrderId" => $order['order_id'],
+                        ];
+                        Queue::push('app\index\job\UserNotice@smsNotice', $smsData, null);
+                    }
+                }
+            }
+        }
+    }
+
+    // 自动递延
+    public function scanBalanceNotice()
+    {
+        set_time_limit(0);
+        if(checkStockTradeTime()){
+            $lists = (new OrderLogic())->allPositionTotalDefer();
+            if($lists){
+                $userLogic = new UserLogic();
+                foreach ($lists as $vo){
+                    $user = $userLogic->userById($vo['user_id']);
+                    if($user['account'] < $vo['total_defer']){
+                        // 未开启自动递延
+                        $smsData = [
+                            "Act"   => "Balance",
+                            "Code"  => $vo['code'],
+                            "UserId" => $vo['user_id'],
+                        ];
+                        Queue::push('app\index\job\UserNotice@smsNotice', $smsData, null);
+                    }
+                }
+
             }
         }
     }

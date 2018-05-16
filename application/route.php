@@ -131,6 +131,8 @@ Route::group("cron", function () {
     Route::any('plate', 'index/Cron/grabPlateIndex'); // 板块指数
     Route::any('stock', 'index/Cron/grabStockLists'); // 股票列表
     Route::any('defer', 'index/Cron/scanOrderDefer'); // 订单递延
+    Route::any('non-defer-notice', 'index/Cron/scanDeferNotice'); // 未开启递延短信提醒
+    Route::any('balance-notice', 'index/Cron/scanBalanceNotice'); // 递延余额不足短信提醒
     Route::any('sell', 'index/Cron/scanOrderSell'); // 订单爆仓、止盈、止损
     Route::any('niuren-rebate', 'index/Cron/handleNiurenRebate'); // 牛人返点
     Route::any('proxy-rebate', 'index/Cron/handleProxyRebate'); // 代理商返点
