@@ -12,13 +12,14 @@
 	</a>
 </nav>
 <div class="page-container">
-	<form action="" method="get">
+	<form action="" method="get" id="search_form">
 		<div class="text-l">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="策略ID" name="id" value="{$search.id|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
+			<input type="hidden" id="out_put"  name="out_put" value="0">
 		</div>
 		<div class="text-l mt-5">
 			{eq name="tableCols.settle" value="1"}
@@ -36,7 +37,8 @@
 			<!--<input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="manager" value="{$search.manager|default=''}">-->
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+			<button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+			<button type="submit" class="btn btn-success radius" id="export" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>导出</button>
 		</div>
 		<!--<div class="text-l mt-5">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
@@ -231,5 +233,18 @@
         });
     }
 	{/if}
+</script>
+<script>
+    $("#export").click(function(){
+
+        $('#out_put').val(1);
+        $('#search_form').submit();
+    });
+    $("#search").click(function(){
+
+        $('#out_put').val(0);
+        $('#search_form').submit();
+    });
+
 </script>
 {/block}
