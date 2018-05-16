@@ -375,10 +375,8 @@ class OrderLogic
 
     // 今天需给牛人返点的所有订单（平仓并盈利的）
     public function todayNiurenRebateOrder(){
-        //$todayBegin = strtotime(date("Y-m-d 00:00:00"));
-        //$todayEnd = strtotime(date("Y-m-d 23:59:59"));
-        $todayBegin = strtotime("2018-05-16 00:00:00");
-        $todayEnd = strtotime("2018-05-16 23:59:59");
+        $todayBegin = strtotime(date("Y-m-d 00:00:00"));
+        $todayEnd = strtotime(date("Y-m-d 23:59:59"));
         $where["state"] = 2;
         $where["profit"] = ["GT", 0];
         $where["niuren_rebate"] = 0;
@@ -389,10 +387,8 @@ class OrderLogic
 
     // 今天需给代理商返点的所有订单（平仓并盈利的）
     public function todayProxyRebateOrder(){
-        //$todayBegin = strtotime(date("Y-m-d 00:00:00"));
-        //$todayEnd = strtotime(date("Y-m-d 23:59:59"));
-        $todayBegin = strtotime("2018-05-16 00:00:00");
-        $todayEnd = strtotime("2018-05-16 23:59:59");
+        $todayBegin = strtotime(date("Y-m-d 00:00:00"));
+        $todayEnd = strtotime(date("Y-m-d 23:59:59"));
         $where["state"] = 2;
         $where["profit"] = ["GT", 0];
         $where["proxy_rebate"] = 0;
@@ -404,10 +400,8 @@ class OrderLogic
     // 今天需建仓费返点的所有订单（今天建仓的）
     public function todayJiancangRebateOrder()
     {
-        //$todayBegin = strtotime(date("Y-m-d 00:00:00"));
-        //$todayEnd = strtotime(date("Y-m-d 23:59:59"));
-        $todayBegin = strtotime("2018-05-16 00:00:00");
-        $todayEnd = strtotime("2018-05-16 23:59:59");
+        $todayBegin = strtotime(date("Y-m-d 00:00:00"));
+        $todayEnd = strtotime(date("Y-m-d 23:59:59"));
         $where["state"] = 3;
         $where["jiancang_rebate"] = 0;
         $where["create_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];

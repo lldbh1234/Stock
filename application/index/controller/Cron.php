@@ -151,7 +151,7 @@ class Cron extends Controller
     public function handleNiurenRebate()
     {
         set_time_limit(0);
-        //if(checkSettleTime()){
+        if(checkSettleTime()){
             $orders = (new OrderLogic())->todayNiurenRebateOrder();
             if($orders){
                 foreach ($orders as $order){
@@ -166,14 +166,14 @@ class Cron extends Controller
                     }
                 }
             }
-        //}
+        }
     }
 
     // 盈利代理商返点-每天停盘后的时间段 16-23点
     public function handleProxyRebate()
     {
         set_time_limit(0);
-        //if(checkSettleTime()){
+        if(checkSettleTime()){
             $orders = (new OrderLogic())->todayProxyRebateOrder();
             if($orders){
                 foreach ($orders as $order){
@@ -185,14 +185,14 @@ class Cron extends Controller
                     Queue::push('app\index\job\RebateJob@handleProxyRebate', $rebateData, null);
                 }
             }
-        //}
+        }
     }
 
     // 建仓费返点-每天停盘后的时间段 16-23点
     public function handleJiancangRebate()
     {
         set_time_limit(0);
-        //if(checkSettleTime()){
+        if(checkSettleTime()){
             $orders = (new OrderLogic())->todayJiancangRebateOrder();
             if($orders){
                 foreach ($orders as $order){
@@ -204,7 +204,7 @@ class Cron extends Controller
                     Queue::push('app\index\job\RebateJob@handleJiancangRebate', $rebateData, null);
                 }
             }
-        //}
+        }
     }
 
     // 最优持仓数据统计,2小时运行一次
