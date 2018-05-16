@@ -30,6 +30,7 @@ class Test extends Controller
 
     public function test()
     {
+        die();
         return $this->huigun();
         exit();
         set_time_limit(0);
@@ -123,24 +124,25 @@ class Test extends Controller
         Queue::push('app\job\demoJob@fire', $data, $queue);
         echo 'ok';
     }
+
     public function huigun()
     {
         //proxy
-        /*$sql1 = "SELECT sum(`money`) as money_count, admin_id FROM `stock_admin_record` where create_at >= '1526371200' group by `admin_id`";
-        $adminRecord = collection(Db::query($sql1))->toArray();
-//        $updateMoneySql = "";
-        foreach($adminRecord as $k => $v)
-        {
-            $money = $v['money_count'];
-            $admin_id = $v['admin_id'];
-            echo "UPDATE `stock_admin` SET `total_fee` = `total_fee`-$money , `total_income` = `total_income`-$money WHERE `admin_id` = $admin_id;"; echo "<br />";
-
-        }*/
-        //$sqlDel = "DELETE FROM `stock_admin_record` WHERE create_at >= '1526371200'";
-        //echo $sqlDel;
+//        $sql1 = "SELECT sum(`money`) as money_count, admin_id FROM `stock_admin_record` where create_at >= '1526464800' group by `admin_id`";
+//        $adminRecord = collection(Db::query($sql1))->toArray();
+////        $updateMoneySql = "";
+//        foreach($adminRecord as $k => $v)
+//        {
+//            $money = $v['money_count'];
+//            $admin_id = $v['admin_id'];
+//            echo "UPDATE `stock_admin` SET `total_fee` = `total_fee`-$money , `total_income` = `total_income`-$money WHERE `admin_id` = $admin_id;"; echo "<br />";
+//
+//        }
+//        $sqlDel = "DELETE FROM `stock_admin_record` WHERE create_at >= '1526464800'";
+//        echo $sqlDel;die();
         //user
 //        dump($updateMoneySql);
-//        $sql1 = "SELECT sum(`amount`) as `amount`, `user_id` FROM `stock_user_record` where create_at >= '1526371200' and type=10 group by user_id";
+//        $sql1 = "SELECT sum(`amount`) as `amount`, `user_id` FROM `stock_user_record` where create_at >= '1526464800' and type=10 group by user_id";
 //        $adminRecord = collection(Db::query($sql1))->toArray();
 //        foreach($adminRecord as $k => $v)
 //        {
@@ -149,9 +151,17 @@ class Test extends Controller
 //            echo "UPDATE `stock_user` SET `account` = `account`-$money  WHERE `user_id` = $admin_id;"; echo "<br />";
 //
 //        }
-        //echo "DELETE FROM `stock_user_record` WHERE create_at >= '1526371200'";
+//        foreach($adminRecord as $k => $v)
+//        {
+//            $money = $v['amount'];
+//            $admin_id = $v['user_id'];
+//            echo "UPDATE `stock_user_manager` SET `already_income` = `already_income`-$money, `sure_income` = `sure_income` + $money  WHERE `user_id` = $admin_id;"; echo "<br />";
+//
+//        }
+//        echo "DELETE FROM `stock_user_record` WHERE create_at >= '1526464800'";
+//        die();
         //manager
-//        $sql1 = "SELECT sum(`money`) as money_count, user_id FROM `stock_user_manager_record` where create_at >= '1526371200' group by `user_id`";
+//        $sql1 = "SELECT sum(`money`) as money_count, user_id FROM `stock_user_manager_record` where create_at >= '1526464800' group by `user_id`";
 //        $adminRecord = collection(Db::query($sql1))->toArray();
 ////        $updateMoneySql = "";
 //        foreach($adminRecord as $k => $v)
@@ -161,20 +171,30 @@ class Test extends Controller
 //            echo "UPDATE `stock_user_manager` SET `income` = `income`-$money , `sure_income` = `sure_income`-$money WHERE `user_id` = $admin_id;"; echo "<br />";
 //
 //        }
-//        $sqlDel = "DELETE FROM `stock_user_manager_record` WHERE create_at >= '1526371200'";
+//        $sqlDel = "DELETE FROM `stock_user_manager_record` WHERE create_at >= '1526464800'";
 //        echo $sqlDel;
+//        die();
         //order
-        $sql1 = "SELECT * from `stock_order` WHERE `state` = 2 AND `update_at` >= '1526313600' ";
-        $sql2 = "UPDATE `stock_order` SET `niuren_rebate` = 0,`proxy_rebate` = 0 WHERE `state` = 2 AND `update_at` >= '1526313600' ";
-        $adminRecord = collection(Db::query($sql1))->toArray();
-        foreach($adminRecord as $k => $v)
-        {
-            $money = $v['money_count'];
-            $admin_id = $v['user_id'];
-            echo "UPDATE `stock_user_manager` SET `income` = `income`-$money , `sure_income` = `sure_income`-$money WHERE `user_id` = $admin_id;"; echo "<br />";
-
-        }
-        $sqll = "UPDATE `stock_admin_record` SET `create_at` = '1526371200' where create_at >= '1526371200'";
+//        $sql1 = "SELECT * from `stock_order` WHERE `state` = 3 AND `create_at` >= '1526400000' ";
+        $sql2 = "UPDATE `stock_order` SET `jiancang_rebate` = 0 WHERE `state` = 3 AND `create_at` >= '1526400000' ;";
+//        $sql3 = "SELECT * from `stock_order` WHERE `state` = 2 AND `update_at` >= '1526400000' ";
+        $sql4 = "UPDATE `stock_order` SET `niuren_rebate` = 0,`proxy_rebate` = 0 WHERE `state` = 2 AND `update_at` >= '1526400000' ;";
+//        echo $sql1;
+        echo "<br />";
+        echo $sql2;
+        echo "<br />";
+//        echo $sql3;
+        echo "<br />";
+        echo $sql4;
+//        $adminRecord = collection(Db::query($sql1))->toArray();
+//        foreach($adminRecord as $k => $v)
+//        {
+//            $money = $v['money_count'];
+//            $admin_id = $v['user_id'];
+//            echo "UPDATE `stock_user_manager` SET `income` = `income`-$money , `sure_income` = `sure_income`-$money WHERE `user_id` = $admin_id;"; echo "<br />";
+//
+//        }
+//        $sqll = "UPDATE `stock_admin_record` SET `create_at` = '1526371200' where create_at >= '1526371200'";
 
     }
 
