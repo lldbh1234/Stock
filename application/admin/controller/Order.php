@@ -52,7 +52,6 @@ class Order extends Base
     // 历史
     public function history()
     {
-        if(input('out_put') == 1) return $this->downExcel(input(""), date('Y-m-d H:i:s') .'平仓单-订单信息导出记录', 2);
         $_res = $this->_logic->pageHistoryOrders(input(""));
         $tableCols = (new AdminLogic())->tableColumnShow();
         $this->assign("datas", $_res['lists']);
@@ -95,7 +94,6 @@ class Order extends Base
     // 持仓
     public function position()
     {
-        if(input('out_put') == 1) return $this->downExcel(input(""), date('Y-m-d H:i:s') .'持仓单-订单信息导出记录');
         $_res = $this->_logic->pagePositionOrders(input(""));
         $tableCols = (new AdminLogic())->tableColumnShow();
         if($_res['lists']['data']){
@@ -382,6 +380,15 @@ class Order extends Base
         }else{
             return $this->fail("系统提示：非法操作！");
         }
+    }
+    public function historyExport()
+    {
+        return $this->downExcel(input(""), date('Y-m-d H:i:s') .'平仓单-订单信息导出记录', 2);
+
+    }
+    public function positionExport()
+    {
+        return $this->downExcel(input(""), date('Y-m-d H:i:s') .'持仓单-订单信息导出记录');
     }
     public function downExcel($param=[], $title = '持仓单-订单信息统计表', $type=1)
     {

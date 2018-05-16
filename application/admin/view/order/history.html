@@ -21,7 +21,6 @@
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="买入结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-			<input type="hidden" id="out_put"  name="out_put" value="0">
 		</div>
 		<div class="text-l mt-5">
 			{eq name="tableCols.settle" value="1"}
@@ -40,6 +39,7 @@
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="卖出开始时间" name="sell_begin" value="{$search.sell_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="卖出结束时间" name="sell_end" value="{$search.sell_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
 			<button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+
 			<button type="submit" class="btn btn-success radius" id="export" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>导出</button>
 		</div>
 	</form>
@@ -157,7 +157,7 @@
 </script>
 <script>
     $("#export").click(function(){
-
+        $('#search_form').attr('action', '{:url("/admin/Order/history-export")}');
         $('#out_put').val(1);
         $('#search_form').submit();
     });

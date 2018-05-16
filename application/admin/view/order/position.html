@@ -19,7 +19,6 @@
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
-			<input type="hidden" id="out_put"  name="out_put" value="0">
 		</div>
 		<div class="text-l mt-5">
 			{eq name="tableCols.settle" value="1"}
@@ -237,6 +236,7 @@
 <script>
     $("#export").click(function(){
 
+        $('#search_form').attr('action', '{:url("/admin/Order/position-export")}');
         $('#out_put').val(1);
         $('#search_form').submit();
     });

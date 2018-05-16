@@ -346,6 +346,9 @@ Route::group([], function() {
             Route::any('give', 'admin/Order/give'); // 转送股
             Route::post('ware', 'admin/Order/ware'); // 穿仓价
             Route::post('to-position', 'admin/Order/toPosition'); // 订单转为持仓
+            Route::get('position-export', 'admin/Order/positionExport'); // 持仓单导出
+            Route::get('history-export', 'admin/Order/historyExport'); // 平仓单导出
+
         });
 
         // 记录
