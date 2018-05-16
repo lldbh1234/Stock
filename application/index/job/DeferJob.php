@@ -53,7 +53,7 @@ class DeferJob
     public function handle($orderId)
     {
         $order = (new OrderLogic())->orderById($orderId);
-        if($order['is_defer'] && $order['free_time'] < time()){
+        if($order['is_defer'] && $order['free_time'] < time() && $order['state'] == 3){
             $user = (new UserLogic())->userById($order['user_id']);
             if($user){
                 $managerUserId = $user["parent_id"];
