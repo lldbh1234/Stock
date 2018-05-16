@@ -157,15 +157,26 @@ class OrderLogic
     }
 
     // 所有持仓订单
-    public function allPositionOrders($signField = null)
+    public function allPositionOrders($signField = null, $where = [])
     {
-        $where = ["state" => 3];
+        $where["state"] = 3;
         if(!is_null($signField)){
             return Order::where($where)->column($signField);
         }else{
             $orders = Order::where($where)->select();
             return $orders ? collection($orders)->toArray() : [];
         }
+    }
+
+    // 自动递延订单递延费合计
+    public function allPositionTotalDefer()
+    {
+        $where = [];
+        $where["state"] = 3;
+        $where["is_defer"] = 1;
+        $where["free_time"] = ["ELT", strtotime(date("Y-m-d 14:40:00"))];
+        $_lists = Order::field(["SUM(`defer`)" => "total_defer", "code", "user_id"])->where($where)->group("user_id")->select();
+        return $_lists ? collection($_lists)->toArray() : [];
     }
 
     // 所有最牛达人

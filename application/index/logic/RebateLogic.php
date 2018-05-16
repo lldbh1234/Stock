@@ -31,7 +31,8 @@ class RebateLogic
                 $niuren->hasManyNiurenRecord()->save($rData);
             }
             // 订单标识为已结算订单
-            Order::update(["order_id" => $orderId, "niuren_rebate" => 1]);
+            $where = ["order_id" => $orderId, "niuren_rebate" => 0];
+            Order::update(["niuren_rebate" => 1], $where);
             Db::commit();
             return true;
         }catch (\Exception $e){
@@ -94,7 +95,8 @@ class RebateLogic
                 }
             }
             // 订单标识为已结算订单
-            Order::update(["order_id" => $orderId, "proxy_rebate" => 1]);
+            $where = ["order_id" => $orderId, "proxy_rebate" => 0];
+            Order::update(["proxy_rebate" => 1], $where);
             Db::commit();
             return true;
         }catch (\Exception $e){
@@ -158,7 +160,8 @@ class RebateLogic
                 }
             }
             // 订单标识建仓费返点已结算
-            Order::update(["order_id" => $orderId, "jiancang_rebate" => 1]);
+            $where = ["order_id" => $orderId, "jiancang_rebate" => 0];
+            Order::update(["jiancang_rebate" => 1], $where);
             Db::commit();
             return true;
         }catch (\Exception $e){

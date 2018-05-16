@@ -80,25 +80,32 @@ class RebateJob
     {
         $profit = $data['money'];
         $orderId = $data['order_id'];
-        $niurenOrderId = $data['follow_id'];
-        $order = (new OrderLogic())->orderById($niurenOrderId);
-        $niurenUserId = $order['user_id'];
-        $handleRes = $this->_logic->handleNiurenRebate($niurenUserId, $orderId, $profit);
-        return $handleRes ? true : false;
+        $order = (new OrderLogic())->orderById($orderId);
+        if($order && $order['niuren_rebate'] == 0){
+            $niurenOrderId = $order['follow_id'];
+            $niurenOrder = (new OrderLogic())->orderById($niurenOrderId);
+            $niurenUserId = $niurenOrder['user_id'];
+            $handleRes = $this->_logic->handleNiurenRebate($niurenUserId, $orderId, $profit);
+            return $handleRes ? true : false;
+        }
+        return true;
     }
 
     public function handleProxy($data)
     {
         $profit = $data['money']; // 系统抽成总金额
         $orderId = $data['order_id']; //订单ID
-        $userId = $data['user_id']; // 用户ID
-        $user = (new UserLogic())->userById($userId);
-        if($user){
-            $managerUserId = $user["parent_id"];
-            $adminId = $user["admin_id"];
-            $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
-            $handleRes = $this->_logic->handleProxyRebate($managerUserId, $adminIds, $orderId, $profit);
-            return $handleRes ? true : false;
+        $order = (new OrderLogic())->orderById($orderId);
+        if($order && $order['proxy_rebate'] == 0){
+            $userId = $data['user_id']; // 用户ID
+            $user = (new UserLogic())->userById($userId);
+            if($user){
+                $managerUserId = $user["parent_id"];
+                $adminId = $user["admin_id"];
+                $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
+                $handleRes = $this->_logic->handleProxyRebate($managerUserId, $adminIds, $orderId, $profit);
+                return $handleRes ? true : false;
+            }
         }
         return true;
     }
@@ -107,14 +114,17 @@ class RebateJob
     {
         $fee = $data['money']; //建仓费
         $orderId = $data['order_id']; //订单ID
-        $userId = $data['user_id']; // 用户ID
-        $user = (new UserLogic())->userById($userId);
-        if($user){
-            $managerUserId = $user["parent_id"];
-            $adminId = $user["admin_id"];
-            $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
-            $handleRes = $this->_logic->handleJiancangRebate($managerUserId, $adminIds, $orderId, $fee);
-            return $handleRes ? true : false;
+        $order = (new OrderLogic())->orderById($orderId);
+        if($order && $order['jiancang_rebate'] == 0){
+            $userId = $data['user_id']; // 用户ID
+            $user = (new UserLogic())->userById($userId);
+            if($user){
+                $managerUserId = $user["parent_id"];
+                $adminId = $user["admin_id"];
+                $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
+                $handleRes = $this->_logic->handleJiancangRebate($managerUserId, $adminIds, $orderId, $fee);
+                return $handleRes ? true : false;
+            }
         }
         return true;
     }

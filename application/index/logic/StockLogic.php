@@ -40,6 +40,8 @@ class StockLogic
                     "shares_per_hand" => 100,
                     "prod_name" => $value['prod_name'],
                     "last_px"   => $value['last_px'],
+                    "buy_px"   => $value['buy_px'],
+                    "sell_px"   => $value['sell_px'],
                     "px_change" => $value['px_change'],
                     "px_change_rate" => $value['px_change_rate']
                 ];

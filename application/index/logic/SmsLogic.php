@@ -34,6 +34,10 @@ class SmsLogic
     {
         if($act == "loss"){
             return $this->smsLib->sendLoss($mobile, $vars);
+        }elseif($act == "nonAuto"){
+            return $this->smsLib->sendNonAuto($mobile, $vars);
+        }elseif($act == "balance"){
+            return $this->smsLib->sendBalance($mobile, $vars);
         }
     }
 }
