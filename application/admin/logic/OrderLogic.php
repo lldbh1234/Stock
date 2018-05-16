@@ -816,4 +816,241 @@ class OrderLogic
         }
         return Order::where($map)->column('code');
     }
+    public function positionOrders($filter = [])
+    {
+        $where = [];
+        $hasWhere = [];
+        $myUserIds = Admin::userIds();
+        $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
+        $where['stock_order.state'] = 3;
+        // 策略ID
+        if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
+            $where["stock_order.order_id"] = trim($filter['id']);
+        }
+        // 昵称
+        if(isset($filter['nickname']) && !empty($filter['nickname'])){
+            $_nickname = trim($filter['nickname']);
+            $hasWhere["nickname"] = ["LIKE", "%{$_nickname}%"];
+        }
+        // 手机号
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){
+            $hasWhere["mobile"] = trim($filter['mobile']);
+        }
+        // 股票代码
+        if(isset($filter['code']) && !empty($filter['code'])){
+            $where['stock_order.code'] = trim($filter['code']);
+        }
+        // 股票名称
+        if(isset($filter['name']) && !empty($filter['name'])){
+            $_name = trim($filter['name']);
+            $where["stock_order.name"] = ["LIKE", "%{$_name}%"];
+        }
+        // 股票名称
+        if(isset($filter['name']) && !empty($filter['name'])){
+            $_name = trim($filter['name']);
+            $where["stock_order.name"] = ["LIKE", "%{$_name}%"];
+        }
+        // 结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = [
+                "username" => trim($filter['settle']),
+                "role" => Admin::SETTLE_ROLE_ID
+            ];
+            $settleId = Admin::where($_where)->value("admin_id");
+            $ringIds = Admin::childrenAdminIds($settleId);
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = [
+                "username" => trim($filter['operate']),
+                "role" => Admin::OPERATE_ROLE_ID
+            ];
+            $operateId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($operateId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微会员
+        if(isset($filter['member']) && !empty($filter['member'])){
+            $_where = [
+                "username" => trim($filter['member']),
+                "role" => Admin::MEMBER_ROLE_ID
+            ];
+            $memberId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($memberId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微圈
+        if(isset($filter['ring']) && !empty($filter['ring'])){
+            $_where = [
+                "username" => trim($filter['ring']),
+                "role" => Admin::RING_ROLE_ID
+            ];
+            $tempRingIds = Admin::where($_where)->column("admin_id");
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 经纪人
+        /*if(isset($filter['manager']) && !empty($filter['manager'])){
+            $_manager = trim($filter['manager']);
+            $_where = ["username" => ["LIKE", "%{$_manager}%"]];
+            $managerUserIds = User::where($_where)->column("user_id") ? : [-1];
+            $hasWhere["parent_id"] = ["IN", $managerUserIds];
+        }*/
+        // 提交时间
+        if(isset($filter['create_begin']) || isset($filter['create_end'])){
+            if(!empty($filter['create_begin']) && !empty($filter['create_end'])){
+                $_start = strtotime($filter['create_begin']);
+                $_end = strtotime($filter['create_end']);
+                $where['stock_order.create_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['create_begin'])){
+                $_start = strtotime($filter['create_begin']);
+                $where['stock_order.create_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['create_end'])){
+                $_end = strtotime($filter['create_end']);
+                $where['stock_order.create_at'] = ["ELT", $_end];
+            }
+        }
+        // 是否对冲
+        /*if(isset($filter['is_hedging']) && is_numeric($filter['is_hedging'])){
+            $hasWhere["stock_order.is_hedging"] = $filter['is_hedging'];
+        }*/
+        /*$lists = Order::hasWhere("hasOneUser", $hasWhere)
+            ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator", "belongsToMode"])
+            ->where($where)
+            ->order("order_id DESC")
+            ->paginate($pageSize, false, ['query'=>request()->param()]);*/
+        $totalProfit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("profit");
+        $totalDeposit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("deposit");
+        $totalJiancang = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("jiancang_fee");
+        $totalDefer = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("defer_total");
+        $_lists = Order::hasWhere("hasOneUser", $hasWhere)
+            ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
+            ->where($where)
+            ->order("order_id DESC")->select();
+//            ->paginate(100, false, ['query'=>request()->param()]);
+        $lists = collection($_lists)->toArray();
+
+        return compact("lists", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
+    }
+    public function historyOrders($filter = [])
+    {
+        $where = [];
+        $hasWhere = [];
+        $myUserIds = Admin::userIds();
+        $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
+        $where['stock_order.state'] = 3;
+        // 策略ID
+        if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
+            $where["stock_order.order_id"] = trim($filter['id']);
+        }
+        // 昵称
+        if(isset($filter['nickname']) && !empty($filter['nickname'])){
+            $_nickname = trim($filter['nickname']);
+            $hasWhere["nickname"] = ["LIKE", "%{$_nickname}%"];
+        }
+        // 手机号
+        if(isset($filter['mobile']) && !empty($filter['mobile'])){
+            $hasWhere["mobile"] = trim($filter['mobile']);
+        }
+        // 股票代码
+        if(isset($filter['code']) && !empty($filter['code'])){
+            $where['stock_order.code'] = trim($filter['code']);
+        }
+        // 股票名称
+        if(isset($filter['name']) && !empty($filter['name'])){
+            $_name = trim($filter['name']);
+            $where["stock_order.name"] = ["LIKE", "%{$_name}%"];
+        }
+        // 股票名称
+        if(isset($filter['name']) && !empty($filter['name'])){
+            $_name = trim($filter['name']);
+            $where["stock_order.name"] = ["LIKE", "%{$_name}%"];
+        }
+        // 结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = [
+                "username" => trim($filter['settle']),
+                "role" => Admin::SETTLE_ROLE_ID
+            ];
+            $settleId = Admin::where($_where)->value("admin_id");
+            $ringIds = Admin::childrenAdminIds($settleId);
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = [
+                "username" => trim($filter['operate']),
+                "role" => Admin::OPERATE_ROLE_ID
+            ];
+            $operateId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($operateId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微会员
+        if(isset($filter['member']) && !empty($filter['member'])){
+            $_where = [
+                "username" => trim($filter['member']),
+                "role" => Admin::MEMBER_ROLE_ID
+            ];
+            $memberId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($memberId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微圈
+        if(isset($filter['ring']) && !empty($filter['ring'])){
+            $_where = [
+                "username" => trim($filter['ring']),
+                "role" => Admin::RING_ROLE_ID
+            ];
+            $tempRingIds = Admin::where($_where)->column("admin_id");
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 经纪人
+        /*if(isset($filter['manager']) && !empty($filter['manager'])){
+            $_manager = trim($filter['manager']);
+            $_where = ["username" => ["LIKE", "%{$_manager}%"]];
+            $managerUserIds = User::where($_where)->column("user_id") ? : [-1];
+            $hasWhere["parent_id"] = ["IN", $managerUserIds];
+        }*/
+        // 提交时间
+        if(isset($filter['create_begin']) || isset($filter['create_end'])){
+            if(!empty($filter['create_begin']) && !empty($filter['create_end'])){
+                $_start = strtotime($filter['create_begin']);
+                $_end = strtotime($filter['create_end']);
+                $where['stock_order.create_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['create_begin'])){
+                $_start = strtotime($filter['create_begin']);
+                $where['stock_order.create_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['create_end'])){
+                $_end = strtotime($filter['create_end']);
+                $where['stock_order.create_at'] = ["ELT", $_end];
+            }
+        }
+        // 是否对冲
+        /*if(isset($filter['is_hedging']) && is_numeric($filter['is_hedging'])){
+            $hasWhere["stock_order.is_hedging"] = $filter['is_hedging'];
+        }*/
+        /*$lists = Order::hasWhere("hasOneUser", $hasWhere)
+            ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator", "belongsToMode"])
+            ->where($where)
+            ->order("order_id DESC")
+            ->paginate($pageSize, false, ['query'=>request()->param()]);*/
+        $totalProfit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("profit");
+        $totalDeposit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("deposit");
+        $totalJiancang = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("jiancang_fee");
+        $totalDefer = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("defer_total");
+        $_lists = Order::hasWhere("hasOneUser", $hasWhere)
+            ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
+            ->where($where)
+            ->order("order_id DESC")
+            ->select();
+        $lists = collection($_lists)->toArray();
+        return compact("lists", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
+    }
 }
