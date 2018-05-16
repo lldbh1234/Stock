@@ -37,7 +37,9 @@
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交结束时间" name="create_end" value="{$search.create_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
 			<button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+			{if condition="in_array('admin/Order/positionExport', $Think.session.ACCESS_LIST)"}
 			<button type="submit" class="btn btn-success radius" id="export" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>导出</button>
+			{/if}
 		</div>
 		<!--<div class="text-l mt-5">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="提交开始时间" name="create_begin" value="{$search.create_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
