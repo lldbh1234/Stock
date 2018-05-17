@@ -674,7 +674,7 @@
      });
 
      //平仓
-     $("body").on("click", ".sell_position_btn", function(){
+     $("body").on("tap", ".sell_position_btn", function(){
         var context = $(this).parents("li");
         var id = context.data("id");
         layer.open({
