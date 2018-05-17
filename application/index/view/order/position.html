@@ -509,7 +509,7 @@
 
      function modifyPoint(that){
         var context = $(that).parents("li");
-        var accountBalance = $(".h_re_banlance").data("balance"); //账户余额
+        var accountBalance = $(".h_re_banlance").data("balance") + ""; //账户余额
         accountBalance = accountBalance.split(",");
         accountBalance = accountBalance.join("");
         accountBalance = parseFloat(accountBalance);
