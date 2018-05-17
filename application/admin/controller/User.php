@@ -146,7 +146,7 @@ class User extends Base
                 $_res = $this->userLogic->pageUserRechargeByUserId($id, input(""), 10);
                 if($_res){
                     $pageAmount = array_sum(collection($_res['lists']['data'])->column("amount"));
-                    $type = [0 => "支付宝", 1 => "微信", 2 => "连连支付"];
+                    $type = config('recharge_way');
                     array_filter($_res['lists']['data'], function(&$_item) use ($type){
                         $_item['type_text'] = $type[$_item['type']];
                     });
@@ -360,7 +360,7 @@ class User extends Base
                     $_res = $this->userLogic->pageUserRechargeByUserId($withdraw['user_id'], input(""), 10);
                     if($_res){
                         $pageAmount = array_sum(collection($_res['lists']['data'])->column("amount"));
-                        $type = [0 => "支付宝", 1 => "微信", 2 => "连连支付"];
+                        $type = config('recharge_way');
                         array_filter($_res['lists']['data'], function(&$_item) use ($type){
                             $_item['type_text'] = $type[$_item['type']];
                         });
