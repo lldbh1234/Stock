@@ -35,7 +35,8 @@ class Stock extends Base
                     $quotation = $this->_logic->quotationBySina($code);
                     if(isset($quotation[$code])){
                         $last_px = $quotation[$code]['last_px'];
-                        $price = $last_px - $price > 0.02 ? $price + 0.02 : $price; //卖1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
+                        $sell_px = $quotation[$code]['sell_px'];
+                        $price = $last_px - $sell_px > 0.02 ? $sell_px + 0.02 : $sell_px; //卖1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
                         $stock = $this->_logic->stockByCode($code);
                         $mode = (new ModeLogic())->modeIncPluginsById($modeId);
                         $deposit = (new DepositLogic())->depositById($depositId);

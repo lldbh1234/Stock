@@ -39,8 +39,9 @@
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="卖出开始时间" name="sell_begin" value="{$search.sell_begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="卖出结束时间" name="sell_end" value="{$search.sell_end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
 			<button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
-
+			{if condition="in_array('admin/Order/historyExport', $Think.session.ACCESS_LIST)"}
 			<button type="submit" class="btn btn-success radius" id="export" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>导出</button>
+			{/if}
 		</div>
 	</form>
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
