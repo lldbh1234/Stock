@@ -193,7 +193,7 @@ class PHPZip
             $fd       = fopen($file, "rb");
             $content  = @fread($fd, filesize($file));
             fclose($fd);
-            $file = iconv("UTF-8", "GBK", $file);
+
             // 1.删除$dir的字符(./folder/file.txt删除./folder/)
             // 2.如果存在/就删除(/file.txt删除/)
             $file = mb_substr($file, mb_strlen($dir));
