@@ -384,14 +384,14 @@ class Order extends Base
 
     public function historyExport()
     {
-        return $this->downExcel(input(""), date('YmdHi') .'平仓单-订单信息导出记录', 2);
-
+        // 平仓单-订单信息导出记录
+        return $this->downExcel(input(""), date('Y-m-d H:i') .' History Orders', 2);
     }
 
     public function positionExport()
     {
-        header("Content-type:application/vnd.ms-excel;charset=utf-8");
-        return $this->downExcel(input(""), date('Y-m-d H:i') . '持仓单-订单信息导出记录');
+        // 持仓单-订单信息导出记录
+        return $this->downExcel(input(""), date('Y-m-d H:i') . ' Position Orders');
     }
 
     public function downExcel($param=[], $title = '持仓单-订单信息统计表', $type=1)
@@ -485,7 +485,7 @@ class Order extends Base
             $Excel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
             $Excel->setActiveSheetIndex(0)->setCellValue('F2','买入价');
             $Excel->getActiveSheet()->getColumnDimension('F')->setWidth(25);
-            $Excel->setActiveSheetIndex(0)->setCellValue('G2','卖出价	');
+            $Excel->setActiveSheetIndex(0)->setCellValue('G2','卖出价');
             $Excel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
             $Excel->setActiveSheetIndex(0)->setCellValue('H2','卖出数量');
             $Excel->getActiveSheet()->getColumnDimension('H')->setWidth(25);
