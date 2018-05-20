@@ -637,14 +637,8 @@ class Order extends Base
         $objWriter->save($filename);
         fclose($fp);
         //压缩下载
-        /*require ROOT_PATH . 'vendor/PHPZip/PHPZip.php';
+        require ROOT_PATH . 'vendor/PHPZip/PHPZip.php';
         $archive = new \PHPZip();
-        $archive->ZipAndDownload($filePath, $title);*/
-        @header('Content-Encoding: none');
-        @header("Content-type: application/vnd.ms-excel");
-        @header('Content-Disposition: attachment ; filename=' . $filename . '.zip');
-        @header('Pragma: no-cache');
-        @header('Expires: 0');
-        print($filename);
+        $archive->ZipAndDownload($filePath, $title);
     }
 }
