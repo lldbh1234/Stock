@@ -539,7 +539,7 @@ class Order extends Base
                 $Excel->setActiveSheetIndex(0)->setCellValue('H'.$n, $val['sell_hand']);
                 $Excel->setActiveSheetIndex(0)->setCellValue('I'.$n, $val['deposit']);
                 $Excel->setActiveSheetIndex(0)->setCellValue('J'.$n, $val['profit']);
-                $Excel->setActiveSheetIndex(0)->setCellValue('K'.$n, ($val['profit'] > 0 && abs($val['profit']) > $val['deposit']) ? number_format($val['profit'] + $val['deposit'], 2) : '-');
+                $Excel->setActiveSheetIndex(0)->setCellValue('K'.$n, ($val['profit'] < 0 && abs($val['profit']) > $val['deposit']) ? number_format($val['profit'] + $val['deposit'], 2) : '-');
                 $Excel->setActiveSheetIndex(0)->setCellValue('L'.$n, date('Y-m-d H:i', $val['create_at']));
                 $Excel->setActiveSheetIndex(0)->setCellValue('M'.$n, $val['belongs_to_mode']['name']?:'-');
                 $Excel->setActiveSheetIndex(0)->setCellValue('N'.$n, $val['create_at'] ? date('Y-m-d H:i', $val['create_at']) : '-');
