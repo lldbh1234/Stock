@@ -158,13 +158,11 @@
 </script>
 <script>
     $("#export").click(function(){
-        $('#search_form').attr('action', '{:url("/admin/Order/history-export")}');
-        $('#out_put').val(1);
+        $('#search_form').attr('action', '{:url("/admin/Order/historyExport")}');
         $('#search_form').submit();
     });
     $("#search").click(function(){
-
-        $('#out_put').val(0);
+        $('#search_form').attr('action', '');
         $('#search_form').submit();
     });
 

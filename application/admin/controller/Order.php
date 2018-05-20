@@ -381,21 +381,23 @@ class Order extends Base
             return $this->fail("系统提示：非法操作！");
         }
     }
+
     public function historyExport()
     {
         return $this->downExcel(input(""), date('Y-m-d H:i:s') .'平仓单-订单信息导出记录', 2);
 
     }
+
     public function positionExport()
     {
         return $this->downExcel(input(""), date('Y-m-d H:i:s') .'持仓单-订单信息导出记录');
     }
+
     public function downExcel($param=[], $title = '持仓单-订单信息统计表', $type=1)
     {
         ini_set("memory_limit", "10000M");
         set_time_limit(0);
-        header("Content-type:application/vnd.ms-excel;charset=UTF-8");
-
+        header("Content-type:application/vnd.ms-excel;charset=utf-8");
         require ROOT_PATH.'vendor/PHPExcel/Classes/PHPExcel.php';
         //获取数据
         if(1 == $type)
@@ -635,8 +637,14 @@ class Order extends Base
         $objWriter->save($filename);
         fclose($fp);
         //压缩下载
-        require ROOT_PATH . 'vendor/PHPZip/PHPZip.php';
+        /*require ROOT_PATH . 'vendor/PHPZip/PHPZip.php';
         $archive = new \PHPZip();
-        $archive->ZipAndDownload($filePath, $title);
+        $archive->ZipAndDownload($filePath, $title);*/
+        @header('Content-Encoding: none');
+        @header("Content-type: application/vnd.ms-excel");
+        @header('Content-Disposition: attachment ; filename=' . $filename . '.zip');
+        @header('Pragma: no-cache');
+        @header('Expires: 0');
+        print($filename);
     }
 }
