@@ -384,13 +384,14 @@ class Order extends Base
 
     public function historyExport()
     {
-        return $this->downExcel(input(""), date('Y-m-d H:i:s') .'平仓单-订单信息导出记录', 2);
+        return $this->downExcel(input(""), date('YmdHi') .'平仓单-订单信息导出记录', 2);
 
     }
 
     public function positionExport()
     {
-        return $this->downExcel(input(""), date('Y-m-d H:i:s') .'持仓单-订单信息导出记录');
+        header("Content-type:application/vnd.ms-excel;charset=utf-8");
+        return $this->downExcel(input(""), date('Y-m-d H:i') . '持仓单-订单信息导出记录');
     }
 
     public function downExcel($param=[], $title = '持仓单-订单信息统计表', $type=1)
@@ -629,6 +630,7 @@ class Order extends Base
             $m++;
         }
         $filename = $filePath . $title . '.xls';
+        $filename = iconv('UTF-8', 'GBK', $filename);
         $fp = fopen($filename, 'w+');
         if (!is_writable($filename)) {
             die('文件:' . $filename . '不可写，请检查！');
