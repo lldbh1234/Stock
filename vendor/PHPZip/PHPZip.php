@@ -179,7 +179,7 @@ class PHPZip
     // ------------------------------------------------------ //
     // #压缩并直接下载
     // ------------------------------------------------------ //
-    public function ZipAndDownload($dir, $filename)
+    public function ZipAndDownload($dir, $filename, $excelName)
     {
         if(@!function_exists('gzcompress')){ return; }
 
@@ -189,6 +189,7 @@ class PHPZip
         foreach($filelist as $file)
         {
             if(!file_exists($file) || !is_file($file)){ continue; }
+            if(false === strpos($file, $excelName)) { continue; }
             
             $fd       = fopen($file, "rb");
             $content  = @fread($fd, filesize($file));

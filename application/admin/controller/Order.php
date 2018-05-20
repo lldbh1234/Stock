@@ -544,7 +544,7 @@ class Order extends Base
             }
 
             $n++;
-            $Excel->getActiveSheet()->getRowDimension($n+1)->setRowHeight(18);
+            /*$Excel->getActiveSheet()->getRowDimension($n+1)->setRowHeight(18);
             if ($m != 0 && $m % 1000 == 0) {
                 //保存到服务器
                 $filename = $filePath . $num . '.xls';
@@ -627,9 +627,13 @@ class Order extends Base
                     $Excel->setActiveSheetIndex(0)->setCellValue('N2','卖出时间');
                 }
             }
-            $m++;
+            $m++;*/
         }
-        $filename = $filePath . $title . '.xls';
+        if(1 == $type){
+            $filename = "{$filePath} Position Orders.xls";
+        }elseif (2 == $type){
+            $filename = "{$filePath} History Orders.xls";
+        }
         //$filename = iconv('UTF-8', 'GBK', $filename);
         $fp = fopen($filename, 'w+');
         if (!is_writable($filename)) {
@@ -641,6 +645,6 @@ class Order extends Base
         //压缩下载
         require ROOT_PATH . 'vendor/PHPZip/PHPZip.php';
         $archive = new \PHPZip();
-        $archive->ZipAndDownload($filePath, $title);
+        $archive->ZipAndDownload($filePath, $title, $filename);
     }
 }
