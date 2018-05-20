@@ -185,6 +185,9 @@ class PHPZip
 
         ob_end_clean();
         $filelist = $this->visitFile($dir);
+        dump($filename);
+        dump($filelist);
+        exit;
         if(count($filelist) == 0){ return; }
 
         foreach($filelist as $file)
