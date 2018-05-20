@@ -935,13 +935,15 @@ class OrderLogic
 
         return compact("lists", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
     }
+
+    // 平仓订单
     public function historyOrders($filter = [])
     {
         $where = [];
         $hasWhere = [];
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
-        $where['stock_order.state'] = 3;
+        $where['stock_order.state'] = 2;
         // 策略ID
         if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
             $where["stock_order.order_id"] = trim($filter['id']);
@@ -958,11 +960,6 @@ class OrderLogic
         // 股票代码
         if(isset($filter['code']) && !empty($filter['code'])){
             $where['stock_order.code'] = trim($filter['code']);
-        }
-        // 股票名称
-        if(isset($filter['name']) && !empty($filter['name'])){
-            $_name = trim($filter['name']);
-            $where["stock_order.name"] = ["LIKE", "%{$_name}%"];
         }
         // 股票名称
         if(isset($filter['name']) && !empty($filter['name'])){
@@ -1018,7 +1015,7 @@ class OrderLogic
             $managerUserIds = User::where($_where)->column("user_id") ? : [-1];
             $hasWhere["parent_id"] = ["IN", $managerUserIds];
         }*/
-        // 提交时间
+        // 买入时间
         if(isset($filter['create_begin']) || isset($filter['create_end'])){
             if(!empty($filter['create_begin']) && !empty($filter['create_end'])){
                 $_start = strtotime($filter['create_begin']);
@@ -1032,19 +1029,29 @@ class OrderLogic
                 $where['stock_order.create_at'] = ["ELT", $_end];
             }
         }
-        // 是否对冲
-        /*if(isset($filter['is_hedging']) && is_numeric($filter['is_hedging'])){
-            $hasWhere["stock_order.is_hedging"] = $filter['is_hedging'];
-        }*/
-        /*$lists = Order::hasWhere("hasOneUser", $hasWhere)
-            ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator", "belongsToMode"])
-            ->where($where)
-            ->order("order_id DESC")
-            ->paginate($pageSize, false, ['query'=>request()->param()]);*/
+        // 卖出时间
+        if(isset($filter['sell_begin']) || isset($filter['sell_end'])){
+            if(!empty($filter['sell_begin']) && !empty($filter['sell_end'])){
+                $_start = strtotime($filter['sell_begin']);
+                $_end = strtotime($filter['sell_end']);
+                $where['stock_order.update_at'] = ["BETWEEN", [$_start, $_end]];
+            }elseif(!empty($filter['sell_begin'])){
+                $_start = strtotime($filter['sell_begin']);
+                $where['stock_order.update_at'] = ["EGT", $_start];
+            }elseif(!empty($filter['sell_end'])){
+                $_end = strtotime($filter['sell_end']);
+                $where['stock_order.update_at'] = ["ELT", $_end];
+            }
+        }
         $totalProfit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("profit");
         $totalDeposit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("deposit");
         $totalJiancang = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("jiancang_fee");
         $totalDefer = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("defer_total");
+        /*$lists = Order::hasWhere("hasOneUser", $hasWhere)
+            ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator"])
+            ->where($where)
+            ->order("order_id DESC")
+            ->paginate($pageSize, false, ['query'=>request()->param()]);*/
         $_lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
             ->where($where)
