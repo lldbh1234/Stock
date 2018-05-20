@@ -384,17 +384,19 @@ class Order extends Base
 
     public function historyExport()
     {
-        // 平仓单-订单信息导出记录
-        return $this->downExcel(input(""), date('Y-m-d H:i') .' History Orders', 2);
+        //
+        $date = date('Y-m-d H:i');
+        return $this->downExcel(input(""),  "{$date} 平仓单-订单信息导出记录", $date, 2);
     }
 
     public function positionExport()
     {
-        // 持仓单-订单信息导出记录
-        return $this->downExcel(input(""), date('Y-m-d H:i') . ' Position Orders');
+        //
+        $date = date('Y-m-d H:i');
+        return $this->downExcel(input(""), "{$date} 持仓单-订单信息导出记录", $date);
     }
 
-    public function downExcel($param=[], $title = '持仓单-订单信息统计表', $type=1)
+    public function downExcel($param=[], $title = '持仓单-订单信息统计表', $date, $type=1)
     {
         ini_set("memory_limit", "10000M");
         set_time_limit(0);
@@ -630,9 +632,9 @@ class Order extends Base
             $m++;*/
         }
         if(1 == $type){
-            $filename = "{$filePath} Position Orders.xls";
+            $filename = "{$filePath}{$date} Position Orders.xls";
         }elseif (2 == $type){
-            $filename = "{$filePath} History Orders.xls";
+            $filename = "{$filePath}{$date} History Orders.xls";
         }
         //$filename = iconv('UTF-8', 'GBK', $filename);
         $fp = fopen($filename, 'w+');
