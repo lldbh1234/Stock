@@ -630,7 +630,7 @@ class Order extends Base
             $m++;
         }
         $filename = $filePath . $title . '.xls';
-        $filename = iconv('UTF-8', 'GBK', $filename);
+        //$filename = iconv('UTF-8', 'GBK', $filename);
         $fp = fopen($filename, 'w+');
         if (!is_writable($filename)) {
             die('文件:' . $filename . '不可写，请检查！');
