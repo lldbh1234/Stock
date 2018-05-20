@@ -185,9 +185,6 @@ class PHPZip
 
         ob_end_clean();
         $filelist = $this->visitFile($dir);
-        dump($filename);
-        dump($filelist);
-        exit;
         if(count($filelist) == 0){ return; }
 
         foreach($filelist as $file)
@@ -200,7 +197,7 @@ class PHPZip
 
             // 1.删除$dir的字符(./folder/file.txt删除./folder/)
             // 2.如果存在/就删除(/file.txt删除/)
-            $file = substr($file, strlen($dir));
+            $file = mb_substr($file, mb_strlen($dir));
             if(substr($file, 0, 1) == "\\" || substr($file, 0, 1) == "/"){ $file = substr($file, 1); }
             
             $this->addFile($content, $file);
