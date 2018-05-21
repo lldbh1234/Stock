@@ -53,7 +53,7 @@
             <!--<th>总亏损</th>-->
             <th>注册时间</th>
             <th>状态</th>
-            <th width="160">操作</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -90,6 +90,13 @@
                 {/if}
                 {if condition="in_array('admin/User/modifyPwd', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-warning size-MINI radius" type="button" title="修改密码" onclick="admin_pwd(this, '{$item.user_id}')" value="修改密码">
+                {/if}
+                {if condition="in_array('admin/User/withdrawState', $Think.session.ACCESS_LIST)"}
+                {if condition="$item.withdraw_state EQ 0"}
+                <input class="btn btn-danger size-MINI radius" type="button" title="禁止出金" onclick="withdraw_state('{$item.user_id}')" value="禁止出金">
+                {else /}
+                <input class="btn btn-success size-MINI radius" type="button" title="开启出金" onclick="withdraw_state('{$item.user_id}')" value="开启出金">
+                {/if}
                 {/if}
             </td>
         </tr>
@@ -128,6 +135,7 @@
     }
     {/if}
 
+    {if condition="in_array('admin/User/detail', $Think.session.ACCESS_LIST)"}
     function user_detail(title,url) {
         var index = layer.open({
             type: 2,
@@ -136,6 +144,7 @@
         });
         layer.full(index);
     }
+    {/if}
 
     {if condition="in_array('admin/User/modifyPwd', $Think.session.ACCESS_LIST)"}
     function admin_pwd(_obj, _id)
@@ -155,6 +164,29 @@
                     } else {
                         layer.msg('修改成功！', {time: 500}, function(){
 
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+    {/if}
+
+    {if condition="in_array('admin/User/withdrawState', $Think.session.ACCESS_LIST)"}
+    function withdraw_state(_id)
+    {
+        layer.confirm('是否确认本次操作?', {icon: 1, title:'提示'}, function(index){
+            parent.layer.close(index);
+            var _oData = {user_id : _id},
+                _url = '{:url("admin/User/withdrawState")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            window.location.reload();
                         });
                     }
                 };

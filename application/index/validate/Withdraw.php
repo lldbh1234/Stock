@@ -57,8 +57,16 @@ class Withdraw extends Validate
 
     protected function checkCode($value, $rule, $data)
     {
-        $mobile = uInfo()['mobile'];
-        return (new SmsLogic())->verify($mobile, $value, "withdraw");
+        $user = uInfo();
+        $mobile = $user['mobile'];
+        $validate = (new SmsLogic())->verify($mobile, $value, "withdraw");
+        if($validate){
+            if($user['withdraw_state'] == 1){
+                return "用户禁止提现，请联系管理员！";
+            }
+            return true;
+        }
+        return false;
     }
 
     protected function checkMoney($value)

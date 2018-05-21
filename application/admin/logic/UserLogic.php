@@ -243,6 +243,7 @@ class UserLogic
         $data = User::where(['user_id' => $id])->find();
         return $data->toArray();
     }
+
     public function update($where=[])
     {
         return User::update($where);

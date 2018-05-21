@@ -56,6 +56,28 @@ class User extends Base
         return view();
     }
 
+    public function withdrawState()
+    {
+        if(request()->isPost()){
+            $userId = input("post.user_id");
+            $user = $this->userLogic->userById($userId);
+            if($user){
+                $data = [
+                    "user_id" => $user['user_id'],
+                    "withdraw_state" => ($user['withdraw_state'] + 1) % 2
+                ];
+                $res = $this->userLogic->update($data);
+                if($res !== false){
+                    return $this->ok();
+                }
+            }else{
+                return $this->fail("系统提示：非法操作！");
+            }
+        }else{
+            return "非法操作！";
+        }
+    }
+
     public function detail($id = null, $type = 1)
     {
         switch ($type){

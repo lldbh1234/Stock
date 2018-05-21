@@ -317,6 +317,7 @@ Route::group([], function() {
             Route::any('withdraw-lists', 'admin/User/withdrawLists');  // 会员出金列表
             Route::any('withdraw-detail', 'admin/User/withdrawDetail');  // 会员出金列表
             Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
+            Route::any('withdraw-state', 'admin/User/withdrawState');  // 关闭or开启出金
         });
 
         //经纪人管理
