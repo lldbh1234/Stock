@@ -296,7 +296,8 @@ class UserLogic
             $where = is_array($state) ? ["state" => ["IN", $state]] : ["state" => $state];
             //$res = User::find($userId)->hasManyOrder()->where($where)->field($field)->paginate($pageSize);
             $where['user_id'] = $userId;
-            $res = Order::with("belongsToMode")->where($where)->field($field)->paginate($pageSize);
+            $order = $state == 2 ? ["update_at" => "DESC"] : ["order_id" => "DESC"];
+            $res = Order::with("belongsToMode")->where($where)->field($field)->order($order)->paginate($pageSize);
             return $res ? $res->toArray() : [];
         } catch(\Exception $e) {
             return [];
