@@ -300,12 +300,24 @@ class AdminLogic
                 return $res->$pk;
             } catch (\Exception $e) {
                 // 回滚事务
-                dump($e->getMessage());
                 Db::rollback();
                 return 0;
             }
         }
         return 0;
+    }
+
+    // 代理商今日提现数量
+    public function proxyTodayWithdrawCount($adminId)
+    {
+        $todayBegin = strtotime(date("Y-m-d 00:00:00"));
+        $todayEnd = strtotime(date("Y-m-d 23:59:59"));
+        $where = [
+            "admin_id"  => $adminId,
+            "state"     => ["NEQ", -1],
+            "create_at" => ["BETWEEN", [$todayBegin, $todayEnd]]
+        ];
+        return AdminWithdraw::where($where)->count();
     }
 
     public function pageAdminWithdraws($adminId, $filter = [], $pageSize = null)
