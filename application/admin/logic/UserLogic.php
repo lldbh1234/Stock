@@ -14,7 +14,9 @@ class UserLogic
 {
     public function pageUserLists($filter = [], $pageSize = null)
     {
-        $where = Admin::manager();
+        $where = [];
+        $userIds = Admin::userIds();
+        $where["user_id"] = ["IN", $userIds];
         // 登录名
         if(isset($filter['username']) && !empty($filter['username'])){
             $where["username"] = ["LIKE", "%{$filter['username']}%"];
@@ -52,13 +54,11 @@ class UserLogic
                 "role" => Admin::RING_ROLE_ID
             ];
             $parents = Admin::where($_where)->column("admin_id");
-
             $where["admin_id"] = ["IN", $parents];
             if(isset($memAdminIds)){
                 $parents = array_intersect($parents, $memAdminIds);
                 $where["admin_id"] = ["IN", $parents];
             }
-
         }
 
         if(isset($filter['parent_username']) && !empty($filter['parent_username'])){//推荐人

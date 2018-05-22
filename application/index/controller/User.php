@@ -206,6 +206,7 @@ class User extends Base
                         }
                     }elseif ($way == 3){
                         // 汇付天下
+                        return "通道已关闭！";
                         $amount = sprintf("%.2f", $amount);
                         $html = (new huifuPay())->getCode($orderSn, $amount);
                         echo $html;
