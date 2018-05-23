@@ -16,7 +16,7 @@ class UserLogic
     {
         $where = [];
         $userIds = Admin::userIds();
-        $where["user_id"] = ["IN", $userIds];
+        $userIds ? $where["user_id"] = ["IN", $userIds] : null;
         // 登录名
         if(isset($filter['username']) && !empty($filter['username'])){
             $where["username"] = ["LIKE", "%{$filter['username']}%"];
