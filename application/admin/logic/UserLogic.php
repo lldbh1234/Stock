@@ -19,11 +19,11 @@ class UserLogic
         $userIds ? $where["user_id"] = ["IN", $userIds] : null;
         // 登录名
         if(isset($filter['username']) && !empty($filter['username'])){
-            $where["username"] = ["LIKE", "%{$filter['username']}%"];
+            $where["username"] = trim($filter['username']);
         }
         // 昵称
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
-            $where["nickname"] = ["LIKE", "%{$filter['nickname']}%"];
+            $where["nickname"] = trim($filter['nickname']);
         }
         // 手机号
         if(isset($filter['mobile']) && !empty($filter['mobile'])){
@@ -37,7 +37,7 @@ class UserLogic
         // 上级微会员
         if(isset($filter['admin_parent_username']) && !empty($filter['admin_parent_username'])){
             $_where = [
-                "username" => ["LIKE", "%{$filter['admin_parent_username']}%"],
+                "username" => trim($filter['admin_parent_username']),
                 "role" => Admin::MEMBER_ROLE_ID
             ];
             $memAdminIds = Admin::where($_where)->column("admin_id");
@@ -50,7 +50,7 @@ class UserLogic
         //上级微圈
         if(isset($filter['admin_username']) && !empty($filter['admin_username'])){
             $_where = [
-                "username" => ["LIKE", "%{$filter['admin_username']}%"],
+                "username" => trim($filter['admin_username']),
                 "role" => Admin::RING_ROLE_ID
             ];
             $parents = Admin::where($_where)->column("admin_id");
@@ -62,7 +62,7 @@ class UserLogic
         }
 
         if(isset($filter['parent_username']) && !empty($filter['parent_username'])){//推荐人
-            $parent_ids = User::where(['username' => ["LIKE", "%{$filter['parent_username']}%"]])->column('user_id');
+            $parent_ids = User::where(['username' => $filter['parent_username']])->column('user_id');
             $where['parent_id'] = ['IN', $parent_ids];
         }
 
