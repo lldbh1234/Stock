@@ -30,7 +30,16 @@ class Test extends Controller
 
     public function test()
     {
-        die();
+        $order = (new UserLogic())->userOrderById('303', '2851', 3);
+        $order = reset($order);
+        if($order){
+            $order['buy_px'] = 21.74; //买1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
+            $res = (new UserLogic())->userOrderSelling($order);
+            dump($res);
+        }else{
+            return $this->fail("系统提示：非法操作！");
+        }
+        exit;
         return $this->huigun();
         exit();
         set_time_limit(0);
