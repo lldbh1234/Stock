@@ -482,6 +482,8 @@ class Order extends Base
             $Excel->setActiveSheetIndex(0)->setCellValue('R2','交易模式');
             $Excel->getActiveSheet()->getColumnDimension('R')->setWidth(25);
             $Excel->setActiveSheetIndex(0)->setCellValue('S2','免息截止日期');
+            $Excel->getActiveSheet()->getColumnDimension('S')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('T2','所属微圈');
 
         }elseif (2 == $type) {
             $Excel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
@@ -502,6 +504,8 @@ class Order extends Base
             $Excel->setActiveSheetIndex(0)->setCellValue('M2','交易模式');
             $Excel->getActiveSheet()->getColumnDimension('M')->setWidth(25);
             $Excel->setActiveSheetIndex(0)->setCellValue('N2','卖出时间');
+            $Excel->getActiveSheet()->getColumnDimension('N')->setWidth(25);
+            $Excel->setActiveSheetIndex(0)->setCellValue('O2','所属微圈');
 
         }
 
@@ -533,6 +537,8 @@ class Order extends Base
                 $Excel->setActiveSheetIndex(0)->setCellValue('Q'.$n, date('Y-m-d H:i', $val['create_at']));
                 $Excel->setActiveSheetIndex(0)->setCellValue('R'.$n, $val['belongs_to_mode']['name']?:'-');
                 $Excel->setActiveSheetIndex(0)->setCellValue('S'.$n, date('Y-m-d H:i', $val['original_free']));
+                $Excel->setActiveSheetIndex(0)->setCellValue('T'.$n, $val['has_one_user']['has_one_admin']['nickname']?:$val['has_one_user']['has_one_admin']['username']);
+
             }elseif (2 == $type){
                 $Excel->setActiveSheetIndex(0)->setCellValue('F'.$n, $val['price']);
                 $Excel->setActiveSheetIndex(0)->setCellValue('G'.$n, $val['sell_price']);
@@ -543,6 +549,7 @@ class Order extends Base
                 $Excel->setActiveSheetIndex(0)->setCellValue('L'.$n, date('Y-m-d H:i', $val['create_at']));
                 $Excel->setActiveSheetIndex(0)->setCellValue('M'.$n, $val['belongs_to_mode']['name']?:'-');
                 $Excel->setActiveSheetIndex(0)->setCellValue('N'.$n, $val['create_at'] ? date('Y-m-d H:i', $val['create_at']) : '-');
+                $Excel->setActiveSheetIndex(0)->setCellValue('O'.$n, $val['has_one_user']['has_one_admin']['nickname']?:$val['has_one_user']['has_one_admin']['username']);
             }
 
             $n++;

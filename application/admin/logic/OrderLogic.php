@@ -927,7 +927,7 @@ class OrderLogic
         $totalJiancang = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("jiancang_fee");
         $totalDefer = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("defer_total");
         $_lists = Order::hasWhere("hasOneUser", $hasWhere)
-            ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
+            ->with(["hasOneUser", "hasOneOperator", "belongsToMode","hasOneUser.hasOneAdmin"])
             ->where($where)
             ->order("order_id DESC")->select();
 //            ->paginate(100, false, ['query'=>request()->param()]);
@@ -1053,7 +1053,7 @@ class OrderLogic
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);*/
         $_lists = Order::hasWhere("hasOneUser", $hasWhere)
-            ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
+            ->with(["hasOneUser", "hasOneOperator", "belongsToMode","hasOneUser.hasOneAdmin"])
             ->where($where)
             ->order("order_id DESC")
             ->select();
