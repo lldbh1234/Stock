@@ -25,7 +25,7 @@ class Sms
     public function sendLoss($mobile, $vars)
     {
         $engine = new ChuanglanSMS();
-        $msg = '【' . self::SING_NAME . '】您的策略{$var}即将达到止损，请即时处理！';
+        $msg = '【' . self::SING_NAME . '】您的策略{$var}即将达到止损，请即时处理！（短信提醒只作为系统服务，具体以帐户实时显示为准）';
         $vars = is_array($vars) ? implode(',', $vars) : $vars;
         $params = "{$mobile},{$vars}";
         $result = $engine->sendVariableSMS($msg, $params);
@@ -45,7 +45,7 @@ class Sms
     public function sendNonAuto($mobile, $vars)
     {
         $engine = new ChuanglanSMS();
-        $msg = '【' . self::SING_NAME . '】您的策略{$var}由于未开启自动递延将于14:40强制平仓，请即时处理！';
+        $msg = '【' . self::SING_NAME . '】您的策略{$var}由于未开启自动递延将于14:40强制平仓，请即时处理！（短信提醒只作为系统服务，具体以帐户实时显示为准）';
         $vars = is_array($vars) ? implode(',', $vars) : $vars;
         $params = "{$mobile},{$vars}";
         $result = $engine->sendVariableSMS($msg, $params);
@@ -65,7 +65,7 @@ class Sms
     public function sendBalance($mobile, $vars)
     {
         $engine = new ChuanglanSMS();
-        $msg = '【' . self::SING_NAME . '】您的策略{$var}由于账户余额不足无法自动递延，将于14:40强制平仓，请即时处理！';
+        $msg = '【' . self::SING_NAME . '】您的策略{$var}由于余额不足无法自动递延，于14:40强制平仓，请即时处理！（短信提醒只作为系统服务，具体以帐户实时显示为准）';
         $vars = is_array($vars) ? implode(',', $vars) : $vars;
         $params = "{$mobile},{$vars}";
         $result = $engine->sendVariableSMS($msg, $params);
