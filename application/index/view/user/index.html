@@ -23,8 +23,16 @@
                 <p class="username">{$user.nickname|default=$user.username}</p>
                 <p>账户余额(元):<span id="balance">{$user.account|number_format=2}</span></p>
                 <div class="top_btn">
+                    {if condition="$user.is_virtual EQ 1"}
+                    <a href="javascript:$alert('账户无法使用此功能！');" type="button" class="mui-btn  mui-btn-block">充值</a>
+                    {else /}
                     <a href="{:url('index/User/recharge')}" type="button" class="mui-btn  mui-btn-block">充值</a>
+                    {/if}
+                    {if condition="$user.is_virtual EQ 1"}
+                    <a href="javascript:$alert('账户无法使用此功能！');" type="button" class="mui-btn  mui-btn-block">提现</a>
+                    {else /}
                     <a href="{:url('index/User/withdraw')}" type="button" class="mui-btn  mui-btn-block">提现</a>
+                    {/if}
                 </div>
             </div>
             <ul style="margin-bottom: 50px;" class="mui-table-view">
@@ -34,16 +42,28 @@
                     </a>
                 </li> -->
                 <li class="mui-table-view-cell">
+                    {if condition="$user.is_virtual EQ 1"}
+                    <a href="javascript:$alert('账户无法使用此功能！');" class="mui-navigate-right">
+                        我的推广
+                    </a>
+                    {else /}
                     <a href="{:url('index/Manager/manager')}" class="mui-navigate-right">
                         我的推广
                         <span class="rt">推广：{$user.children}人 / 返佣：{$user.commission}元</span>
                     </a>
+                    {/if}
                 </li>
                 <li class="mui-table-view-cell mar_top8">
+                    {if condition="$user.is_virtual EQ 1"}
+                    <a href="javascript:$alert('账户无法使用此功能！');" class="mui-navigate-right">
+                        大神收益
+                    </a>
+                    {else /}
                     <a href="{:url('index/Cattle/index')}" class="mui-navigate-right">
                         大神收益
                         <span class="rt">跟单：{$user.follow}笔 / 返佣：{$user.return_income}元</span>
                     </a>
+                    {/if}
                 </li>
                 <li class="mui-table-view-cell">
                     <a href="{:url('index/Attention/index')}" class="mui-navigate-right">
@@ -60,11 +80,16 @@
                         我的持仓
                     </a>
                 </li>
-
                 <li class="mui-table-view-cell mar_top8">
+                    {if condition="$user.is_virtual EQ 1"}
+                    <a href="javascript:$alert('账户无法使用此功能！');" class="mui-navigate-right">
+                        我的银行卡
+                    </a>
+                    {else /}
                     <a href="{:url('index/User/cards')}" class="mui-navigate-right">
                         我的银行卡
                     </a>
+                    {/if}
                 </li>
                 <li class="mui-table-view-cell">
                     <a href="{:url('index/Order/history')}" class="mui-navigate-right">

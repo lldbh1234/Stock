@@ -110,14 +110,32 @@
 				<img src="__RESOURCE__/img/publish.png">
 				<p>发布策略</p>
 			</a></li>
-			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="{:url('index/User/recharge')}" style="display: block;">
-				<img src="__RESOURCE__/img/recharge.png">
-				<p>充值中心</p>
-			</a></li>
-			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="{:url('index/Manager/manager')}" style="display: block;">
-				<img src="__RESOURCE__/img/guide.png">
-				<p>分享推广</p>
-			</a></li>
+			<li class="leiji_item mui-col-xs-3 mui-col-sm-3">
+				{if condition="uInfo()['is_virtual'] EQ 1"}
+				<a href="javascript:$alert('账户无法使用此功能！');" style="display: block;">
+					<img src="__RESOURCE__/img/recharge.png">
+					<p>充值中心</p>
+				</a>
+				{else /}
+				<a href="{:url('index/User/recharge')}" style="display: block;">
+					<img src="__RESOURCE__/img/recharge.png">
+					<p>充值中心</p>
+				</a>
+				{/if}
+			</li>
+			<li class="leiji_item mui-col-xs-3 mui-col-sm-3">
+				{if condition="uInfo()['is_virtual'] EQ 1"}
+				<a href="javascript:$alert('账户无法使用此功能！');" style="display: block;">
+					<img src="__RESOURCE__/img/guide.png">
+					<p>分享推广</p>
+				</a>
+				{else /}
+				<a href="{:url('index/Manager/manager')}" style="display: block;">
+					<img src="__RESOURCE__/img/guide.png">
+					<p>分享推广</p>
+				</a>
+				{/if}
+			</li>
 			<li class="leiji_item mui-col-xs-3 mui-col-sm-3"><a href="{:url('index/Index/help')}" style="display: block;">
 				<img src="__RESOURCE__/img/model.png">
 				<p>新手指引</p>
