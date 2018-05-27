@@ -318,6 +318,11 @@ Route::group([], function() {
             Route::any('withdraw-detail', 'admin/User/withdrawDetail');  // 会员出金列表
             Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
             Route::any('withdraw-state', 'admin/User/withdrawState');  // 关闭or开启出金
+
+            Route::any('virtual-lists', 'admin/User/virtualLists');  // 虚拟会员列表
+            Route::any('create-virtual', 'admin/User/createVirtual'); // 添加虚拟会员
+            Route::any('modify-virtual', 'admin/User/modifyVirtual'); // 修改虚拟会员
+            Route::any('virtual-detail', 'admin/User/virtualDetail'); // 虚拟会员详情
         });
 
         //经纪人管理

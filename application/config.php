@@ -254,4 +254,7 @@ return [
         // 验证成功后是否重置
         'reset'    => true
     ],
+
+    'default_face'  => '/resource/home/img/default-user-img.png',
+    'nickname_prefix'   => "策略家",
 ];

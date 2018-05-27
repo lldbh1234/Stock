@@ -12,11 +12,13 @@ use think\Db;
 
 class UserLogic
 {
-    public function pageUserLists($filter = [], $pageSize = null)
+    // $virtual 0-真实用户，1-虚拟用户
+    public function pageUserLists($filter = [], $virtual = null, $pageSize = null)
     {
         $where = [];
         $userIds = Admin::userIds();
         $userIds ? $where["user_id"] = ["IN", $userIds] : null;
+        is_null($virtual) ? null : $where['is_virtual'] = $virtual;
         // 登录名
         if(isset($filter['username']) && !empty($filter['username'])){
             $where["username"] = trim($filter['username']);
@@ -33,6 +35,11 @@ class UserLogic
         // 状态
         if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1])){
             $where["state"] = $filter['state'];
+        }
+
+        // 用户类型
+        if(isset($filter['virtual']) && is_numeric($filter['virtual']) && in_array($filter['virtual'], [0,1])){
+            $where["is_virtual"] = $filter['virtual'];
         }
         // 上级微会员
         if(isset($filter['admin_parent_username']) && !empty($filter['admin_parent_username'])){
@@ -77,9 +84,16 @@ class UserLogic
         return compact("lists", "pages", "totalAccount");
     }
 
+    public function createUser($data)
+    {
+        $res = model("User")->save($data);
+        return $res ? model("User")->getLastInsID() : 0;
+    }
+
     public function userById($userId)
     {
-        $user = User::find($userId);
+        $where = Admin::manager();
+        $user = User::where($where)->find($userId);
         return $user ? $user->toArray() : [];
     }
 
