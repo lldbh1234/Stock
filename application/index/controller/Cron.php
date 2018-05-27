@@ -109,7 +109,7 @@ class Cron extends Controller
     {
         set_time_limit(0);
         if(checkStockTradeTime()){
-            $orders = (new OrderLogic())->allPositionOrders(null, ['is_defer' => 0]);
+            $orders = (new OrderLogic())->allPositionOrders(null, ['is_defer' => 0], $virtual = 0); //$virtual = 0真实用户订单
             if($orders){
                 foreach ($orders as $order){
                     if($order['is_defer'] == 0){
@@ -137,6 +137,10 @@ class Cron extends Controller
                 $userLogic = new UserLogic();
                 foreach ($lists as $vo){
                     $user = $userLogic->userById($vo['user_id']);
+                    if($user['is_virtual'] == 1){
+                        // 虚拟用户订单不处理
+                        continue;
+                    }
                     if($user['account'] < $vo['total_defer']){
                         // 未开启自动递延
                         $smsData = [

@@ -1,0 +1,87 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}会员详情{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 会员管理
+    <span class="c-gray en">&gt;</span> 会员列表
+    <span class="c-gray en">&gt;</span> 虚拟用户详情
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+    <div id="tab-system" class="HuiTab">
+        <div class="tabBar cl">
+            <span class="current" data-href="{:url('admin/User/virtualDetail', ['id' => input('id')])}">基本信息</span>
+            <span data-href="{:url('admin/User/virtualDetail', ['id' => input('id'), 'type' => 2])}">当前持仓</span>
+            <span data-href="{:url('admin/User/virtualDetail', ['id' => input('id'), 'type' => 3])}">历史交易</span>
+            <span data-href="{:url('admin/User/virtualDetail', ['id' => input('id'), 'type' => 6])}">资金记录</span>
+        </div>
+        <table class="table table-border table-bordered table-bg mt-20">
+            <thead>
+            <tr>
+                <th colspan="2" scope="col">虚拟用户信息</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th width="30%">昵称</th>
+                <td><span id="lbServerName">{$user.nickname}</span></td>
+            </tr>
+            <tr>
+                <td>手机号码</td>
+                <td>{$user.mobile}</td>
+            </tr>
+            <tr>
+                <td>余额</td>
+                <td>{$user.account|number_format=2}</td>
+            </tr>
+            <tr>
+                <td>机构编码（微圈） </td>
+                <td>{$user.has_one_admin.code|default='-'}</td>
+            </tr>
+            <tr>
+                <td>所诉机构（微圈） </td>
+                <td>{$user.has_one_admin.username|default='-'}</td>
+            </tr>
+            <tr>
+                <td>所属微会员 </td>
+                <td>{$user.has_one_admin.has_one_parent.username|default='-'}</td>
+            </tr>
+            <tr>
+                <td>所属运营中心</td>
+                <td>{$user.has_one_admin.has_one_parent.has_one_parent.username|default='-'}</td>
+            </tr>
+            <tr>
+                <td>所属结算中心</td>
+                <td>{$user.has_one_admin.has_one_parent.has_one_parent.has_one_parent.username|default='-'}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $(".tabBar span").click(function(){
+            var _url = $(this).data("href");
+            window.location.href = _url;
+        });
+    });
+</script>
+{/block}

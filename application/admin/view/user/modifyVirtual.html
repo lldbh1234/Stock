@@ -1,0 +1,93 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}修改虚拟用户{/block}
+
+{block name="body"}
+<article class="page-container">
+    <form class="form form-horizontal" id="form-admin-add">
+        <input type="hidden" value="{$user.user_id}" name="user_id">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机号：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <span style="padding-top: 10px;">{$user.mobile}</span>
+                <!--<input type="text" class="input-text" value="{$user.username}" placeholder="虚拟用户手机号以10开头的11位数字" name="mobile" readonly>-->
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">登录密码：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="password" class="input-text" autocomplete="off" value="" placeholder="填写则为修改密码" name="password">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">昵称：</label>
+            <div class="formControls col-xs-8 col-sm-7">
+                <input type="text" class="input-text" value="{$user.nickname}" placeholder="" name="nickname">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>上级微圈：</label>
+            <div class="formControls col-xs-8 col-sm-7"> <span class="select-box" style="width:300px;">
+			<select class="select" name="admin_id" size="1">
+				{volist name="ring" id="item"}
+                <option value="{$item.admin_id}" {if condition="$user.admin_id eq $item.admin_id"}selected{/if}>{$item.username}</option>
+                {/volist}
+			</select>
+			</span> </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>状态：</label>
+            <div class="formControls col-xs-8 col-sm-7 skin-minimal">
+                <div class="radio-box">
+                    <input name="state" type="radio" value="0" id="sex-1" {if condition="$user.state eq 0"}checked{/if}>
+                    <label for="sex-1">正常</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" name="state" id="sex-2" value="1" {if condition="$user.state eq 1"}checked{/if}>
+                    <label for="sex-2">禁用</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" id="bth-submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+$(function(){
+    $('.skin-minimal input').iCheck({
+        checkboxClass: 'icheckbox-blue',
+        radioClass: 'iradio-blue',
+        increaseArea: '20%'
+    });
+
+    $("#bth-submit").click(function(){
+        var _oData = $("form").serialize(),
+            _url = '{:url("admin/User/modifyVirtual")}',
+            _func = function (_resp) {
+                if (!_resp.state) {
+                    layer.msg(_resp.info);
+                } else {
+                    layer.msg('修改成功！', {time: 500}, function(){
+                        if(_resp.data && _resp.data.url){
+                            parent.window.location.href = _resp.data.url;
+                        }else{
+                            parent.window.location.reload();
+                        }
+                    });
+                }
+            };
+        _ajaxPost(_url, _oData, _func);
+    });
+});
+</script>
+{/block}
