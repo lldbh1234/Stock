@@ -365,8 +365,10 @@ class RecordLogic
             $hasWhere["mobile"] = trim($filter['mobile']);
         }
         // 状态
-        if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,2,-1])){//状态
+        if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,2])){//状态
             $where['stock_admin_withdraw.state'] = $filter['state'];
+        }else{
+            $where['stock_admin_withdraw.state'] = ["NEQ", -1];
         }
         // 申请时间
         if(isset($filter['create_begin']) || isset($filter['create_end'])){
