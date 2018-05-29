@@ -27,6 +27,32 @@ class StockLogic
         return $this->_sinaQuotation->real($codes);
     }
 
+    public function quotationByAli($codes)
+    {
+        $codes = $this->_fullCodeByCodes($codes);
+        $codes = $this->_handleCodes($codes);
+        $code = implode(',', $codes);
+        $fields = 'prod_name,last_px,px_change,px_change_rate';
+        $response = $this->_library->realtime($code, $fields);
+        if($response){
+            $_resp = [];
+            $data = $response['data']['snapshot'];
+            $fields = $data['fields'];
+            foreach ($data as $key=>$val){
+                if($key != 'fields'){
+                    $_temp = [];
+                    $_temp['code'] = substr($key, 0, 6);
+                    foreach($fields as $k=>$v){
+                        $_temp[$v] = $val[$k];
+                    }
+                    $_resp[$_temp['code']] = $_temp;
+                }
+            }
+            return $_resp;
+        }
+        return [];
+    }
+
     public function simpleData($codes)
     {
         $codes = $this->_fullCodeByCodes($codes);
