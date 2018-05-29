@@ -420,7 +420,7 @@
 
 		context.find(".now_count").val( now_count );
 		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
-		context.find(".fudong").find("span").html( rate + "%" );
+		context.find(".fudong").find("span").html( rate + "%" ).attr("data-val", rate);
 
 	});
 
@@ -492,8 +492,8 @@
 		if( type ){
 			$(".profitCount").val(maxProfit).attr("data-initValue", maxProfit);
 			$(".lossCount").val( maxLoss ).attr("data-initValue", maxLoss);
-			$(".zhangfu span").html("+" + profit + "%");
-			$(".diefu span").html("-" + loss + "%");
+			$(".zhangfu span").html("+" + profit + "%").attr("data-val", profit);
+			$(".diefu span").html("-" + loss + "%").attr("data-val", loss);
 		}
 
 		$(".diyanfei").html(deferCount + "元/天/万元");
@@ -618,7 +618,22 @@ $(function(){
                 	$(".px_change").html(nowDate.px_change);
                 	$(".px_change_rate").html(nowDate.px_change_rate + "%");
 
-                	calcNum(true);
+                	calcNum();
+
+                	//修改止盈止损
+                	var agent_price = nowDate.sell_px;
+                	var profit_rate = parseFloat( $(".zhangfu span").attr("data-val") );
+                	var loss_rate = parseFloat( $(".diefu span").attr("data-val") );
+
+                	profit_price = agent_price * (100 + profit_rate) / 100;
+                	loss_price = agent_price * (100 - Math.abs(loss_rate)) / 100;
+
+                	// console.log( profit_price.toFixed(2) );
+                	// console.log( loss_price.toFixed(2) );
+
+
+                	$(".profitCount").val( profit_price.toFixed(2) );
+                	$(".lossCount").val( loss_price.toFixed(2) );
                 }
             }else{
                 // $alert(res.info);
