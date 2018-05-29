@@ -32,60 +32,58 @@ class Test extends Controller
     {
         $order = (new OrderLogic())->orderById(2980);
         if($order['is_defer'] && $order['free_time'] < time() && $order['state'] == 3){
+            // 停牌股不扣费处理
+            $i = 0;
+            $halt = false; //未停牌
+            while (true){
+                $quotation = (new StockLogic())->quotationBySina($order['code']);
+                if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
+                    $last_px = $quotation[$order['code']]['last_px']; // 最新价
+                    $buy_px = $quotation[$order['code']]['buy_px']; // 竞买价，即“买一”报价
+                    $sell_px = $quotation[$order['code']]['sell_px']; // 竞卖价，即“卖一”报价
+                    if($buy_px > 0 || $sell_px > 0){
+                        // 未停牌
+                        $halt = false; //未停牌
+                        break;
+                    }else{
+                        // 有可能停牌
+                        if($i >= 1){
+                            // 重试一次，现价依旧为0，股票停牌
+                            $halt = true;
+                            break;
+                        }else{
+                            // 极有可能停牌重试一次
+                            $i++;
+                            continue;
+                        }
+                    }
+                }else{
+                    continue;
+                }
+            }
+            if($halt){
+                // 股票停牌，直接递延，不扣递延费
+                $holiday = cf("holiday", '');
+                $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
+                $data = [
+                    "order_id"  => $order["order_id"],
+                    "free_time" => $timestamp,
+                ];
+                $res = (new OrderLogic())->orderUpdate($data);
+                return $res ? true : false;
+            }else{
+
+            }
             $user = (new UserLogic())->userById($order['user_id']);
             if($user){
                 $managerUserId = $user["parent_id"];
                 $adminId = $user["admin_id"];
                 $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
-                dump($user['account']);
-                dump($order['defer']);
-                exit;
                 if($user['account'] >= $order['defer']){
                     // 用户余额充足
-                    // 停牌股不扣费处理
-                    $i = 0;
-                    $halt = false; //未停牌
-                    while (true){
-                        $quotation = (new StockLogic())->quotationBySina($order['code']);
-                        if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
-                            $last_px = $quotation[$order['code']]['last_px']; // 最新价
-                            $buy_px = $quotation[$order['code']]['buy_px']; // 竞买价，即“买一”报价
-                            $sell_px = $quotation[$order['code']]['sell_px']; // 竞卖价，即“卖一”报价
-                            if($buy_px > 0 || $sell_px > 0){
-                                // 未停牌
-                                $halt = false; //未停牌
-                                break;
-                            }else{
-                                // 有可能停牌
-                                if($i >= 1){
-                                    // 重试一次，现价依旧为0，股票停牌
-                                    $halt = true;
-                                    break;
-                                }else{
-                                    // 极有可能停牌重试一次
-                                    $i++;
-                                    continue;
-                                }
-                            }
-                        }else{
-                            continue;
-                        }
-                    }
-                    if($halt){
-                        // 股票停牌，直接递延，不扣递延费
-                        $holiday = cf("holiday", '');
-                        $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
-                        $data = [
-                            "order_id"  => $order["order_id"],
-                            "free_time" => $timestamp,
-                        ];
-                        $res = (new OrderLogic())->orderUpdate($data);
-                        return $res ? true : false;
-                    }else{
-                        // 股票未停牌，扣除递延费
-                        $handleRes = (new OrderLogic())->handleDeferByUserAccount($order, $managerUserId, $adminIds);
-                        return $handleRes ? true : false;
-                    }
+                    // 股票未停牌，扣除递延费
+                    $handleRes = (new OrderLogic())->handleDeferByUserAccount($order, $managerUserId, $adminIds);
+                    return $handleRes ? true : false;
                 }/*else if($order['deposit'] >= $order['defer']){ // 取消余额不足，扣除保证金功能
                     // 订单保证金充足
                     $handleRes = (new OrderLogic())->handleDeferByDeposit($order, $managerUserId, $adminIds);
