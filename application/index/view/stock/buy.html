@@ -333,6 +333,15 @@
 {block name="script"}
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
+	var flag = false; // 用户是否在输入止盈或者止损
+	$(".now_count").focus(function(){
+		flag = true;
+	});
+	$(".now_count").blur(function(){
+		flag = false;
+	});
+
+
 	function hideProtocal(){
 		$(".protocal").hide();
 	}
@@ -456,7 +465,7 @@
 		}
 
 
-		context.find(".fudong").find("span").html( rate + "%" );
+		context.find(".fudong").find("span").html( rate + "%" ).attr("data-val", rate);
 	});
 
 	//计算
@@ -619,6 +628,11 @@ $(function(){
                 	$(".px_change_rate").html(nowDate.px_change_rate + "%");
 
                 	calcNum();
+
+                	//如果用户在输入就不修改
+                	if( flag ){
+                		return false;
+                	}
 
                 	//修改止盈止损
                 	var agent_price = nowDate.sell_px;
