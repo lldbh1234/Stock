@@ -50,7 +50,7 @@ $(function(){
 
     $("#bth-submit").click(function(){
         var _oData = $("form").serialize(),
-            _url = '{:url("admin/Team/giveSettle")}',
+            _url = '{:url("admin/Team/giveOperate")}',
             _func = function (_resp) {
                 if (!_resp.state) {
                     layer.msg(_resp.info);

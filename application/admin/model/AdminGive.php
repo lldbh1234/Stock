@@ -5,9 +5,9 @@
  * Date: 18/2/28
  * Time: 下午7:41
  */
-namespace app\common\model;
+namespace app\admin\model;
 
-class AdminGive extends BaseModel
+class AdminGive extends \app\common\model\AdminGive
 {
-    protected $table = 'stock_admin_give';
+
 }

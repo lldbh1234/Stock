@@ -7,16 +7,16 @@
  */
 namespace app\common\model;
 
-class UserGive extends BaseModel
+class AdminGive extends BaseModel
 {
-    protected $table = 'stock_user_give';
+    protected $table = 'stock_admin_give';
 
-    public function hasOneUser()
+    public function belongsToAdmin()
     {
-        return $this->hasOne('\app\\common\\model\\User', 'user_id', 'user_id');
+        return $this->belongsTo('\app\\common\\model\\Admin', 'admin_id', 'admin_id');
     }
 
-    public function hasOneCreateBy()
+    public function hasOneOperator()
     {
         return $this->hasOne('\app\\common\\model\\Admin', 'admin_id', 'create_by');
     }

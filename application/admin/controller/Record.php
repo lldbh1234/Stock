@@ -98,7 +98,7 @@ class Record extends Base
     {
         $res = $this->_logic->pageAdminRecord(input(""));
         $roles = (new AdminLogic())->allTeamRoles();
-        $type = [0 => "盈利分成", 1 => "建仓费分成", 2=> "递延费分成"];
+        $type = [0 => "盈利分成", 1 => "建仓费分成", 2=> "递延费分成", 3=> "平台赠送"];
         array_filter($res['lists']['data'], function (&$item) use ($type, $roles){
             $item["role_text"] = $roles[$item["belongs_to_admin"]["role"]];
             $item["type_text"] = $type[$item["type"]];

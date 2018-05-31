@@ -96,6 +96,9 @@
                 {if condition="in_array('admin/Team/recharge', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-warning size-MINI radius" type="button" title="保证金充值" onclick="admin_recharge(this,{$item.admin_id});" value="充值">
                 {/if}
+                {if condition="in_array('admin/Team/giveOperate', $Think.session.ACCESS_LIST) AND $isAdmin"}
+                <input class="btn btn-secondary size-MINI radius" type="button" title="赠金" onclick="admin_give('代理商赠金','{:url("admin/Team/giveOperate", ['admin_id' => $item.admin_id])}','','400');" value="赠金">
+                {/if}
             </td>
         </tr>
         {/volist}
@@ -126,6 +129,12 @@
 
     {if condition="in_array('admin/Team/operatePoint', $Think.session.ACCESS_LIST)"}
     function operate_point(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    {/if}
+
+    {if condition="in_array('admin/Team/giveOperate', $Think.session.ACCESS_LIST) AND $isAdmin"}
+    function admin_give(title,url,w,h){
         layer_show(title,url,w,h);
     }
     {/if}

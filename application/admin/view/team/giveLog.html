@@ -1,0 +1,80 @@
+{extend name="layouts/layout_iframe" /}
+
+{block name="title"}代理商赠金日志{/block}
+
+{block name="body"}
+<nav class="breadcrumb">
+    <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
+    <span class="c-gray en">&gt;</span> 组织架构
+    <span class="c-gray en">&gt;</span> 代理商赠金日志
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+        <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
+    </a>
+</nav>
+<div class="page-container">
+    <form action="" method="get">
+    <div class="text-c">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
+        <span class="select-box radius" style="width:110px;height: 31px;">
+            <select class="select radius" name="role" size="1">
+                <option value="">代理商类型</option>
+                {volist name="roles" id="item"}
+                <option value="{$key}" {if condition="isset($search.role) AND $search.role eq $key"}selected{/if}>{$item}</option>
+                {/volist}
+            </select>
+        </span>
+        <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+    </div>
+    </form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+
+        <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+    </div>
+    <table class="table table-border table-bordered table-hover table-bg">
+        <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" value="" name=""></th>
+            <th width="40">ID</th>
+            <th>代理商Id</th>
+            <th>登录名</th>
+            <th>代理商类型</th>
+            <th>赠金金额</th>
+            <th>赠金时间</th>
+            <th>赠金人</th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        {empty name="datas.data"}
+        <tr class="text-c admin-lists">
+            <td colspan="9">暂时没有匹配到数据</td>
+        </tr>
+        {/empty}
+        {volist name="datas.data" id="item"}
+        <tr class="text-c admin-lists">
+            <td width="25"><input type="checkbox" value="{$item.id}" name=""></td>
+            <td width="40">{$item.id}</td>
+            <td>{$item.admin_id}</td>
+            <td>{$item.belongs_to_admin.username}</td>
+            <td>{$item.belongs_to_admin.has_one_role.name}</td>
+            <td>{$item.amount|number_format=2}</td>
+            <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
+            <td>{$item.has_one_operator.username|default='-'}</td>
+            <td>{$item.remark|default=''}</td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {$pages}
+</div>
+{/block}
+
+{block name="footer"}
+
+{/block}
+
+{block name="script"}
+<script>
+
+</script>
+{/block}
