@@ -83,11 +83,13 @@ class Record extends Base
             $item["type_text"] = $type[$item["type"]];
         });
         $pageMoney = array_sum(collection($res['lists']['data'])->column("money"));
+        $tableCols = (new AdminLogic())->tableColumnShow();
         $this->assign("datas", $res['lists']);
         $this->assign("pages", $res['pages']);
         $this->assign("pageMoney", $pageMoney);
         $this->assign("totalMoney", $res['totalMoney']);
         $this->assign("search", input(""));
+        $this->assign("tableCols", $tableCols);
         return view();
     }
 
@@ -102,12 +104,14 @@ class Record extends Base
             $item["type_text"] = $type[$item["type"]];
         });
         $pageMoney = array_sum(collection($res['lists']['data'])->column("money"));
+        $tableCols = (new AdminLogic())->tableColumnShow();
         $this->assign("datas", $res['lists']);
         $this->assign("pages", $res['pages']);
         $this->assign("pageMoney", $pageMoney);
         $this->assign("totalMoney", $res['totalMoney']);
         $this->assign("roles", $roles);
         $this->assign("search", input(""));
+        $this->assign("tableCols", $tableCols);
         return view();
     }
 

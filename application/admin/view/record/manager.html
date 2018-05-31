@@ -14,10 +14,20 @@
 <div class="page-container">
     <form action="" method="get">
     <div class="text-l">
+        {eq name="tableCols.settle" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="上级结算中心" name="settle" value="{$search.settle|default=''}">
+        {/eq}
+        {eq name="tableCols.operate" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="上级运营中心" name="operate" value="{$search.operate|default=''}">
+        {/eq}
+        {eq name="tableCols.member" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="上级微会员" name="member" value="{$search.member|default=''}">
+        {/eq}
+        {eq name="tableCols.ring" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="上级微圈" name="ring" value="{$search.ring|default=''}">
+        {/eq}
         <input type="text" class="input-text radius" style="width:170px;" placeholder="经纪人" name="nickname" value="{$search.nickname|default=''}">
         <input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
-        <input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
-        <input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
     </div>
     <div class="text-l mt-5">
         <input type="text" class="input-text radius" style="width:170px;" placeholder="结算开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -

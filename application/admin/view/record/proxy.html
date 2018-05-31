@@ -14,8 +14,15 @@
 <div class="page-container">
     <form action="" method="get">
     <div class="text-l">
-        <input type="text" class="input-text radius" style="width:170px;" placeholder="代理商ID" name="admin_id" value="{$search.admin_id|default=''}">
-        <input type="text" class="input-text radius" style="width:170px;" placeholder="代理商登录名" name="username" value="{$search.username|default=''}">
+        {eq name="tableCols.settle" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="上级结算中心" name="settle" value="{$search.settle|default=''}">
+        {/eq}
+        {eq name="tableCols.operate" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="上级运营中心" name="operate" value="{$search.operate|default=''}">
+        {/eq}
+        {eq name="tableCols.member" value="1"}
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="上级微会员" name="member" value="{$search.member|default=''}">
+        {/eq}
         <span class="select-box radius" style="width:110px;height: 31px;">
             <select class="select radius" name="role" size="1">
                 <option value="">代理商类型</option>
@@ -32,6 +39,10 @@
                 <option value="2" {if condition="isset($search.type) AND $search.type heq '2'"}selected{/if}>递延费分成</option>
             </select>
         </span>
+    </div>
+    <div class="text-l mt-5">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="代理商ID" name="admin_id" value="{$search.admin_id|default=''}">
+        <input type="text" class="input-text radius" style="width:170px;" placeholder="代理商登录名" name="username" value="{$search.username|default=''}">
         <input type="text" class="input-text radius" style="width:170px;" placeholder="结算开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
         <input type="text" class="input-text radius" style="width:170px;" placeholder="结算结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
         <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
