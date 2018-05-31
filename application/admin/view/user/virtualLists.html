@@ -1,12 +1,12 @@
 {extend name="layouts/layout_iframe" /}
 
-{block name="title"}会员赠金{/block}
+{block name="title"}会员管理{/block}
 
 {block name="body"}
 <nav class="breadcrumb">
     <i class="Hui-iconfont Hui-iconfont-home2"></i> 首页
     <span class="c-gray en">&gt;</span> 会员管理
-    <span class="c-gray en">&gt;</span> 会员赠金
+    <span class="c-gray en">&gt;</span> 虚拟用户列表
     <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
         <i class="Hui-iconfont Hui-iconfont-huanyipi"></i>
     </a>
@@ -15,10 +15,9 @@
     <form action="" method="get">
     <div class="text-c">
         <input type="text" class="input-text" style="width:170px;" placeholder="微圈" name="admin_username" value="{$search.admin_username|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
+        <!--<input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">-->
         <input type="text" class="input-text" style="width:170px;" placeholder="昵称" name="nickname" value="{$search.nickname|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="推荐人" name="parent_username" value="{$search.parent_username|default=''}">
         <input type="text" class="input-text" style="width:170px;" placeholder="微会员" name="admin_parent_username" value="{$search.admin_parent_username|default=''}">
 
         <span class="select-box" style="width:70px;height: 31px;">
@@ -28,18 +27,18 @@
                 <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>禁用</option>
             </select>
         </span>
-        <span class="select-box" style="width:90px;height: 31px;">
-            <select class="select" name="virtual" size="1">
-                <option value="">用户类型</option>
-                <option value="0" {if condition="isset($search.virtual) AND $search.virtual heq '0'"}selected{/if}>真实用户</option>
-                <option value="1" {if condition="isset($search.virtual) AND $search.virtual heq '1'"}selected{/if}>虚拟用户</option>
-            </select>
-        </span>
         <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
     </div>
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
-
+        <span class="l">
+            {if condition="in_array('admin/User/createVirtual', $Think.session.ACCESS_LIST)"}
+			<a class="btn btn-primary radius" href="javascript:;" onclick="virtual_add('添加虚拟用户','{:url("admin/User/createVirtual")}','', '500')">
+				<i class="Hui-iconfont Hui-iconfont-add"></i> 添加虚拟用户
+            </a>
+            {/if}
+            <!--<span class="c-blue">余额总计： <strong>￥{$totalAccount|number_format=2}</strong></span>-->
+        </span>
         <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
     </div>
     <table class="table table-border table-bordered table-hover table-bg">
@@ -50,7 +49,6 @@
             <th>登录名</th>
             <th>昵称</th>
             <th>手机号</th>
-            <th>推荐人</th>
             <th>微圈</th>
             <th>微会员</th>
             <th>账户余额</th>
@@ -58,7 +56,7 @@
             <!--<th>总亏损</th>-->
             <th>注册时间</th>
             <th>状态</th>
-            <th width="70">操作</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -66,8 +64,7 @@
         <tr class="text-c admin-lists">
             <td colspan="12">暂时没有匹配到数据</td>
         </tr>
-        {/empty}
-
+        {else /}
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
             <td width="25"><input type="checkbox" value="{$item.user_id}" name=""></td>
@@ -75,7 +72,6 @@
             <td>{$item.username}</td>
             <td>{$item.nickname}</td>
             <td>{$item.mobile}</td>
-            <td>{$item.has_one_parent.username | default='无'}</td>
             <td>{$item.has_one_admin.username | default='无'}</td>
             <td>{$item.has_one_admin.has_one_parent.username | default='无'}</td>
             <td>{$item.account|default='0.00'}</td>
@@ -88,12 +84,29 @@
                 {/if}
             </td>
             <td class="f-14">
-                {if condition="in_array('admin/User/giveAccount', $Think.session.ACCESS_LIST)"}
-                <input class="btn btn-secondary size-MINI radius" type="button" title="会员赠金" onclick="give('会员赠金','{:url("admin/User/giveAccount", ['user_id' => $item.user_id])}','','400')" value="赠金">
+                {if condition="in_array('admin/User/modifyVirtual', $Think.session.ACCESS_LIST)"}
+                <input class="btn btn-primary size-MINI radius" type="button" title="会员编辑" onclick="virtual_edit('修改虚拟用户','{:url("admin/User/modifyVirtual", ['user_id' => $item.user_id])}','','500')" value="修改">
+                {/if}
+                {if condition="in_array('admin/User/virtualDetail', $Think.session.ACCESS_LIST)"}
+                <input class="btn btn-success size-MINI radius" type="button" title="详细信息" onclick="virtual_detail(' ','{:url("admin/User/virtualDetail", ['id' => $item.user_id])}')" value="详细信息">
                 {/if}
             </td>
         </tr>
         {/volist}
+        <tr class="text-c admin-lists">
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td><strong>{$pageAccount|number_format=2}</strong></td>
+            <td>-</td>
+            <td>-</td>
+            <td class="f-14">-</td>
+        </tr>
+        {/empty}
         </tbody>
     </table>
     {$pages}
@@ -106,9 +119,27 @@
 
 {block name="script"}
 <script>
-    {if condition="in_array('admin/User/giveAccount', $Think.session.ACCESS_LIST)"}
-    function give(title,url,w,h){
+    /*用户-添加*/
+    {if condition="in_array('admin/User/createVirtual', $Think.session.ACCESS_LIST)"}
+    function virtual_add(title,url,w,h){
         layer_show(title,url,w,h);
+    }
+    {/if}
+
+    {if condition="in_array('admin/User/modifyVirtual', $Think.session.ACCESS_LIST)"}
+    function virtual_edit(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    {/if}
+
+    {if condition="in_array('admin/User/virtualDetail', $Think.session.ACCESS_LIST)"}
+    function virtual_detail(title,url) {
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
+        });
+        layer.full(index);
     }
     {/if}
 </script>

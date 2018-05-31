@@ -135,6 +135,7 @@ class OrderLogic
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
         $where['stock_order.state'] = 2;
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
         // 策略ID
         if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
             $where["stock_order.order_id"] = trim($filter['id']);
@@ -261,6 +262,7 @@ class OrderLogic
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
         $where['stock_order.state'] = 3;
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
         // 策略ID
         if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
             $where["stock_order.order_id"] = trim($filter['id']);
@@ -823,6 +825,7 @@ class OrderLogic
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
         $where['stock_order.state'] = 3;
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
         // 策略ID
         if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
             $where["stock_order.order_id"] = trim($filter['id']);
@@ -922,10 +925,6 @@ class OrderLogic
             ->where($where)
             ->order("order_id DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);*/
-        $totalProfit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("profit");
-        $totalDeposit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("deposit");
-        $totalJiancang = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("jiancang_fee");
-        $totalDefer = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("defer_total");
         $_lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser", "hasOneOperator", "belongsToMode","hasOneUser.hasOneAdmin"])
             ->where($where)
@@ -933,7 +932,7 @@ class OrderLogic
 //            ->paginate(100, false, ['query'=>request()->param()]);
         $lists = collection($_lists)->toArray();
 
-        return compact("lists", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
+        return compact("lists");
     }
 
     // 平仓订单
@@ -944,6 +943,7 @@ class OrderLogic
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_order.user_id"] = ["IN", $myUserIds] : null;
         $where['stock_order.state'] = 2;
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
         // 策略ID
         if(isset($filter['id']) && !empty($filter['id']) && is_numeric($filter['id'])){
             $where["stock_order.order_id"] = trim($filter['id']);
@@ -1043,10 +1043,6 @@ class OrderLogic
                 $where['stock_order.update_at'] = ["ELT", $_end];
             }
         }
-        $totalProfit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("profit");
-        $totalDeposit = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("deposit");
-        $totalJiancang = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("jiancang_fee");
-        $totalDefer = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("defer_total");
         /*$lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "hasOneOperator"])
             ->where($where)
@@ -1058,6 +1054,6 @@ class OrderLogic
             ->order("order_id DESC")
             ->select();
         $lists = collection($_lists)->toArray();
-        return compact("lists", "totalProfit", "totalDeposit", "totalJiancang", "totalDefer");
+        return compact("lists");
     }
 }

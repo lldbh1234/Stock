@@ -141,9 +141,10 @@ class OrderLogic
     // 所有需处理递延的订单（持仓并且过期的）
     public function allDeferOrders()
     {
-        $where["state"] = 3;
+        $where["stock_order.state"] = 3;
         $where["free_time"] = ["LT", time()];
-        $orders = Order::where($where)->select();
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
+        $orders = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
     }
 
@@ -151,19 +152,21 @@ class OrderLogic
     public function allSellOrders()
     {
         $todayStart = strtotime(date("Y-m-d"));
-        $where = ["state" => 3, "create_at" => ["LT", $todayStart]];
-        $orders = Order::where($where)->select();
+        $where = ["stock_order.state" => 3, "stock_order.create_at" => ["LT", $todayStart]];
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
+        $orders = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
     }
 
     // 所有持仓订单
-    public function allPositionOrders($signField = null, $where = [])
+    public function allPositionOrders($signField = null, $where = [], $virtual = null)
     {
-        $where["state"] = 3;
+        $where["stock_order.state"] = 3;
+        $hasWhere = is_null($virtual) ? [] : ['is_virtual' => $virtual]; // 真实用户订单
         if(!is_null($signField)){
-            return Order::where($where)->column($signField);
+            return Order::hasWhere("hasOneUser", $hasWhere)->where($where)->column($signField);
         }else{
-            $orders = Order::where($where)->select();
+            $orders = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->select();
             return $orders ? collection($orders)->toArray() : [];
         }
     }
@@ -388,11 +391,12 @@ class OrderLogic
     public function todayNiurenRebateOrder(){
         $todayBegin = strtotime(date("Y-m-d 00:00:00"));
         $todayEnd = strtotime(date("Y-m-d 23:59:59"));
-        $where["state"] = 2;
+        $where["stock_order.state"] = 2;
         $where["profit"] = ["GT", 0];
         $where["niuren_rebate"] = 0;
-        $where["update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
-        $orders = Order::where($where)->select();
+        $where["stock_order.update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
+        $orders = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
     }
 
@@ -400,11 +404,12 @@ class OrderLogic
     public function todayProxyRebateOrder(){
         $todayBegin = strtotime(date("Y-m-d 00:00:00"));
         $todayEnd = strtotime(date("Y-m-d 23:59:59"));
-        $where["state"] = 2;
+        $where["stock_order.state"] = 2;
         $where["profit"] = ["GT", 0];
         $where["proxy_rebate"] = 0;
-        $where["update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
-        $orders = Order::with("belongsToMode")->where($where)->select();
+        $where["stock_order.update_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
+        $orders = Order::hasWhere("hasOneUser", $hasWhere)->with("belongsToMode")->where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
     }
 
@@ -413,10 +418,11 @@ class OrderLogic
     {
         $todayBegin = strtotime(date("Y-m-d 00:00:00"));
         $todayEnd = strtotime(date("Y-m-d 23:59:59"));
-        $where["state"] = 3;
+        $where["stock_order.state"] = 3;
         $where["jiancang_rebate"] = 0;
-        $where["create_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
-        $orders = Order::where($where)->select();
+        $where["stock_order.create_at"] = ["BETWEEN", [$todayBegin, $todayEnd]];
+        $hasWhere['is_virtual'] = 0; // 真实用户订单
+        $orders = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
     }
 }

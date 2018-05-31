@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\logic\AdminLogic;
 use app\admin\logic\StockLogic;
 use app\admin\logic\UserGiveLogic;
 use app\admin\logic\UserLogic;
@@ -25,7 +26,7 @@ class User extends Base
 
     public function lists()
     {
-        $_res = $this->userLogic->pageUserLists(input(''));
+        $_res = $this->userLogic->pageUserLists(input(''), 0);
         $pageAccount = array_sum(collection($_res['lists']['data'])->column("account"));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
@@ -449,6 +450,157 @@ class User extends Base
                     return $this->fail($msg);
                 }
             }
+        }
+    }
+
+    public function virtualLists()
+    {
+        $_res = $this->userLogic->pageUserLists(input(''), 1);
+        $pageAccount = array_sum(collection($_res['lists']['data'])->column("account"));
+        $this->assign("datas", $_res['lists']);
+        $this->assign("pages", $_res['pages']);
+        $this->assign("totalAccount", $_res['totalAccount']);
+        $this->assign("pageAccount", $pageAccount);
+        $this->assign("search", input(""));
+        return view();
+    }
+
+    public function createVirtual()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('User');
+            if(!$validate->scene('create_virtual')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $nickname = cf('nickname_prefix', config("nickname_prefix"));
+                $virtual = input("post.");
+                $virtual['username'] = $virtual['mobile'];
+                $virtual['nickname'] = $nickname . substr($virtual["mobile"], -4);
+                $virtual['face'] = config("default_face");
+                $virtual['is_virtual'] = 1;
+                $userId = $this->userLogic->createUser($virtual);
+                if($userId > 0){
+                    return $this->ok();
+                }else{
+                    return $this->fail("添加失败！");
+                }
+            }
+        }
+        $ring = (new AdminLogic())->teamAdminsByRole("ring");
+        $this->assign("ring", $ring);
+        return view();
+    }
+
+    public function modifyVirtual($user_id = null)
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('User');
+            if(!$validate->scene('modify_virtual')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                if(empty($data['password'])){
+                    unset($data['password']);
+                }
+                if($this->userLogic->update($data)){
+                    return $this->ok();
+                } else {
+                    return $this->fail("修改失败！");
+                }
+            }
+        }
+        $user = $this->userLogic->userById($user_id);
+        if($user){
+            $ring = (new AdminLogic())->teamAdminsByRole("ring");
+            $this->assign("user", $user);
+            $this->assign("ring", $ring);
+            return view();
+        }else{
+            return "非法操作";
+        }
+    }
+
+    public function virtualDetail($id = null, $type = 1)
+    {
+        switch ($type){
+            case '1':
+                // 基本信息
+                $user = $this->userLogic->userIncFamily($id);
+                if($user){
+                    $this->assign("user", $user);
+                    return view("virtualDetail1");
+                }else{
+                    return "非法操作！";
+                }
+                break;
+            case '2':
+                //当前持仓
+                $_res = $this->userLogic->pageUserOrderByUserId($id, 3, input(""), 10);
+                if($_res){
+                    if($_res['lists']['data']){
+                        $codes = array_column($_res['lists']['data'], "code");
+                        $quotation = (new StockLogic())->stockQuotationBySina($codes);
+                        array_filter($_res['lists']['data'], function(&$item) use ($quotation){
+                            $item['last_px'] = isset($quotation[$item['code']]['last_px']) ? number_format($quotation[$item['code']]['last_px'], 2) : '-';
+                            $item['pl'] = isset($quotation[$item['code']]['last_px']) ? number_format(($item['last_px'] - $item['price']) * $item['hand'], 2) : "-";
+                        });
+                    }
+                    $this->assign("datas", $_res['lists']);
+                    $this->assign("pages", $_res['pages']);
+                    $this->assign("totalProfit", $_res['totalProfit']);
+                    $this->assign("totalDeposit", $_res['totalDeposit']);
+                    $this->assign("totalJiancang", $_res['totalJiancang']);
+                    $this->assign("totalDefer", $_res['totalDefer']);
+                    $this->assign("search", input(""));
+                    return view("virtualDetail2");
+                }else{
+                    return "非法操作！";
+                }
+                break;
+            case '3':
+                //历史交易
+                $_res = $this->userLogic->pageUserOrderByUserId($id, 2, input(""), 10);
+                if($_res){
+                    $pageProfit = array_sum(collection($_res['lists']['data'])->column("profit"));
+                    $pageDeposit = array_sum(collection($_res['lists']['data'])->column("deposit"));
+                    $pageJiancang = array_sum(collection($_res['lists']['data'])->column("jiancang_fee"));
+                    $this->assign("datas", $_res['lists']);
+                    $this->assign("pages", $_res['pages']);
+                    $this->assign("pageProfit", $pageProfit);
+                    $this->assign("pageDeposit", $pageDeposit);
+                    $this->assign("pageJiancang", $pageJiancang);
+                    $this->assign("totalProfit", $_res['totalProfit']);
+                    $this->assign("totalDeposit", $_res['totalDeposit']);
+                    $this->assign("totalJiancang", $_res['totalJiancang']);
+                    $this->assign("totalDefer", $_res['totalDefer']);
+                    $this->assign("search", input(""));
+                    return view("virtualDetail3");
+                }else{
+                    return "非法操作！";
+                }
+                break;
+            case '6':
+                // 资金记录
+                $_res = $this->userLogic->pageUserRecordByUserId($id, input(""), 10);
+                if($_res){
+                    $capital = $this->_userCapital($id);
+                    $type = config("user_record_type");
+                    array_filter($_res['lists']['data'], function(&$_item) use ($type){
+                        $_item['type_text'] = $type["{$_item['type']}_{$_item['direction']}"];
+                        $_item['remark'] = json_decode($_item['remark'], true) ? json_decode($_item['remark'], true) : $_item['remark'];
+                    });
+                    $this->assign("datas", $_res['lists']);
+                    $this->assign("pages", $_res['pages']);
+                    $this->assign("capital", $capital);
+                    $this->assign("search", input(""));
+                    return view("virtualDetail6");
+                }else{
+                    return "非法操作！";
+                }
+                break;
+            default:
+                return "非法操作！";
+                break;
         }
     }
 }

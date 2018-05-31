@@ -11,7 +11,8 @@ class sina
         $requestUrl = sprintf(self::REAL_REQUEST_URL, $codes);
         //$response = $this->sinaCurl($requestUrl);
         $response = file_get_contents($requestUrl);
-        $response = iconv("GBK", "UTF-8", $response);
+        //$response = iconv("GBK", "UTF-8", $response);
+        $response = mb_convert_encoding($response, "UTF-8", "GBK");
         $response = str_replace(["\r\n", "\n", "\r", " "], "", $response);
         $_response = [];
         if($response){

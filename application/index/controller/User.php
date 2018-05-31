@@ -235,18 +235,22 @@ class User extends Base
             }else{
                 $money = input("post.money/f");
                 $user = $this->_logic->userIncCard($this->user_id);
-                $remark = [
-                    "bank" => $user['has_one_card']['bank_name'],
-                    "card" => $user['has_one_card']['bank_card'],
-                    "name" => $user['has_one_card']['bank_user'],
-                    "addr" => $user['has_one_card']['bank_address'],
-                ];
-                $withdrawId = $this->_logic->createUserWithdraw($this->user_id, $money, $remark);
-                if($withdrawId > 0){
-                    $url = url("index/User/index");
-                    return $this->ok(['url' => $url]);
+                if($user['is_virtual'] == 1){
+                    return $this->fail("账户无法使用此功能！");
                 }else{
-                    return $this->fail("提现申请失败！");
+                    $remark = [
+                        "bank" => $user['has_one_card']['bank_name'],
+                        "card" => $user['has_one_card']['bank_card'],
+                        "name" => $user['has_one_card']['bank_user'],
+                        "addr" => $user['has_one_card']['bank_address'],
+                    ];
+                    $withdrawId = $this->_logic->createUserWithdraw($this->user_id, $money, $remark);
+                    if($withdrawId > 0){
+                        $url = url("index/User/index");
+                        return $this->ok(['url' => $url]);
+                    }else{
+                        return $this->fail("提现申请失败！");
+                    }
                 }
             }
         }
