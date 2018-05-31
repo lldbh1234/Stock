@@ -203,7 +203,6 @@ class RecordLogic
             $_proxy = Admin::where($_where)->find();
             if($_proxy){
                 $_childrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
-                $_childrenAdminIds = array_diff($_childrenAdminIds, [$_proxy->admin_id]);
                 $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
             }
         }
@@ -213,7 +212,6 @@ class RecordLogic
             $_proxy = Admin::where($_where)->find();
             if($_proxy){
                 $_tempChildrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
-                $_tempChildrenAdminIds = array_diff($_tempChildrenAdminIds, [$_proxy->admin_id]);
                 if(isset($_childrenAdminIds)){
                     $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
                 }else{
@@ -228,7 +226,6 @@ class RecordLogic
             $_proxy = Admin::where($_where)->find();
             if($_proxy){
                 $_tempChildrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
-                $_tempChildrenAdminIds = array_diff($_tempChildrenAdminIds, [$_proxy->admin_id]);
                 if(isset($_childrenAdminIds)){
                     $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
                 }else{
@@ -335,7 +332,6 @@ class RecordLogic
             $_proxy = Admin::where($_where)->find();
             if($_proxy){
                 $_childrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
-                $_childrenAdminIds = array_diff($_childrenAdminIds, [$_proxy->admin_id]);
                 $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
             }
         }
@@ -345,7 +341,6 @@ class RecordLogic
             $_proxy = Admin::where($_where)->find();
             if($_proxy){
                 $_tempChildrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
-                $_tempChildrenAdminIds = array_diff($_tempChildrenAdminIds, [$_proxy->admin_id]);
                 if(isset($_childrenAdminIds)){
                     $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
                 }else{
@@ -360,7 +355,6 @@ class RecordLogic
             $_proxy = Admin::where($_where)->find();
             if($_proxy){
                 $_tempChildrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
-                $_tempChildrenAdminIds = array_diff($_tempChildrenAdminIds, [$_proxy->admin_id]);
                 if(isset($_childrenAdminIds)){
                     $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
                 }else{
