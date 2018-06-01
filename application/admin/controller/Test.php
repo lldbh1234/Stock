@@ -30,6 +30,7 @@ class Test extends Controller
 
     public function test()
     {
+        exit;
         $user = \app\admin\model\User::find(299);
         $rData = [
             "type" => 4,
