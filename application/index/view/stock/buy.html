@@ -333,12 +333,12 @@
 {block name="script"}
 <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
 <script type="text/javascript">
-	var flag = false; // 用户是否在输入止盈或者止损
+	var flag1 = false; // 用户是否在输入止盈或者止损
 	$(".now_count").focus(function(){
-		flag = true;
+		flag1 = true;
 	});
 	$(".now_count").blur(function(){
-		flag = false;
+		flag1 = false;
 	});
 
 
@@ -445,11 +445,11 @@
 
 		if( context.hasClass( "zhisun" ) && now_count > nowPrice){
 			$(this).val( initValue );
-			return false;
+			// return false;
 		}
 		if( context.hasClass( "zhiying" ) && now_count < nowPrice){
 			$(this).val( initValue );
-			return false;
+			// return false;
 		}
 
 		var profit = parseFloat( $(".pattern_options").find(".active").data("profit") );
@@ -457,13 +457,19 @@
 
 		if( context.hasClass( "zhisun" ) && (-rate - loss > 0)){
 			$(this).val( initValue );
-			return false;
+			// return false;
 		}
 		if( context.hasClass( "zhiying" ) && ( profit - rate > 0 )){
 			$(this).val( initValue );
-			return false;
+			// return false;
 		}
 
+
+		var context = $(this).parents(".control_point");
+		var now_count = parseFloat( context.find(".now_count").val() );
+		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+		var nowPrice = parseFloat( $(".agent_price").html() ); //现价
+		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
 
 		context.find(".fudong").find("span").html( rate + "%" ).attr("data-val", rate);
 	});
@@ -630,7 +636,7 @@ $(function(){
                 	calcNum();
 
                 	//如果用户在输入就不修改
-                	if( flag ){
+                	if( flag1 ){
                 		return false;
                 	}
 
