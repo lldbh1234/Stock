@@ -456,6 +456,8 @@ class AdminLogic
             $parents = isset($operates) ? array_intersect($operates, $parents) : $parents;
             $where["pid"] = ["IN", $parents];
         }
+        $totalFee = Admin::where($where)->sum("total_fee");
+        $totalIncome = Admin::where($where)->sum("total_income");
         $pageSize = $pageSize ? : config("page_size");
         $tableCols = Admin::tableColumnShow();
         if($tableCols['settle'] == 1){
@@ -476,7 +478,7 @@ class AdminLogic
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
-        return compact("lists", "pages");
+        return compact("lists", "pages", "totalFee", "totalIncome");
     }
 
     // 分页微圈列表
@@ -536,6 +538,8 @@ class AdminLogic
             $parents = isset($parents) ? array_intersect($members, $parents) : $members;
             $where["pid"] = ["IN", $parents];
         }
+        $totalFee = Admin::where($where)->sum("total_fee");
+        $totalIncome = Admin::where($where)->sum("total_income");
         $pageSize = $pageSize ? : config("page_size");
         $tableCols = Admin::tableColumnShow();
         if($tableCols['settle'] == 1){
@@ -558,7 +562,7 @@ class AdminLogic
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
-        return compact("lists", "pages");
+        return compact("lists", "pages", "totalFee", "totalIncome");
     }
 
     public function pageTeamLists($role = "settle", $filter = [], $pageSize = null)
@@ -625,8 +629,10 @@ class AdminLogic
             $parents = Admin::where($_where)->column("admin_id");
             $where["pid"] = ["IN", $parents];
         }
+        $totalFee = Admin::where($where)->sum("total_fee");
+        $totalIncome = Admin::where($where)->sum("total_income");
         $pageSize = $pageSize ? : config("page_size");
-        $lists = Admin::with(["hasOneParent"])
+        $_lists = Admin::with(["hasOneParent"])
                     ->withSum(
                         [
                             "hasManyWithdraw" => function($_query){
@@ -637,7 +643,9 @@ class AdminLogic
                     ->field("password", true)
                     ->where($where)
                     ->paginate($pageSize, false, ['query'=>request()->param()]);
-        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalFee", "totalIncome");
     }
 
     public function teamAdminById($id, $role="settle")

@@ -38,7 +38,12 @@
             </a>
             {/if}
         </span>
-        <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+        <span class="r">
+            <span class="c-blue">余额总计： <strong>￥{$totalFee|number_format=2}</strong></span>
+			<span class="c-green ml-15">提现总计：<strong>￥{$totalIncome - $totalFee|number_format=2}</strong></span>
+			<span class="c-orange ml-15">收入总计：<strong>￥{$totalIncome|number_format=2}</strong></span>
+            <span class="ml-15">共有数据：<strong>{$datas.total}</strong> 条</span>
+        </span>
     </div>
     <table class="table table-border table-bordered table-hover table-bg">
         <thead>
@@ -99,6 +104,25 @@
             </td>
         </tr>
         {/volist}
+        {gt name="datas.total" value="0"}
+        <tr class="text-c">
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <!--<td>-</td>-->
+            <td>{$pageFee|number_format=2}</td>
+            <td>{$pageIncome - $pageFee|number_format=2}</td>
+            <td>{$pageIncome|number_format=2}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        {/gt}
         </tbody>
     </table>
     {$pages}

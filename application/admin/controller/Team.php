@@ -16,9 +16,15 @@ class Team extends Base
     public function settle()
     {
         $_res = $this->_logic->pageTeamLists("settle", input(""));
+        $pageFee = array_sum(collection($_res['lists']['data'])->column("total_fee"));
+        $pageIncome = array_sum(collection($_res['lists']['data'])->column("total_income"));
         $isAdmin = $this->_logic->isAdmin($this->adminId);
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalFee", $_res['totalFee']);
+        $this->assign("totalIncome", $_res['totalIncome']);
+        $this->assign("pageFee", $pageFee);
+        $this->assign("pageIncome", $pageIncome);
         $this->assign("search", input(""));
         $this->assign("isAdmin", $isAdmin);
         return view();
@@ -27,9 +33,15 @@ class Team extends Base
     public function operate()
     {
         $_res = $this->_logic->pageTeamLists("operate", input(""));
+        $pageFee = array_sum(collection($_res['lists']['data'])->column("total_fee"));
+        $pageIncome = array_sum(collection($_res['lists']['data'])->column("total_income"));
         $isAdmin = $this->_logic->isAdmin($this->adminId);
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalFee", $_res['totalFee']);
+        $this->assign("totalIncome", $_res['totalIncome']);
+        $this->assign("pageFee", $pageFee);
+        $this->assign("pageIncome", $pageIncome);
         $this->assign("search", input(""));
         $this->assign("isAdmin", $isAdmin);
         return view();
@@ -39,9 +51,15 @@ class Team extends Base
     {
         //$_res = $this->_logic->pageTeamLists("member", input(""));
         $_res = $this->_logic->pageMemberLists(input(""));
+        $pageFee = array_sum(collection($_res['lists']['data'])->column("total_fee"));
+        $pageIncome = array_sum(collection($_res['lists']['data'])->column("total_income"));
         $tableCols = $this->_logic->tableColumnShow();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalFee", $_res['totalFee']);
+        $this->assign("totalIncome", $_res['totalIncome']);
+        $this->assign("pageFee", $pageFee);
+        $this->assign("pageIncome", $pageIncome);
         $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
@@ -50,9 +68,15 @@ class Team extends Base
     public function ring()
     {
         $_res = $this->_logic->pageRingLists(input(""));
+        $pageFee = array_sum(collection($_res['lists']['data'])->column("total_fee"));
+        $pageIncome = array_sum(collection($_res['lists']['data'])->column("total_income"));
         $tableCols = $this->_logic->tableColumnShow();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalFee", $_res['totalFee']);
+        $this->assign("totalIncome", $_res['totalIncome']);
+        $this->assign("pageFee", $pageFee);
+        $this->assign("pageIncome", $pageIncome);
         $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();

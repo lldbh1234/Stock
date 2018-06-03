@@ -25,8 +25,11 @@ class Manager extends Base
         $map = input('');
         !isset($map['state']) ? $map['state'] = 1 : '';
         $_res = $this->userManageLogic->pageManagerLists($map);
+        $pageSure = array_sum(collection($_res['lists']['data'])->column("sure_income"));
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalSure", $_res['totalSure']);
+        $this->assign("pageSure", $pageSure);
         $this->assign("search", input(""));
         return view();
     }
