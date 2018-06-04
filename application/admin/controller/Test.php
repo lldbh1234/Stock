@@ -30,6 +30,8 @@ class Test extends Controller
 
     public function test()
     {
+        $orders = (new \app\index\logic\OrderLogic())->allDeferOrders();
+        dump($orders);
         exit;
         $user = \app\admin\model\User::find(299);
         $rData = [

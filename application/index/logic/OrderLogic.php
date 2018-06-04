@@ -142,7 +142,7 @@ class OrderLogic
     public function allDeferOrders()
     {
         $where["stock_order.state"] = 3;
-        $where["free_time"] = ["LT", time()];
+        $where["free_time"] = ["ELT", time()];
         $hasWhere['is_virtual'] = 0; // 真实用户订单
         $orders = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
