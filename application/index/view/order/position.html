@@ -164,6 +164,9 @@
     .modify_point {
         margin: 0 30px;
     }
+    .risk_mask {
+    z-index: 9999;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="__RESOURCE__/css/dropload.css">
 {/block}
@@ -256,7 +259,7 @@
     <header class="strategy_top">
         <p>
             <a href="{:url('index/Strategy/index')}">策略</a>
-            <a href="javascript:viod(0);" class="active">策略持仓</a>
+            <a href="javascript:void(0);" class="active">策略持仓</a>
         </p>
     </header>
 
@@ -586,7 +589,7 @@
         var context = $(this).parents(".control_point");
         var now_count = parseFloat( context.find(".now_count").val() );
         var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
-        var nowPrice = parseFloat( $(this).parents(".profit_loss_mask").attr("data-nowPrice") ); //现价
+        var nowPrice = parseFloat( $(this).parents(".profit_loss_mask").attr("data-buyprice") ); //现价
 
 
         var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
@@ -660,6 +663,9 @@
         var buyPrice = parseFloat( $(".profit_loss_mask").data("buyprice"));
         if( $(this).hasClass("minus_btn") ){ //减少
             if( val <= 0 ){
+                return false;
+            }
+            if( context.hasClass("zhiying") && val <= (buyPrice + 0.01)){
                 return false;
             }
             val = (val - 0.01).toFixed(2);
