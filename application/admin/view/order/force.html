@@ -114,7 +114,6 @@
 				{if condition="in_array('admin/Order/forceSell', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-danger size-MINI radius" type="button" title="平仓" onclick="force_sell('{$item.order_id}', '{$item.sell_price}', this)" value="平仓">
 				{/if}
-                {in name="item.force_type" value="1,2"}
 				{if condition="in_array('admin/Order/give', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-secondary size-MINI radius" type="button" title="送股" onclick="mode_show('订单转送股', '{:url("admin/Order/give", ['id' => $item.order_id])}', '', '350')" value="送股">
                 {/if}
@@ -124,7 +123,6 @@
 				{if condition="in_array('admin/Order/toPosition', $Think.session.ACCESS_LIST)"}
                 <input class="btn btn-primary size-MINI radius" type="button" title="转为持仓" onclick="to_position('{$item.order_id}', this)" value="持仓">
 				{/if}
-                {/in}
             </td>
 		</tr>
 		{/volist}

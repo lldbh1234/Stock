@@ -349,6 +349,7 @@ Route::group([], function() {
             Route::any('position', 'admin/Order/position'); //持仓订单
             Route::any('position-detail', 'admin/Order/positionDetail'); // 持仓订单详情
             Route::any('position-rebate', 'admin/Order/positionRebate'); // 持仓订单返点记录
+            Route::any('position-give', 'admin/Order/positionGive'); // 持仓订单送股
             //Route::post('buy-ok', 'admin/Order/buyOk'); //建仓成功
             //Route::post('buy-fail', 'admin/Order/buyFail'); //建仓失败
             Route::post('sell-ok', 'admin/Order/sellOk'); //平仓成功

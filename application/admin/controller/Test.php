@@ -30,7 +30,7 @@ class Test extends Controller
 
     public function test()
     {
-        $hangqing = (new \app\index\logic\StockLogic())->quotationBySina("300051");
+        $hangqing = (new \app\index\logic\StockLogic())->quotationBySina("002928");
         dump($hangqing);
         exit;
         $orders = (new \app\index\logic\OrderLogic())->allDeferOrders();

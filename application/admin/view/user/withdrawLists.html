@@ -52,8 +52,10 @@
             <th>手续费</th>
             <th>实际到账</th>
             <th>申请时间</th>
-            <th>审核时间</th>
+            {if condition="$isAdmin"}
+            <th>到账时间</th>
             <th>审核人</th>
+            {/if}
             <th>状态</th>
             <th width="140">操作</th>
         </tr>
@@ -61,7 +63,11 @@
         <tbody>
         {empty name="datas.data"}
         <tr class="text-c admin-lists">
+            {if condition="$isAdmin"}
             <td colspan="13">暂时没有匹配到数据</td>
+            {else /}
+            <td colspan="11">暂时没有匹配到数据</td>
+            {/if}
         </tr>
         {/empty}
 
@@ -76,8 +82,10 @@
             <td>{$item.poundage | default='0.00'}</td>
             <td>{$item.actual | default='0.00'}</td>
             <td>{$item.create_at | date='Y-m-d H:i:s', ###}</td>
+            {if condition="$isAdmin"}
             <td>{if condition="$item.update_at eq 0"}{else /}{$item.update_at | date='Y-m-d H:i:s', ###}{/if}</td>
             <td>{$item.has_one_admin.username | default=''}</td>
+            {/if}
             <td>
                 {if condition="$item.state eq 0"}
                     <span class="label label-warning radius">待审核</span>
