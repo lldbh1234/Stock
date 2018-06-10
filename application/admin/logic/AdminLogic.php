@@ -475,6 +475,7 @@ class AdminLogic
             )
             ->field("password", true)
             ->where($where)
+            ->order(["status" => "ASC", "admin_id" => "ASC"])
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
@@ -559,6 +560,7 @@ class AdminLogic
             )
             ->field("password", true)
             ->where($where)
+            ->order(["status" => "ASC", "admin_id" => "ASC"])
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
@@ -642,6 +644,7 @@ class AdminLogic
                     )
                     ->field("password", true)
                     ->where($where)
+                    ->order(["status" => "ASC", "admin_id" => "ASC"])
                     ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
