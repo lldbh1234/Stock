@@ -300,12 +300,14 @@ class User extends Base
     public function withdrawLists()
     {
         $_res = (new UserWithdrawLogic())->pageUserWithdrawLists(input(''));
+        $isAdmin = (new AdminLogic())->isAdmin($this->adminId);
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
         $this->assign("totalAmount", $_res['totalAmount']);
         $this->assign("totalActual", $_res['totalActual']);
         $this->assign("totalPoundage", $_res['totalPoundage']);
         $this->assign("search", input(""));
+        $this->assign("isAdmin", $isAdmin);
         return view();
     }
 

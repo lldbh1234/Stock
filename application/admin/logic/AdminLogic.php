@@ -2,6 +2,7 @@
 namespace app\admin\logic;
 
 use app\admin\model\Admin;
+use app\admin\model\AdminGive;
 use app\admin\model\Role;
 use app\admin\model\AdminWithdraw;
 use app\common\payment\authLlpay;
@@ -369,6 +370,16 @@ class AdminLogic
         return in_array($roleId, $proxyRoleIds);
     }
 
+    // 是否管理员
+    public function isAdmin($adminId)
+    {
+        $managerAdminIds = [
+            Admin::ADMINISTRATOR_ID,
+            Admin::ROOT_ID
+        ];
+        return in_array($adminId, $managerAdminIds);
+    }
+
     public function myPoint($adminId)
     {
         $proxyRoleIds = [
@@ -445,6 +456,8 @@ class AdminLogic
             $parents = isset($operates) ? array_intersect($operates, $parents) : $parents;
             $where["pid"] = ["IN", $parents];
         }
+        $totalFee = Admin::where($where)->sum("total_fee");
+        $totalIncome = Admin::where($where)->sum("total_income");
         $pageSize = $pageSize ? : config("page_size");
         $tableCols = Admin::tableColumnShow();
         if($tableCols['settle'] == 1){
@@ -462,10 +475,11 @@ class AdminLogic
             )
             ->field("password", true)
             ->where($where)
+            ->order(["status" => "ASC", "admin_id" => "ASC"])
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
-        return compact("lists", "pages");
+        return compact("lists", "pages", "totalFee", "totalIncome");
     }
 
     // 分页微圈列表
@@ -525,6 +539,8 @@ class AdminLogic
             $parents = isset($parents) ? array_intersect($members, $parents) : $members;
             $where["pid"] = ["IN", $parents];
         }
+        $totalFee = Admin::where($where)->sum("total_fee");
+        $totalIncome = Admin::where($where)->sum("total_income");
         $pageSize = $pageSize ? : config("page_size");
         $tableCols = Admin::tableColumnShow();
         if($tableCols['settle'] == 1){
@@ -544,10 +560,11 @@ class AdminLogic
             )
             ->field("password", true)
             ->where($where)
+            ->order(["status" => "ASC", "admin_id" => "ASC"])
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
-        return compact("lists", "pages");
+        return compact("lists", "pages", "totalFee", "totalIncome");
     }
 
     public function pageTeamLists($role = "settle", $filter = [], $pageSize = null)
@@ -614,8 +631,10 @@ class AdminLogic
             $parents = Admin::where($_where)->column("admin_id");
             $where["pid"] = ["IN", $parents];
         }
+        $totalFee = Admin::where($where)->sum("total_fee");
+        $totalIncome = Admin::where($where)->sum("total_income");
         $pageSize = $pageSize ? : config("page_size");
-        $lists = Admin::with(["hasOneParent"])
+        $_lists = Admin::with(["hasOneParent"])
                     ->withSum(
                         [
                             "hasManyWithdraw" => function($_query){
@@ -625,12 +644,28 @@ class AdminLogic
                     )
                     ->field("password", true)
                     ->where($where)
+                    ->order(["status" => "ASC", "admin_id" => "ASC"])
                     ->paginate($pageSize, false, ['query'=>request()->param()]);
-        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalFee", "totalIncome");
     }
 
     public function teamAdminById($id, $role="settle")
     {
+        $proxyRoleIds = [
+            Admin::SETTLE_ROLE_ID,
+            Admin::OPERATE_ROLE_ID,
+            Admin::MEMBER_ROLE_ID,
+            Admin::RING_ROLE_ID
+        ];
+        if(in_array(manager()['role'], $proxyRoleIds)){
+            // 代理商用户
+            $_childrenAdminIds = Admin::childrenAdminIds(isLogin());
+            if(!in_array($id, $_childrenAdminIds)){
+                return [];
+            }
+        }
         $where['admin_id'] = $id;
         switch ($role){
             case "settle": //结算中心
@@ -691,5 +726,65 @@ class AdminLogic
     public function depositRecharge($admin_id, $money)
     {
         return Admin::where(['admin_id' => $admin_id])->setInc('deposit', $money);
+    }
+
+    //代理商赠金
+    public function giveProxy($AdminId, $money, $remark = null)
+    {
+        // 启动事务
+        Db::startTrans();
+        try{
+            $admin = Admin::find($AdminId);
+            // 余额增加
+            $admin->setInc('total_fee', $money);
+            // 收入合计增加
+            $admin->setInc('total_income', $money);
+            // 赠金日志记录
+            $_gData = [
+                "admin_id"   => $AdminId,
+                "amount"    => $money,
+                "remark"    => $remark,
+                "create_at" => time(),
+                "create_by" => isLogin()
+            ];
+            AdminGive::create($_gData);
+            // 代理商收入明细
+            // 代理商收入明细
+            $rData = [
+                "money" => $money, //返点金额
+                "point" => 0, // 返点比例
+                "type"  => 3, // 收入类型：0-用户收益分成，1-建仓费分成，2-递延费分成，3-系统赠金
+                "remark" => $remark
+            ];
+            $admin->hasManyRecord()->save($rData);
+            // 提交事务
+            Db::commit();
+            return true;
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return false;
+        }
+    }
+
+    // 代理商赠金日志
+    public function pageAdminGiveLogs($filter = [], $pageSize = null)
+    {
+        $hasWhere = [];
+        $where = Admin::manager();
+        // 代理商登录名
+        if(isset($filter['username']) && !empty($filter['username'])){
+            $hasWhere["username"] = trim($filter['username']);
+        }
+        // 代理商类型
+        if(isset($filter['role']) && is_numeric($filter['role'])){
+            $hasWhere["role"] = $filter['role'];
+        }
+        $pageSize = $pageSize ? : config("page_size");
+        $lists = AdminGive::hasWhere("belongsToAdmin", $hasWhere)
+                ->with(['belongsToAdmin' => ['hasOneRole'], 'hasOneOperator'])
+                ->where($where)
+                ->paginate($pageSize, false, ['query'=>request()->param()]);
+        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
 }

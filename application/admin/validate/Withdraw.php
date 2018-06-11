@@ -10,7 +10,7 @@ use think\Validate;
 class Withdraw extends Validate
 {
     protected $rule = [
-        'money' => "require|float|egt:100|checkMoney|checkDateTime",
+        'money' => "require|float|egt:100|elt:100000|checkMoney|checkDateTime",
         'card'  => "require|checkCard",
     ];
 
@@ -18,7 +18,8 @@ class Withdraw extends Validate
         'money.checkDateTime' => '不在规定提现时间内！',
         'money.require' => '提现金额不能为空！',
         'money.float'   => '提现金额必须为数字！',
-        'money.egt'     => '提现金额不得于100！',
+        'money.egt'     => '提现金额最小为100元！',
+        'money.elt'     => '提现金额最大为100000元！',
         'money.checkMoney' => '账户余额不足！',
         'card.require'  => '请选择到账银行！',
         'card.checkCard' => '到账银行不存在！',
@@ -30,12 +31,12 @@ class Withdraw extends Validate
 
     public function checkDateTime($value)
     {
-        if(date('w') == 0){
+        /*if(date('w') == 0){
             return false;
         }
         if(date('w') == 6){
             return false;
-        }
+        }*/
         if(date('G') < 9){
             return false;
         }
@@ -45,10 +46,10 @@ class Withdraw extends Validate
         if(date('G') == 17 && date('i') > 30){
             return false;
         }
-        $holiday = explode(',', cf('holiday', ''));
+        /*$holiday = explode(',', cf('holiday', ''));
         if(in_array(date("Y-m-d"), $holiday)){
             return false;
-        }
+        }*/
         return true;
     }
 

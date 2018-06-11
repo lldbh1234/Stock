@@ -197,6 +197,57 @@ class RecordLogic
         $hasWhere["is_manager"] = 1;
         $myUserIds = Admin::userIds();
         $myUserIds ? $where["stock_user_manager_record.user_id"] = ["IN", $myUserIds] : null;
+        // 上级结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = ["username" => trim($filter['settle'])];
+            $_proxy = Admin::where($_where)->find();
+            if($_proxy){
+                $_childrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
+                $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
+            }
+        }
+        // 上级运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = ["username" => trim($filter['operate'])];
+            $_proxy = Admin::where($_where)->find();
+            if($_proxy){
+                $_tempChildrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
+                if(isset($_childrenAdminIds)){
+                    $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
+                }else{
+                    $_childrenAdminIds = $_tempChildrenAdminIds;
+                }
+                $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
+            }
+        }
+        // 上级微会员
+        if(isset($filter['member']) && !empty($filter['member'])){
+            $_where = ["username" => trim($filter['member'])];
+            $_proxy = Admin::where($_where)->find();
+            if($_proxy){
+                $_tempChildrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
+                if(isset($_childrenAdminIds)){
+                    $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
+                }else{
+                    $_childrenAdminIds = $_tempChildrenAdminIds;
+                }
+                $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
+            }
+        }
+        // 微圈
+        if(isset($filter['ring']) && !empty($filter['ring'])){
+            $_where = ["username" => trim($filter['ring'])];
+            $_proxy = Admin::where($_where)->find();
+            if($_proxy){
+                $_tempChildrenAdminIds = [$_proxy->admin_id];
+                if(isset($_childrenAdminIds)){
+                    $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
+                }else{
+                    $_childrenAdminIds = $_tempChildrenAdminIds;
+                }
+                $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
+            }
+        }
         // 经纪人
         if(isset($filter['nickname']) && !empty($filter['nickname'])){
             $_nickname = trim($filter['nickname']);
@@ -205,27 +256,6 @@ class RecordLogic
         // 手机号
         if(isset($filter['mobile']) && !empty($filter['mobile'])){
             $hasWhere["mobile"] = trim($filter['mobile']);
-        }
-        // 微圈
-        if(isset($filter['ring']) && !empty($filter['ring'])){
-            $_ring = trim($filter['ring']);
-            $_where = ["username" => ["LIKE", "%{$_ring}%"]];
-            $adminIds = Admin::where($_where)->column("admin_id");
-            $hasWhere["admin_id"] = ["IN", $adminIds];
-        }
-        // 微会员
-        if(isset($filter['member']) && !empty($filter['member'])){
-            $_member = trim($filter['member']);
-            $_where = ["username" => ["LIKE", "%{$_member}%"]];
-            $memberAdminIds = Admin::where($_where)->column("admin_id") ? : [-1];
-            $ringAdminIds = Admin::where(["pid" => ["IN", $memberAdminIds]])->column("admin_id") ? : [-1];
-            $adminIds = array_unique(array_merge($memberAdminIds, $ringAdminIds));
-            $adminIds = $adminIds ? : [-1];
-            $userIds = User::where(["admin_id" => ["IN", $adminIds]])->column("user_id");
-            if($myUserIds){
-                $userIds = array_intersect($userIds, $myUserIds);
-            }
-            $where["stock_user_manager_record.user_id"] = ["IN", $userIds];
         }
         // 结算时间
         if(isset($filter['begin']) || isset($filter['end'])){
@@ -290,11 +320,48 @@ class RecordLogic
     // 代理商返点记录
     public function pageAdminRecord($filter = [], $pageSize = null)
     {
-        $where = Admin::manager();
         $hasWhere = [];
+        $where = Admin::manager();
         if(isset($where['admin_id'])){
             $where['stock_admin_record.admin_id'] = $where['admin_id'];
             unset($where['admin_id']);
+        }
+        // 上级结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = ["username" => trim($filter['settle'])];
+            $_proxy = Admin::where($_where)->find();
+            if($_proxy){
+                $_childrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
+                $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
+            }
+        }
+        // 上级运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = ["username" => trim($filter['operate'])];
+            $_proxy = Admin::where($_where)->find();
+            if($_proxy){
+                $_tempChildrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
+                if(isset($_childrenAdminIds)){
+                    $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
+                }else{
+                    $_childrenAdminIds = $_tempChildrenAdminIds;
+                }
+                $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
+            }
+        }
+        // 上级微会员
+        if(isset($filter['member']) && !empty($filter['member'])){
+            $_where = ["username" => trim($filter['member'])];
+            $_proxy = Admin::where($_where)->find();
+            if($_proxy){
+                $_tempChildrenAdminIds = Admin::childrenAdminIds($_proxy->admin_id);
+                if(isset($_childrenAdminIds)){
+                    $_childrenAdminIds = array_intersect($_childrenAdminIds, $_tempChildrenAdminIds);
+                }else{
+                    $_childrenAdminIds = $_tempChildrenAdminIds;
+                }
+                $hasWhere["admin_id"] = ["IN", $_childrenAdminIds];
+            }
         }
         // 代理商登录名
         if(isset($filter['username']) && !empty($filter['username'])){

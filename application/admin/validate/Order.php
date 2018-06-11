@@ -72,6 +72,13 @@ class Order extends Validate
             "profit",
             "loss"
         ],
+        "positionGive"  => [
+            'id'    => 'require|gt:0|canPositionGive',
+            "price" => 'require|float|gt:0',
+            "hand",
+            "profit",
+            "loss"
+        ],
         "ware"  => [
             'id'    => 'require|gt:0|canWare',
             "sell"
@@ -129,6 +136,12 @@ class Order extends Validate
             return $order["force_type"] == 1 || $order["force_type"] == 2;
         }
         return false;
+    }
+
+    protected function canPositionGive($value)
+    {
+        $order = (new OrderLogic())->orderById($value, $state = 3);
+        return $order ? true : false;
     }
 
     protected function checkHand($value)

@@ -16,18 +16,34 @@ class Team extends Base
     public function settle()
     {
         $_res = $this->_logic->pageTeamLists("settle", input(""));
+        $pageFee = array_sum(collection($_res['lists']['data'])->column("total_fee"));
+        $pageIncome = array_sum(collection($_res['lists']['data'])->column("total_income"));
+        $isAdmin = $this->_logic->isAdmin($this->adminId);
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalFee", $_res['totalFee']);
+        $this->assign("totalIncome", $_res['totalIncome']);
+        $this->assign("pageFee", $pageFee);
+        $this->assign("pageIncome", $pageIncome);
         $this->assign("search", input(""));
+        $this->assign("isAdmin", $isAdmin);
         return view();
     }
 
     public function operate()
     {
         $_res = $this->_logic->pageTeamLists("operate", input(""));
+        $pageFee = array_sum(collection($_res['lists']['data'])->column("total_fee"));
+        $pageIncome = array_sum(collection($_res['lists']['data'])->column("total_income"));
+        $isAdmin = $this->_logic->isAdmin($this->adminId);
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalFee", $_res['totalFee']);
+        $this->assign("totalIncome", $_res['totalIncome']);
+        $this->assign("pageFee", $pageFee);
+        $this->assign("pageIncome", $pageIncome);
         $this->assign("search", input(""));
+        $this->assign("isAdmin", $isAdmin);
         return view();
     }
 
@@ -35,9 +51,15 @@ class Team extends Base
     {
         //$_res = $this->_logic->pageTeamLists("member", input(""));
         $_res = $this->_logic->pageMemberLists(input(""));
+        $pageFee = array_sum(collection($_res['lists']['data'])->column("total_fee"));
+        $pageIncome = array_sum(collection($_res['lists']['data'])->column("total_income"));
         $tableCols = $this->_logic->tableColumnShow();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalFee", $_res['totalFee']);
+        $this->assign("totalIncome", $_res['totalIncome']);
+        $this->assign("pageFee", $pageFee);
+        $this->assign("pageIncome", $pageIncome);
         $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
@@ -46,9 +68,15 @@ class Team extends Base
     public function ring()
     {
         $_res = $this->_logic->pageRingLists(input(""));
+        $pageFee = array_sum(collection($_res['lists']['data'])->column("total_fee"));
+        $pageIncome = array_sum(collection($_res['lists']['data'])->column("total_income"));
         $tableCols = $this->_logic->tableColumnShow();
         $this->assign("datas", $_res['lists']);
         $this->assign("pages", $_res['pages']);
+        $this->assign("totalFee", $_res['totalFee']);
+        $this->assign("totalIncome", $_res['totalIncome']);
+        $this->assign("pageFee", $pageFee);
+        $this->assign("pageIncome", $pageIncome);
         $this->assign("tableCols", $tableCols);
         $this->assign("search", input(""));
         return view();
@@ -106,6 +134,37 @@ class Team extends Base
         }
     }
 
+    public function giveSettle($admin_id = null)
+    {
+        $isAdmin = $this->_logic->isAdmin($this->adminId);
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('give')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                if($isAdmin){
+                    $adminId = input("post.id/d");
+                    $money = input("post.money/f");
+                    $remark = input("post.remark/s");
+                    if($this->_logic->giveProxy($adminId, $money, $remark)){
+                        return $this->ok();
+                    } else {
+                        return $this->fail("操作失败！");
+                    }
+                }else{
+                    return $this->fail("系统提示：非法操作！");
+                }
+            }
+        }
+        $proxy = $this->_logic->teamAdminById($admin_id, "settle");
+        if($proxy && $isAdmin){
+            $this->assign("proxy", $proxy);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
     public function createOperate()
     {
         if(request()->isPost()){
@@ -155,6 +214,37 @@ class Team extends Base
             $parent = $this->_logic->teamAdminsByRole("settle");
             $this->assign("admin", $admin);
             $this->assign("parent", $parent);
+            return view();
+        }else{
+            return "非法操作！";
+        }
+    }
+
+    public function giveOperate($admin_id = null)
+    {
+        $isAdmin = $this->_logic->isAdmin($this->adminId);
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Team');
+            if(!$validate->scene('give')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                if($isAdmin){
+                    $adminId = input("post.id/d");
+                    $money = input("post.money/f");
+                    $remark = input("post.remark/s");
+                    if($this->_logic->giveProxy($adminId, $money, $remark)){
+                        return $this->ok();
+                    } else {
+                        return $this->fail("操作失败！");
+                    }
+                }else{
+                    return $this->fail("系统提示：非法操作！");
+                }
+            }
+        }
+        $proxy = $this->_logic->teamAdminById($admin_id, "operate");
+        if($proxy && $isAdmin){
+            $this->assign("proxy", $proxy);
             return view();
         }else{
             return "非法操作！";
@@ -470,4 +560,15 @@ class Team extends Base
         }
         return $this->fail("系统提示：非法操作！");
     }*/
+
+    public function giveLog()
+    {
+        $_res = $this->_logic->pageAdminGiveLogs(input(''));
+        $roles = $this->_logic->allTeamRoles();
+        $this->assign("datas", $_res['lists']);
+        $this->assign("pages", $_res['pages']);
+        $this->assign("search", input(""));
+        $this->assign("roles", $roles);
+        return view();
+    }
 }

@@ -191,16 +191,20 @@ Route::group([], function() {
             Route::any('settle', 'admin/Team/settle');  // 结算中心
             Route::any('add-settle', 'admin/Team/createSettle');
             Route::any('edit-settle', 'admin/Team/modifySettle');
+            Route::any('give-settle', 'admin/Team/giveSettle'); // 结算中心赠金
             Route::any('operate', 'admin/Team/operate'); // 运营中心
             Route::any('add-operate', 'admin/Team/createOperate');
             Route::any('edit-operate', 'admin/Team/modifyOperate');
+            Route::any('give-operate', 'admin/Team/giveOperate'); // 运营中心赠金
             Route::any('member', 'admin/Team/member'); // 微会员
             Route::any('add-member', 'admin/Team/createMember');
             Route::any('edit-member', 'admin/Team/modifyMember');
             Route::any('member-wechat', 'admin/Team/memberWechat');
+            Route::any('give-member', 'admin/Team/giveMember'); // 微会员赠金
             Route::any('ring', 'admin/Team/ring'); // 微圈
             Route::any('add-ring', 'admin/Team/createRing');
             Route::any('edit-ring', 'admin/Team/modifyRing');
+            Route::any('give-ring', 'admin/Team/giveRing'); // 微圈赠金
             Route::post('recharge', 'admin/Team/recharge');
             Route::any('member-point', 'admin/Team/memberPoint');
             Route::any('settle-point', 'admin/Team/settlePoint');
@@ -209,6 +213,7 @@ Route::group([], function() {
             Route::any('ring-share', 'admin/Team/ringShare');// 推广链接
             //Route::post('rebate', 'admin/Team/rebate');
             //Route::any('create', 'admin/Team/createUser'); //添加用户
+            Route::any('give-logs', 'admin/Team/giveLog'); // 赠金日志
         });
 
         // 插件管理
@@ -344,6 +349,7 @@ Route::group([], function() {
             Route::any('position', 'admin/Order/position'); //持仓订单
             Route::any('position-detail', 'admin/Order/positionDetail'); // 持仓订单详情
             Route::any('position-rebate', 'admin/Order/positionRebate'); // 持仓订单返点记录
+            Route::any('position-give', 'admin/Order/positionGive'); // 持仓订单送股
             //Route::post('buy-ok', 'admin/Order/buyOk'); //建仓成功
             //Route::post('buy-fail', 'admin/Order/buyFail'); //建仓失败
             Route::post('sell-ok', 'admin/Order/sellOk'); //平仓成功

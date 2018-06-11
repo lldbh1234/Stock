@@ -26,12 +26,15 @@ class UserManagerLogic
         if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,2])){
             $where["state"] = $filter['state'];
         }
+        $totalSure = UserManager::where($where)->sum("sure_income");
         $pageSize = $pageSize ? : config("page_size");
         //
-        $lists = UserManager::with(['hasOneUser' => ['hasOneAdmin'], 'hasOneAdmin'])
+        $_lists = UserManager::with(['hasOneUser' => ['hasOneAdmin'], 'hasOneAdmin'])
                     ->where($where)
                     ->paginate($pageSize, false, ['query'=>request()->param()]);
-        return ["lists" => $lists->toArray(), "pages" => $lists->render()];
+        $lists = $_lists->toArray();
+        $pages = $_lists->render();
+        return compact("lists", "pages", "totalSure");
     }
 
     public function updateState($where=[])

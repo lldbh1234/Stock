@@ -138,6 +138,9 @@
 				{if condition="in_array('admin/Order/positionRebate', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-primary size-MINI radius" type="button" title="返点记录" onclick="show_rebate('返点记录', '{:url("admin/Order/positionRebate", ['id' => $item.order_id])}')" value="返点">
 				{/if}
+				{if condition="in_array('admin/Order/positionGive', $Think.session.ACCESS_LIST)"}
+				<input class="btn btn-success size-MINI radius" type="button" title="送股" onclick="mode_show('送股', '{:url("admin/Order/positionGive", ['id' => $item.order_id])}', '', '350')" value="送股">
+				{/if}
 				<!--{eq name="$item.is_hedging" value="0"}
 				{if condition="in_array('admin/Order/hedging', $Think.session.ACCESS_LIST)"}
 				<input class="btn btn-warning size-MINI radius" type="button" title="对冲" onclick="hedging_ok({$item.order_id}, {$item.price})" value="对冲">
@@ -203,6 +206,12 @@
         });
         layer.full(index);
     }
+	{/if}
+
+	{if condition="in_array('admin/Order/positionGive', $Think.session.ACCESS_LIST)"}
+	function mode_show(title,url,w,h){
+		layer_show(title,url,w,h);
+	}
 	{/if}
 
 	{if condition="in_array('admin/Order/hedging', $Think.session.ACCESS_LIST)"}

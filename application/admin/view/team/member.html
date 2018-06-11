@@ -44,7 +44,12 @@
             </a>
             {/if}
         </span>
-        <span class="r">共有数据：<strong>{$datas.total}</strong> 条</span>
+        <span class="r">
+            <span class="c-blue">余额总计： <strong>￥{$totalFee|number_format=2}</strong></span>
+			<span class="c-green ml-15">提现总计：<strong>￥{$totalIncome - $totalFee|number_format=2}</strong></span>
+			<span class="c-orange ml-15">收入总计：<strong>￥{$totalIncome|number_format=2}</strong></span>
+            <span class="ml-15">共有数据：<strong>{$datas.total}</strong> 条</span>
+        </span>
     </div>
     <table class="table table-border table-bordered table-hover table-bg">
         <thead>
@@ -63,7 +68,7 @@
             <th>盈利返点（%）</th>
             <th>建仓费返点（%）</th>
             <th>递延费返点（%）</th>
-            <th>保证金</th>
+            <!--<th>保证金</th>-->
             <th>账户余额</th>
             <th>提现合计</th>
             <th>收入合计</th>
@@ -89,7 +94,7 @@
             <td>{$item.point}</td>
             <td>{$item.jiancang_point}</td>
             <td>{$item.defer_point}</td>
-            <td>{$item.deposit|number_format=2}</td>
+            <!--<td>{$item.deposit|number_format=2}</td>-->
             <td>{$item.total_fee|number_format=2}</td>
             <td>{$item.has_many_withdraw_sum|number_format=2}</td>
             <td>{$item.total_income|number_format=2}</td>
@@ -117,6 +122,31 @@
             </td>
         </tr>
         {/volist}
+        {gt name="datas.total" value="0"}
+        <tr class="text-c">
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            {eq name="tableCols.settle" value="1"}
+            <td>-</td>
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <td>-</td>
+            {/eq}
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <!--<td>-</td>-->
+            <td>{$pageFee|number_format=2}</td>
+            <td>{$pageIncome - $pageFee|number_format=2}</td>
+            <td>{$pageIncome|number_format=2}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        {/gt}
         </tbody>
     </table>
     {$pages}

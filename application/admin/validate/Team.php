@@ -36,6 +36,8 @@ class Team extends Validate
         'sign_name' => 'max:64',
         'sms_username' => 'alphaNum|max:64',
         'sms_password' => 'alphaNum|max:64',
+        'money'     => 'require|float|gt:0',
+        'remark'    => 'max:255'
     ];
 
     protected $message = [
@@ -90,6 +92,10 @@ class Team extends Validate
         'sms_username.max'  => '短信用户名最大64个字符！',
         'sms_password.alphaNum' => '短信密码格式错误！',
         'sms_password.max'  => '短信密码最大64个字符！',
+        'money.require'     => '请输入赠送金额！',
+        'money.float'       => '赠送金额为数字！',
+        'money.gt'          => '赠送金额必须大于0！',
+        'remark.max'        => '备注最大255个字符！',
     ];
 
     protected $scene = [
@@ -116,6 +122,7 @@ class Team extends Validate
         'wechat' => ['id', 'name', 'domain', 'appid', 'appsecret', 'token', 'sign_name', 'sms_username', 'sms_password'],
         'rebate' => ['id', 'point'],
         'point' => ['id', 'point', 'jiancang_point', 'defer_point'],
+        'give' => ['id', 'money', 'remark'],
     ];
 
     public function checkRole($value)
@@ -126,6 +133,14 @@ class Team extends Validate
 
     public function checkId($value)
     {
+        $isProxy = (new AdminLogic())->isProxy(manager()['role']);
+        if($isProxy){
+            // 代理商用户
+            $_childrenAdminIds = Admin::childrenAdminIds(isLogin());
+            if(!in_array($value, $_childrenAdminIds)){
+                return false;
+            }
+        }
         $_where = [];
         $referer = $_SERVER['HTTP_REFERER'];
         if(strpos($referer, "settle") !== false){

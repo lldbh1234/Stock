@@ -6,6 +6,7 @@ use think\Model;
 class BaseModel extends Model
 {
     const ADMINISTRATOR_ID = 1; //超级管理员
+    const ROOT_ID = 2;
     const ADMIN_ROLE_ID = 1; //管理员
     const SETTLE_ROLE_ID = 2; //结算中心
     const OPERATE_ROLE_ID = 3; //运营中心

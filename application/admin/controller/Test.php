@@ -30,6 +30,24 @@ class Test extends Controller
 
     public function test()
     {
+        $hangqing = (new \app\index\logic\StockLogic())->quotationBySina("002928");
+        dump($hangqing);
+        exit;
+        $orders = (new \app\index\logic\OrderLogic())->allDeferOrders();
+        dump($orders);
+        exit;
+        $user = \app\admin\model\User::find(299);
+        $rData = [
+            "type" => 4,
+            "amount" => '420',
+            "account" => $user->account,
+            "remark" => json_encode(['orderId' => "5385"]),
+            "direction" => 1,
+            "create_at" => 1527831389
+        ];
+        $res = $user->hasManyRecord()->save($rData);
+        dump($res);
+        exit;
         $order = (new OrderLogic())->orderById(2980);
         if($order['is_defer'] && $order['free_time'] < time() && $order['state'] == 3){
             // 停牌股不扣费处理
