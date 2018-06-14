@@ -107,7 +107,7 @@ abstract class Connection
         // Query类
         'query'           => '\\think\\db\\Query',
         // 是否需要断线重连
-        'break_reconnect' => false,
+        'break_reconnect' => true,
     ];
 
     // PDO连接参数
