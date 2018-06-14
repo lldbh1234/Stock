@@ -319,7 +319,22 @@ class User extends Base
             $file = request()->file('avatar');
             if(empty($file)) return $this->fail('系统提示:非法操作');
             $path = './upload/avatar/';
-            $res = $file->validate(['type'=>'jpg,png,gif'])->move($path, 'user_id_'.$this->user_id.'.png');
+            $res = $file->validate([
+                'type'=>
+                    [
+                        'image/png',
+                        'image/gif',
+                        'image/jpg',
+                        'image/jpeg',
+                        'image/bmp',
+                        'gif',
+                        'jpg',
+                        'jpeg',
+                        'bmp',
+                        'png',
+                    ]
+            ])->move($path, 'user_id_'.$this->user_id.'.png');
+//            $res = $file->validate(['type'=>'jpg,png,gif'])->move($path, 'user_id_'.$this->user_id.'.png');
             if($res){
                 $file_name = $res->getFilename();
                 $path = trim($path, '.');
