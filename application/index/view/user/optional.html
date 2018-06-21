@@ -170,7 +170,7 @@ function isTradingTime(){
                 refreshTimer = null;
             }
         }else{
-            refreshTimer =setInterval(refreshPrice,2000);
+            refreshTimer =setInterval(refreshPrice,10000);
         }
 	});
 
@@ -208,7 +208,7 @@ function isTradingTime(){
         if (items==''){ //搜索结果为空， 置空列表
             html=listCon;
             $(".zixuan_list").html( html );
-            refreshTimer =setInterval(refreshPrice,2000);
+            refreshTimer =setInterval(refreshPrice,10000);
         }else{
             if( refreshTimer ){
                 clearInterval( refreshTimer );
@@ -267,7 +267,7 @@ function isTradingTime(){
     }
 
     //实时更新
-    refreshTimer =setInterval(refreshPrice,2000);
+    refreshTimer =setInterval(refreshPrice,10000);
     function refreshPrice(){
         if( !isTradingTime() ){
             return false;

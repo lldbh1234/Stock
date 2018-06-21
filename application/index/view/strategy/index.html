@@ -195,7 +195,7 @@ function isTradingTime(){
                     clearInterval(refreshTimer);
                     refreshTimer = null;
                 }
-                refreshTimer1 = setInterval(refreshPrice1,4000);
+                refreshTimer1 = setInterval(refreshPrice1,10000);
             }else{
                 var j = 0;
                 for (var i = 0; i < stocks.length; i++) {
@@ -255,7 +255,7 @@ function isTradingTime(){
                         $(".zixuan_list").html(html);
 
 
-                        refreshTimer = setInterval(refreshPrice,4000);
+                        refreshTimer = setInterval(refreshPrice,10000);
                     }else{
                         // $alert(res.info);
                     }
@@ -302,7 +302,7 @@ function isTradingTime(){
                 }
             });
 
-            refreshTimer1 = setInterval(refreshPrice1,4000);
+            refreshTimer1 = setInterval(refreshPrice1,10000);
         });
 
 
