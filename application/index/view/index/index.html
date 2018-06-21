@@ -597,6 +597,8 @@
 			return result;
 		}
 		loadZhiPrice();
+		setInterval(loadZhiPrice, 3000);
+
 		function loadZhiPrice(){
 			$.ajax({
 		        url:"http://hq.sinajs.cn/rn=1520407404627&list=s_sh000001,s_sz399001,s_sz399006",
