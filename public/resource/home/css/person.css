@@ -1,25 +1,25 @@
 [class^="icon_"]{
-	display: inline-block;
-	background-size: 100% 100%;
+    display: inline-block;
+    background-size: 100% 100%;
 }
 img{
-	width: 100%;
-	vertical-align: middle;
+    width: 100%;
+    vertical-align: middle;
 }
 :root{
-	--color_red:#e60012;
-	--color_green:#19B777;
-	
+    --color_red:#e60012;
+    --color_green:#19B777;
+    
 }
 /*底部*/
 nav.ml_tab{
-	background-color: rgba(0,0,0,.8);
+    background-color: rgba(0,0,0,.8);
 }
 nav.ml_tab .mui-icon:before{
-	content: '';
-	display: inline-block;
-	width: 20px;
-	height: 20px;
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
     background-size: 100% 100%;
 }
 .clear_fl:after{
@@ -54,75 +54,75 @@ nav.ml_tab .mui-icon:before{
     flex-wrap: nowrap;
 }
 nav.ml_tab .mui-icon-home:before{
-	background-image: url(../img/home.png);
+    background-image: url(../img/home.png);
 }
 nav.ml_tab .mui-icon-zixuan:before{
-	background-image: url(../img/zixuan.png);
+    background-image: url(../img/zixuan.png);
 }
 nav.ml_tab .mui-icon-celue:before{
-	background-image: url(../img/celue.png);
+    background-image: url(../img/celue.png);
 }
 nav.ml_tab .mui-icon-jingu:before{
-	background-image: url(../img/jingu.png);
+    background-image: url(../img/jingu.png);
 }
 nav.ml_tab .mui-icon-my:before{
-	background-image: url(../img/personal.png);
+    background-image: url(../img/personal.png);
 }
 
 
 nav.ml_tab .mui-tab-item.mui-active {
-	color: #e60012 !important;
+    color: #e60012 !important;
 }
 nav.ml_tab .mui-active .mui-icon-home:before{
-	background-image: url(../img/home_active.png);
+    background-image: url(../img/home_active.png);
 }
 nav.ml_tab .mui-active .mui-icon-zixuan:before{
-	background-image: url(../img/zixuan_active.png);
+    background-image: url(../img/zixuan_active.png);
 }
 nav.ml_tab .mui-active .mui-icon-celue:before{
-	background-image: url(../img/celue_active.png);
+    background-image: url(../img/celue_active.png);
 }
 nav.ml_tab .mui-active .mui-icon-jingu:before{
-	background-image: url(../img/jingu_active.png);
+    background-image: url(../img/jingu_active.png);
 }
 nav.ml_tab .mui-active .mui-icon-my:before{
-	background-image: url(../img/personal_active.png);
+    background-image: url(../img/personal_active.png);
 }
 /*首页*/
 .person_header{
-	background-color: transparent;
+    background-color: transparent;
     box-shadow: none;
     -webkit-box-shadow: none;
     color: #fff;
 }
 .person_header a,.person_header h1{
-	color: #fff;
+    color: #fff;
 }
 
 .per_top{
-	width: 100%;
-	/*height: 250px;*/
-	background: url(../img/bg.png) center;
-	padding-top: 44px;
+    width: 100%;
+    /*height: 250px;*/
+    background: url(../img/bg.png) center;
+    padding-top: 44px;
     position: relative;
 }
 .person_content{
-	background-color: transparent;
-	min-height: 100%;
+    background-color: transparent;
+    min-height: 100%;
     padding-top: 0 !important;
 }   
 .person_content .per_top img{
-	width: 60px;
+    width: 60px;
     height: 60px;
     margin-top: 20px;
     margin-bottom: 8px;
     border-radius: 50%;
 }
 .person_content .per_top p{
-	color: #fff;
+    color: #fff;
 }
 .top_btn a{
-	    width: 45%;
+        width: 45%;
     display: inline-block;
     height: 30px;
     line-height: 30px;
@@ -131,21 +131,21 @@ nav.ml_tab .mui-active .mui-icon-my:before{
     color: #fff;
     border: none;
     margin-top: 15px;
-}	
+}   
 .top_btn a:nth-of-type(1){
-	margin-right: 1%;
+    margin-right: 1%;
 }
 .mui-table-view-cell>a{
-	    height: 50px;
+        height: 50px;
     line-height: 50px;
     padding-top: 0 !important;
     font-size: 14px;
 }
 .mui-navigate-right:after, .mui-push-right:after{
-	color: #000;
+    color: #000;
 }
 .login_out{
-	height: 45px;
+    height: 45px;
     line-height: 45px;
     padding: 0;
     color: #F5191E;
@@ -154,10 +154,10 @@ nav.ml_tab .mui-active .mui-icon-my:before{
     font-size: 14px;
 }  
 #user_head{
-	position: relative;
+    position: relative;
 }
 #img_upload{
-	position: absolute;
+    position: absolute;
     top: 20px;
     left: 50%;
     width: 60px;
@@ -166,16 +166,16 @@ nav.ml_tab .mui-active .mui-icon-my:before{
     opacity: 0;
 }
 .li_last{
-	background: #efeff4 !important;
+    background: #efeff4 !important;
 }
 .li_last:after,.li_last>a:after,ul.mui-table-view:after{
-	background-color: #efeff4;
+    background-color: #efeff4;
 }
 ul.mui-table-view{
     background-color: #efeff4;
 }
 ul.mui-table-view li{
-	background: #fff;
+    background: #fff;
 }
 .mui-table-view-cell>a span.rt{
     font-size: 12px;
@@ -986,6 +986,7 @@ nav.ml_tab {
     text-align: center;
     background: #FC5155;
     color: #fff;
+    display: none;
 }
 .edit_btn{
     position: absolute;
@@ -1275,9 +1276,10 @@ nav.ml_tab {
     top: 0;
     left: 0;
     z-index: 999;
+    display: none;
 }
 .msg_list,.msg_con,.g_detail_con{
-    margin-top: 58px;
+    /*margin-top: 58px;*/
 }
 .msg_con{
     padding: 10px;
@@ -1348,6 +1350,7 @@ nav.ml_tab {
     position: relative;
     text-align: center;
     margin-bottom: 5px;
+    display: none;
 }
 .header_con p{
     font-size: 16px;
@@ -1912,7 +1915,7 @@ em, i, b {
     padding: 0 12px;
 }
 .mar56{
-    margin-top: 56px;
+    /*margin-top: 56px;*/
 }
 .b_gupiao_detail>div{
     width: calc(100% / 3);
@@ -2447,7 +2450,7 @@ em, i, b {
 }
 .money_header{
     background: #fc5055;
-    margin-top: 58px;
+    /*margin-top: 58px;*/
     padding: 30px 15px 15px 15px;
     text-align: center;
     border-top: 1px solid #fd7679;
@@ -2696,7 +2699,7 @@ em, i, b {
 }
 .my_from{
     padding: 20px 0;
-    margin-top: 58px;
+    /*margin-top: 58px;*/
 }
 .my_form_group {
     position: relative;

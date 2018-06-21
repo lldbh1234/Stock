@@ -621,10 +621,10 @@ if( !isTradingTime() ){
 
 $(function(){
 	var timer = setInterval(function(){
-		code = $(".b_gupiao_code").html();
+		code = $(".b_gupiao_code").data("fullcode");
         var _url = "{:url('index/Stock/simple')}",
             _oData = {code: code};
-        $ajaxCustom(_url, _oData, function(res){
+        sinaAjax(code, function(res){
             if(res.state){ // 登录成功
                 for( var key in res.data ){
                 	var nowDate = res.data[key];

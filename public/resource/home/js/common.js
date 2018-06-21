@@ -88,6 +88,18 @@ function getQueryString(name) {
 
 
 function  sinaAjax( code, callback ){
+    var _code = code;
+    if( _code == undefined ){
+        return false;
+    }
+     _code =  _code.split(",");
+     var empCode = [];
+     for( var key in _code ){
+        if( isNaN( _code[key] ) ){
+            empCode.push( _code[key] )
+        }
+     }
+     code = empCode.join(",");
     $.ajax({
         url:"http://hq.sinajs.cn/list=" + code,
         dataType: "script",
@@ -119,8 +131,6 @@ function  sinaAjax( code, callback ){
                 dataObj.amplitude = (parseFloat( codeInfo[3] )).toFixed(2);
                 res.data.push( dataObj );
             }
-
-            
             callback( res );
         }
     });

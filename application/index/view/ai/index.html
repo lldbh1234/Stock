@@ -20,7 +20,7 @@ AI智能策略
 		top: 0;
 	}
 	.ai_r_con{
-		margin-top: 58px;
+		/*margin-top: 58px;*/
 		margin-bottom: 52px;
 	}
 </style>
@@ -140,13 +140,13 @@ AI智能策略
     setInterval(function(){
     	var _code = [];
     	$(".ai_gu_options>div").each(function(){
-    		_code.push( $(this).data("code") );
+    		_code.push( $(this).data("fullcode") );
     	});
 
     	_code = _code.join(",");
     	var _url = "{:url('index/Stock/simple')}",
             _oData = {code: _code};
-        $ajaxCustom(_url, _oData, function(res){
+        sinaAjax(_code, function(res){
             if(res.state){ 
                 for( var key in res.data ){
                     var itemData = res.data[key];
