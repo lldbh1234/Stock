@@ -69,7 +69,7 @@
                 <input name="checkbox" value="{$item.id}" type="checkbox">
             </div>
             <a style="width:80%" class="flex_nowrap" href="{:url('index/Stock/info', ['code' => $item.code])}">
-                <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>{$item.quotation.prod_name}</span><span>{$item.quotation.code}</span></span>
+                <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>{$item.quotation.prod_name}</span><span data-code="{$item.full_code}">{$item.quotation.code}</span></span>
                 {if condition="$item.quotation.px_change EGT 0"}
                 <span style="width:40%" class="red">{$item.quotation.last_px}</span>
                 <span style="width:40%" class="red">{$item.quotation.px_change_rate}%</span>
@@ -219,7 +219,7 @@ function isTradingTime(){
                 var reg = new RegExp('^' + items + '.*$', 'im');
                 if (reg.test(stocks[i][0]) || reg.test(stocks[i][1]) || reg.test(stocks[i][2]) || reg.test(stocks[i][3])) {
                     if(j < 15){
-                        code.push( stocks[i][1] );
+                        code.push( stocks[i][3] );
                         j++;
                     }else{
                         break;
@@ -235,7 +235,7 @@ function isTradingTime(){
             code = code.join(",");
             var _url = "{:url('index/Stock/simple')}",
                 _oData = {code: code};
-            $ajaxCustom(_url, _oData, function(res){
+            sinaAjax(code, function(res){
                 if(res.state){ // 登录成功
                     for( var key in res.data ){
                         var rate = parseFloat(res.data[key].px_change_rate);
@@ -250,7 +250,7 @@ function isTradingTime(){
                                         <label></label>\
                                         <input name="checkbox" value="Item 1" type="checkbox">\
                                     </div>\
-                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
+                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span data-code="'+ res.data[key].fullCode +'">' + res.data[key].code + '</span></span>\
                                         <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
                                         <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
                                     <span style="width:20%">\
@@ -267,7 +267,7 @@ function isTradingTime(){
     }
 
     //实时更新
-    refreshTimer =setInterval(refreshPrice,10000);
+    refreshTimer =setInterval(refreshPrice,4000);
     function refreshPrice(){
         if( !isTradingTime() ){
             return false;
@@ -283,14 +283,14 @@ function isTradingTime(){
                 <span style="width:20%"></span>\
             </li>';
             $(".zixuan_list li+li").each(function(){
-                var _code = $(this).find(".zi_name").find("span+span").html();
+                var _code = $(this).find(".zi_name").find("span+span").data("code");
                 code.push( _code );
             });
 
             code = code.join(",");
             var _url = "{:url('index/Stock/simple')}",
                 _oData = {code: code};
-            $ajaxCustom(_url, _oData, function(res){
+            sinaAjax(code , function(res){
                 if(res.state){ // 登录成功
                     if( $(".edit_btn").hasClass("active") ){
                         return false;
@@ -309,7 +309,7 @@ function isTradingTime(){
                                         <input name="checkbox" value="Item 1" type="checkbox">\
                                     </div>\
                                     <a style="width:80%" class="flex_nowrap" href="/stock/home.html?code='+ res.data[key].code +'">\
-                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
+                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span data-code="' + res.data[key].fullCode + '">' + res.data[key].code + '</span></span>\
                                         <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
                                         <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
                                         \
