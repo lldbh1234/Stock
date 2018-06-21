@@ -147,7 +147,7 @@
 			<a href="{:url('index/Stock/info', ['code' => $stock.code])}"  class="b_gupiao_detail clear_fl">
 				<div class="lf b_gupiao_profile">
 					<p class="b_gupiao_name">{$stock.prod_name}</p>
-					<p class="b_gupiao_code">{$stock.code}</p>
+					<p class="b_gupiao_code" data-fullcode="{$stock.full_code}">{$stock.code}</p>
 				</div>
 				<div class="lf b_gupiao_price">
 					<p class="b_gupiao_now_price">{$stock.last_px}</p>
