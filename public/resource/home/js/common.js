@@ -89,6 +89,9 @@ function getQueryString(name) {
 
 function  sinaAjax( code, callback ){
     var _code = code;
+    if( _code.length == 0 ){
+        return false;
+    }
      _code =  _code.split(",");
      var empCode = [];
      for( var key in _code ){
