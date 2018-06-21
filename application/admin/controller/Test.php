@@ -30,6 +30,7 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        exit;
         $orders = (new \app\index\logic\OrderLogic())->allSellOrders();
         foreach ($orders as $order){
             $quotation = (new \app\index\logic\StockLogic())->quotationBySina($order['code']);
