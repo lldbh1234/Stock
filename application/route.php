@@ -22,6 +22,7 @@
 use think\Route;
 //test
 Route::any('test', 'admin/Test/test');
+Route::any('down_app', 'index/Home/down');
 // Index
 Route::any('/$','index/Index/index');
 Route::any('login','index/Home/login');
