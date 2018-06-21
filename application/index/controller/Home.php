@@ -176,4 +176,31 @@ class Home extends Controller
     {
         return view();
     }
+    public function down()
+    {
+        //获取USER AGENT
+        $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+
+        //分析数据
+        $is_pc      = (strpos($agent, 'windows nt')) ? true : false;
+        $is_iphone  = (strpos($agent, 'iphone')) ? true : false;
+        $is_ipad    = (strpos($agent, 'ipad')) ? true : false;
+        $is_android = (strpos($agent, 'android')) ? true : false;
+        //输出数据
+        if($is_pc){
+            exit("请用手机扫码");
+        }
+        if($is_iphone){
+            header("Location:https://www.pgyer.com/k5bM");die;
+        }
+        if($is_ipad){
+            exit("暂时没有Ipad版本");
+        }
+        if($is_android){
+            header("Location:https://www.pgyer.com/k5bM");die;
+        }
+        exit('暂不支持此类设备');
+//        return $this->redirect(url('index/Home/login'));
+
+    }
 }
