@@ -31,17 +31,23 @@ class Test extends Controller
     public function test($order_id = null)
     {
         $orders = (new OrderLogic())->pageForceOrders(['force_type' => 4], 100);
-        dump($orders);
-        exit;
-
         $holiday = cf("holiday", '');
-        $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
-        $data = [
-            "order_id"  => $order["order_id"],
-            "free_time" => $timestamp,
-        ];
-        $res = (new OrderLogic())->orderUpdate($data);
-        return $res ? true : false;
+        foreach ($orders as $order){
+            $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
+            $data = [
+                "order_id"  => $order["order_id"],
+                "free_time" => $timestamp,
+                "sell_price" => 0,
+                "sell_hand" => 0,
+                "sell_deposit" => 0,
+                "profit" => 0,
+                "state" => 3,
+                "force_type" => 0,
+                "update_at" => 0
+            ];
+            $res = (new \app\index\logic\OrderLogic())->orderUpdate($data);
+            dump($res);
+        }
         exit;
         $job = new DeferJob();
         $res = $job->handle($order_id);
