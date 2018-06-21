@@ -15,6 +15,7 @@ class sina
         $response = mb_convert_encoding($response, "UTF-8", "GBK");
         $response = str_replace(["\r\n", "\n", "\r", " "], "", $response);
         $_response = [];
+
         if($response){
             $stocks = explode(';', $response);
             foreach ($stocks as $stock){
@@ -52,7 +53,8 @@ class sina
                             ],
                             "amplitude" => round(abs($_data[4] - $_data[5]) / $_data[2] * 100, 2), // 振幅
                             "data_datestamp" => str_replace("-", "", $_data[30]),
-                            "data_timestamp" => str_replace(":", "", $_data[31]) . "000"
+                            "data_timestamp" => str_replace(":", "", $_data[31]) . "000",
+                            'full_code' => $match[1].$match[2],
                         ];
                     }
                 }
