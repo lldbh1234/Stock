@@ -89,7 +89,7 @@ function getQueryString(name) {
 
 function  sinaAjax( code, callback ){
     var _code = code;
-    if( _code.length == 0 ){
+    if( _code == undefined ){
         return false;
     }
      _code =  _code.split(",");
