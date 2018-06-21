@@ -28,8 +28,20 @@ class Test extends Controller
         parent::__construct($request);
     }
 
-    public function test()
+    public function test($order_id = null)
     {
+        //$orderId = 9866;
+        $order = (new \app\index\logic\OrderLogic())->orderById($order_id);
+        $user = (new UserLogic())->userById($order['user_id']);
+        $managerUserId = $user["parent_id"];
+        $adminId = $user["admin_id"];
+        $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
+        $handleRes = (new \app\index\logic\OrderLogic())->handleDeferByUserAccount($order, $managerUserId, $adminIds);
+        dump($handleRes);
+        exit;
+        //$orderId = 9968;
+        //$orderId = 10002;
+        exit;
         $hangqing = (new \app\index\logic\StockLogic())->quotationBySina("002928");
         dump($hangqing);
         exit;

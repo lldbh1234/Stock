@@ -157,7 +157,8 @@ class DeferJob
                     "sell_deposit" => $quotation[$order['code']]['last_px'] * $order["hand"],
                     "profit"    => ($quotation[$order['code']]['last_px'] - $order["price"]) * $order["hand"],
                     "state"     => 6,
-                    "force_type" => 3 //强制平仓类型；1-爆仓，2-到达止盈止损，3-非自动递延，4-递延费无法扣除
+                    "force_type" => 3, //强制平仓类型；1-爆仓，2-到达止盈止损，3-非自动递延，4-递延费无法扣除
+                    "update_at" => time()
                 ];
                 $res = (new OrderLogic())->orderUpdate($data);
                 return $res ? true : false;

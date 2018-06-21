@@ -522,18 +522,21 @@ class UserLogic
                     // 亏损
                     // 用户资金
                     $user = User::find($order['user_id']);
-                    $user->setInc("account", $order['deposit'] + $data["profit"]);
+                    $account = $data["profit"] + $order['deposit'] > 0 ? $data["profit"] + $order['deposit'] : 0; // 爆仓=>最多扣除保证金
+                    $user->setInc("account", $account);
                     // 冻结资金
                     $user->setDec("blocked_account", $order['deposit']);
                     // 资金明细(保证金)
-                    $rData = [
-                        "type" => 4,
-                        "amount" => $order['deposit'] + $data["profit"],
-						"account" => $user->account,
-                        "remark" => json_encode(['orderId' => $order["order_id"]]),
-                        "direction" => 1
-                    ];
-                    $user->hasManyRecord()->save($rData);
+                    if($account > 0){
+                        $rData = [
+                            "type" => 4,
+                            "amount" => $order['deposit'] + $data["profit"],
+                            "account" => $user->account,
+                            "remark" => json_encode(['orderId' => $order["order_id"]]),
+                            "direction" => 1
+                        ];
+                        $user->hasManyRecord()->save($rData);
+                    }
                 }
                 Db::commit();
                 return true;

@@ -55,7 +55,7 @@ class User extends Validate
         ],
         'give' => [
             'user_id',
-            'money',
+            'money' => 'require|float',
             'remark'
         ],
         'create_virtual'  => ['mobile', 'password', 'rePassword', 'admin_id', 'state'],
