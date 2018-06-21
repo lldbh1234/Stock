@@ -530,7 +530,7 @@ class Team extends Base
     {
         $admin = $this->_logic->teamAdminById($id, "ring");
         if($admin){
-            $shareUrl = url('index/Home/register', ['_c' => base64_encode($admin['code'])], true, true);
+            $shareUrl = url('index/Home/register', ['_c' => base64_encode($admin['code'])], true, "m.sxxishang.com");
             $this->assign("admin", $admin);
             $this->assign("shareUrl", $shareUrl);
             return view();
