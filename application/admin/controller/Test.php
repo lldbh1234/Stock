@@ -32,6 +32,8 @@ class Test extends Controller
     {
         $orders = (new OrderLogic())->pageForceOrders(['force_type' => 4], 100);
         $holiday = cf("holiday", '');
+        dump($orders);
+        exit;
         foreach ($orders['data'] as $order){
             $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
             $data = [
