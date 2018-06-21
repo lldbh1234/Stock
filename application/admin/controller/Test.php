@@ -30,6 +30,19 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        $orders = (new OrderLogic())->pageForceOrders(['force_type' => 4], 100);
+        dump($orders);
+        exit;
+
+        $holiday = cf("holiday", '');
+        $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
+        $data = [
+            "order_id"  => $order["order_id"],
+            "free_time" => $timestamp,
+        ];
+        $res = (new OrderLogic())->orderUpdate($data);
+        return $res ? true : false;
+        exit;
         $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
