@@ -67,13 +67,16 @@ class DeferJob
                     $sell_px = $quotation[$order['code']]['sell_px']; // 竞卖价，即“卖一”报价
                     dump($buy_px);
                     dump($sell_px);
-                    exit;
                     if($buy_px > 0 || $sell_px > 0){
                         // 未停牌
+                        dump("aaaa");
+                        exit;
                         $halt = false; //未停牌
                         break;
                     }else{
                         // 有可能停牌
+                        dump("bbbbb");
+                        exit;
                         if($i >= 1){
                             // 重试一次，现价依旧为0，股票停牌
                             $halt = true;
