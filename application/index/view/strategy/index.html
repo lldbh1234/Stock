@@ -195,14 +195,14 @@ function isTradingTime(){
                     clearInterval(refreshTimer);
                     refreshTimer = null;
                 }
-                refreshTimer1 = setInterval(refreshPrice1,10000);
+                refreshTimer1 = setInterval(refreshPrice1,3000);
             }else{
                 var j = 0;
                 for (var i = 0; i < stocks.length; i++) {
                     var reg = new RegExp('^' + items + '.*$', 'im');
                     if (reg.test(stocks[i][0]) || reg.test(stocks[i][1]) || reg.test(stocks[i][2]) || reg.test(stocks[i][3])) {
                         if(j < 15){
-                            code.push( stocks[i][1] );
+                            code.push( stocks[i][3] );
                             j++;
                         }else{
                             break;
@@ -224,41 +224,39 @@ function isTradingTime(){
                 code = code.join(",");
                 var _url = "{:url('index/Stock/simple')}",
                     _oData = {code: code};
-                $ajaxCustom(_url, _oData, function(res){
-                    if(res.state){ // 登录成功
-                        for( var key in res.data ){
-                            var rate = parseFloat(res.data[key].px_change_rate);
-                            var className = "";
-                            if(rate >= 0){
-                                className = "red"
-                            }else{
-                                className = "green"
+                    sinaAjax(code, function(res){
+                        if(res.state){ // 登录成功
+                            for( var key in res.data ){
+                                var rate = parseFloat(res.data[key].px_change_rate);
+                                var className = "";
+                                if(rate >= 0){
+                                    className = "red"
+                                }else{
+                                    className = "green"
+                                }
+                                html += '<li class="list_header flex_nowrap">\
+                                    <div style="width: 15%; display: none;" class="mui-input-row mui-checkbox mui-left select_btn">\
+                                        <label></label>\
+                                        <input name="checkbox" value="Item 1" type="checkbox">\
+                                    </div>\
+                                    <div style="width:80%" class="flex_nowrap" href="/stock/home.html?code='+ res.data[key].code +'">\
+                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
+                                        <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
+                                        <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
+                                        \
+                                    </div>\
+                                    <span style="width:20%">\
+                                        <span href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</span>\
+                                    </span>\
+                                </li>';
                             }
-                            html += '<li class="list_header flex_nowrap">\
-                                        <div style="width: 15%; display: none;" class="mui-input-row mui-checkbox mui-left select_btn">\
-                                            <label></label>\
-                                            <input name="checkbox" value="Item 1" type="checkbox">\
-                                        </div>\
-                                        <div style="width:80%" class="flex_nowrap" href="/stock/home.html?code='+ res.data[key].code +'">\
-                                            <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
-                                            <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
-                                            <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
-                                            \
-                                        </div>\
-                                        <span style="width:20%">\
-                                            <span href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</span>\
-                                        </span>\
-                                    </li>';
+
+                            $(".search_content_box").html( "<ul class='zixuan_list'></ul>" );
+                            $(".zixuan_list").html(html);
+                            refreshTimer = setInterval(refreshPrice,30000);
+                        }else{
+                            // $alert(res.info);
                         }
-
-                        $(".search_content_box").html( "<ul class='zixuan_list'></ul>" );
-                        $(".zixuan_list").html(html);
-
-
-                        refreshTimer = setInterval(refreshPrice,10000);
-                    }else{
-                        // $alert(res.info);
-                    }
                 });
             }
         }
@@ -270,7 +268,7 @@ function isTradingTime(){
             var _url = "{:url('index/Stock/simple')}",
                     _oData = {code: searchHistory};
 
-            $ajaxCustom(_url, _oData, function(res){
+            sinaAjax(searchHistory , function(res){
                 if(res.state){ // 登录成功
                     var html = "";
                     var array = searchHistory.split(",");
@@ -302,7 +300,7 @@ function isTradingTime(){
                 }
             });
 
-            refreshTimer1 = setInterval(refreshPrice1,10000);
+            refreshTimer1 = setInterval(refreshPrice1,3000);
         });
 
 
