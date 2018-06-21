@@ -59,6 +59,8 @@ class DeferJob
             $halt = false; //未停牌
             while (true){
                 $quotation = (new StockLogic())->quotationBySina($order['code']);
+                dump($quotation);
+                exit;
                 if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
                     $last_px = $quotation[$order['code']]['last_px']; // 最新价
                     $buy_px = $quotation[$order['code']]['buy_px']; // 竞买价，即“买一”报价
