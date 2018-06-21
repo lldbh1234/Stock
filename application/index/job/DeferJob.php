@@ -69,8 +69,6 @@ class DeferJob
                     dump($sell_px);
                     if($buy_px > 0 || $sell_px > 0){
                         // 未停牌
-                        dump("aaaa");
-                        exit;
                         $halt = false; //未停牌
                         break;
                     }else{
@@ -93,6 +91,8 @@ class DeferJob
                     continue;
                 }
             }
+            dump("ccccc");
+            exit;
             if($halt){
                 // 股票停牌，直接递延，不扣递延费
                 $holiday = cf("holiday", '');
