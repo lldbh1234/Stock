@@ -30,6 +30,82 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        $orders = (new \app\index\logic\OrderLogic())->allSellOrders();
+        foreach ($orders as $order){
+            $quotation = (new \app\index\logic\StockLogic())->quotationBySina($order['code']);
+            if(isset($quotation[$order['code']])){
+                $lastPx = $quotation[$order['code']]['last_px']; //最新价
+                //$buyPx = $quotation[$order['code']]['buy_px']; //买1价
+                //$sellPx = $quotation[$order['code']]['sell_px']; //卖1价
+                //$buyPx = $buyPx == 0 ? $lastPx : $buyPx; //买1价为0时按现价处理
+                //if($buyPx > 0 && $sellPx > 0){
+                if($lastPx > 0){
+                    $buyPx = $lastPx;
+                    //$lossTotal = ($order['price'] - $lastPx) * $order['hand']; //损失总金额
+                    $lossTotal = ($order['price'] - $buyPx) * $order['hand']; //止损按买1
+                    if($lossTotal >= $order['deposit']){
+                        // 爆仓
+                        $data = [
+                            "order_id"  => $order["order_id"],
+                            "sell_price" => $buyPx,
+                            "sell_hand" => $order["hand"],
+                            "sell_deposit" => $buyPx * $order["hand"],
+                            "profit"    => ($buyPx - $order["price"]) * $order["hand"],
+                            "state"     => 6,
+                            "force_type" => 1, // 强制平仓类型；1-爆仓，2-到达止盈止损，3-非自动递延，4-递延费无法扣除
+                            "update_at" => time()
+                        ];
+                        $res = (new \app\index\logic\OrderLogic())->orderUpdate($data);
+                        echo 1;
+                        dump($res ? true : false);
+                    }else{
+                        if($lastPx >= $order['stop_profit_price']){
+                        //if($sellPx >= $order['stop_profit_price']){ //止盈按卖1
+                            // 到达止盈
+                            //$sellPrice = $order['stop_profit_price'];
+                            $sellPrice = $lastPx;
+                            //$sellPrice = $sellPx; //止盈按卖1
+                            $data = [
+                                "order_id"  => $order["order_id"],
+                                "sell_price" => $sellPrice,
+                                "sell_hand" => $order["hand"],
+                                "sell_deposit" => $sellPrice * $order["hand"],
+                                "profit"    => ($sellPrice - $order["price"]) * $order["hand"],
+                                "state"     => 6,
+                                "force_type" => 2, // 强制平仓类型；1-爆仓，2-到达止盈止损，3-非自动递延，4-递延费无法扣除
+                                "update_at" => time()
+                            ];
+                            $res = (new \app\index\logic\OrderLogic())->orderUpdate($data);
+                            echo 2;
+                            dump($res ? true : false);
+                        }elseif ($buyPx <= $order['stop_loss_price']){ //止损按买1
+                            // 到达止损
+                            //$sellPrice = $order['stop_loss_price'];
+                            //$sellPrice = $lastPx;
+                            $sellPrice = $buyPx; //止损按买1
+                            $data = [
+                                "order_id"  => $order["order_id"],
+                                "sell_price" => $sellPrice,
+                                "sell_hand" => $order["hand"],
+                                "sell_deposit" => $sellPrice * $order["hand"],
+                                "profit"    => ($sellPrice - $order["price"]) * $order["hand"],
+                                "state"     => 6,
+                                "force_type" => 2, // 强制平仓类型；1-爆仓，2-到达止盈止损，3-非自动递延，4-递延费无法扣除
+                                "update_at" => time()
+                            ];
+                            $res = (new \app\index\logic\OrderLogic())->orderUpdate($data);
+                            echo 3;
+                            dump($res ? true : false);
+                        }else{
+                            dump("aaaaa");
+                        }
+                    }
+                }
+            }else{
+                dump("bbbb");
+            }
+        }
+        exit;
         $orders = (new OrderLogic())->pageForceOrders(['force_type' => 4], 100);
         $holiday = cf("holiday", '');
         foreach ($orders['lists']['data'] as $order){
