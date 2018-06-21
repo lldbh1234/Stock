@@ -556,13 +556,13 @@
         		return false;
         	}
         	$(".share_item").each(function(){
-        		code.push( $(this).data("code") );
+        		code.push( $(this).data("fullcode") );
         	});
         	
         	code = code.join(",");
             var _url = "{:url('index/Stock/simple')}",
                 _oData = {code: code};
-            $ajaxCustom(_url, _oData, function(res){
+            sinaAjax(code, function(res){
                 if(res.state){
                     for( var key in res.data ){
                         var rate = parseFloat(res.data[key].px_change_rate);
