@@ -63,7 +63,7 @@
             <span style="width:20%"></span>
         </li>
         {volist name="stocks" id="item"}
-        <li class="list_header flex_nowrap" data-code="{$item.code}">
+        <li class="list_header flex_nowrap" data-code="{$item.code}" data-fullcode="{$item.full_code}">
             <div style="width:15%" class="mui-input-row mui-checkbox mui-left select_btn">
                 <label></label>
                 <input name="checkbox" value="{$item.id}" type="checkbox">

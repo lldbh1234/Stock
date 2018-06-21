@@ -776,7 +776,7 @@
                 }else{
                     className = "green";
                 }
-              html += '<li data-lever="' + data.orders[key].lever + '" data-originalDeposit="' + data.orders[key].original_deposit + '"  class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
+              html += '<li data-lever="' + data.orders[key].lever + '" data-originalDeposit="' + data.orders[key].original_deposit + '"  class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-fullcode="' + data.orders[key].full_code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
                     <h1 class="clear_fl">\
                         <span class="lf">' + data.orders[key].name + ' '+ data.orders[key].code +'</span>\
                         <span class="rt"> <span class="p_key"></span>'+ data.orders[key].create_at_text +'</span>\

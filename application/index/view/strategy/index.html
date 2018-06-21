@@ -82,7 +82,7 @@
             <h1 class="search_h_title clear_fl">热点强势股</h1>
             <ul class="recommend_list flex_nowrap">
                 {volist name="hots" id="item"}
-                <li data-code="{$item.code}" class="fresh{$item.code} hotItems">
+                <li data-code="{$item.code}" data-fullcode="{$item.full_code}" class="fresh{$item.code} hotItems">
                     <a href="{:url('index/Stock/stockBuy', ['code' => $item.code])}">
                         <p class="shares_name">{$item.name}</p>
                         <p class="shares_code">{$item.code}</p>
@@ -282,7 +282,7 @@ function isTradingTime(){
                         }else{
                             className = "green"
                         }
-                        html += '<li data-code="'+ res.data[key].code +'" class="clear_fl fresh'+ res.data[key].code +'">\
+                        html += '<li data-code="'+ res.data[key].code +'" data-fullcode="\'+ res.data[key].full_code +\'" class="clear_fl fresh'+ res.data[key].code +'">\
                     <a style="width:80%"  class="flex_nowrap lf" href="/stock/home.html?code='+ res.data[key].code +'">\
                         <span>'+res.data[key].prod_name+' '+ res.data[key].code +'</span>\
                         <span class="'+ className +'">' + res.data[key].last_px + '</span>\

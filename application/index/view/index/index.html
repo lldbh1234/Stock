@@ -175,7 +175,7 @@
 		                	</a>
 		                </li>
 						{volist name="stocks" id="item"}
-		                <li data-code="{$item.quotation.code}"  class="share_item swiper-slide mui-text-center share_item_{$item.quotation.code}">
+		                <li data-code="{$item.quotation.code}" data-fullcode="{$item.quotation.full_code}"  class="share_item swiper-slide mui-text-center share_item_{$item.quotation.code}">
 		                	<a href="{:url('index/Stock/info',['code' => $item.quotation.code])}">
 			                    <p class="Ashare_t">{$item.quotation.prod_name}</p>
 								<p class="Ashare_num  color color_red">{$item.quotation.last_px|number_format=2}</p>
