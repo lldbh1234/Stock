@@ -240,7 +240,7 @@ function isTradingTime(){
                                         <input name="checkbox" value="Item 1" type="checkbox">\
                                     </div>\
                                     <div style="width:80%" class="flex_nowrap" href="/stock/home.html?code='+ res.data[key].code +'">\
-                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span>' + res.data[key].code + '</span></span>\
+                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span data-code="'+ res.data[key].fullCode +'">' + res.data[key].code + '</span></span>\
                                         <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
                                         <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
                                         \
@@ -267,14 +267,12 @@ function isTradingTime(){
             var searchHistory = storage.searchHistory;
             var _url = "{:url('index/Stock/simple')}",
                     _oData = {code: searchHistory};
-
             sinaAjax(searchHistory , function(res){
                 if(res.state){ // 登录成功
                     var html = "";
                     var array = searchHistory.split(",");
                     for( var i in array){
-                        var key = array[i];
-                        // console.log(key);
+                        var key = i;
                         var rate = parseFloat(res.data[key].px_change_rate);
                         var className = "";
                         if(rate >= 0){
@@ -440,7 +438,9 @@ function isTradingTime(){
 
         //搜索历史
         $(".search_content_box").on("click", ".zixuan_list li", function(){
-            var code = $(this).find(".zi_name span+span").html();
+            var code = $(this).find(".zi_name span+span").attr("data-code");
+            var _code = $(this).find(".zi_name span+span").html();
+
             var storage = window.localStorage;
             if( storage.searchHistory ){
                 var searchHistory = storage.searchHistory;
@@ -458,7 +458,7 @@ function isTradingTime(){
             }else{
                 storage.searchHistory = code;
             }
-            window.location.href = "/stock/home.html?code=" + code;
+            window.location.href = "/stock/home.html?code=" + _code;
         });
 
 

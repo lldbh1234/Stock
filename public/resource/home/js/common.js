@@ -103,6 +103,7 @@ function  sinaAjax( code, callback ){
                  codeInfo = codeInfo.split(",");
                 var dataObj = {};
                 dataObj.code = codeArray[key].slice(2);
+                dataObj.fullCode = codeArray[key];
                 dataObj.prod_name = codeInfo[0];
                 dataObj.last_px = (parseFloat( codeInfo[3] )).toFixed(2);
                 dataObj.open_px = (parseFloat( codeInfo[1] )).toFixed(2);
@@ -117,10 +118,10 @@ function  sinaAjax( code, callback ){
                 dataObj.business_balance = (parseFloat( codeInfo[9] )).toFixed(2);
                 dataObj.amplitude = (parseFloat( codeInfo[3] )).toFixed(2);
                 res.data.push( dataObj );
-                
-                callback( res );
-
             }
+
+            
+            callback( res );
         }
     });
 }
