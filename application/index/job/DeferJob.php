@@ -59,10 +59,15 @@ class DeferJob
             $halt = false; //未停牌
             while (true){
                 $quotation = (new StockLogic())->quotationBySina($order['code']);
+                dump($quotation);
+                dump($quotation[$order['code']]);
                 if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
                     $last_px = $quotation[$order['code']]['last_px']; // 最新价
                     $buy_px = $quotation[$order['code']]['buy_px']; // 竞买价，即“买一”报价
                     $sell_px = $quotation[$order['code']]['sell_px']; // 竞卖价，即“卖一”报价
+                    dump($buy_px);
+                    dump($sell_px);
+                    exit;
                     if($buy_px > 0 || $sell_px > 0){
                         // 未停牌
                         $halt = false; //未停牌
@@ -80,6 +85,8 @@ class DeferJob
                         }
                     }
                 }else{
+                    echo "ssss";
+                    exit;
                     continue;
                 }
             }
