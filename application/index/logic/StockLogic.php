@@ -62,6 +62,7 @@ class StockLogic
             foreach ($result as $key => $value){
                 $response[$key] = [
                     "code"      => $value['code'],
+                    "full_code"      => $value['full_code'],
                     "data_timestamp" => $value['data_timestamp'],
                     "shares_per_hand" => 100,
                     "prod_name" => $value['prod_name'],
