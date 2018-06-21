@@ -285,7 +285,7 @@
                 </div>
                 {else /}
                 {volist name="orders" id="item"}
-                <li class="position{$item.order_id}" data-id="{$item.order_id}" data-code="{$item.code}" data-price="{$item.price}" data-deposit="{$item.price}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
+                <li class="position{$item.order_id}" data-id="{$item.order_id}" data-code="{$item.code}" data-fullcode="{$item.full_code}" data-price="{$item.price}" data-deposit="{$item.price}" data-hand="{$item.hand}" data-loss="{$item.stop_loss_price}" data-profit="{$item.stop_profit_price}">
                     <h1 class="clear_fl">
                         <span class="lf">{$item.name} {$item.code}</span>
                         <span class="rt"> <span class="p_key"></span>{$item.create_at|date='m-d H:i', ###}</span>
@@ -674,7 +674,7 @@
             var data = res.data;
             var html = "";
             for(var key in data.orders){
-              html += '<li class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
+              html += '<li class="position' + data.orders[key].order_id + '" data-id="' + data.orders[key].order_id + '" data-code="' + data.orders[key].code + '" data-fullcode="' + data.orders[key].full_code + '" data-price="' + data.orders[key].last_px + '" data-deposit="' + data.orders[key].deposit + '" data-hand="' + data.orders[key].hand + '" data-loss="' + data.orders[key].stop_loss_price + '" data-profit="' + data.orders[key].stop_profit_price + '">\
                     <h1 class="clear_fl">\
                         <span class="lf">' + data.orders[key].name + ' '+ data.orders[key].code +'</span>\
                         <span class="rt"> <span class="p_key"></span>'+ data.orders[key].create_at +'</span>\

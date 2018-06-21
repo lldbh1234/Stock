@@ -45,7 +45,7 @@ AI智能策略
 			<div class="pa14">
 				<div class="clear_fl ai_gu_options">
                     {volist name="item.has_many_ai" id="ai" length="3"}
-					<div class="aibox{$ai.code}" data-remark="{$ai.remark}" data-code="{$ai.code}" data-income="{$ai.income}" {eq name="key" value="0"}class="active"{/eq} data-class-name="detail-{$ai.type_id}-{$ai.id}">
+					<div class="aibox{$ai.code}" data-remark="{$ai.remark}" data-code="{$ai.code}" data-fullcode="{$ai.full_code}" data-income="{$ai.income}" {eq name="key" value="0"}class="active"{/eq} data-class-name="detail-{$ai.type_id}-{$ai.id}">
 						<h1 class="ai_gu_output">{$ai.rate}%</h1>
 						<p class="ai_gu_o_title">{$ai.name}</p>
 						<p class="ai_gu_code">{$ai.code}</p>
