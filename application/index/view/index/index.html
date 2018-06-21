@@ -585,39 +585,57 @@
                 }
             });
 		},4000);
+
+
+		function dealData( _data ){
+			var data = _data.split(",");
+			var result = {};
+			result.plate_name = data[0];
+			result.last_px = data[1];
+			result.px_change = data[2];
+			result.px_change_rate = data[3];
+			return result;
+		}
 		loadZhiPrice();
 		function loadZhiPrice(){
-            var _url = "/plate.json?" + Math.random(),
-                _oData = {};
-            $.get(_url,function(data,status){
-            	var _data = JSON.parse( data );
-            	var html = "";
-				for( var key in _data ){
-					var className =  "";
-					if( _data[key].px_change >= 0 ){
-						className = "color_red";
-					}else{
-						className = "color_green";
+			$.ajax({
+		        url:"http://hq.sinajs.cn/rn=1520407404627&list=s_sh000001,s_sz399001,s_sz399006",
+		        dataType: "script",
+		        cache: "false",
+		        type: "GET",
+		        success: function(){
+		        	var _data = [];
+		        	_data.push( dealData( hq_str_s_sh000001 ));
+		        	_data.push( dealData(hq_str_s_sz399001 ));
+		        	_data.push( dealData(hq_str_s_sz399006 ));
+
+	            	var html = "";
+					for( var key in _data ){
+						var className =  "";
+						if( _data[key].px_change >= 0 ){
+							className = "color_red";
+						}else{
+							className = "color_green";
+						}
+						html += '<li class="swiper-slide mui-text-center">\
+			                	<a href="">\
+			                		<p class="Ashare_t">'+ _data[key].plate_name +'</p>\
+									<p class="Ashare_num color ' + className + '">'+ (_data[key].last_px * 10 / 10).toFixed(2) +'</p>\
+									<div class="per mui-clearfix">\
+										<span class="mui-pull-left color ' + className + '">'+ _data[key].px_change +'</span>\
+										<span class="mui-pull-right color ' + className + '">'+ _data[key].px_change_rate +'%</span>\
+									</div>\
+			                	</a>\
+			                </li>';
 					}
-					html += '<li class="swiper-slide mui-text-center">\
-		                	<a href="">\
-		                		<p class="Ashare_t">'+ _data[key].plate_name +'</p>\
-								<p class="Ashare_num color ' + className + '">'+ (_data[key].last_px * 10 / 10).toFixed(2) +'</p>\
-								<div class="per mui-clearfix">\
-									<span class="mui-pull-left color ' + className + '">'+ _data[key].px_change +'</span>\
-									<span class="mui-pull-right color ' + className + '">'+ _data[key].px_change_rate +'%</span>\
-								</div>\
-		                	</a>\
-		                </li>';
-				}
 
-				$(".Ashare_top li:nth-child(1)").remove();
-				$(".Ashare_top li:nth-child(1)").remove();
-				$(".Ashare_top li:nth-child(1)").remove();
-				var $dom = $( html );
-				$(".Ashare_top ul").prepend( $dom );
-
-			});
+					$(".Ashare_top li:nth-child(1)").remove();
+					$(".Ashare_top li:nth-child(1)").remove();
+					$(".Ashare_top li:nth-child(1)").remove();
+					var $dom = $( html );
+					$(".Ashare_top ul").prepend( $dom );
+		        }
+		    });
 		}
 	</script>
 {/block}
