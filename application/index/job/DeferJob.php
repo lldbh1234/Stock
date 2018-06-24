@@ -110,11 +110,13 @@ class DeferJob
                         return $handleRes ? true : false;
                     }*/else{
                         // 余额不足，无法扣除
+                        $j = 0;
                         while (true){
                             $quotation = (new StockLogic())->quotationBySina($order['code']);
                             if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
                                 $last_px = $quotation[$order['code']]['last_px']; // 最新价
                                 $buy_px = $quotation[$order['code']]['buy_px']; // 平仓按买1价处理
+                                $buy_px = $buy_px <= 0 && $j >= 2 ? $last_px : $buy_px; // 跌停票按现价处理
                                 if($buy_px > 0) {
                                     $sell_price = $last_px - $buy_px > 0.02 ? $buy_px + 0.02 : $buy_px;//买1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
                                     $data = [
@@ -131,6 +133,7 @@ class DeferJob
                                     return $res ? true : false;
                                     break;
                                 }else{
+                                    $j++;
                                     continue;
                                 }
                             }else{

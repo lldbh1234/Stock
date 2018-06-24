@@ -30,6 +30,10 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        $job = new DeferJob();
+        $res = $job->handle($order_id);
+        dump($res);
+        exit;
         //$orderId = 9866;
         $order = (new \app\index\logic\OrderLogic())->orderById($order_id);
         $user = (new UserLogic())->userById($order['user_id']);

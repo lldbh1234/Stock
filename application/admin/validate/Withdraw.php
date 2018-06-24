@@ -40,12 +40,12 @@ class Withdraw extends Validate
         if(date('G') < 9){
             return false;
         }
-        if(date('G') > 17){
+        if(date('G') > 23){
             return false;
         }
-        if(date('G') == 17 && date('i') > 30){
+        /*if(date('G') == 17 && date('i') > 30){
             return false;
-        }
+        }*/
         /*$holiday = explode(',', cf('holiday', ''));
         if(in_array(date("Y-m-d"), $holiday)){
             return false;
