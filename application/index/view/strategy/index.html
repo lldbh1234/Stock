@@ -224,7 +224,7 @@ function isTradingTime(){
                 code = code.join(",");
                 var _url = "{:url('index/Stock/simple')}",
                     _oData = {code: code};
-                    sinaAjax(code, function(res){
+                    sinaAjax(code, function(res){ 
                         if(res.state){ // 登录成功
                             for( var key in res.data ){
                                 var rate = parseFloat(res.data[key].px_change_rate);
@@ -363,7 +363,6 @@ function isTradingTime(){
                 var _url = "{:url('index/Stock/simple')}",
                     _oData = {code: code};
 
-
                 sinaAjax(fullcode, function(res){
                     if(res.state){ // 登录成功
                         if( $(".edit_btn").hasClass("active") ){
@@ -407,12 +406,11 @@ function isTradingTime(){
             }
             var _code = new Array();
             $(".search_h_list li").each(function(){
-                _code.push( $(this).data("code") );
+                _code.push( $(this).data("fullcode") );
             });
             $(".recommend_list li").each(function(){
-                _code.push( $(this).data("code") );
+                _code.push( $(this).data("fullcode") );
             });
-
 
             _code = _code.join(",");
             var _url = "{:url('index/Stock/simple')}",
