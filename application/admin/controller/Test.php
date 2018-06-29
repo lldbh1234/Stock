@@ -30,6 +30,10 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        $_logic = new \app\index\logic\StockLogic();
+        $res = $_logic->realTimeData("600004");
+        dump($res);
+        exit;
         $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);

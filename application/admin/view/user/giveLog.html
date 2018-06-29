@@ -32,6 +32,7 @@
             <th>用户id</th>
             <th>登录名</th>
             <th>昵称</th>
+            <th>微圈</th>
             <th>赠金金额</th>
             <th>赠金时间</th>
             <th>赠金人</th>
@@ -51,6 +52,7 @@
             <td>{$item.user_id}</td>
             <td>{$item.has_one_user.username}</td>
             <td>{$item.has_one_user.nickname}</td>
+            <td>{$item.has_one_user.has_one_admin.username}</td>
             <td>{$item.amount|number_format=2}</td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
             <td>{$item.has_one_create_by.username|default='-'}</td>

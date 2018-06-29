@@ -28,7 +28,7 @@ class UserGiveLogic
 
         $pageSize = $pageSize ? : config("page_size");
         //推荐人-微圈-微会员
-        $lists = UserGive::with(['hasOneUser', 'hasOneCreateBy'])
+        $lists = UserGive::with(['hasOneUser' => ['hasOneAdmin'], 'hasOneCreateBy'])
             ->where($where)
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
