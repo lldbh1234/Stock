@@ -14,7 +14,7 @@ class User extends Validate
         'nickname'  => 'require',
         'parent_id' => 'number|checkParentId',
         'orgCode'   => 'require|checkOrgCode',
-        'mobile'    => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/|checkMobile',
+        'mobile'    => 'require|regex:/^[1][3,4,5,6,7,8][0-9]{9}$/|checkMobile',
         'password'	=> 'require|length:6,16',
         'rePassword' => 'confirm:password',
         'code'      => 'require|checkCode',
@@ -54,13 +54,13 @@ class User extends Validate
     protected $scene = [
         'register'  => ['orgCode', 'mobile', 'password', 'rePassword', 'code'],
         'captcha'   => [
-            'mobile' => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
+            'mobile' => 'require|regex:/^[1][3,4,5,6,7,8][0-9]{9}$/',
             'act',
         ],
         'login'     => ['username', 'password', 'institution'],
         'password'  => ['oldPassword', 'newPassword', 'reNewPassword'],
         'forget'    => [
-            'mobile' => 'require|regex:/^[1][3,4,5,7,8][0-9]{9}$/|checkMobileExist',
+            'mobile' => 'require|regex:/^[1][3,4,5,6,7,8][0-9]{9}$/|checkMobileExist',
             'code'   => 'require|checkForgetCode',
             'password',
             'institution',
