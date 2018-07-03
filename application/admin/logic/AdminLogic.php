@@ -688,7 +688,7 @@ class AdminLogic
     public function teamAdminsByRole($role="settle")
     {
         $where = Admin::manager();
-        $where['status'] = 0;
+        //$where['status'] = 0;
         switch ($role){
             case "settle": //结算中心
                 $where['role'] = Admin::SETTLE_ROLE_ID;
