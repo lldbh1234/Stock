@@ -24,8 +24,22 @@
                     <option value="2" {if condition="isset($search.state) AND $search.state heq '2'"}selected{/if}>拒绝</option>
                 </select>
             </span>-->
+            <!--{eq name="tableCols.settle" value="1"}-->
+            <!--<input type="text" class="input-text radius" style="width:170px;" placeholder="结算中心" name="settle" value="{$search.settle|default=''}">-->
+            <!--{/eq}-->
+            <!--{eq name="tableCols.operate" value="1"}-->
+            <!--<input type="text" class="input-text radius" style="width:170px;" placeholder="运营中心" name="operate" value="{$search.operate|default=''}">-->
+            <!--{/eq}-->
+            <!--{eq name="tableCols.member" value="1"}-->
+            <!--<input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">-->
+            <!--{/eq}-->
+            {eq name="tableCols.ring" value="1"}
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+            {/eq}
             <button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+
         </div>
+
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
@@ -57,7 +71,7 @@
         <tbody>
         {empty name="datas.data"}
         <tr class="text-c admin-lists">
-            <td colspan="12">暂时没有匹配到数据</td>
+            <td colspan="13">暂时没有匹配到数据</td>
         </tr>
         {/empty}
         {volist name="datas.data" id="item"}
