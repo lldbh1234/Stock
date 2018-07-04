@@ -46,7 +46,7 @@
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
             <td>
-                {$item.type_text}{notempty name="item.remark"}{$item.remark}{/notempty}
+                {$item.type_text}{notempty name="item.remark"}（{$item.remark}）{/notempty}
             </td>
             <td>{$item.money|number_format=2}</td>
             <td>
