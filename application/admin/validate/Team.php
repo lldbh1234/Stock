@@ -16,7 +16,7 @@ class Team extends Validate
         'pid'       => 'require|gt:0|checkParent',
         'nickname'  => 'max:32',
         //'mobile'    => 'require|unique:admin|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
-        'mobile'    => 'require|regex:/^[1][3,4,5,7,8,9][0-9]{9}$/',
+        'mobile'    => 'require|regex:/^[1][3,4,5,6,7,8,9][0-9]{9}$/',
         //'role'      => 'require|checkRole',
         'status'    => 'require|in:0,1',
         'id'        => 'require|min:1|checkId',
@@ -115,7 +115,7 @@ class Team extends Validate
             'pid',
             'nickname',
             //'mobile' => 'require|unique:admin,mobile^admin_id|regex:/^[1][3,4,5,7,8][0-9]{9}$/',
-            'mobile' => 'require|regex:/^[1][3,4,5,7,8,9][0-9]{9}$/',
+            'mobile' => 'require|regex:/^[1][3,4,5,6,7,8,9][0-9]{9}$/',
             'status'
         ],
         'recharge' => ['id', 'number'],
