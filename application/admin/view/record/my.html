@@ -45,9 +45,17 @@
         <tbody>
         {volist name="datas.data" id="item"}
         <tr class="text-c admin-lists">
-            <td>{$item.type_text}</td>
+            <td>
+                {$item.type_text}{notempty name="item.remark"}（{$item.remark}）{/notempty}
+            </td>
             <td>{$item.money|number_format=2}</td>
-            <td>{$item.order_id}</td>
+            <td>
+                {eq name="item.type" value="3"}
+                    -
+                {else /}
+                    {$item.order_id}
+                {/eq}
+            </td>
             <td>{$item.create_at|date='Y-m-d H:i:s', ###}</td>
         </tr>
         {/volist}

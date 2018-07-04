@@ -46,51 +46,55 @@ class Stock extends Base
                         require_once request()->root() . "../plugins/{$plugins['type']}/{$plugins['code']}.php";
                         $obj = new $plugins['code'];
                         $trade = $obj->getTradeInfo($price, cf("capital_usage", 95), $deposit['money'], $lever['multiple'], $mode['jiancang'], $mode['defer']);
-                        if(uInfo()['account'] >= $deposit['money'] + $trade["jiancang"]){
-                            $holiday = explode(',', cf("holiday", ""));
-                            $timestamp = workTimestamp($mode['free'], $holiday, strtotime(date("Y-m-d 14:40", request()->time())));
-                            $order = [
-                                "order_sn" => createStrategySn(),
-                                "user_id" => $this->user_id,
-                                "product_id" => $mode['product_id'],
-                                "mode_id" => $modeId,
-                                "lever" => $lever['multiple'],
-                                "code"  => $code,
-                                "name"  => $stock['name'],
-                                "full_code" => $stock['full_code'],
-                                "price" => $price,
-                                "hand"  => $trade["hand"],
-                                "jiancang_fee" => $trade["jiancang"],
-                                "defer" => $trade["defer"],
-                                "free_time" => $timestamp,
-                                "original_free" => $timestamp,
-                                "is_defer" => input("post.defer/d"),
-                                "stop_profit_price" => input("post.profit/f"),
-                                "stop_profit_point" => round((input("post.profit/f") - $price) / $price * 100, 2),
-                                "stop_loss_price" => input("post.loss/f"),
-                                "stop_loss_point" => round(($price - input("post.loss/f")) / $price * 100, 2),
-                                "deposit"   => $deposit['money'],
-                                "original_deposit" => $deposit['money'],
-                                "state"     => 3, // 下单即持仓
-                                "is_follow" => $followId ? 1 : 0,
-                                "follow_id" => $followId,
-                                "is_hedging" => 0, // 持仓单默认未对冲
-                            ];
-                            $orderId = (new OrderLogic())->createOrder($order);
-                            if($orderId > 0){
-                                $url = url("index/Order/position");
-                                // 队列
-                                $smsNoticeData = $sysNoticeData = ["niurenId" => $this->user_id];
-                                Queue::push('app\index\job\UserNotice@systemNotice', $sysNoticeData, null);
-                                Queue::push('app\index\job\UserNotice@smsNotice', $smsNoticeData, null);
-                                return $this->ok(["url" => $url]);
-                            }else{
-                                return $this->fail("创建策略失败！");
-                            }
+                        if($trade["hand"] < 100){
+                            return $this->fail("建仓数量最低100股起！");
                         }else{
-                            return $this->fail("您的余额不足，请充值！");
+                            if(uInfo()['account'] >= $deposit['money'] + $trade["jiancang"]){
+                                $holiday = explode(',', cf("holiday", ""));
+                                $timestamp = workTimestamp($mode['free'], $holiday, strtotime(date("Y-m-d 14:40", request()->time())));
+                                $order = [
+                                    "order_sn" => createStrategySn(),
+                                    "user_id" => $this->user_id,
+                                    "product_id" => $mode['product_id'],
+                                    "mode_id" => $modeId,
+                                    "lever" => $lever['multiple'],
+                                    "code"  => $code,
+                                    "name"  => $stock['name'],
+                                    "full_code" => $stock['full_code'],
+                                    "price" => $price,
+                                    "hand"  => $trade["hand"],
+                                    "jiancang_fee" => $trade["jiancang"],
+                                    "defer" => $trade["defer"],
+                                    "free_time" => $timestamp,
+                                    "original_free" => $timestamp,
+                                    "is_defer" => input("post.defer/d"),
+                                    "stop_profit_price" => input("post.profit/f"),
+                                    "stop_profit_point" => round((input("post.profit/f") - $price) / $price * 100, 2),
+                                    "stop_loss_price" => input("post.loss/f"),
+                                    "stop_loss_point" => round(($price - input("post.loss/f")) / $price * 100, 2),
+                                    "deposit"   => $deposit['money'],
+                                    "original_deposit" => $deposit['money'],
+                                    "state"     => 3, // 下单即持仓
+                                    "is_follow" => $followId ? 1 : 0,
+                                    "follow_id" => $followId,
+                                    "is_hedging" => 0, // 持仓单默认未对冲
+                                ];
+                                $orderId = (new OrderLogic())->createOrder($order);
+                                if($orderId > 0){
+                                    $url = url("index/Order/position");
+                                    // 队列
+                                    $smsNoticeData = $sysNoticeData = ["niurenId" => $this->user_id];
+                                    Queue::push('app\index\job\UserNotice@systemNotice', $sysNoticeData, null);
+                                    Queue::push('app\index\job\UserNotice@smsNotice', $smsNoticeData, null);
+                                    return $this->ok(["url" => $url]);
+                                }else{
+                                    return $this->fail("创建策略失败！");
+                                }
+                            }else{
+                                return $this->fail("您的余额不足，请充值！");
+                            }
+                            break;
                         }
-                        break;
                     }else{
                         continue;
                     }

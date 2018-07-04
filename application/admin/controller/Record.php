@@ -19,7 +19,7 @@ class Record extends Base
     public function my()
     {
         $res = $this->_logic->pageSelfRecordById($this->adminId, input(""));
-        $type = [0 => "盈利分成", 1 => "建仓费分成", 2=> "递延费分成"];
+        $type = [0 => "盈利分成", 1 => "建仓费分成", 2=> "递延费分成", 3=>"系统赠金"];
         array_filter($res['lists']['data'], function (&$item) use ($type){
             $item["type_text"] = $type[$item["type"]];
         });
