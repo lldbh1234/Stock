@@ -77,12 +77,13 @@ class Order extends Validate
             if($timestamp > request()->time()){
                 return "建仓未满1个交易日，无法平仓！";
             }else{
-                $suspension = explode(",", cf("suspension", ""));
+                return true;
+                /*$suspension = explode(",", cf("suspension", ""));
                 if(in_array($order['code'], $suspension)){
-                    return "股票停牌，无法平仓！";
+                    return "股票无法平仓！";
                 }else{
                     return true;
-                }
+                }*/
             }
         }
         return false;
