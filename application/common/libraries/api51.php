@@ -3,7 +3,7 @@ namespace app\common\libraries;
 
 class api51
 {
-	const APP_CODE = "9107239296c64a918cf4c29079ab80f8";
+	const APP_CODE = "20ad7f3279ee4c6f8971cfbb50d0ab80";
 	const REAL_REQUEST_URL = 'http://stock.api51.cn/real';
     const KLINE_REQUEST_URL = 'http://stock.api51.cn/kline';
     const TREND_REQUEST_URL = 'http://stock.api51.cn/trend';
