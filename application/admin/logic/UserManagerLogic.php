@@ -21,8 +21,9 @@ class UserManagerLogic
         // 手机号
         if(isset($filter['mobile']) && !empty($filter['mobile'])){
             //$where["mobile"] = $filter['mobile'];
-            $parent_ids = User::where(['username' => trim($filter['mobile'])])->column('user_id');
-            $where['user_id'] = ['IN', $parent_ids];
+            $userIds = User::where(['username' => trim($filter['mobile'])])->column('user_id');
+            $ids = $myUserIds ? array_intersect($myUserIds, $userIds) : $userIds;
+            $where['user_id'] = ['IN', $ids];
         }
         // 状态
         if(isset($filter['state']) && is_numeric($filter['state']) && in_array($filter['state'], [0,1,2])){
