@@ -174,6 +174,7 @@ class StockLogic
         $codes = $this->_handleCodes($codes);
         $code = implode(',', $codes);
         $response = $this->_library->realtime($code);
+
         if($response){
             $_resp = [];
             $data = $response['data']['snapshot'];
