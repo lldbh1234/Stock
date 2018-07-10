@@ -8,17 +8,17 @@ class UserManager extends BaseModel
     public $field = true;
 
     protected $insert = ['create_at'];
-    protected $update = ['update_at'];
+    //protected $update = ['update_at'];
 
     protected function setCreateAtAttr()
     {
         return time();
     }
 
-    protected function setUpdateAtAttr()
+    /*protected function setUpdateAtAttr()
     {
         return time();
-    }
+    }*/
     public function hasOneUser()
     {
         return $this->hasOne("\\app\\common\\model\\User", "user_id", "user_id");

@@ -146,9 +146,10 @@ class UserLogic
             $data['jiancang_point'] = cf('manager_jiancang_point', 5);
             $data['defer_point'] = cf('manager_defer_point', 5);
             $data['state'] = 1; // 经纪人申请直接通过审核
+            $data['update_at'] = time();
             if($user->hasOneManager){
                 //$data['state'] = 0;
-                $data['update_at'] = 0;
+                //$data['update_at'] = 0;
                 $data['update_by'] = 0;
                 $user->hasOneManager->save($data);
             }else{

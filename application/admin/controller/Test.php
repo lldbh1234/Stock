@@ -30,13 +30,6 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        $_logic = new UserLogic();
-        $order = $_logic->userOrderById(330, 9377, 3);
-        $order = reset($order);
-        $order['buy_px'] = 28.34;
-        $res = $_logic->userOrderSelling($order);
-        dump($res);
-        exit;
         $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
