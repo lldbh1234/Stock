@@ -30,7 +30,6 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-
         $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
