@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\common\payment\authRbPay;
 use app\common\payment\huifuPay;
 use app\common\payment\paymentLLpay;
 use app\index\logic\AdminWithdrawLogic;
@@ -163,6 +164,30 @@ class Notify extends Controller
             }
         }else{
             exit("ERROR");
+        }
+    }
+    public function authRbPay()
+    {
+        //计算得出通知验证结果
+        $payment = new authRbPay();
+        @file_put_contents("./pay.log", json_encode($_REQUEST).PHP_EOL, FILE_APPEND);
+        $response = $payment->notify($_REQUEST);
+        if($response['code'] == 0)
+        {
+            $_rechargeLogic = new RechargeLogic();
+            $order = $_rechargeLogic->orderByTradeNo($response['order_no'], 0);
+            if($order){
+                // 有该笔充值订单
+                $res = $_rechargeLogic->rechargeComplete($response['order_no'], $order['amount'], $order['user_id'], $response['trade_no']);
+                if(!$res){
+                    @file_put_contents("./pay.log", json_decode($response).PHP_EOL, FILE_APPEND);
+                }else{
+                    die("success");
+                }
+            }
+        } else {
+            @file_put_contents("./pay.log", json_decode($response).PHP_EOL, FILE_APPEND);
+            die("{'ret_code':'9999','ret_msg':'验签失败'}");
         }
     }
 }

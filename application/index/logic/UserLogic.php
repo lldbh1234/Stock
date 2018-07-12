@@ -2,6 +2,7 @@
 namespace app\index\logic;
 
 use app\common\payment\authLlpay;
+use app\common\payment\authRbPay;
 use app\index\model\Admin;
 use app\index\model\UserManagerRecord;
 use app\index\model\UserNiuren;
@@ -201,6 +202,32 @@ class UserLogic
                     }
                 }
             }
+            //融宝解绑
+            /*
+            $response = (new authRbPay())->findCard(['userId' => $userId]);
+            if($response['code'] == 0) {
+                $newCardNo = substr($data['bank_card'], -4);
+                $cardNos = array_column($response['data'], "card_last");
+                if (!in_array($newCardNo, $cardNos)) {
+                    // 新卡
+                    foreach ($response['data'] as $item) {
+                        //连连解绑
+                        //融宝解绑
+                        if ($response['code'] == 0) {
+                            $temp_rb = (new authRbPay())->unbindBank([
+                                'userId' => $userId,
+                                'bind_id' => $item['bind_id'],
+                            ]);
+//                            if(!$temp_rb){
+//                                Db::rollback();
+//                                return false;
+//                            }
+                        }
+
+                    }
+                }
+            }*/
+
             Db::commit();
             return true;
         } catch (\Exception $e){

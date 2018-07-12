@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\common\payment\authLlpay;
+use app\common\payment\authRbPay;
 use app\common\payment\huifuPay;
 use app\index\logic\OrderLogic;
 use app\index\logic\RechargeLogic;
@@ -175,6 +176,8 @@ class User extends Base
                     $way = 2; //支付通道，2-连连支付
                 }elseif ($type == 2){
                     $way = 3; //支付通道，3-汇付天下
+                }elseif ($type == 3){
+                    $way = 4; //支付通道，4-融宝支付
                 }else{
                     return $this->fail("请选择支付通道！");
                 }
@@ -210,6 +213,25 @@ class User extends Base
                         $amount = sprintf("%.2f", $amount);
                         $html = (new huifuPay())->getCode($orderSn, $amount);
                         echo $html;
+                        exit;
+                    }elseif ($way == 4){
+                        $amount = 0.1;
+                        // 融宝支付
+                        //查找绑卡信息
+                        $user = $this->_logic->userIncCard($this->user_id);
+                        if($user['is_virtual'] == 1){
+                            return $this->fail("账户无法使用此功能！");
+                        }
+                        $parameter = [
+                            'notify_url'    => url('index/Notify/authRbPay'),
+                            'return_url'    => url('index/User/index'),
+                            'member_id'     => date('YmdHis'),//date('YmdHis')
+                            "order_no"      => $orderSn,
+                            "total_fee"     => $amount,
+                            "userId"        => $this->user_id,
+                        ];
+                        $response = (new authRbPay())->payForm($parameter);
+                        echo $response;
                         exit;
                     }
                 }else{
