@@ -89,7 +89,7 @@ class authRbPay
             'transtime'     => date("Y-m-d H:i:s"),
             'currency'      => '156',
             'member_id'     => $data['userId'],
-            'member_ip'     => '1.80.136.172',
+            'member_ip'     => $_SERVER["REMOTE_ADDR"],
             'terminal_type' => 'mobile',
             'terminal_info' => 'terminal_info',
             'sign_type'     => 'md5',
