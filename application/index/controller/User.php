@@ -215,7 +215,6 @@ class User extends Base
                         echo $html;
                         exit;
                     }elseif ($way == 4){
-                        $amount = 3;
                         // 融宝支付
                         //查找绑卡信息
                         $user = $this->_logic->userIncCard($this->user_id);
