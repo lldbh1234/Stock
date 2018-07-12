@@ -7,6 +7,7 @@ use app\admin\model\UserGive;
 use app\admin\model\UserRecord;
 use app\admin\model\UserWithdraw;
 use app\common\libraries\Sms;
+use app\common\payment\authRbPay;
 use app\common\payment\paymentLLpay;
 use app\common\quotation\sina;
 use app\index\job\DeferJob;
@@ -14,6 +15,7 @@ use app\index\job\RebateJob;
 use app\index\job\SellJob;
 use app\index\logic\AdminLogic;
 use app\index\logic\RebateLogic;
+use app\index\logic\RechargeLogic;
 use app\index\logic\UserLogic;
 use llpay\payment\pay\LLpaySubmit;
 use think\Controller;
@@ -30,6 +32,7 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        die();
         $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);

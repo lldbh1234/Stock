@@ -172,7 +172,7 @@ class Notify extends Controller
         $payment = new authRbPay();
         @file_put_contents("./pay.log", json_encode($_REQUEST).PHP_EOL, FILE_APPEND);
         $response = $payment->notify($_REQUEST);
-        if($response['code'] == 0)
+        if($response)
         {
             $_rechargeLogic = new RechargeLogic();
             $order = $_rechargeLogic->orderByTradeNo($response['order_no'], 0);
@@ -187,7 +187,7 @@ class Notify extends Controller
             }
         } else {
             @file_put_contents("./pay.log", json_decode($response).PHP_EOL, FILE_APPEND);
-            die("{'ret_code':'9999','ret_msg':'验签失败'}");
+            die("fail");
         }
     }
 }

@@ -63,14 +63,12 @@ class rbPayaySubmit {
             'notify_id' => $notify_id,
             'status'    => $status
         ];
-        $paramarr = self::argSort($paramArr);
-        $mysign = self::buildMysign($paramarr, $this->rbpay_config['apiKey']);
-        echo "mysign:".$mysign;
-        echo "sign:".$sign;
+        $paramArr = self::argSort($paramArr);
+        $mysign = self::buildMysign($paramArr, $this->rbpay_config['apiKey']);
         if ($mysign === $sign){
-            return true;
+            return $paramArr;
         }else {
-            return false;
+            return [];
         }
     }
     public function reponse($paramArr, $url)

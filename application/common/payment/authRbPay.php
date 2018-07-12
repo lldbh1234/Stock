@@ -72,12 +72,9 @@ class authRbPay
     {
         if(isset($data['data']) && isset($data['encryptkey']))
         {
-            $response = $this->rbPaySubmit->notify($data);
-            if($response) return ['code' => 0, 'message' => "成功"];
+            return $this->rbPaySubmit->notify($data);
         }
-
-        return ['code' => 1, 'message' => "非法请求"];
-
+        return false;
     }
     public function payForm($data = [])
     {
