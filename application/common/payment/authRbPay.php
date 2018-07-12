@@ -84,8 +84,8 @@ class authRbPay
         $parameter = [
             'seller_email'  => $this->rbpay_config['seller_email'],
             'merchant_id'   => $this->rbpay_config['merchant_id'],
-            'notify_url'    => $data['notify_url'],
-            'return_url'    => $data['return_url'],
+            'notify_url'    => $this->notifyUrl,
+            'return_url'    => $this->returnUrl,
             'transtime'     => date("Y-m-d H:i:s"),
             'currency'      => '156',
             'member_id'     => $data['userId'],
@@ -95,8 +95,8 @@ class authRbPay
             'sign_type'     => 'md5',
             "order_no"      => $data['order_no'],
             'total_fee'     => $data['total_fee'] * 100,
-            'title'         => '中晟500策略余额充值',
-            'body'          => '中晟500策略余额充值',
+            'title'         => '中建58好策略余额充值',
+            'body'          => '中建58好策略余额充值',
         ];
         ////构造函数，生成请求URL
         return $this->rbPaySubmit->buildForm($parameter);

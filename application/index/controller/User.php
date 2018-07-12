@@ -222,8 +222,6 @@ class User extends Base
                             return $this->fail("账户无法使用此功能！");
                         }
                         $parameter = [
-                            'notify_url'    => url('index/Notify/authRbPay'),
-                            'return_url'    => url('index/User/index'),
                             'member_id'     => date('YmdHis'),//date('YmdHis')
                             "order_no"      => $orderSn,
                             "total_fee"     => $amount,
