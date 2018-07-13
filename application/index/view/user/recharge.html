@@ -33,7 +33,7 @@
 			<div class="boxflex1 paystyle" style="padding: 10px 15px 0;">
 			<div class="group_btn clear_fl">
 				<div class="btn_re">
-					<a class="btn_money on">550</a>
+					<a class="btn_money on">1000</a>
 				</div>
 				<div class="btn_re btn_center">
 					<a class="btn_money">1500</a>
@@ -163,6 +163,10 @@
                 $alert("此通道单笔最大可充值5000元！");
                 return false;
 			}
+            if(_type == 3 && amount < 1000){
+                $alert("此通道单笔最低限额1000元！");
+                return false;
+            }
             $("#payform").submit();
         });
 
