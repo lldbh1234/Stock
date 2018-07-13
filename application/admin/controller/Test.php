@@ -33,10 +33,10 @@ class Test extends Controller
     public function test($order_id = null)
     {
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
-        $virtual = [];
         $_logic = new \app\admin\logic\UserLogic();
         for($i = 1; $i <= 50; $i++){
             $mobile = "10880000051";
+            $virtual = [];
             $virtual['mobile'] = strval($mobile + $i);
             $virtual['username'] = $virtual['mobile'];
             $virtual['password'] = "123456";
@@ -49,7 +49,7 @@ class Test extends Controller
             dump($user_id);
             if($user_id){
                 $give = $_logic->giveMoney($user_id, 1000000, "虚拟用户赠金");
-                dump($user_id);
+                dump($give);
             }
         }
 
