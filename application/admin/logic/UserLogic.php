@@ -86,7 +86,7 @@ class UserLogic
 
     public function createUser($data)
     {
-        $res = model("User")->save($data);
+        $res = model("User")->isUpdate(false)->data($data, true)->save();
         return $res ? model("User")->getLastInsID() : 0;
     }
 
@@ -293,7 +293,7 @@ class UserLogic
             return true;
         } catch (\Exception $e) {
             // 回滚事务
-            dump($e->getMessage());
+            //dump($e->getMessage());
             Db::rollback();
             return false;
         }
