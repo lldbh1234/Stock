@@ -32,7 +32,28 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        die();
+        $nickname = cf('nickname_prefix', config("nickname_prefix"));
+        $virtual = [];
+        $_logic = new \app\admin\logic\UserLogic();
+        for($i = 1; $i <= 50; $i++){
+            $mobile = "10880000051";
+            $virtual['mobile'] = strval($mobile + $i);
+            $virtual['username'] = $virtual['mobile'];
+            $virtual['password'] = "123456";
+            $virtual['nickname'] = $nickname . substr($virtual["mobile"], -4);
+            $virtual['face'] = config("default_face");
+            $virtual['admin_id'] = 526;
+            $virtual['state'] = 0;
+            $virtual['is_virtual'] = 1;
+            $user_id = $_logic->createUser($virtual);
+            dump($user_id);
+            if($user_id){
+                $give = $_logic->giveMoney($user_id, 1000000, "虚拟用户赠金");
+                dump($user_id);
+            }
+        }
+
+        exit();
         $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
