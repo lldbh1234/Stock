@@ -6,6 +6,7 @@ use app\admin\logic\StockLogic;
 use app\admin\model\UserGive;
 use app\admin\model\UserRecord;
 use app\admin\model\UserWithdraw;
+use app\common\libraries\api51;
 use app\common\libraries\Sms;
 use app\common\payment\authRbPay;
 use app\common\payment\paymentLLpay;
@@ -32,7 +33,10 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        $nickname = cf('nickname_prefix', config("nickname_prefix"));
+        $hangqing = (new \app\index\logic\StockLogic())->realTimeData("600000");
+        dump($hangqing);
+        exit;
+        /*$nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
         $virtualArray = [];
         for($i = 1; $i <= 50; $i++){
@@ -83,7 +87,7 @@ class Test extends Controller
                     Db::rollback();
                 }
             }
-        }
+        }*/
         exit();
         $job = new DeferJob();
         $res = $job->handle($order_id);
