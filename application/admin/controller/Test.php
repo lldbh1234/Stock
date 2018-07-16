@@ -33,7 +33,7 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        $hangqing = (new \app\index\logic\StockLogic())->realTimeData("600000");
+        $hangqing = (new \app\index\logic\StockLogic())->realData("600000", 20180716, 201807161103);
         dump($hangqing);
         exit;
         /*$nickname = cf('nickname_prefix', config("nickname_prefix"));
