@@ -6,6 +6,8 @@ use app\admin\logic\StockLogic;
 use app\admin\model\UserGive;
 use app\admin\model\UserRecord;
 use app\admin\model\UserWithdraw;
+use app\common\libraries\api51;
+use app\common\libraries\apiYiyuan;
 use app\common\libraries\Sms;
 use app\common\payment\authRbPay;
 use app\common\payment\paymentLLpay;
@@ -32,6 +34,38 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        $smsUrl = "http://www.jpsw99.com/SendSms.asp?";
+//        $smsUrl .= "account=tangyuan";
+//        $smsUrl .= "&password=ln20160223";
+//        $smsUrl .= "&phones=18629395770,18789454258";
+//        $smsUrl .= "&content=".urlencode(iconv('UTF-8', 'GBK', "【弹了股】您好，您的注册验证码为1234"));
+//        $smsUrl .= "&channel=1";
+        $postFields = [
+            'account' => 'tangyuan',
+            'password' => 'ln20160223',
+            'phones'=>'18629395770,18789454258',
+            'content' => iconv('UTF-8', 'GBK', "【弹了股】您好，您的注册验证码为1234"),
+            'channel' => 1,
+        ];
+        $postFields = http_build_query($postFields);
+        $ch = curl_init ();
+        curl_setopt ( $ch, CURLOPT_POST, 1 );
+        curl_setopt ( $ch, CURLOPT_HEADER, 0 );
+        curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt ( $ch, CURLOPT_URL, $smsUrl );
+        curl_setopt ( $ch, CURLOPT_POSTFIELDS, $postFields );
+        $result = curl_exec ( $ch );
+        curl_close ( $ch );
+        dump($result);
+        die();
+//        $api51 = new api51();
+//        $aa1 = $api51->trend("600000.SH", "", "");
+//        dump($aa1);
+//        echo "<br />";
+        $apiYiyuan = new apiYiyuan();
+        $aa = $apiYiyuan->trend("600000");
+        dump($aa);
+        die();
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
         for($i = 1; $i <= 50; $i++){
