@@ -163,10 +163,10 @@
                 $alert("此通道单笔最大可充值5000元！");
                 return false;
 			}
-            if(_type == 3 && amount < 1000){
-                $alert("此通道单笔最低限额1000元！");
-                return false;
-            }
+//            if(_type == 3 && amount < 1000){
+//                $alert("此通道单笔最低限额1000元！");
+//                return false;
+//            }
             $("#payform").submit();
         });
 
