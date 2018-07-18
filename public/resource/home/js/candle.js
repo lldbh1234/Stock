@@ -232,9 +232,9 @@ function numberFormat(number){
 
 var freshInterval = null;
 function refreshTimeLine(){
-    // if( !isTradingTime() ){
-    //     return false;
-    // }
+    if( !isTradingTime() ){
+        return false;
+    }
     if( $(".koptions_nav .active a").data("type") == 0 ){
         initMin();
     }
