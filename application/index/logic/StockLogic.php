@@ -1,6 +1,7 @@
 <?php
 namespace app\index\logic;
 
+use app\common\quotation\tencent;
 use app\index\model\Stock;
 use app\common\libraries\api51;
 use app\common\quotation\sina;
@@ -9,10 +10,12 @@ class StockLogic
 {
     protected $_library;
     protected $_sinaQuotation;
+    protected $_tencentQuotation;
     public function __construct()
     {
         $this->_library = new api51();
         $this->_sinaQuotation = new sina();
+        $this->_tencentQuotation = new tencent();
     }
 
     public function stockByCode($code)
@@ -198,6 +201,12 @@ class StockLogic
             return $_resp;
         }
         return [];
+    }
+
+    public function realTimeDataByTencent($codes)
+    {
+        $codes = $this->_fullCodeByCodes($codes);
+        return $this->_tencentQuotation->real($codes);
     }
 
     private function _fullCodeByCodes($codes)

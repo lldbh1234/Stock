@@ -18,7 +18,7 @@
 
 {block name="content"}
 		<header class="has_back_top ">
-			<span id="guName" data-code="{$quotation.code}">
+			<span id="guName" data-code="{$quotation.code}" data-fullcode="{$quotation.full_code}">
 				{$quotation.prod_name}
 			</span>
 			<a href="{:url('index/Strategy/index')}" class="back_icon">
@@ -66,11 +66,11 @@
 
 				<ul class="g_detail_list clear_fl">
 					<li>振幅 <span>{$quotation.amplitude|number_format=2}%</span></li>
-					<li>成交量 <span>{$quotation.business_amount/$quotation.shares_per_hand|numberFormat}手</span></li>
+					<li>成交量 <span>{$quotation.business_amount|numberFormat}手</span></li>
 					<li>成交额 <span>{$quotation.business_balance|numberFormat}元</span></li>
-					<li>内盘 <span>{$quotation.business_amount_in/$quotation.shares_per_hand|numberFormat}手</span></li>
-					<li>外盘 <span>{$quotation.business_amount_out/$quotation.shares_per_hand|numberFormat}手</span></li>
-					<li>总市值 <span>{$quotation.total_shares*$quotation.last_px|numberFormat}</span></li>
+					<li>内盘 <span>{$quotation.business_amount_in|numberFormat}手</span></li>
+					<li>外盘 <span>{$quotation.business_amount_out|numberFormat}手</span></li>
+					<li>总市值 <span>{$quotation.total_value|numberFormat}</span></li>
 					<li>市盈率 <span>{$quotation.pe_rate}</span></li>
 					<li>流通市值 <span>{$quotation.circulation_value|numberFormat}</span></li>
 				</ul>
@@ -99,18 +99,18 @@
 
 		<div class="stock-price f-right mui-row" id="stock-price">
             <ul class="sell mui-col-xs-6 mui-row clear_fl">
-                <li class=""><em>卖⑤</em><b class="red">{$quotation.offer_grp[12]|default='--'}</b><i>{$quotation.offer_grp[13] / 100|intval}</i></li>
-                <li class=""><em>卖④</em><b class="red">{$quotation.offer_grp[9]|default='--'}</b><i>{$quotation.offer_grp[10] / 100|intval}</i></li>
-                <li class=""><em>卖③</em><b class="red">{$quotation.offer_grp[6]|default='--'}</b><i>{$quotation.offer_grp[7] / 100|intval}</i></li>
-                <li class=""><em>卖②</em><b class="red">{$quotation.offer_grp[3]|default='--'}</b><i>{$quotation.offer_grp[4] / 100|intval}</i></li>
-                <li class=""><em>卖①</em><b class="red">{$quotation.offer_grp[0]|default='--'}</b><i>{$quotation.offer_grp[1] / 100|intval}</i></li>
+                <li class=""><em>卖⑤</em><b class="red">{$quotation.sell_grp[13]|default='--'}</b><i>{$quotation.sell_grp[12] / 100|intval}</i></li>
+                <li class=""><em>卖④</em><b class="red">{$quotation.sell_grp[10]|default='--'}</b><i>{$quotation.sell_grp[9] / 100|intval}</i></li>
+                <li class=""><em>卖③</em><b class="red">{$quotation.sell_grp[7]|default='--'}</b><i>{$quotation.sell_grp[6] / 100|intval}</i></li>
+                <li class=""><em>卖②</em><b class="red">{$quotation.sell_grp[4]|default='--'}</b><i>{$quotation.sell_grp[3] / 100|intval}</i></li>
+                <li class=""><em>卖①</em><b class="red">{$quotation.sell_grp[1]|default='--'}</b><i>{$quotation.sell_grp[0]|intval}</i></li>
             </ul>
             <ul class="buy mui-col-xs-6 mui-row clear_fl">
-                <li><em>买①</em><b class="red">{$quotation.bid_grp[0]|default='--'}</b><i>{$quotation.bid_grp[1] / 100|intval}</i></li>
-                <li><em>买②</em><b class="red">{$quotation.bid_grp[3]|default='--'}</b><i>{$quotation.bid_grp[4] / 100|intval}</i></li>
-                <li><em>买③</em><b class="red">{$quotation.bid_grp[6]|default='--'}</b><i>{$quotation.bid_grp[7] / 100|intval}</i></li>
-                <li><em>买④</em><b class="red">{$quotation.bid_grp[9]|default='--'}</b><i>{$quotation.bid_grp[10] / 100|intval}</i></li>
-                <li><em>买⑤</em><b class="red">{$quotation.bid_grp[12]|default='--'}</b><i>{$quotation.bid_grp[13] / 100|intval}</i></li>
+                <li><em>买①</em><b class="red">{$quotation.bid_grp[1]|default='--'}</b><i>{$quotation.bid_grp[0] / 100|intval}</i></li>
+                <li><em>买②</em><b class="red">{$quotation.bid_grp[4]|default='--'}</b><i>{$quotation.bid_grp[3] / 100|intval}</i></li>
+                <li><em>买③</em><b class="red">{$quotation.bid_grp[7]|default='--'}</b><i>{$quotation.bid_grp[6] / 100|intval}</i></li>
+                <li><em>买④</em><b class="red">{$quotation.bid_grp[10]|default='--'}</b><i>{$quotation.bid_grp[9] / 100|intval}</i></li>
+                <li><em>买⑤</em><b class="red">{$quotation.bid_grp[13]|default='--'}</b><i>{$quotation.bid_grp[12] / 100|intval}</i></li>
             </ul>
     	</div>
 

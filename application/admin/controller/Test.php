@@ -12,6 +12,7 @@ use app\common\libraries\Sms;
 use app\common\payment\authRbPay;
 use app\common\payment\paymentLLpay;
 use app\common\quotation\sina;
+use app\common\quotation\tencent;
 use app\index\job\DeferJob;
 use app\index\job\RebateJob;
 use app\index\job\SellJob;
@@ -34,6 +35,10 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        $obj = new \app\index\logic\StockLogic();
+        $res = $obj->realTimeDataByTencent(["600753", "600000"]);
+        dump($res);
+        exit;
         /*
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
