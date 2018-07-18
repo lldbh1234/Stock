@@ -204,7 +204,7 @@ class UserLogic
                 }
             }
             //融宝解绑
-            /*
+
             $response = (new authRbPay())->findCard(['userId' => $userId]);
             if($response['code'] == 0) {
                 $newCardNo = substr($data['bank_card'], -4);
@@ -227,7 +227,7 @@ class UserLogic
 
                     }
                 }
-            }*/
+            }
 
             Db::commit();
             return true;

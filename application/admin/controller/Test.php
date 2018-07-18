@@ -7,6 +7,7 @@ use app\admin\model\UserGive;
 use app\admin\model\UserRecord;
 use app\admin\model\UserWithdraw;
 use app\common\libraries\api51;
+use app\common\libraries\apiYiyuan;
 use app\common\libraries\Sms;
 use app\common\payment\authRbPay;
 use app\common\payment\paymentLLpay;
@@ -33,9 +34,9 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        /*$nickname = cf('nickname_prefix', config("nickname_prefix"));
+        /*
+        $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
-        $virtualArray = [];
         for($i = 1; $i <= 50; $i++){
             $mobile = "10880000051";
             $virtual = [];
@@ -47,42 +48,11 @@ class Test extends Controller
             $virtual['admin_id'] = 526;
             $virtual['state'] = 0;
             $virtual['is_virtual'] = 1;
-            $virtualArray[] = $virtual;
-        }
-        foreach ($virtualArray as $virtual){
             $user_id = $_logic->createUser($virtual);
             dump($user_id);
             if($user_id){
-                // 启动事务
-                Db::startTrans();
-                try{
-                    $user = \app\admin\model\User::find($user_id);
-                    // 余额增加
-                    $user->setInc('account', 1000000);
-                    // 赠金日志记录
-                    $_gData = [
-                        "user_id"   => $user_id,
-                        "amount"    => 1000000,
-                        "remark"    => "虚拟用户赠金",
-                        "create_at" => time(),
-                        "create_by" => 2
-                    ];
-                    UserGive::create($_gData);
-                    // 用户资金明细
-                    $rData = [
-                        "type" => 11,
-                        "amount" => 1000000,
-                        "account" => $user->account,
-                        "direction" => 1
-                    ];
-                    $user->hasManyRecord()->save($rData);
-                    // 提交事务
-                    Db::commit();
-                } catch (\Exception $e) {
-                    // 回滚事务
-                    //dump($e->getMessage());
-                    Db::rollback();
-                }
+                $give = $_logic->giveMoney($user_id, 1000000, "虚拟用户赠金");
+                dump($give);
             }
         }*/
         //exit();
