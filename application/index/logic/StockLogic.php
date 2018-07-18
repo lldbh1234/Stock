@@ -152,7 +152,7 @@ class StockLogic
                 $_response['trend_crc'] = $trendCrc;
                 $_response['trend'] = [];
                 foreach ($trendData as $item){
-                    if($item[0] >= $min){
+                    if($item[0] > $min){
                         $_temp = [];
                         foreach($trendFields as $k=>$v){
                             $_temp[$v] = $item[$k];

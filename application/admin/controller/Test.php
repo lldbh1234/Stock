@@ -33,9 +33,6 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        $hangqing = (new \app\index\logic\StockLogic())->realData("600000", 20180716, 201807161103);
-        dump($hangqing);
-        exit;
         /*$nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
         $virtualArray = [];
@@ -88,7 +85,7 @@ class Test extends Controller
                 }
             }
         }*/
-        exit();
+        //exit();
         $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
