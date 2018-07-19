@@ -35,9 +35,8 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        $obj = new \app\index\logic\StockLogic();
-        $res = $obj->realTimeDataByTencent(["600753", "600000"]);
-        dump($res);
+        $orders = (new \app\index\logic\OrderLogic())->allSellOrders();
+        dump(count($orders));
         exit;
         /*
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
