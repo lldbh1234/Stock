@@ -57,7 +57,6 @@ var lineData = new Array(); // 保存请求回来的行情数据
 var upColor = '#ff0200';
 var downColor = '#008002';
 var myChart = echarts.init(document.getElementById('chart'));
-var fullCode = $("#guName").data("fullcode");
 
 
 function splitData(rawData) {
@@ -65,12 +64,11 @@ function splitData(rawData) {
     var values = [];
     var volumes = [];
     for (var i = 0; i < rawData.length; i++) {
-        var _data = rawData[i].split(" ");
-        values.push([_data[1], _data[1], _data[1]]);
-        var _count = _data[2];
+        values.push([rawData[i].avg_px, rawData[i].last_px, rawData[i].min_time]);
+        // var _count = rawData[i].business_amount;
         var _count = "-";
         if( i != 0 ){
-            _count = parseFloat ((_data[2] - rawData[i - 1].split(" ")[2])) / 10;
+            _count = parseFloat ((rawData[i].business_amount - rawData[i - 1].business_amount)) / 1000;
         }
         volumes.push([i, _count]);
     }
@@ -130,8 +128,8 @@ function calculateMA(dayCount, data) {
             continue;
         }
         var sum = 0;
-        for (var j = 0; j < dayCount; j++) {  
-            sum += parseFloat( data.values[i - j][1] );
+        for (var j = 0; j < dayCount; j++) {
+            sum += data.values[i - j][1];
         }
         result.push(+(sum / dayCount).toFixed(3));
     }
@@ -144,77 +142,12 @@ $(".koptions_nav").on("click", "p", function(){
     var type = $(this).find("a").data("type");
     if( type == 0 ){
         //加载分时图
-        initMin();
-    }else if( type == 6 ){
+        initAreaLine();
+    }else{
         //加载k线
-        initDay( type );
-    }else if( type == 7 ){
-        initWeek();
-    }else if( type == 8 ){
-        initMonth();
+        initKline( type );
     }
 });
-
-function initMin(){
-    $.ajax({
-        url:"http://web.ifzq.gtimg.cn/appstock/app/minute/query?_var=min_data_" + fullCode + "&code=" + fullCode + "&r=0.040982807166606294",
-        dataType:"script",
-        cache:"false",
-        type:"get",
-        success:function(a){
-            var minData = eval("min_data_" + fullCode);
-            var minDataFormat = splitData( minData.data[fullCode].data.data );
-
-            drawAreaLine( minDataFormat );
-        }
-    });
-}
-
-function initDay(){
-    $.ajax({
-        url:"http://web.ifzq.gtimg.cn/appstock/app/kline/kline?_var=kline_day&param=" + fullCode + ",day,,,60,&r=0.6762027715074195",
-        dataType:"script",
-        cache:"false",
-        type:"get",
-        success:function(a){
-            var dayData = kline_day.data[fullCode].day;
-            var dayDataFormat = splieKNum(dayData);
-            drawKchart( dayDataFormat );
-        }
-    });
-}
-
-function initWeek(){
-    $.ajax({
-        url:"http://web.ifzq.gtimg.cn/appstock/app/kline/kline?_var=kline_week&param=" + fullCode + ",week,,,60,&r=0.28570913281575394",
-        dataType:"script",
-        cache:"false",
-        type:"get",
-        success:function(a){
-            var dayData = kline_week.data[fullCode].week;
-            var dayDataFormat = splieKNum(dayData);
-            drawKchart( dayDataFormat );
-        }
-    });
-}
-
-function initMonth(){
-    $.ajax({
-        url:"http://web.ifzq.gtimg.cn/appstock/app/kline/kline?_var=kline_month&param=" + fullCode + ",month,,,60,&r=0.6762027715074195",
-        dataType:"script",
-        cache:"false",
-        type:"get",
-        success:function(a){
-            var dayData = kline_month.data[fullCode].month;
-            var dayDataFormat = splieKNum(dayData);
-            drawKchart( dayDataFormat );
-        }
-    });
-}
-
-
-
-
 
 function numberFormat(number){
     var b=1000;
@@ -235,53 +168,99 @@ function refreshTimeLine(){
     if( !isTradingTime() ){
         return false;
     }
-    if( $(".koptions_nav .active a").data("type") == 0 ){
-        initMin();
-    }
-
-    $.ajax({
-        url:"http://web.ifzq.gtimg.cn/appstock/app/kline/kline?_var=kline_day&param=" + fullCode + ",day,,,1,&r=0.6762027715074195",
-        dataType:"script",
-        cache:"false",
-        type:"get",
-        success:function(a){
-            var dayData = kline_day.data[fullCode].qt[fullCode];
-            console.log( dayData );
-            var html = '<ul class="sell mui-col-xs-6 mui-row clear_fl">\
-                            <li class=""><em>卖⑤</em><b class="red">' + dayData[27] + '</b><i>' + dayData[28] + '</i></li>\
-                            <li class=""><em>卖④</em><b class="red">' + dayData[25] + '</b><i>' + dayData[26] + '</i></li>\
-                            <li class=""><em>卖③</em><b class="red">' + dayData[23] + '</b><i>' + dayData[24] + '</i></li>\
-                            <li class=""><em>卖②</em><b class="red">' + dayData[21] + '</b><i>' + dayData[22] + '</i></li>\
-                            <li class=""><em>卖①</em><b class="red">' + dayData[19] + '</b><i>' + dayData[20] + '</i></li>\
-                        </ul>\
-                        <ul class="buy mui-col-xs-6 mui-row clear_fl">\
-                            <li><em>买①</em><b class="red">' + dayData[9] + '</b><i>' + dayData[10] + '</i></li>\
-                            <li><em>买②</em><b class="red">' + dayData[11] + '</b><i>' + dayData[12] + '</i></li>\
-                            <li><em>买③</em><b class="red">' + dayData[13] + '</b><i>' + dayData[14] + '</i></li>\
-                            <li><em>买④</em><b class="red">' + dayData[15] + '</b><i>' + dayData[16] + '</i></li>\
-                            <li><em>买⑤</em><b class="red">' + dayData[17] + '</b><i>' + dayData[18] + '</i></li>\
-                        </ul>';
-
-                        console.log( html );
-            $("#stock-price").html( html );
-
-            var now_price = dayData[3];
-            var className = "";
-            if( dayData[31] >= 0 ){
-                className = "red";
-            }else{
-                className = "green;"
+    var _url = refreshUrl,
+        _code = $("#guName").data("code"),
+        _oData = {code:_code,cnc: lineData[-2].trend_crc, min: lineData[-2].min_time};
+    $ajaxCustom(_url, _oData, function(res){
+        if(res.state){ 
+            if( res.data.length <= 0 ){
+                return false;
             }
-            $(".r_price").html(dayData[3]).removeClass("red green").addClass( className );
-            var _html = '<span class="lf ' + className + '">' + dayData[31] + '</span>\
-                        <span class="lf ' + className + '">' + dayData[32] + '%</span>';
-            $(".r_rate").html( _html );
+            // 如果有新点, 如果在分时图界面, 重新渲染分时图
+            if(res.data.trend.length > 0){
+                // 将数据添加到 lineData[-1]；
+                lineData[-1] = lineData[-1].concat( res.data.trend );
+                lineData[0] = splitData( lineData[-1] );
+                lineData[-2].min_time = lineData[-1][lineData[-1].length - 1].min_time;
+                if( $(".koptions_nav .active a").data("type") == 0 ){
+                    drawAreaLine(lineData[0]);
+                }  
+            }
+            lineData[-2].trend_crc = res.data.trend_crc;
+
+            
+            //更新页面数据
+            var rateClassName = "";
+            if( res.data.px_change >= 0 ){
+                rateClassName = "red";
+            }else{
+                rateClassName = "green";
+            }
+            var html = '<div class="clear_fl g_info">\
+                <div class="lf">\
+                                            <p class="g_price ' + rateClassName + '">' + res.data.last_px + '</p>\
+                    <p class="g_rate clear_fl">\
+                        <span class="lf ' + rateClassName + '">' + res.data.px_change + '</span>\
+                        <span class="lf ' + rateClassName + '">'+ res.data.px_change_rate +'%</span>\
+                    </p>\
+                                        </div>\
+                <ul class="rt g_price_detail clear_fl">\
+                    <li>\
+                        <p>昨收</p>\
+                        <p>'+ res.data.preclose_px +'</p>\
+                    </li>\
+                    <li>\
+                        <p>今开</p>\
+                        <p>'+ res.data.open_px +'</p>\
+                    </li>\
+                    <li>\
+                        <p>最高</p>\
+                        <p>'+ res.data.high_px +'</p>\
+                    </li>\
+                    <li>\
+                        <p>最低</p>\
+                        <p>'+ res.data.low_px +'</p>\
+                    </li>\
+                </ul>\
+            </div>  \
+            <ul class="g_detail_list clear_fl">\
+                <li>振幅 <span>'+ res.data.amplitude +'</span></li>\
+                <li>成交量 <span>'+ numberFormat(res.data.business_amount) +'手</span></li>\
+                <li>成交额 <span>'+ numberFormat(res.data.business_balance) +'元</span></li>\
+                <li>内盘 <span>'+ numberFormat(res.data.business_amount_in) +'手</span></li>\
+                <li>外盘 <span>'+ numberFormat(res.data.business_amount_out) +'手</span></li>\
+                <li>总市值 <span>'+ numberFormat(res.data.last_px * res.data.total_shares) +'</span></li>\
+                <li>市盈率 <span>'+ res.data.pe_rate +'</span></li>\
+                <li>流通市值 <span>'+ numberFormat(res.data.circulation_value) +'</span></li>\
+            </ul>';
+            $(".g_section").html( html );
+
+            //修改盘口
+            var html = '<ul class="sell mui-col-xs-6 mui-row clear_fl">\
+                <li class=""><em>卖⑤</em><b class="red">'+ res.data.offer_grp[12] +'</b><i>'+ (res.data.offer_grp[13] / 100)+'</i></li>\
+                <li class=""><em>卖④</em><b class="red">'+ res.data.offer_grp[9] +'</b><i>'+ (res.data.offer_grp[10] / 100) +'</i></li>\
+                <li class=""><em>卖③</em><b class="red">'+ res.data.offer_grp[6] +'</b><i>'+ (res.data.offer_grp[7] / 100) +'</i></li>\
+                <li class=""><em>卖②</em><b class="red">'+ res.data.offer_grp[3] +'</b><i>'+ (res.data.offer_grp[4] / 100) +'</i></li>\
+                <li class=""><em>卖①</em><b class="red">'+ res.data.offer_grp[0] +'</b><i>'+ (res.data.offer_grp[1] / 100) +'</i></li>\
+            </ul>\
+            <ul class="buy mui-col-xs-6 mui-row clear_fl">\
+                <li><em>买①</em><b class="red">'+ res.data.bid_grp[0] +'</b><i>'+ (res.data.bid_grp[1] / 100) +'</i></li>\
+                <li><em>买②</em><b class="red">'+ res.data.bid_grp[3] +'</b><i>'+ (res.data.bid_grp[4] / 100) +'</i></li>\
+                <li><em>买③</em><b class="red">'+ res.data.bid_grp[6] +'</b><i>'+ (res.data.bid_grp[7] / 100) +'</i></li>\
+                <li><em>买④</em><b class="red">'+ res.data.bid_grp[9] +'</b><i>'+ (res.data.bid_grp[10] / 100) +'</i></li>\
+                <li><em>买⑤</em><b class="red">'+ res.data.bid_grp[12] +'</b><i>'+ (res.data.bid_grp[13] / 100) +'</i></li>\
+            </ul>';
+
+            $("#stock-price").html(html);
+            
+        }else{
+            $alert(res.info);
         }
     });
 }
 $(function(){
     // 页面加载完成就加载分时图
-    initMin();
+    initAreaLine();
     /*** 没两秒请求数据， 更新页面 ****/
     freshInterval = setInterval(refreshTimeLine, 4000);
 });
@@ -596,6 +575,7 @@ function initKline( type ){
             if(res.state){ 
                 var _data = res.data;
                 lineData[type] = splieKNum(_data);
+                console.log( lineData[type] );
                 drawKchart( lineData[type] );
             }else{
                 $alert(res.info);
@@ -609,13 +589,13 @@ function splieKNum(rawData){
     var values = [];
     var volumes = [];
     for (var i = 0; i < rawData.length; i++) {
-        categoryData.push( rawData[i][0] );
-        values.push([rawData[i][1], rawData[i][2],  rawData[i][4], rawData[i][3], rawData[i][5], rawData[i][5]]);
+        categoryData.push( rawData[i].min_time );
+        values.push([rawData[i].open_px, rawData[i].close_px,  rawData[i].low_px, rawData[i].high_px, rawData[i].business_balance, rawData[i].business_amount]);
         var _count = "-";
         if(i != 0){
-            _count = rawData[i][5] / 10000;
+            _count = rawData[i].business_amount / 1000000;
         }
-        volumes.push([i, _count, rawData[i][1] > rawData[i][2] ? 1 : -1]);
+        volumes.push([i, _count, rawData[i].open_px > rawData[i].close_px ? 1 : -1]);
     }
 
     return {

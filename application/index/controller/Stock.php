@@ -134,9 +134,9 @@ class Stock extends Base
         $stock = $this->_logic->stockByCode($code);
         if($stock){
             while (true){
-                $quotation = $this->_logic->realTimeData($code);
-                if(isset($quotation[0]) && !empty($quotation[0])){
-                    $this->assign("quotation", $quotation[0]);
+                $quotation = $this->_logic->realTimeDataByTencent($code);
+                if(isset($quotation[$code]) && !empty($quotation[$code])){
+                    $this->assign("quotation", $quotation[$code]);
                     return view();
                     break;
                 }else{

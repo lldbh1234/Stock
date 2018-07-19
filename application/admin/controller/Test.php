@@ -7,11 +7,12 @@ use app\admin\model\UserGive;
 use app\admin\model\UserRecord;
 use app\admin\model\UserWithdraw;
 use app\common\libraries\api51;
-use app\common\libraries\apiHs;
+use app\common\libraries\apiYiyuan;
 use app\common\libraries\Sms;
 use app\common\payment\authRbPay;
 use app\common\payment\paymentLLpay;
 use app\common\quotation\sina;
+use app\common\quotation\tencent;
 use app\index\job\DeferJob;
 use app\index\job\RebateJob;
 use app\index\job\SellJob;
@@ -34,19 +35,11 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        $apiHs = new apiHs();
-        $res = $apiHs->auth();
+        $obj = new \app\index\logic\StockLogic();
+        $res = $obj->realTimeDataByTencent(["600753", "600000"]);
         dump($res);
-
-        die();
-//        $api51 = new api51();
-//        $aa1 = $api51->trend("600000.SH", "", "");
-//        dump($aa1);
-//        echo "<br />";
-        $apiYiyuan = new apiHs();
-        $aa = $apiYiyuan->trend("600000");
-        dump($aa);
-        die();
+        exit;
+        /*
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
         for($i = 1; $i <= 50; $i++){
@@ -66,9 +59,8 @@ class Test extends Controller
                 $give = $_logic->giveMoney($user_id, 1000000, "虚拟用户赠金");
                 dump($give);
             }
-        }
-
-        exit();
+        }*/
+        //exit();
         $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
