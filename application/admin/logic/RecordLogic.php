@@ -99,6 +99,10 @@ class RecordLogic
                 $where['stock_user_recharge.create_at'] = ["ELT", $_end];
             }
         }
+        // 充值通道
+        if(isset($filter['type']) && !empty($filter['type'])){
+            $hasWhere["stock_user_recharge.type"] = trim($filter['type']);
+        }
         $pageSize = $pageSize ? : config("page_size");
         $totalAmount = UserRecharge::hasWhere("belongsToUser", $hasWhere)->where($where)->sum("amount");
         $totalActual = UserRecharge::hasWhere("belongsToUser", $hasWhere)->where($where)->sum("actual");

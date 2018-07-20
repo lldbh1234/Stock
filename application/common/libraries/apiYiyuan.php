@@ -9,8 +9,9 @@ class apiYiyuan
     const APPID = "69788";
     const APPSECRET = "cd3f3976b5b4435882be37c81b043c07";
 
-    public function realtime($code, $field = null){
-
+    public function realtime($code_, $field = null){
+        $code = explode('.', $code_);
+        $code = $code[0];
         $paramArr = [
             'showapi_appid'         => self::APPID,
             'showapi_timestamp'     => date("YmdHis"),
@@ -47,15 +48,16 @@ class apiYiyuan
             "business_amount_out",
             "total_shares",
         ];
+
         foreach($result['showapi_res_body']['list'] as $item)
         {
-            $response['data']['snapshot'][$code] = [
-                strtotime($item['time']), 100, $item['code'],
+            $response['data']['snapshot'][$item['code'].".".strtoupper($item['market'])] = [
+                strtotime($item['time']), 100, $item['code'].".".strtoupper($item['market']),
                 $item['name'], strtotime($item['time']), $item['openPrice'],
                 $item['todayMax'], $item['todayMin'], $item['nowPrice'],
                 $item['closePrice'], $item['tradeNum'], $item['tradeAmount'],
-                'offer_grp' => $item['sell1_m'].",".$item['sell1_n'].",".$item['sell2_m'].",".$item['sell2_n'].",".$item['sell3_m'].",".$item['sell3_n'].",".$item['sell4_m'].",".$item['sell4_n'].",".$item['sell5_m'].",".$item['sell5_n'],
-                'bid_grp' => $item['buy1_m'].",".$item['buy1_n'].",".$item['buy2_m'].",".$item['buy2_n'].",".$item['buy3_m'].",".$item['buy3_n'].",".$item['buy4_m'].",".$item['buy4_n'].",".$item['buy5_m'].",".$item['buy5_n'],
+                $item['sell1_m'].",".$item['sell1_n'].",0, ".$item['sell2_m'].",".$item['sell2_n'].",0,".$item['sell3_m'].",".$item['sell3_n'].",0,".$item['sell4_m'].",".$item['sell4_n'].",0, ".$item['sell5_m'].",".$item['sell5_n'].", 0 ",
+                $item['buy1_m'].",".$item['buy1_n'].",0, ".$item['buy2_m'].", ".$item['buy2_n'].",0,".$item['buy3_m'].",".$item['buy3_n'].",0,".$item['buy4_m'].",".$item['buy4_n'].",0,".$item['buy5_m'].",".$item['buy5_n'].", 0 ",
                 $item['diff_money'], $item['diff_rate'], $item['circulation_value'], $item['pe'],
                 $item['swing'], $item['diff_rate'], $item['circulation_value'], $item['pe'],
                 0, 0, $item['totalcapital'],
@@ -64,8 +66,10 @@ class apiYiyuan
         }
         return $response;
     }
-    public function kline($code, $period = 6, $count = 50, $type = 'offset')
+    public function kline($code_, $period = 6, $count = 50, $type = 'offset')
     {
+        $code = explode('.', $code_);
+        $code = $code[0];
         switch ($period)
         {
             case 6:
@@ -81,13 +85,14 @@ class apiYiyuan
                 $type = "day";
                 break;
         }
+        dump(111);die();
         $paramArr = [
             'showapi_appid'         => self::APPID,
             "showapi_sign_method"   => "md5",
             "showapi_res_gzip"      => "0",
             "code"                  => $code,
             "time"                  => $type,//5 = 5分k线(默认) 30 = 30分k线 60 = 60分k线 day = 日k线 week = 周k线 month = 月k线
-            "beginDay"              => strtotime("-{$count} day", date("Ymd")),//开始时间，格式为yyyyMMdd，如果不写则默认是 当天。结束时间永远是当前时间
+            "beginDay"              => date("Y-m-d", strtotime("-{$count} day")),//开始时间，格式为yyyyMMdd，如果不写则默认是 当天。结束时间永远是当前时间
             "type"                  => "bfq",//复权方式，支持两种方式不复权和前复权。bfq =不复权(默认方式) qfq =前复权
         ];
 
@@ -95,6 +100,7 @@ class apiYiyuan
         $req = self::response($paramArr, $apiUrl);
         $_result = json_decode($req, true);
         $result = $_result['showapi_res_body']['dataList'];
+
         $result = array_slice($result, count($result)-60,60,false);
 
         $response['data']['candle']['fields'] = [
@@ -114,7 +120,7 @@ class apiYiyuan
         foreach($result as $item)
         {
             $response['data']['candle'][$code.".".strtoupper($_result['showapi_res_body']['market'])][] = [
-                strtotime(date("Hi"), $item['time']), $item['open'], $item['max'], $item['min'], $item['close'],
+                $item['time'], $item['open'], $item['max'], $item['min'], $item['close'],
                 $item['volumn'], 0, 0, 0, 0, 0, 0,
             ];
 
@@ -123,14 +129,16 @@ class apiYiyuan
 
     }
 
-    public function trend($code, $crc = '', $min = '')
+    public function trend($code_, $crc = '', $min = '')
     {
+        $code = explode('.', $code_);
+        $code = $code[0];
         $paramArr = [
             'showapi_appid'         => self::APPID,
             'showapi_timestamp'     => date("YmdHis"),
             "showapi_sign_method"   => "md5",
             "showapi_res_gzip"      => "0",
-            'day'                   => 1,
+            'day'                   => 5,
             'code'                  => $code,
         ];
         $apiUrl = "http://route.showapi.com/131-49/?";
@@ -146,13 +154,16 @@ class apiYiyuan
             "business_balance",
         ];
         $response['data']['trend']['crc'] = [
-            $code.".".strtoupper($_result['showapi_res_body']['market']) => $result[0]['date'],
+            $code.".".strtoupper($_result['showapi_res_body']['market']) => intval($result[0]['date']),
         ];
-//        dump($result[0]['minuteList']);die();
         foreach($result[0]['minuteList'] as $item)
         {
             $response['data']['trend'][$code.".".strtoupper($_result['showapi_res_body']['market'])][] = [
-                strtotime($result[0]['date'].$item['time']), $item['nowPrice'], $item['avgPrice'], $item['volume'], $item['volume']*$item['avgPrice'],
+                intval($result[0]['date'].$item['time']),
+                floatval($item['nowPrice']),
+                floatval($item['avgPrice']),
+                intval($item['volume']),
+                0,
             ];
 
         }
