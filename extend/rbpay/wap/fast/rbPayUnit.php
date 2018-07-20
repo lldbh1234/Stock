@@ -133,7 +133,6 @@ class rbPayUnit
     }
     public function sendHttpRequest($params, $url) {
         $opts = self::getRequestParamString ( $params );
-        echo $opts;
         $ch = curl_init ();
         curl_setopt ( $ch, CURLOPT_URL, $url );
         curl_setopt ( $ch, CURLOPT_POST, 1 );
