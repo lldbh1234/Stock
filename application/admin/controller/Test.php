@@ -35,9 +35,6 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        $orders = (new \app\index\logic\OrderLogic())->allSellOrders();
-        dump(count($orders));
-        exit;
         /*
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
