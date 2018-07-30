@@ -517,7 +517,11 @@ class UserLogic
                     'update_at' => time(),
                 ];
                 $where = ["order_id" => $order["order_id"], "state" => 3];
-                Order::update($data, $where);
+                $col = Order::where($where)->update($data);
+                if($col <= 0){
+                    Db::rollback();
+                    return false;
+                }
                 if($data["profit"] > 0){
                     // 盈利
                     $bonus_rate = isset($order['belongs_to_mode']['point']) ? $order['belongs_to_mode']['point'] : 0;

@@ -35,6 +35,31 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        $order = (new UserLogic())->userOrderById(1, 143);
+        $order = reset($order);
+        $order["buy_px"] = 13.5;
+        Db::startTrans();
+        try{
+            $data = [
+                "sell_price" => $order["buy_px"], // 平仓价格为买1价
+                "sell_hand" => $order["hand"],
+                "sell_deposit" => $order["hand"] * $order["buy_px"],
+                "profit" => ($order["buy_px"] - $order["price"]) * $order["hand"],
+                "state" => 2,
+                'update_at' => time(),
+            ];
+            $where = ["order_id" => $order["order_id"], "state" => 3];
+            //$res = \app\index\model\Order::where($where)->update($data);
+            $res = \app\index\model\Order::update($data, $where);
+            Db::commit();
+            echo "11111";
+            dump($res->getChangedData());
+        } catch (\Exception $e){
+            Db::rollback();
+            dump($e->getMessage());
+            echo "22222";
+        }
+        exit;
         /*
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
