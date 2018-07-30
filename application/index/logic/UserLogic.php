@@ -509,7 +509,6 @@ class UserLogic
             Db::startTrans();
             try{
                 $data = [
-                    "order_id" => $order["order_id"],
                     "sell_price" => $order["buy_px"], // 平仓价格为买1价
                     "sell_hand" => $order["hand"],
                     "sell_deposit" => $order["hand"] * $order["buy_px"],
@@ -517,7 +516,8 @@ class UserLogic
                     "state" => 2,
                     'update_at' => time(),
                 ];
-                Order::update($data);
+                $where = ["order_id" => $order["order_id"], "state" => 3];
+                Order::update($data, $where);
                 if($data["profit"] > 0){
                     // 盈利
                     $bonus_rate = isset($order['belongs_to_mode']['point']) ? $order['belongs_to_mode']['point'] : 0;
