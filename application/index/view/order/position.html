@@ -734,7 +734,12 @@
         var loss = $(".lossCount").val();
         var _url = '{:url("index/Order/modifyPl")}',
             _oData = {id: id,profit : profit,loss:loss};
+        var mosifyLoad = layer.load(1, {
+          shade: [0.3,'#000'], //0.1透明度的白色背景
+          offset: 'auto'
+        });
         $ajaxCustom(_url, _oData, function(res){
+            layer.close(mosifyLoad);
             if(res.state){
                 $alert("修改成功");
                 var context = $(".position" + id);
