@@ -62,7 +62,6 @@ class Home extends Controller
             exit;
         }else{
             if(request()->isPost()){
-                return $this->fail("系统暂停注册！");
                 $validate = \think\Loader::validate('User');
                 if(!$validate->scene('register')->check(input("post."))){
                     return $this->fail($validate->getError());
