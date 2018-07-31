@@ -186,7 +186,7 @@ class OrderLogic
     public function positionTotalDeposit($userId)
     {
         $where = ["user_id" => $userId, "state" => 3];
-        return Order::where($where)->sum("original_deposit");
+        return Order::where($where)->sum("deposit");
     }
 
     // 所有最牛达人
