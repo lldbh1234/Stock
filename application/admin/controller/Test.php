@@ -33,10 +33,12 @@ class Test extends Controller
         parent::__construct($request);
     }
 
-    public function test($order_id = null)
+    public function test($user_id = null)
     {
-        $user = (new UserLogic())->userById(392);
+        $user = (new UserLogic())->userById($user_id);
         $totalDeposit = (new \app\index\logic\OrderLogic())->positionTotalDeposit($user['user_id']);
+        dump($totalDeposit);
+        dump($user);
         if($totalDeposit == $user['blocked_account']){
             echo "sssssss";
         }else{
