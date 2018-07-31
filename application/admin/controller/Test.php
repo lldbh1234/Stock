@@ -33,43 +33,8 @@ class Test extends Controller
         parent::__construct($request);
     }
 
-    public function test($user_id = null)
+    public function test($order_id = null)
     {
-        $user = (new UserLogic())->userById($user_id);
-        $totalDeposit = (new \app\index\logic\OrderLogic())->positionTotalDeposit($user['user_id']);
-        dump($totalDeposit);
-        dump($user);
-        if($totalDeposit == $user['blocked_account']){
-            echo "sssssss";
-        }else{
-            echo "11111111111";
-        }
-        exit;
-        $order = (new UserLogic())->userOrderById(1, 143);
-        $order = reset($order);
-        $order["buy_px"] = 13.5;
-        Db::startTrans();
-        try{
-            $data = [
-                "sell_price" => $order["buy_px"], // 平仓价格为买1价
-                "sell_hand" => $order["hand"],
-                "sell_deposit" => $order["hand"] * $order["buy_px"],
-                "profit" => ($order["buy_px"] - $order["price"]) * $order["hand"],
-                "state" => 2,
-                'update_at' => time(),
-            ];
-            $where = ["order_id" => $order["order_id"], "state" => 3];
-            //$res = \app\index\model\Order::where($where)->update($data);
-            $res = \app\index\model\Order::update($data, $where);
-            Db::commit();
-            echo "11111";
-            dump($res->getChangedData());
-        } catch (\Exception $e){
-            Db::rollback();
-            dump($e->getMessage());
-            echo "22222";
-        }
-        exit;
         /*
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
