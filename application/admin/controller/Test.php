@@ -35,6 +35,14 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
+        $user = (new UserLogic())->userById(392);
+        $totalDeposit = (new OrderLogic())->positionTotalDeposit($user['user_id']);
+        if($totalDeposit == $user['blocked_account']){
+            echo "sssssss";
+        }else{
+            echo "11111111111";
+        }
+        exit;
         $order = (new UserLogic())->userOrderById(1, 143);
         $order = reset($order);
         $order["buy_px"] = 13.5;
