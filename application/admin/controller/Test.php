@@ -36,7 +36,7 @@ class Test extends Controller
     public function test($order_id = null)
     {
         $user = (new UserLogic())->userById(392);
-        $totalDeposit = (new OrderLogic())->positionTotalDeposit($user['user_id']);
+        $totalDeposit = (new \app\index\logic\OrderLogic())->positionTotalDeposit($user['user_id']);
         if($totalDeposit == $user['blocked_account']){
             echo "sssssss";
         }else{
