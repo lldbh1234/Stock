@@ -182,6 +182,13 @@ class OrderLogic
         return $_lists ? collection($_lists)->toArray() : [];
     }
 
+    // 用户持仓订单保证金总额
+    public function positionTotalDeposit($userId)
+    {
+        $where = ["user_id" => $userId, "state" => 3];
+        return Order::where($where)->sum("original_deposit");
+    }
+
     // 所有最牛达人
     public function allYieldOrders($filter = [], $limit = 5)
     {
