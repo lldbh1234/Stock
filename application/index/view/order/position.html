@@ -691,14 +691,20 @@
             ,yes: function(index, layero){
                 var _url = '{:url("index/Order/selling")}',
                     _oData = {id: id};
+                var abc = layer.load(1, {
+                  shade: [0.3,'#000'], //0.1透明度的白色背景
+                  offset: 'auto'
+                });
                 $ajaxCustom(_url, _oData, function(res){
                     if(res.state){ 
                         context.remove();
                         $alert("平仓成功");
                         layer.close(index);
+                        layer.close(abc);
                     }else{
                         $alert(res.info);
                         layer.close(index);
+                        layer.close(abc);
                     }
                 });
             }
