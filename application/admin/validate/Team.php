@@ -36,7 +36,8 @@ class Team extends Validate
         'sign_name' => 'max:64',
         'sms_username' => 'alphaNum|max:64',
         'sms_password' => 'alphaNum|max:64',
-        'money'     => 'require|float|gt:0',
+        //'money'     => 'require|float|gt:0',
+        'money'     => 'require|number',
         'remark'    => 'max:255'
     ];
 
@@ -94,6 +95,7 @@ class Team extends Validate
         'sms_password.max'  => '短信密码最大64个字符！',
         'money.require'     => '请输入赠送金额！',
         'money.float'       => '赠送金额为数字！',
+        'money.number'      => '赠送金额为数字！',
         'money.gt'          => '赠送金额必须大于0！',
         'remark.max'        => '备注最大255个字符！',
     ];

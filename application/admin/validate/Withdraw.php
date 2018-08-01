@@ -55,7 +55,7 @@ class Withdraw extends Validate
 
     protected function checkMoney($value)
     {
-        $_logic = new AdminLogic();
+        /*$_logic = new AdminLogic();
         $adminId = isLogin();
         $todayCount = $_logic->proxyTodayWithdrawCount($adminId);
         if($todayCount <= 0){
@@ -63,6 +63,15 @@ class Withdraw extends Validate
             return $admin['total_fee'] >= $value;
         }else{
             return "您已到达今日提现次数上限，请明日在试！";
+        }*/
+        $_logic = new AdminLogic();
+        $adminId = isLogin();
+        $todayCount = $_logic->proxyTodayWithdrawAmount($adminId);
+        if($todayCount + $value <= 500000){
+            $admin = $_logic->adminById($adminId);
+            return $admin['total_fee'] >= $value;
+        }else{
+            return "您已超出每日提现上限50万，请明日在试！";
         }
     }
 

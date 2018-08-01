@@ -2,6 +2,7 @@
 namespace app\index\validate;
 
 use app\index\logic\BankLogic;
+use app\index\logic\OrderLogic;
 use app\index\logic\SmsLogic;
 use app\index\logic\UserLogic;
 use think\Validate;
@@ -33,12 +34,12 @@ class Withdraw extends Validate
 
     public function checkDateTime($value)
     {
-        if(date('w') == 0){
+        /*if(date('w') == 0){
             return false;
         }
         if(date('w') == 6){
             return false;
-        }
+        }*/
         if(date('G') < 9){
             return false;
         }
@@ -71,8 +72,13 @@ class Withdraw extends Validate
 
     protected function checkMoney($value)
     {
-        $account = uInfo()['account'];
-        return $account >= $value;
+        $user = (new UserLogic())->userById(isLogin());
+        $totalDeposit = (new OrderLogic())->positionTotalDeposit($user['user_id']);
+        if($totalDeposit == $user['blocked_account']){
+            return $user['account'] >= $value;
+        }else{
+            return "账号异常，请联系管理员！";
+        }
     }
 
     protected function checkCard($value)

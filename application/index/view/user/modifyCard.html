@@ -182,9 +182,15 @@
         });
     });
 
+    var flag = false; // 是否已经提交
     $("#submitBtn").click(function () {
+    	if( flag ){
+    		$alert("请求已提交，请稍等！");
+    		return  false;
+    	}
         var _url = "{:url('index/User/modifyCard')}",
             _oData = $("form").serialize();
+        flag = true;
         $ajaxCustom(_url, _oData, function(res){
             if(res.state){ // 登录成功
                 $alert("银行卡绑定成功！");
@@ -202,6 +208,7 @@
                 }, 1000);
             }else{
                 $alert(res.info);
+                flag = false;
             }
         });
     });

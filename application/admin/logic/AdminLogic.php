@@ -321,6 +321,19 @@ class AdminLogic
         return AdminWithdraw::where($where)->count();
     }
 
+    // 代理商今日提现金额
+    public function proxyTodayWithdrawAmount($adminId)
+    {
+        $todayBegin = strtotime(date("Y-m-d 00:00:00"));
+        $todayEnd = strtotime(date("Y-m-d 23:59:59"));
+        $where = [
+            "admin_id"  => $adminId,
+            "state"     => ["NEQ", -1],
+            "create_at" => ["BETWEEN", [$todayBegin, $todayEnd]]
+        ];
+        return AdminWithdraw::where($where)->sum("amount");
+    }
+
     public function pageAdminWithdraws($adminId, $filter = [], $pageSize = null)
     {
         $where = ["admin_id" => $adminId];
