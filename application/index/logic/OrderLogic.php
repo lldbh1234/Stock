@@ -182,10 +182,10 @@ class OrderLogic
         return $_lists ? collection($_lists)->toArray() : [];
     }
 
-    // 用户持仓订单保证金总额
+    // 用户未平仓订单占用保证金总额
     public function positionTotalDeposit($userId)
     {
-        $where = ["user_id" => $userId, "state" => 3];
+        $where = ["user_id" => $userId, "state" => ["IN", [3, 6]]];
         return Order::where($where)->sum("deposit");
     }
 
