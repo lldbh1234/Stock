@@ -261,7 +261,7 @@ class User extends Base
                         "bank" => $user['has_one_card']['bank_name'],
                         "card" => $user['has_one_card']['bank_card'],
                         "name" => $user['has_one_card']['bank_user'],
-                        "addr" => $user['has_one_card']['bank_address'],
+                        //"addr" => $user['has_one_card']['bank_address'],
                     ];
                     $withdrawId = $this->_logic->createUserWithdraw($this->user_id, $money, $remark);
                     if($withdrawId > 0){
