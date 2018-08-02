@@ -170,7 +170,7 @@ class Notify extends Controller
     {
         //计算得出通知验证结果
         $payment = new authRbPay();
-        @file_put_contents("./pay.log", json_encode($_REQUEST).PHP_EOL, FILE_APPEND);
+//        @file_put_contents("./pay.log", json_encode($_REQUEST).PHP_EOL, FILE_APPEND);
         $response = $payment->notify($_REQUEST);
         if($response)
         {
@@ -180,13 +180,15 @@ class Notify extends Controller
                 // 有该笔充值订单
                 $res = $_rechargeLogic->rechargeComplete($response['order_no'], $order['amount'], $order['user_id'], $response['trade_no']);
                 if(!$res){
-                    @file_put_contents("./pay.log", json_decode($response).PHP_EOL, FILE_APPEND);
+                    $response['date123'] = date('Y-m-d H:i:s');
+                    @file_put_contents("./pay_rongbao.log", json_decode($response).PHP_EOL, FILE_APPEND);
                 }else{
                     die("success");
                 }
             }
         } else {
-            @file_put_contents("./pay.log", json_decode($response).PHP_EOL, FILE_APPEND);
+            $response['date123'] = date('Y-m-d H:i:s');
+            @file_put_contents("./pay_rongbao.log", json_decode($response).PHP_EOL, FILE_APPEND);
             die("fail");
         }
     }
