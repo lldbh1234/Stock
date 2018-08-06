@@ -327,7 +327,7 @@ class User extends Base
 
         if($id <= 0) return $this->redirect('index/User/noticeLists');
         $userNoticeLogic = new UserNoticeLogic();
-        $content = $userNoticeLogic->getContentById($this->user_id);
+        $content = $userNoticeLogic->getContentById($id);
         $userNoticeLogic->updateBy(['id' => $id, 'read' => 2]);
         $this->assign('content', $content);
         return view();
