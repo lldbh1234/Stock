@@ -135,47 +135,87 @@
     {/if}
 
     {if condition="in_array('admin/User/withdraw', $Think.session.ACCESS_LIST)"}
-    function admin_success(_id, state)
-    {
-        layer.confirm('是否确认本次出金?', {icon: 1, title:'提示'}, function(index){
-            parent.layer.close(index);
-            var _oData = {id : _id, state:state},
-                _url = '{:url("admin/User/withdraw")}',
-                _loading = parent.layer.load(1),
-                _func = function (_resp) {
-                    parent.layer.close(_loading);
-                    if (!_resp.state) {
-                        layer.msg(_resp.info);
-                    } else {
-                        layer.msg('操作成功！', {time: 500}, function(){
-                            window.location.reload();
-                        });
-                    }
-                };
-            _ajaxPost(_url, _oData, _func);
-        });
+        function admin_success(_id, state)
+        {
+            layer.prompt({
+                title: '请输入支付秘钥',
+                formType: 0,
+            }, function(_number, _prompt){
+                layer.close(_prompt);
+                var _oData = {id : _id, state:state, password : _number},
+                    _url = '{:url("admin/User/withdraw")}',
+                    _loading = parent.layer.load(1),
+                    _func = function (_resp) {
+                        parent.layer.close(_loading);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('操作成功！', {time: 500}, function(){
+                                window.location.reload();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
+        }
+//        layer.confirm('是否确认本次出金?', {icon: 1, title:'提示'}, function(index){
+//            parent.layer.close(index);
+//            var _oData = {id : _id, state:state},
+//                _url = '{:url("admin/User/withdraw")}',
+//                _loading = parent.layer.load(1),
+//                _func = function (_resp) {
+//                    parent.layer.close(_loading);
+//                    if (!_resp.state) {
+//                        layer.msg(_resp.info);
+//                    } else {
+//                        layer.msg('操作成功！', {time: 500}, function(){
+//                            window.location.reload();
+//                        });
+//                    }
+//                };
+//            _ajaxPost(_url, _oData, _func);
+//        });
 
-    }
-    function admin_refuse(_id, state)
-    {
-        layer.confirm('是否拒绝本次出金?', {icon: 5, title:'提示'}, function(index){
-            parent.layer.close(index);
-            var _oData = {id : _id, state:state},
-                _url = '{:url("admin/User/withdraw")}',
-                _loading = parent.layer.load(1),
-                _func = function (_resp) {
-                    parent.layer.close(_loading);
-                    if (!_resp.state) {
-                        layer.msg(_resp.info);
-                    } else {
-                        layer.msg('操作成功！', {time: 500}, function(){
-                            window.location.reload();
-                        });
-                    }
-                };
-            _ajaxPost(_url, _oData, _func);
-        });
-    }
+        function admin_refuse(_id, state)
+        {
+            layer.prompt({
+                title: '请输入支付秘钥',
+                formType: 0,
+            }, function(_number, _prompt){
+                layer.close(_prompt);
+                var _oData = {id : _id, state:state, password : _number},
+                    _url = '{:url("admin/User/withdraw")}',
+                    _loading = parent.layer.load(1),
+                    _func = function (_resp) {
+                        parent.layer.close(_loading);
+                        if (!_resp.state) {
+                            layer.msg(_resp.info);
+                        } else {
+                            layer.msg('操作成功！', {time: 500}, function(){
+                                window.location.reload();
+                            });
+                        }
+                    };
+                _ajaxPost(_url, _oData, _func);
+            });
+        }
+//        layer.confirm('是否拒绝本次出金?', {icon: 5, title:'提示'}, function(index){
+//            parent.layer.close(index);
+//            var _oData = {id : _id, state:state},
+//                _url = '{:url("admin/User/withdraw")}',
+//                _loading = parent.layer.load(1),
+//                _func = function (_resp) {
+//                    parent.layer.close(_loading);
+//                    if (!_resp.state) {
+//                        layer.msg(_resp.info);
+//                    } else {
+//                        layer.msg('操作成功！', {time: 500}, function(){
+//                            window.location.reload();
+//                        });
+//                    }
+//                };
+//            _ajaxPost(_url, _oData, _func);
+//        });
     {/if}
 
     $(function () {

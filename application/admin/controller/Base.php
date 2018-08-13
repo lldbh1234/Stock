@@ -18,9 +18,7 @@ class Base extends Controller
         parent::__construct($request);
         $this->adminId = isLogin();
 
-        $exceptAction = ['verifySMS', ];
-
-        if(!$this->adminId && !in_array(request()->action(), $exceptAction)){// 还没登录 跳转到登录页面
+        if(!$this->adminId){// 还没登录 跳转到登录页面
             return $this->redirect(url("admin/Home/login"));
             exit;
         }

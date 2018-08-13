@@ -6,7 +6,7 @@ use think\Validate;
 class Login extends Validate
 {
     protected $rule = [
-        'username'  =>  'require|alphaNum',
+        'username'  =>  'require',
         'password'	=>  'require',
         'code'	    =>	'require|verify_code',
     ];

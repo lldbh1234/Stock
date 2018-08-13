@@ -1,6 +1,8 @@
 <?php
 namespace app\admin\controller;
 
+use app\admin\logic\AdminLogic;
+use app\admin\logic\SmsLogic;
 use think\Request;
 use think\Controller;
 use app\admin\logic\LoginLogic;
@@ -53,6 +55,53 @@ class Home extends Controller
             return $this->redirect(url('admin/Home/login'));
         } else {
             return $this->redirect(url('admin/Home/login'));
+        }
+    }
+    public function verifySMS()
+    {
+        if(request()->isPost()){
+            $validate = \think\Loader::validate('Login');
+            if(!$validate->scene('verify_code')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $username = input("post.username/s");
+                $act = 'admin_login';
+                $admin = (new AdminLogic())->adminExistByUsername($username);
+                $admin_login_num = 1;
+                $ip = str_replace('.', '_', isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null);
+                $sessKey = "ip_{$ip}_{$admin['mobile']}_{$act}";
+                if(!$admin)
+                {
+                    return $this->fail("管理员账号信息错误或手机号未绑定！！！");
+                }else{
+                    if((new AdminLogic())->isProxy($admin['role']))//代理无需短信验证
+                    {
+                        session('admin_login_code', 9527);
+                        session($sessKey, time()+60);
+                        return $this->ok();
+                    }
+                }
+                if (session($sessKey) && session($sessKey) >= time()) {
+                    $admin_login_num +=1;
+                    session($username.'login_num', $admin_login_num);
+                    return $this->fail("短信已发送请在60秒后再次点击发送！");
+                }
+                if(session($username.'login_num') >= 5)//限制错误次数不能超过5次
+                {
+                    (new AdminLogic())->adminUpdate(['username' => $username, 'status' => 1]);
+                    return $this->fail("登陆次数太多,账户异常,请联系管理员解绑！");
+                }
+                list($res, $code) = (new SmsLogic())->adminLogin($admin['mobile'], $ip, $act);
+                if($res){
+                    session('admin_login_code', $code);
+                    session($sessKey, time()+60);
+                    return $this->ok();
+                }else{
+                    return $this->fail("发送失败{$code}！");
+                }
+            }
+        }else{
+            return $this->fail("非法操作！");
         }
     }
 }
