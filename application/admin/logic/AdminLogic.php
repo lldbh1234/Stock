@@ -233,7 +233,7 @@ class AdminLogic
     {
         if(!$username) return false;
         $admin = Admin::where(['username' => $username])->find();
-        return $admin ? $admin['mobile'] : false;
+        return $admin ? $admin->toArray() : false;
     }
 
     public function adminIncRole($id)
