@@ -9,6 +9,7 @@ class AdminWithDraw extends Validate
     protected $rule = [
         'id'        => 'require|canWithDraw',
         'state'     => 'require|in:-1,1',
+        'password'  => 'require|checkConfirm'
     ];
 
     protected $message = [
@@ -16,10 +17,11 @@ class AdminWithDraw extends Validate
         'id.canWithDraw'    => '系统提示：非法操作！',
         'state.require'     => '系统提示：非法操作！',
         'state.in'          => '系统提示：非法操作！',
+        'password.require'  => '系统提示:请输入密钥!',
     ];
 
     protected $scene = [
-        'do' => ['id', 'state'],
+        'do' => ['id', 'state', 'password'],
     ];
 
     protected function canWithDraw($value)
@@ -29,5 +31,14 @@ class AdminWithDraw extends Validate
             return $withdraw['state']['value'] == 0;
         }
         return false;
+    }
+    public function checkConfirm($value)
+    {
+        if(spPassword($value) == config('withdraw_pwd'))
+        {
+            return true;
+        }
+        return '请输入正确的密钥';
+
     }
 }
