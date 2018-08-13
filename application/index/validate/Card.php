@@ -9,11 +9,11 @@ use think\Validate;
 class Card extends Validate
 {
     protected $rule = [
-        'bank_user' => "require|max:32",
+        'bank_user' => "require|max:32|chs",
         'bank_name' => 'require|checkBank',
         'bank_province' => 'require|checkProvince',
         'bank_city' => 'require|checkCity',
-        'bank_address' => 'max:128',
+        'bank_address' => 'max:128|chs',
         'bank_card' => ["require", "regex" => "/^(\d{16}|\d{18}|\d{19})$/i"],
         'id_card'   => 'require|checkIdCard',
         'bank_mobile' => ["require", "regex" => "/^[1][3,4,5,7,8,9][0-9]{9}$/i"],
@@ -23,6 +23,7 @@ class Card extends Validate
     protected $message = [
         'bank_user.require' => '持卡人姓名不能为空！',
         'bank_user.max'     => '持卡人姓名最大32个字符！',
+        'bank_user.chs'     => '持卡人姓名只能为汉字',
         'bank_name.require' => '请选择开户银行！',
         'bank_name.checkBank'   => '开户银行不存在！',
         'bank_province.require' => '请选择所在省份！',
@@ -30,6 +31,7 @@ class Card extends Validate
         'bank_city.require'     => '请选择所在城市！',
         'bank_city.checkCity'   => '所在城市选择错误！',
         'bank_address.max'      => '支行名称最大128个字符！',
+        'bank_address.chs'      => '支行名称只能为汉字',
         'bank_card.require'     => '请输入银行卡号！',
         'bank_card.regex'       => '银行卡号格式错误！',
         'id_card.require'       => '请输入身份证号！',
