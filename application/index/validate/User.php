@@ -10,8 +10,8 @@ class User extends Validate
 {
     protected $rule = [
         'oldPassword' => "require|checkOldPassword",
-        'username'  => 'require',
-        'nickname'  => 'require',
+        'username'  => 'require|chsAlphaNum',
+        'nickname'  => 'require|chsAlphaNum',
         'parent_id' => 'number|checkParentId',
         'orgCode'   => 'require|checkOrgCode',
         'mobile'    => 'require|regex:/^[1][3,4,5,6,7,8,9][0-9]{9}$/|checkMobile',
@@ -43,7 +43,9 @@ class User extends Validate
         'rePassword.confirm' => '俩次输入密码不一致！',
         'act.checkAct'      => '系统提示：非法操作！',
         'username.require'  => '用户名不能为空！',
+        'username.require' => '系统提示:用户名只能是汉字、字母和数字',
         'nickname.require' => '系统提示:昵称不能为空',
+        'nickname.chsAlphaNum' => '系统提示:昵称只能是汉字、字母和数字',
         'institution.require' => '请选择机构！',
         'institution.checkInstitution' => '机构不正确！',
         'newPassword.require'   => '新密码不能为空！',
