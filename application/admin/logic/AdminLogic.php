@@ -229,6 +229,12 @@ class AdminLogic
         $admin = Admin::find($id);
         return $admin ? $admin->toArray() : [];
     }
+    public function adminExistByUsername($username='')
+    {
+        if(!$username) return false;
+        $admin = Admin::where(['username' => $username])->find();
+        return $admin ? $admin['mobile'] : false;
+    }
 
     public function adminIncRole($id)
     {

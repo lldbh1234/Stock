@@ -20,6 +20,19 @@ class Sms
             return [false, $result[1]];
         }
     }
+    public function adminLogin($mobile, $code, $ip, $act = "admin_login")
+    {
+        $engine = new ChuanglanSMS();
+        $result = $engine->sendSMS($mobile, '【' . self::SING_NAME . '】您好，您的账户正用于管理后台登陆,验证码是' . $code,'登陆IP:'.$ip);
+        $result = $engine->execResult($result);
+        if (isset($result[1]) && $result[1] == 0) {
+            $sessKey = "{$mobile}_{$act}";
+            session($sessKey, $code);
+            return [true, $code];
+        } else {
+            return [false, $result[1]];
+        }
+    }
 
     // 止损短信提醒
     public function sendLoss($mobile, $vars)
