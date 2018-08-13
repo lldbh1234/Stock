@@ -314,6 +314,7 @@ class User extends Base
 
     public function withdrawDetail($id = null, $type = 1)
     {
+        return "系统维护暂停使用！";
         $withdraw = (new UserWithdrawLogic())->getWithdrawById($id);
         if($withdraw) {
             switch ($type) {
