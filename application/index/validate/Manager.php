@@ -9,7 +9,7 @@ class Manager extends Validate
 {
     protected $rule = [
         'mobile'    => 'require|regex:/^[1][3,4,5,7,8,9][0-9]{9}$/',
-        'realname'  => "require|max:32",
+        'realname'  => "require|max:32|chs",
         'coding'    => 'require|checkCoding',
         'code'      => 'require|checkCode|checkUserAmount',
     ];
@@ -19,6 +19,7 @@ class Manager extends Validate
         'mobile.regex'      => '手机号码格式错误！',
         'realname.require'  => '真实姓名不能为空！',
         'realname.max'      => '真实姓名最大16个字符！',
+        'realname.chs'      => '真实姓名只能为汉字',
         'coding.require'    => '机构编码不能为空！',
         'coding.checkCoding' => '机构编码不存在！',
         'code.require'      => '短信验证码不能为空！',
