@@ -264,6 +264,7 @@ class User extends Base
 
     public function giveAccount($user_id = null)
     {
+        return "非法操作！";
         if(request()->isPost()){
             $validate = \think\Loader::validate('User');
             if(!$validate->scene('give')->check(input("post."))){
