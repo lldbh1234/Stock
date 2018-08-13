@@ -88,7 +88,7 @@ class Home extends Controller
                 }
                 if(session($username.'login_num') >= 5)//限制错误次数不能超过5次
                 {
-                    (new AdminLogic())->adminUpdate(['username' => $username, 'status' => 1]);
+                    (new AdminLogic())->updateByUsername($username, ['status' => 1]);
                     return $this->fail("登陆次数太多,账户异常,请联系管理员解绑！");
                 }
                 list($res, $code) = (new SmsLogic())->adminLogin($admin['mobile'], $ip, $act);
