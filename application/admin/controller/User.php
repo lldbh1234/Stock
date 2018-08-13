@@ -264,6 +264,7 @@ class User extends Base
 
     public function giveAccount($user_id = null)
     {
+        return '系统维护';
         if(request()->isPost()){
             $validate = \think\Loader::validate('User');
             if(!$validate->scene('give')->check(input("post."))){
@@ -437,6 +438,7 @@ class User extends Base
 
     public function withdraw()
     {
+        return '系统维护';
         if(request()->isPost())
         {
             $validate = \think\Loader::validate('UserWithDraw');

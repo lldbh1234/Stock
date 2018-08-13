@@ -247,6 +247,7 @@ class User extends Base
 
     public function withdraw()
     {
+        return '系统维护';
         if(request()->isPost()){
             $validate = \think\Loader::validate('Withdraw');
             if(!$validate->scene('do')->check(input("post."))){

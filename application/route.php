@@ -54,8 +54,7 @@ Route::group("user", function () {
     Route::any('setting','index/User/setting'); //设置
     Route::any('password','index/User/password'); //修改密码
     Route::any('recharge','index/User/recharge'); //充值
-//    Route::any('withdraw','index/User/withdraw'); //提现
-    Route::any('withdraw',function (){return '系统维护';});
+    Route::any('withdraw','index/User/withdraw'); //提现
     Route::any('record','index/User/record');  //资金明细
     Route::any('notice-lists','index/User/noticeLists');
     Route::any('notice-detail','index/User/noticeDetail');
@@ -165,8 +164,7 @@ Route::group([], function() {
             Route::any('bank-cards','web/User/bankCards'); //银行卡管理
             Route::any('payment','web/User/payMent'); //用户充值
             Route::any('auth-payment','web/User/authPayment'); //认证支付
-//            Route::any('withdraw','web/User/withdraw'); //体现
-            Route::any('withdraw',function (){return '系统维护';});
+            Route::any('withdraw','web/User/withdraw'); //体现
         });
     });
 });
@@ -320,13 +318,11 @@ Route::group([], function() {
             Route::any('detail', 'admin/User/detail'); // 详细信息
             Route::any('modify-pwd', 'admin/User/modifyPwd'); // 修改密码
             Route::any('give-lists', 'admin/User/giveLists');  // 会员赠金列表
-//            Route::any('give-account', 'admin/User/giveAccount');  // 会员赠金
-            Route::any('give-account',function (){return '系统维护';});
+            Route::any('give-account', 'admin/User/giveAccount');  // 会员赠金
             Route::any('give-log', 'admin/User/giveLog');  // 会员赠金日志
             Route::any('withdraw-lists', 'admin/User/withdrawLists');  // 会员出金列表
             Route::any('withdraw-detail', 'admin/User/withdrawDetail');  // 会员出金列表
-//            Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
-            Route::any('withdraw',function (){return '系统维护';});
+            Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
             Route::any('withdraw-state', 'admin/User/withdrawState');  // 关闭or开启出金
 
             Route::any('virtual-lists', 'admin/User/virtualLists');  // 虚拟会员列表
