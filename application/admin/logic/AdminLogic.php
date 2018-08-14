@@ -371,6 +371,10 @@ class AdminLogic
     {
         return Admin::update($data);
     }
+    public function updateByUsername($username, $data)
+    {
+        return Admin::where('username', $username)->save($data);
+    }
 
     public function adminDelete($id)
     {
