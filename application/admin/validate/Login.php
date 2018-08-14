@@ -32,7 +32,8 @@ class Login extends Validate
             }else{
                 return '验证码错误！';
             }
+        }else{
+            return '请先获取验证码';
         }
-        return '验证码已过期，请重新获取！';
     }
 }
