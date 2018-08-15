@@ -17,6 +17,12 @@ class SmsLogic
         $code = randomString($length = 4, $num = true);
         return $this->smsLib->adminLogin($mobile, $code, $ip, $act);
     }
+    // 验证码短信
+    public function send($mobile, $act = "admin_get_k")
+    {
+        $code = randomString($length = 4, $num = true);
+        return $this->smsLib->send($mobile, $code, $act);
+    }
 
     // 校验验证码
     public function verify($mobile, $code, $act = "register")
