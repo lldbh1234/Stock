@@ -2,7 +2,8 @@
 return [
     'pwd_auth_key' => "yFjXp2Qxkf",
     'admin_auth_key' =>  'M_ADMIN_ID',	// 管理员认证SESSION标记
-    'withdraw_pwd' => '###14ca54c47becd83bb18333ad82574515',
+    'withdraw_pwd' => "###14ca54c47becd83bb18333ad82574515",
+    'give_pwd' => "###194cea017264d181d19ca03a7ad53d35",
 
     'withdraw_poundage' => 2, //用户提现手续费（元/笔）
     'proxy_withdraw_poundage' => 2,//代理商提现手续费（%/笔）

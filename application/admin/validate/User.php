@@ -18,7 +18,9 @@ class User extends Validate
         'parent_id' => 'is_manager',
         'admin_id'  => 'require|checkAdminId',
         'money'     => 'require|float|gt:0',
-        'remark'    => 'max:255'
+        'remark'    => 'max:255',
+//        'code'      =>  'require|number|checkCode',
+        'give_password' => 'require|checkConfirm',
     ];
 
     protected $message = [
@@ -40,6 +42,9 @@ class User extends Validate
         'money.float'       => '赠送金额为数字！',
         'money.gt'          => '赠送金额必须大于0！',
         'remark.max'        => '备注最大255个字符！',
+//        'code.require'      => '请输入短信验证码！',
+//        'code.number'       => '验证码格式错误！',
+        'give_password.require'  => '系统提示:请输入密钥!',
     ];
 
     protected $scene = [
@@ -54,9 +59,11 @@ class User extends Validate
             'password',
         ],
         'give' => [
+            'give_password',
             'user_id',
             'money' => 'require|float',
-            'remark'
+            'remark',
+//            'code'
         ],
         'create_virtual'  => ['mobile', 'password', 'rePassword', 'admin_id', 'state'],
         'modify_virtual'  => [
@@ -90,5 +97,22 @@ class User extends Validate
         $_adminLogic = new AdminLogic();
         $ring = $_adminLogic->adminById($value);
         return $ring && $ring['role'] == Admin::RING_ROLE_ID;
+    }
+    public function checkCode($value)
+    {
+        if(session('admin_give_code') == $value)
+        {
+            return true;
+        }
+        return '验证码错误！';
+    }
+    public function checkConfirm($value)
+    {
+        if(spPassword($value) == config('give_pwd'))
+        {
+            return true;
+        }
+        return '请输入正确的密钥';
+
     }
 }

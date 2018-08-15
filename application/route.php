@@ -187,6 +187,7 @@ Route::group([], function() {
         Route::any('login', 'admin/Home/login');
         Route::any('logout', 'admin/Home/logout');
         Route::post('verify_sms','admin/Home/verifySMS');
+        Route::post('give-account-sms','admin/Home/giveAccountSms');
 
         // 组织架构
         Route::group("team", function () {

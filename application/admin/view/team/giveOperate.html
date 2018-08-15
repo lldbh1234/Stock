@@ -5,7 +5,7 @@
 {block name="body"}
 <article class="page-container">
     <form class="form form-horizontal" id="form-admin-add">
-        <input type="hidden" value="{$proxy.admin_id}" name="id">
+        <input type="hidden" value="{$proxy.admin_id}" name="id" id="proxy_id">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">代理商登录名：</label>
             <span class="formControls col-xs-8 col-sm-7" style="margin-top: 3px;">{$proxy.username}</span>
@@ -17,15 +17,25 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">赠金金额：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <input type="text" class="input-text" value="" placeholder="" name="money">
+                <input type="text" class="input-text" value="" placeholder="" name="money" id="money">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">备注：</label>
             <div class="formControls col-xs-8 col-sm-7">
-                <textarea name="remark" cols="" rows="" class="textarea" placeholder="" ></textarea>
+                <textarea name="remark" cols="" rows="" class="textarea" placeholder="" id="remark"></textarea>
             </div>
         </div>
+        <!--<div class="row cl">-->
+            <!--<label class="form-label col-xs-4 col-sm-3">验证码：</label>-->
+            <!--<div class="formControls col-xs-8 col-sm-7">-->
+                <!--<input class="input-text" name="code" type="text" placeholder="验证码" style="width:185px;float: left;">-->
+                <!--<div style="float: left; width: 44%;text-align: center">-->
+                    <!--<div class="get-btn f-left" style="margin-left: 20px;padding: 5px 10px;border-radius: 4px;background-color: silver;" id="verifyCodeBtn">获取验证码</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <input class="btn btn-primary radius" type="button" id="bth-submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
@@ -47,25 +57,85 @@ $(function(){
         radioClass: 'iradio-blue',
         increaseArea: '20%'
     });
-
     $("#bth-submit").click(function(){
-        var _oData = $("form").serialize(),
-            _url = '{:url("admin/Team/giveOperate")}',
-            _func = function (_resp) {
-                if (!_resp.state) {
-                    layer.msg(_resp.info);
-                } else {
-                    layer.msg('操作成功！', {time: 500}, function(){
-                        if(_resp.data && _resp.data.url){
-                            parent.window.location.href = _resp.data.url;
-                        }else{
+        layer.prompt({
+            title: '请输入支付秘钥',
+            formType: 0,
+        }, function(_number, _prompt){
+            layer.close(_prompt);
+            var proxy_id = $("#proxy_id").val();
+            var money = $("#money").val();
+            var remark = $("#remark").val();
+            var _oData = {id : proxy_id, money:money, remark:remark, give_password : _number},
+                _url = '{:url("admin/Team/giveOperate")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
                             parent.window.location.reload();
-                        }
-                    });
-                }
-            };
-        _ajaxPost(_url, _oData, _func);
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+
+        });
     });
+
+//    $("#bth-submit").click(function(){
+//        var _oData = $("form").serialize(),
+//            _url = '{:url("admin/Team/giveOperate")}',
+//            _func = function (_resp) {
+//                if (!_resp.state) {
+//                    layer.msg(_resp.info);
+//                } else {
+//                    layer.msg('操作成功！', {time: 500}, function(){
+//                        if(_resp.data && _resp.data.url){
+//                            parent.window.location.href = _resp.data.url;
+//                        }else{
+//                            parent.window.location.reload();
+//                        }
+//                    });
+//                }
+//            };
+//        _ajaxPost(_url, _oData, _func);
+//    });
 });
+//$("#verifyCodeBtn").click(function(){
+//    if( $(this).hasClass("disabled") ){
+//        return false;
+//    }
+//    var that = this;
+//    var _oData = $("form").serialize(),
+//        _url = '{:url("admin/Home/giveAccountSms")}',
+//        _func = function (_resp) {
+//            if (!_resp.state) {
+//                layer.msg(_resp.info);
+//                return false;
+//            } else {
+//                layer.msg('短信已发送！', {time: 3000}, function(){
+//
+//                    //倒计时
+//                    var time = 60;
+//                    $(that).addClass("disabled").html( time + " s");;
+//                    var timer = setInterval(function(){
+//                        if( time == 0 ){
+//                            $(that).html("获取验证码").removeClass("disabled");
+//                            clearInterval( timer );
+//                            timer = null;
+//                            return false;
+//                        }
+//                        time --;
+//                        $(that).html( time + " s");
+//                    },1000);
+//
+//                });
+//                return false;
+//            }
+//        };
+//    _ajaxPost(_url, _oData, _func);
+//});
 </script>
 {/block}
