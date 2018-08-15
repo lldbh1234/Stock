@@ -5,7 +5,7 @@
 {block name="body"}
 <article class="page-container">
     <form class="form form-horizontal" id="form-admin-add">
-        <input type="hidden" value="{$proxy.admin_id}" name="id" id="proxy_id">
+        <input type="hidden" value="{$proxy.admin_id}" name="id" id="id">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">代理商登录名：</label>
             <span class="formControls col-xs-8 col-sm-7" style="margin-top: 3px;">{$proxy.username}</span>
@@ -63,10 +63,10 @@ $(function(){
             formType: 0,
         }, function(_number, _prompt){
             layer.close(_prompt);
-            var proxy_id = $("#proxy_id").val();
+            var id = $("#id").val();
             var money = $("#money").val();
             var remark = $("#remark").val();
-            var _oData = {id : proxy_id, money:money, remark:remark, give_password : _number},
+            var _oData = {id : id, money:money, remark:remark, give_password : _number},
                 _url = '{:url("admin/Team/giveOperate")}',
                 _loading = parent.layer.load(1),
                 _func = function (_resp) {
