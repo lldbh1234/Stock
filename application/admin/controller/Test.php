@@ -35,7 +35,6 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        echo spPassword('zj87651234');
         /*
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
