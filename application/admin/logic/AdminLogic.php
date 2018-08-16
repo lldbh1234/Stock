@@ -398,7 +398,8 @@ class AdminLogic
     {
         $managerAdminIds = [
             Admin::ADMINISTRATOR_ID,
-            Admin::ROOT_ID
+            Admin::ROOT_ID,
+            1273, //root3
         ];
         return in_array($adminId, $managerAdminIds);
     }
