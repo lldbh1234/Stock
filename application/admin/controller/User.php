@@ -43,7 +43,9 @@ class User extends Base
             if(!$validate->scene('modify')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
-                if($this->userLogic->update(input("post."))){
+                $data = input("post.");
+                unset($data['account']);
+                if($this->userLogic->update($data)){
                     return $this->ok();
                 } else {
                     return $this->fail("修改失败！");
