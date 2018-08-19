@@ -43,9 +43,9 @@ class Withdraw extends Validate
         if(date('G') < 9){
             return false;
         }
-        /*if(date('G') > 23){
+        if(date('G') > 17){
             return false;
-        }*/
+        }
         if(date('G') == 17 && date('i') > 30){
             return false;
         }
