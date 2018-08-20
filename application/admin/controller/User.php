@@ -298,6 +298,84 @@ class User extends Base
         $this->assign("search", input(""));
         return view();
     }
+    public function exportUserGiveLog()
+    {
+        $param = input("");
+        ini_set("memory_limit", "10000M");
+        set_time_limit(0);
+        header("Content-type:application/vnd.ms-excel;charset=utf-8");
+        require ROOT_PATH.'vendor/PHPExcel/Classes/PHPExcel.php';
+        //获取数据
+        $title = '会员赠金列表';
+
+        $data = (new UserGiveLogic())->userGiveLists($param);
+
+        if($data && isset($data['lists']))
+        {
+            $data = $data['lists'];
+        }else{
+            return $this->error('暂时没有导出的数据');
+        }
+
+        $n = 3;
+        //加载PHPExcel插件
+        $Excel = new \PHPExcel();
+        $Excel->setActiveSheetIndex(0);
+        //编辑表格    标题
+        $Excel->setActiveSheetIndex(0)->mergeCells('A1:G1');
+        $Excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $Excel->setActiveSheetIndex(0)->getStyle('A1')->getFont()->setSize(20);
+        $Excel->setActiveSheetIndex(0)->getStyle('A1')->getFont()->setName('黑体');
+        $Excel->getActiveSheet()->setCellValue('A1', $title);
+        //表头
+        $Excel->getActiveSheet()->getStyle('F')->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+        $Excel->setActiveSheetIndex(0)->getStyle('A2:G2')->getFont()->setBold(true);
+        $Excel->setActiveSheetIndex(0)->setCellValue('A2','登录名');
+        $Excel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+        $Excel->setActiveSheetIndex(0)->setCellValue('B2','昵称');
+        $Excel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+        $Excel->setActiveSheetIndex(0)->setCellValue('C2','手机号');
+        $Excel->getActiveSheet()->getColumnDimension('C')->setWidth(10);
+        $Excel->setActiveSheetIndex(0)->setCellValue('D2','微圈');
+        $Excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+        $Excel->setActiveSheetIndex(0)->setCellValue('E2','赠金金额');
+        $Excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+        $Excel->setActiveSheetIndex(0)->setCellValue('F2','赠金时间');
+        $Excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+        $Excel->setActiveSheetIndex(0)->setCellValue('G2','赠金人');
+        $Excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+        $Excel->setActiveSheetIndex(0)->setCellValue('H2','备注');
+
+        $filePath = ROOT_PATH. 'excel/';
+
+        //内容
+        foreach ($data as $val) {
+            $Excel->setActiveSheetIndex(0)->setCellValue('A'.$n, $val['has_one_user']['username']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('B'.$n, $val['has_one_user']['nickname']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('C'.$n, $val['has_one_user']['mobile']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('D'.$n, $val['has_one_user']['has_one_admin']['username']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('E'.$n, $val['amount']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('F'.$n, date('Y-m-d H:i:s', $val['create_at']));
+            $Excel->setActiveSheetIndex(0)->setCellValue('G'.$n, $val['create_by']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('H'.$n, $val['remark']);
+            $n++;
+
+        }
+        $date = date("Y-m-d H:i:s");
+        $filename = "{$filePath}{$date}.xls";
+//        $filename = iconv('UTF-8', 'GBK', $filename);
+        $fp = fopen($filename, 'w+');
+        if (!is_writable($filename)) {
+            die('文件:' . $filename . '不可写，请检查！');
+        }
+        $objWriter= \PHPExcel_IOFactory::createWriter($Excel, 'Excel5');
+        $objWriter->save($filename);
+        fclose($fp);
+        //压缩下载
+        require ROOT_PATH . 'vendor/PHPZip/PHPZip.php';
+        $archive = new \PHPZip();
+        $archive->ZipAndDownload($filePath, $title, $filename);
+    }
 
     public function withdrawLists()
     {

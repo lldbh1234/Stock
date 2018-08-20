@@ -217,6 +217,7 @@ Route::group([], function() {
             //Route::post('rebate', 'admin/Team/rebate');
             //Route::any('create', 'admin/Team/createUser'); //添加用户
             Route::any('give-logs', 'admin/Team/giveLog'); // 赠金日志
+            Route::any('export-team-givelog', 'admin/Team/exportTeamGiveLog'); // 代理赠金记录导出
         });
 
         // 插件管理
@@ -331,6 +332,7 @@ Route::group([], function() {
             Route::any('create-virtual', 'admin/User/createVirtual'); // 添加虚拟会员
             Route::any('modify-virtual', 'admin/User/modifyVirtual'); // 修改虚拟会员
             Route::any('virtual-detail', 'admin/User/virtualDetail'); // 虚拟会员详情
+            Route::any('export-user-givelog', 'admin/User/exportUserGiveLog'); // 会员赠金记录导出
         });
 
         //经纪人管理

@@ -810,4 +810,23 @@ class AdminLogic
                 ->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];
     }
+    public function adminGiveLogs($filter = [])
+    {
+        $hasWhere = [];
+        $where = Admin::manager();
+        // 代理商登录名
+        if(isset($filter['username']) && !empty($filter['username'])){
+            $hasWhere["username"] = trim($filter['username']);
+        }
+        // 代理商类型
+        if(isset($filter['role']) && is_numeric($filter['role'])){
+            $hasWhere["role"] = $filter['role'];
+        }
+        $_lists = AdminGive::hasWhere("belongsToAdmin", $hasWhere)
+            ->with(['belongsToAdmin' => ['hasOneRole'], 'hasOneOperator'])
+            ->where($where)
+            ->select();
+        $lists  = collection($_lists)->toArray();
+        return compact("lists");
+    }
 }

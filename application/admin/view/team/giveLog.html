@@ -12,7 +12,7 @@
     </a>
 </nav>
 <div class="page-container">
-    <form action="" method="get">
+    <form action="" method="get" id="search_form">
     <div class="text-c">
         <input type="text" class="input-text radius" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
         <span class="select-box radius" style="width:110px;height: 31px;">
@@ -23,7 +23,10 @@
                 {/volist}
             </select>
         </span>
-        <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+        <button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+        {if condition="in_array('admin/User/exportTeamGiveLog', $Think.session.ACCESS_LIST)"}
+        <button type="submit" class="btn btn-success radius" id="export" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>导出</button>
+        {/if}
     </div>
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -75,6 +78,15 @@
 
 {block name="script"}
 <script>
-
+    {if condition="in_array('admin/User/exportTeamGiveLog', $Think.session.ACCESS_LIST)"}
+    $("#export").click(function(){
+        $('#search_form').attr('action', '{:url("admin/User/exportTeamGiveLog")}');
+        $('#search_form').submit();
+    });
+    {/if}
+        $("#search").click(function(){
+            $('#search_form').attr('action', '');
+            $('#search_form').submit();
+        });
 </script>
 {/block}
