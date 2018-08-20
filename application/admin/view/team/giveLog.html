@@ -24,7 +24,7 @@
             </select>
         </span>
         <button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
-        {if condition="in_array('admin/User/exportTeamGiveLog', $Think.session.ACCESS_LIST)"}
+        {if condition="in_array('admin/Team/exportTeamGiveLog', $Think.session.ACCESS_LIST)"}
         <button type="submit" class="btn btn-success radius" id="export" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>导出</button>
         {/if}
     </div>
@@ -78,9 +78,9 @@
 
 {block name="script"}
 <script>
-    {if condition="in_array('admin/User/exportTeamGiveLog', $Think.session.ACCESS_LIST)"}
+    {if condition="in_array('admin/Team/exportTeamGiveLog', $Think.session.ACCESS_LIST)"}
     $("#export").click(function(){
-        $('#search_form').attr('action', '{:url("admin/User/exportTeamGiveLog")}');
+        $('#search_form').attr('action', '{:url("admin/Team/exportTeamGiveLog")}');
         $('#search_form').submit();
     });
     {/if}
