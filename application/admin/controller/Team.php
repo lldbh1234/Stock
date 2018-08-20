@@ -576,8 +576,8 @@ class Team extends Base
         $param = input("");
         ini_set("memory_limit", "10000M");
         set_time_limit(0);
-        header("Content-type:application/vnd.ms-excel;charset=utf-8");
-        require ROOT_PATH.'vendor/PHPExcel/Classes/PHPExcel.php';
+//        header("Content-type:application/vnd.ms-excel;charset=utf-8");
+//        require ROOT_PATH.'vendor/PHPExcel/Classes/PHPExcel.php';
         //获取数据
         $roles = $this->_logic->allTeamRoles();
         $title = '代理商赠金列表';
