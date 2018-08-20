@@ -581,6 +581,7 @@ class Team extends Base
         //获取数据
         $roles = $this->_logic->allTeamRoles();
         $title = '代理商赠金列表';
+        dump($roles);die();
         if(input('role'))
         {
             $title = $roles['role'].'-赠金列表';
