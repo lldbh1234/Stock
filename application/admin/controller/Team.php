@@ -627,7 +627,7 @@ class Team extends Base
         //内容
         foreach ($data as $val) {
             $Excel->setActiveSheetIndex(0)->setCellValue('A'.$n, $val['admin_id']);
-            $Excel->setActiveSheetIndex(0)->setCellValue('B'.$n, $val['belongs_to_admin']['nickname']);
+            $Excel->setActiveSheetIndex(0)->setCellValue('B'.$n, $val['belongs_to_admin']['username']);
             $Excel->setActiveSheetIndex(0)->setCellValue('C'.$n, $val['belongs_to_admin']['has_one_role']['name']);
             $Excel->setActiveSheetIndex(0)->setCellValue('D'.$n, $val['amount']);
             $Excel->setActiveSheetIndex(0)->setCellValue('E'.$n, date('Y-m-d H:i:s', $val['create_at']));
