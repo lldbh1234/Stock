@@ -50,12 +50,12 @@
         </ul>
         <p class="ml-tip">每人最多绑定一张银行卡,点击卡片可修改原银行卡信息</p>
     </div>
-    {else /}
+	{else /}
 	<div class="mui-content">
-	   <p class="ml-tip  ml_title">银行账户</p>
+		<p class="ml-tip  ml_title">银行账户</p>
 		<ul class="cardList mui-table-view">
-			<li class="mui-table-view-cell mui-media">
-				<a href="{:url('index/User/modifyCard')}">
+			<li class="mui-table-view-cell mui-media" style="opacity: .4">
+				<a href="javascript:void(0);">
 					<img class="mui-media-object mui-pull-left" src="__RESOURCE__/img/yl.png">
 					<div class="mui-media-body">
 						<span class="bankName">{$user.has_one_card.bank_name} {$user.has_one_card.bank_address}</span>
@@ -64,9 +64,9 @@
 				</a>
 			</li>
 		</ul>
-		<p class="ml-tip">每人最多绑定一张银行卡,点击卡片可修改原银行卡信息</p>
+		<p class="ml-tip">每人最多绑定一张银行卡，如需更换银行卡请联系客服</p>
 	</div>
-    {/empty}
+	{/empty}
 
 	<!--<div class="mui-content">
 	   <p class="ml-tip ml_title">支付宝账号</p>

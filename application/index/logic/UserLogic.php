@@ -183,7 +183,9 @@ class UserLogic
         try{
             $user = User::find($userId);
             if($user->hasOneCard){
-                $user->hasOneCard->save($data);
+                //$user->hasOneCard->save($data);
+                Db::rollback();
+                return ['code' => 1, 'message' => '绑定银行卡不允许修改！'];
             }else{
                 $user->hasOneCard()->save($data);
             }
@@ -198,14 +200,13 @@ class UserLogic
                         $temp = (new authLlpay())->unbindBank($userId, $noAgree);
                         if(!$temp){
                             Db::rollback();
-                            return false;
+                            return ['code' => 1, 'message' => '解绑失败,请稍后再试！'];
                         }
                     }
                 }
             }
             //融宝解绑
-
-            $response = (new authRbPay())->findCard(['userId' => $userId]);
+            /*$response = (new authRbPay())->findCard(['userId' => $userId]);
             if($response['code'] == 0) {
                 $newCardNo = substr($data['bank_card'], -4);
                 $cardNos = array_column($response['data'], "card_last");
@@ -219,21 +220,17 @@ class UserLogic
                                 'userId' => $userId,
                                 'bind_id' => $item['bind_id'],
                             ]);
-//                            if(!$temp_rb){
-//                                Db::rollback();
-//                                return false;
-//                            }
+
                         }
 
                     }
                 }
-            }
-
+            }*/
             Db::commit();
-            return true;
+            return ['code' => 0, 'message' => '操作成功！'];
         } catch (\Exception $e){
             Db::rollback();
-            return false;
+            return ['code' => 1, 'message' => '系统繁忙，请稍后再试！'];
         }
     }
 

@@ -135,11 +135,12 @@ class User extends Base
             }else{
                 $data = input("post.");
                 $res = $this->_logic->saveUserCard($this->user_id, $data);
-                if($res){
+                if($res['code'] == 0){
                     $url = url("index/User/cards");
                     return $this->ok(['url' => $url]);
                 }else{
-                    return $this->fail("绑定银行卡失败，请稍后重试！");
+                    return $this->fail($res['message']);
+//                    return $this->fail("绑定银行卡失败，请稍后重试！");
                 }
             }
         }
