@@ -73,6 +73,7 @@ class User extends Validate
             'admin_id',
             'state'
         ],
+        'modifyCard' => ['user_id',],
     ];
 
     public function is_manager($value)
