@@ -8,6 +8,8 @@ use app\admin\model\UserGive;
 use app\admin\model\UserRecharge;
 use app\admin\model\UserRecord;
 use app\admin\model\UserWithdraw;
+use app\common\model\UserCard;
+use app\common\payment\authLlpay;
 use think\Db;
 
 class UserLogic
@@ -296,6 +298,46 @@ class UserLogic
             //dump($e->getMessage());
             Db::rollback();
             return false;
+        }
+    }
+    public function unbindCard($userId)
+    {
+        Db::startTrans();
+        try{
+            $user = User::find($userId);
+            $bankCardInfo = $user->hasOneCard;
+            if($bankCardInfo){
+                $ret = (new UserCard())->where(['user_id' => $userId])->delete();
+                if(!$ret)
+                {
+                    Db::rollback();
+                    return ['code' => 1, 'message' => '解绑失败,请稍后再试！'];
+                }
+                $llpayBanks = (new authLlpay())->bankBindList($userId);
+                if($llpayBanks){
+                    $newCardNo = substr($bankCardInfo->bank_card, -4);
+                    $cardNos = array_column($llpayBanks, "card_no");
+                    if(!in_array($newCardNo, $cardNos)){
+                        // 新卡
+                        foreach ($llpayBanks as $item){
+                            $noAgree = $item['no_agree'];
+                            $temp = (new authLlpay())->unbindBank($userId, $noAgree);
+                            if(!$temp){
+                                Db::rollback();
+                                return ['code' => 1, 'message' => '解绑失败,请稍后再试！'];
+                            }
+                        }
+                    }
+                }
+            }else{
+                return ['code' => 1, 'message' => '用户还未绑卡！'];
+            }
+
+            Db::commit();
+            return ['code' => 0, 'message' => '操作成功！'];
+        } catch (\Exception $e){
+            Db::rollback();
+            return ['code' => 1, 'message' => '系统繁忙，请稍后再试！'];
         }
     }
 }

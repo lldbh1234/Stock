@@ -685,4 +685,22 @@ class User extends Base
                 break;
         }
     }
+    public function unbindCard()
+    {
+        if(request()->isPost()) {
+            $validate = \think\Loader::validate('User');
+            if(!$validate->scene('modifyCard')->check(input("post."))){
+                return $this->fail($validate->getError());
+            }else{
+                $data = input("post.");
+                $res = $this->userLogic->unbindCard($data['user_id']);
+                if($res['code'] == 0){
+                    return $this->ok($res['message']);
+                }else{
+                    return $this->fail($res['message']);
+                }
+            }
+        }
+        return $this->fail('非法操作');
+    }
 }

@@ -98,6 +98,9 @@
                 <input class="btn btn-success size-MINI radius" type="button" title="开启出金" onclick="withdraw_state('{$item.user_id}')" value="开启出金">
                 {/if}
                 {/if}
+                {if condition="in_array('admin/User/unbindCard', $Think.session.ACCESS_LIST)"}
+                <input class="btn btn-danger size-MINI radius" type="button" title="解绑银行卡" onclick="unbind_card('{$item.user_id}')" value="解绑银行卡">
+                {/if}
             </td>
         </tr>
         {/volist}
@@ -179,6 +182,28 @@
             parent.layer.close(index);
             var _oData = {user_id : _id},
                 _url = '{:url("admin/User/withdrawState")}',
+                _loading = parent.layer.load(1),
+                _func = function (_resp) {
+                    parent.layer.close(_loading);
+                    if (!_resp.state) {
+                        layer.msg(_resp.info);
+                    } else {
+                        layer.msg('操作成功！', {time: 500}, function(){
+                            window.location.reload();
+                        });
+                    }
+                };
+            _ajaxPost(_url, _oData, _func);
+        });
+    }
+    {/if}
+    {if condition="in_array('admin/User/unbindCard', $Think.session.ACCESS_LIST)"}
+    function unbind_card(_id)
+    {
+        layer.confirm('是否确认本次操作?', {icon: 1, title:'提示'}, function(index){
+            parent.layer.close(index);
+            var _oData = {user_id : _id},
+                _url = '{:url("admin/User/unbindCard")}',
                 _loading = parent.layer.load(1),
                 _func = function (_resp) {
                     parent.layer.close(_loading);

@@ -327,6 +327,7 @@ Route::group([], function() {
             Route::any('withdraw-detail', 'admin/User/withdrawDetail');  // 会员出金列表
             Route::any('withdraw', 'admin/User/withdraw');  // 会员出金
             Route::any('withdraw-state', 'admin/User/withdrawState');  // 关闭or开启出金
+            Route::any('unbind-card', 'admin/User/unbindCard');  // 解绑用户卡片
 
             Route::any('virtual-lists', 'admin/User/virtualLists');  // 虚拟会员列表
             Route::any('create-virtual', 'admin/User/createVirtual'); // 添加虚拟会员
