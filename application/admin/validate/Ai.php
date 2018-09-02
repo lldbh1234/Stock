@@ -14,7 +14,7 @@ class Ai extends Validate
         "code"      => "require|checkCode|unique:ai,code^type_id",
         "income"    => "require|float|gt:0",
         "remark"    => "require|max:255",
-        "sort"      => "number|max:255",
+        "sort"      => "number|elt:255",
         "status"    => "require|in:0,1"
     ];
 
@@ -36,7 +36,7 @@ class Ai extends Validate
         "income.float"      => "买入价必须为数字！",
         "income.gt"         => "买入价必须大于0！",
         "sort.number"   => "排序必须为数字！",
-        "sort.max"      => "排序值最大为255！",
+        "sort.elt"      => "排序值最大为255！",
         'status.require' => '系统提示：非法操作！',
         'status.in'     => '系统提示：非法操作！',
     ];

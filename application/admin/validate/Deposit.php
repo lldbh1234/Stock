@@ -11,7 +11,7 @@ class Deposit extends Validate
         'ids'       => 'require|array|checkIds',
         "name"      => "require|unique:deposit|max:64",
         "money"     => "require|float|gt:0",
-        "sort"      => "number|max:255",
+        "sort"      => "number|elt:255",
         "status"    => "require|in:0,1"
     ];
 
@@ -28,7 +28,7 @@ class Deposit extends Validate
         "money.float"   => "保证金金额必须为数字！",
         "money.gt"      => "保证金金额必须大于0！",
         "sort.number"   => "排序必须为数字！",
-        "sort.max"      => "排序值最大为255！",
+        "sort.elt"      => "排序值最大为255！",
         'status.require'    => '系统提示：非法操作！',
         'status.in'         => '系统提示：非法操作！',
     ];

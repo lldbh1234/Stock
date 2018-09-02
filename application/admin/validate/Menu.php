@@ -13,7 +13,7 @@ class Menu extends Validate
         'module'    => 'require|in:0,1,2',
         'status'    => 'require|in:0,1',
         'icon'      => 'max:64',
-        'sort'      => 'max:255'
+        'sort'      => 'elt:255'
     ];
 
     protected $message = [

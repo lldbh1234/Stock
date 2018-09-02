@@ -10,7 +10,7 @@ class AiType extends Validate
         'ids'       => 'require|array|checkIds',
         "type_id"   => "require|gt:0",
         "name"      => "require|unique:ai_type|max:64",
-        "sort"      => "number|max:255",
+        "sort"      => "number|elt:255",
         "status"    => "require|in:0,1"
     ];
 
@@ -26,7 +26,7 @@ class AiType extends Validate
         "name.unique"   => "推荐类型名称已经存在！",
         "name.max"      => "推荐类型名称最大64个字符！",
         "sort.number"   => "排序必须为数字！",
-        "sort.max"      => "排序值最大为255！",
+        "sort.elt"      => "排序值最大为255！",
         'status.require' => '系统提示：非法操作！',
         'status.in'     => '系统提示：非法操作！',
     ];

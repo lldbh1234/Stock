@@ -10,7 +10,7 @@ class Hot extends Validate
         'id'        => 'require|gt:0',
         'ids'       => 'require|array|checkIds',
         "code"      => "require|checkCode|unique:hot",
-        "sort"      => "number|max:255",
+        "sort"      => "number|elt:255",
         "status"    => "require|in:0,1"
     ];
 
@@ -24,7 +24,7 @@ class Hot extends Validate
         "code.checkCode"  => "股票代码不存在！",
         "code.unique"   => "股票代码已经添加！",
         "sort.number"   => "排序必须为数字！",
-        "sort.max"      => "排序值最大为255！",
+        "sort.elt"      => "排序值最大为255！",
         'status.require' => '系统提示：非法操作！',
         'status.in'     => '系统提示：非法操作！',
     ];
