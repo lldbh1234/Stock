@@ -10,9 +10,9 @@ class UserManager extends Validate
         'id'        => 'require|min:1',
         'state'     => 'require|in:0,1,2',
         'user_id'   => 'require',
-        'point'     => 'require|float|max:100',
-        'jiancang_point' => 'require|float|max:100',
-        'defer_point' => 'require|float|max:100',
+        'point'     => 'require|float|elt:100',
+        'jiancang_point' => 'require|float|elt:100',
+        'defer_point' => 'require|float|elt:100',
     ];
 
     protected $message = [
@@ -24,13 +24,13 @@ class UserManager extends Validate
         'user_id.require' => '系统提示：非法操作！',
         'point.require' => '请输入盈利返点比率！',
         'point.float'   => '盈利返点比率为数字！',
-        'point.max'     => '盈利返点比率最大为100！',
+        'point.elt'     => '盈利返点比率最大为100！',
         'jiancang_point.require' => '请输入建仓费返点比率！',
         'jiancang_point.float'  => '建仓费返点比率为数字！',
-        'jiancang_point.max'    => '建仓费返点比率最大为100！',
+        'jiancang_point.elt'    => '建仓费返点比率最大为100！',
         'defer_point.require'   => '请输入递延费返点比率！',
         'defer_point.float'     => '递延费返点比率为数字！',
-        'defer_point.max'       => '递延费返点比率最大为100！',
+        'defer_point.elt'       => '递延费返点比率最大为100！',
     ];
 
     protected $scene = [
