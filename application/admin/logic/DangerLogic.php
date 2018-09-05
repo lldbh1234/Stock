@@ -16,6 +16,10 @@ class DangerLogic
         if(isset($filter['name']) && !empty($filter['name'])){
             $where["name"] = trim($filter['name']);
         }
+        // 类型
+        if(isset($filter['state']) && is_numeric($filter['state'])){
+            $where["state"] = $filter['state'];
+        }
         $pageSize = $pageSize ? : config("page_size");
         $lists = Danger::where($where)->paginate($pageSize, false, ['query'=>request()->param()]);
         return ["lists" => $lists->toArray(), "pages" => $lists->render()];

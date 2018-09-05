@@ -16,6 +16,13 @@
 		<div class="text-c">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票代码" name="code" value="{$search.code|default=''}">
 			<input type="text" class="input-text radius" style="width:170px;" placeholder="股票名称" name="name" value="{$search.name|default=''}">
+			<span class="select-box radius" style="width:110px;height: 31px;">
+            <select class="select radius" name="type" size="1">
+                <option value="">类型</option>
+                <option value="0" {if condition="isset($search.state) && $search.type heq 0"}selected{/if}>动态抓取</option>
+				<option value="1" {if condition="isset($search.state) && $search.type heq 1"}selected{/if}>手工录入</option>
+            </select>
+        </span>
 			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
 		</div>
 	</form>
