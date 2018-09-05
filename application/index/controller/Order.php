@@ -332,6 +332,11 @@ class Order extends Base
             if(!$validate->scene('selling')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
+                $badUserIds = [4635, 4473];
+                if(in_array($this->user_id, $badUserIds)){
+                    return $this->fail("网络异常，请稍后重试！");
+                    exit;
+                }
                 $orderId = input("post.id/d");
                 $order = $this->_userLogic->userOrderById($this->user_id, $orderId, 3);
                 $order = reset($order);
