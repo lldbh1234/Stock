@@ -113,7 +113,7 @@ class Cron extends Controller
             set_time_limit(0);
             $page = 1;
             $list = [];
-            $amount = 5000000; // 高危股票交易额
+            $amount = 2500000; // 高危股票交易额
             $_logic = new DangerLogic();
             $dangerCodes = $_logic->dangerCodesByState($state = 1);
             while (true){
