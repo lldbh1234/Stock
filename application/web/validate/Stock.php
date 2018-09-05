@@ -1,6 +1,7 @@
 <?php
 namespace app\web\validate;
 
+use app\web\logic\DangerLogic;
 use app\web\logic\DepositLogic;
 use app\web\logic\LeverLogic;
 use app\web\logic\ModeLogic;
@@ -53,22 +54,27 @@ class Stock extends Validate
 
     protected function checkCode($value, $rule, $data)
     {
-        $stock = (new StockLogic())->stockByCode($value);
-        if($stock){
-            $quotation = (new StockLogic())->simpleData($value);
-            if(isset($quotation[$value]) && !empty($quotation[$value])){
-                $configs = cfgs();
-                $changeRate = $quotation[$value]["px_change_rate"];
-                $_maxRate = isset($configs["max_change_rate"]) && !$configs["max_change_rate"] ? $configs["max_change_rate"] : 9.95;
-                if(abs($changeRate) > $_maxRate){
-                    return "最大可购买涨跌幅为{$_maxRate}的股票！";
-                }else{
-                    return true;
+        $dangerCodes = (new DangerLogic())->dangerCodes();
+        if(in_array($value, $dangerCodes)){
+            return "高危股票无法买入！";
+        }else{
+            $stock = (new StockLogic())->stockByCode($value);
+            if($stock){
+                $quotation = (new StockLogic())->simpleData($value);
+                if(isset($quotation[$value]) && !empty($quotation[$value])){
+                    $configs = cfgs();
+                    $changeRate = $quotation[$value]["px_change_rate"];
+                    $_maxRate = isset($configs["max_change_rate"]) && !$configs["max_change_rate"] ? $configs["max_change_rate"] : 9.95;
+                    if(abs($changeRate) > $_maxRate){
+                        return "最大可购买涨跌幅为{$_maxRate}的股票！";
+                    }else{
+                        return true;
+                    }
                 }
+                return true;
             }
-            return true;
+            return false;
         }
-        return false;
     }
 
     protected function checkTradeTime($value, $rule, $data)

@@ -141,6 +141,7 @@ Route::group("cron", function () {
     Route::any('best-order', 'index/Cron/scanBestOrders'); // 最优持仓列表统计
     Route::any('clear-best', 'index/Cron/scanClearBest'); // 删除最优持仓中已平仓的策略
     Route::any('clear-job', 'index/Cron/clearJobTable'); // 清除队列表数据
+    Route::any('danger-list', 'index/Cron/dangerList'); // 高危股票列表
 });
 //web
 Route::group([], function() {
@@ -312,6 +313,13 @@ Route::group([], function() {
         Route::group("system", function(){
             Route::any('lists', 'admin/System/lists');  // 系统设置
             Route::post('modify', 'admin/System/modify'); // 修改
+        });
+
+        //高危股票
+        Route::group("danger", function(){
+            Route::any('index', 'admin/Danger/index');  // 高危股票列表
+            Route::any('create', 'admin/Danger/create'); // 修改
+            Route::post('remove', 'admin/Danger/remove');
         });
 
         //会员管理

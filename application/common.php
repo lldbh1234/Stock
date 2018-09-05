@@ -181,3 +181,20 @@ if(!function_exists("workTimestamp")){
         return $timestamp;
     }
 }
+
+// 处理未带双引号的json串
+if(!function_exists("extJsonDecode")){
+    function extJsonDecode($str, $mode=true){
+        $str = trim($str);
+        $str = ltrim($str, '(');
+        $str = rtrim($str, ')');
+        $a = preg_split('#(?<!\\\\)\"#', $str );
+        for( $i=0; $i < count($a); $i+=2 ){
+            $s = $a[$i];
+            $s = preg_replace('#([^\s\[\]\{\}\:\,]+):#', '"\1":', $s );
+            $a[$i] = $s;
+        }
+        $str = implode('"', $a);
+        return json_decode($str, $mode);
+    }
+}

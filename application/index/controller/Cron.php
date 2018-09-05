@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\index\logic\BestLogic;
+use app\index\logic\DangerLogic;
 use app\index\logic\UserLogic;
 use think\Controller;
 use think\Db;
@@ -15,6 +16,7 @@ class Cron extends Controller
     // 抓取板块行情指数
     public function grabPlateIndex()
     {
+        exit;
         set_time_limit(0);
         if(checkStockTradeTime()){
             $jsonArray = [];
@@ -100,6 +102,57 @@ class Cron extends Controller
                 // 回滚事务
                 Db::rollback();
                 echo "false";
+            }
+        }
+    }
+
+    // 高危股票列表
+    public function dangerList()
+    {
+        if(input("get.K5Ue5QYl") == "system"){
+            set_time_limit(0);
+            $page = 1;
+            $list = [];
+            $amount = 5000000; // 高危股票交易额
+            $_logic = new DangerLogic();
+            $dangerCodes = $_logic->dangerCodesByState($state = 1);
+            while (true){
+                $url = 'http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s=[["hq","hs_a","amount",1,' . $page . ',80]]';
+                $response = file_get_contents($url);
+                if($response){
+                    $continue = false;
+                    $response = ltrim($response, '[');
+                    $response = rtrim($response, ']');
+                    $response = json_decode($response, true);
+                    foreach ($response['items'] as $val){
+                        if($val[13] > 0 && $val[13] <= $amount){
+                            if(!in_array($val[1], $dangerCodes)){
+                                $list[$val[1]] = [
+                                    "code" => $val[1],
+                                    "name" => $val[2],
+                                    "symbol" => $val[0],
+                                    "amount" => $val[13],
+                                    "state" => 0,
+                                    "create_at" => time()
+                                ];
+                            }
+                        }else{
+                            if($val[13] > $amount){
+                                $continue = true;
+                                break;
+                            }
+                        }
+                    }
+                    $page++;
+                    if($continue){
+                        break;
+                    }
+                }else{
+                    continue;
+                }
+            }
+            if($list){
+                $_logic->updateDangerList($list);
             }
         }
     }
