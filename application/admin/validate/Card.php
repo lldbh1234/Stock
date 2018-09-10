@@ -14,7 +14,7 @@ class Card extends Validate
         'bank_province' => 'require|checkProvince',
         'bank_city' => 'require|checkCity',
         'bank_address' => 'max:128|chs',
-        'bank_card' => ["require", "regex" => "/^(\d{16}|\d{19})$/i"],
+        'bank_card' => ["require", "regex" => "/^(\d{16}|\d{18}|\d{19})$/i"],
         'id_card'   => 'require|checkIdCard',
         'bank_mobile' => ["require", "regex" => "/^[1][3,4,5,6,7,8,9][0-9]{9}$/i"],
     ];
