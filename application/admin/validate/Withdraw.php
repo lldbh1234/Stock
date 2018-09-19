@@ -10,7 +10,7 @@ use think\Validate;
 class Withdraw extends Validate
 {
     protected $rule = [
-        'money' => "require|float|egt:100|elt:600000|checkMoney|checkDateTime",
+        'money' => "require|float|egt:100|elt:100000|checkMoney|checkDateTime",
         'card'  => "require|checkCard",
     ];
 
@@ -19,7 +19,7 @@ class Withdraw extends Validate
         'money.require' => '提现金额不能为空！',
         'money.float'   => '提现金额必须为数字！',
         'money.egt'     => '提现金额最小为100元！',
-        'money.elt'     => '提现金额最大为600000元！',
+        'money.elt'     => '提现金额最大为100000元！',
         'money.checkMoney' => '账户余额不足！',
         'card.require'  => '请选择到账银行！',
         'card.checkCard' => '到账银行不存在！',
@@ -67,7 +67,7 @@ class Withdraw extends Validate
         $_logic = new AdminLogic();
         $adminId = isLogin();
         $todayCount = $_logic->proxyTodayWithdrawAmount($adminId);
-        if($todayCount + $value <= 600000){
+        if($todayCount + $value <= 500000){
             $admin = $_logic->adminById($adminId);
             return $admin['total_fee'] >= $value;
         }else{
