@@ -370,7 +370,7 @@ class OrderLogic
         $_lists = Order::hasWhere("hasOneUser", $hasWhere)
                     ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
                     ->where($where)
-                    ->order("order_id DESC")
+                    ->order("create_at DESC")
                     ->paginate($pageSize, false, ['query'=>request()->param()]);
         $lists = $_lists->toArray();
         $pages = $_lists->render();
