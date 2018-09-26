@@ -10,7 +10,7 @@ use think\Validate;
 class Withdraw extends Validate
 {
     protected $rule = [
-        'money' => "require|float|egt:100|elt:100000|checkMoney|checkDateTime",
+        'money' => "require|float|egt:100|elt:500000|checkMoney|checkDateTime",
         'card'  => "require|checkCard",
     ];
 
