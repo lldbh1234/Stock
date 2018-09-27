@@ -61,7 +61,7 @@ class UserNotice
                     $saveData[] = [
                         "user_id" => $fans["fans_id"],
                         "title" => "牛人操盘动向",
-                        "content" => "您关注的牛人“{$niuren['username']}”有新的操盘动向，请注意查看！",
+                        "content" => "您关注的牛人“{$niuren['nickname']}”有新的操盘动向，请注意查看！",
                     ];
                 }
                 //model("UserNotice")->saveAll($saveData);
