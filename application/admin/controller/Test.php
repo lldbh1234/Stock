@@ -57,134 +57,14 @@ class Test extends Controller
             }
         }*/
         //exit();
-        $job = new DeferJob();
+        /*$job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
-        exit;
-        //$orderId = 9866;
-        $order = (new \app\index\logic\OrderLogic())->orderById($order_id);
-        $user = (new UserLogic())->userById($order['user_id']);
-        $managerUserId = $user["parent_id"];
-        $adminId = $user["admin_id"];
-        $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
-        $handleRes = (new \app\index\logic\OrderLogic())->handleDeferByUserAccount($order, $managerUserId, $adminIds);
-        dump($handleRes);
-        exit;
-        //$orderId = 9968;
-        //$orderId = 10002;
-        exit;
-        $hangqing = (new \app\index\logic\StockLogic())->quotationBySina("002928");
-        dump($hangqing);
-        exit;
-        $orders = (new \app\index\logic\OrderLogic())->allDeferOrders();
-        dump($orders);
-        exit;
-        $user = \app\admin\model\User::find(299);
-        $rData = [
-            "type" => 4,
-            "amount" => '420',
-            "account" => $user->account,
-            "remark" => json_encode(['orderId' => "5385"]),
-            "direction" => 1,
-            "create_at" => 1527831389
-        ];
-        $res = $user->hasManyRecord()->save($rData);
-        dump($res);
-        exit;
-        $order = (new OrderLogic())->orderById(2980);
-        if($order['is_defer'] && $order['free_time'] < time() && $order['state'] == 3){
-            // 停牌股不扣费处理
-            $i = 0;
-            $halt = false; //未停牌
-            while (true){
-                $quotation = (new StockLogic())->quotationBySina($order['code']);
-                if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
-                    $last_px = $quotation[$order['code']]['last_px']; // 最新价
-                    $buy_px = $quotation[$order['code']]['buy_px']; // 竞买价，即“买一”报价
-                    $sell_px = $quotation[$order['code']]['sell_px']; // 竞卖价，即“卖一”报价
-                    if($buy_px > 0 || $sell_px > 0){
-                        // 未停牌
-                        $halt = false; //未停牌
-                        break;
-                    }else{
-                        // 有可能停牌
-                        if($i >= 1){
-                            // 重试一次，现价依旧为0，股票停牌
-                            $halt = true;
-                            break;
-                        }else{
-                            // 极有可能停牌重试一次
-                            $i++;
-                            continue;
-                        }
-                    }
-                }else{
-                    continue;
-                }
-            }
-            if($halt){
-                // 股票停牌，直接递延，不扣递延费
-                $holiday = cf("holiday", '');
-                $timestamp = workTimestamp(1, explode(',', $holiday), $order["free_time"]);
-                $data = [
-                    "order_id"  => $order["order_id"],
-                    "free_time" => $timestamp,
-                ];
-                $res = (new OrderLogic())->orderUpdate($data);
-                return $res ? true : false;
-            }else{
-
-            }
-            $user = (new UserLogic())->userById($order['user_id']);
-            if($user){
-                $managerUserId = $user["parent_id"];
-                $adminId = $user["admin_id"];
-                $adminIds = (new AdminLogic())->ringFamilyTree($adminId);
-                if($user['account'] >= $order['defer']){
-                    // 用户余额充足
-                    // 股票未停牌，扣除递延费
-                    $handleRes = (new OrderLogic())->handleDeferByUserAccount($order, $managerUserId, $adminIds);
-                    return $handleRes ? true : false;
-                }/*else if($order['deposit'] >= $order['defer']){ // 取消余额不足，扣除保证金功能
-                    // 订单保证金充足
-                    $handleRes = (new OrderLogic())->handleDeferByDeposit($order, $managerUserId, $adminIds);
-                    return $handleRes ? true : false;
-                }*/else{
-                    // 余额不足，无法扣除
-                    while (true){
-                        $quotation = (new StockLogic())->quotationBySina($order['code']);
-                        if(isset($quotation[$order['code']]) && !empty($quotation[$order['code']])){
-                            $last_px = $quotation[$order['code']]['last_px']; // 最新价
-                            $buy_px = $quotation[$order['code']]['buy_px']; // 平仓按买1价处理
-                            if($buy_px > 0) {
-                                $sell_price = $last_px - $buy_px > 0.02 ? $buy_px + 0.02 : $buy_px;//买1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
-                                $data = [
-                                    "order_id" => $order["order_id"],
-                                    "sell_price" => $sell_price,
-                                    "sell_hand" => $order["hand"],
-                                    "sell_deposit" => $sell_price * $order["hand"],
-                                    "profit" => ($sell_price - $order["price"]) * $order["hand"],
-                                    "state" => 6,
-                                    "force_type" => 4, // 强制平仓类型；1-爆仓，2-到达止盈止损，3-非自动递延，4-递延费无法扣除
-                                    "update_at" => time()
-                                ];
-                                $res = (new OrderLogic())->orderUpdate($data);
-                                return $res ? true : false;
-                                break;
-                            }else{
-                                continue;
-                            }
-                        }else{
-                            continue;
-                        }
-                    }
-                }
-            }
-        }
-        $order = (new UserLogic())->userOrderById('303', '2851', 3);
+        exit;*/
+        $order = (new UserLogic())->userOrderById('3146', '37606', 3);
         $order = reset($order);
         if($order){
-            $order['buy_px'] = 21.74; //买1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
+            $order['buy_px'] = 14.18; //买1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
             $res = (new UserLogic())->userOrderSelling($order);
             dump($res);
         }else{
