@@ -57,10 +57,10 @@ class Test extends Controller
             }
         }*/
         //exit();
-        /*$job = new DeferJob();
+        $job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
-        exit;*/
+        exit;
         $order = (new UserLogic())->userOrderById('3146', '37606', 3);
         $order = reset($order);
         if($order){
