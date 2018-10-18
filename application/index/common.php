@@ -72,6 +72,24 @@ if(!function_exists("checkStockTradeTime"))
     }
 }
 
+if(!function_exists("checkStockTradeDate"))
+{
+    function checkStockTradeDate()
+    {
+        if(date('w') == 0){
+            return false;
+        }
+        if(date('w') == 6){
+            return false;
+        }
+        $holiday = explode(',', cf("holiday", ""));
+        if(in_array(date("Y-m-d"), $holiday)){
+            return false;
+        }
+        return true;
+    }
+}
+
 if(!function_exists("checkSettleTime"))
 {
     // 结算时间 工作日 17-23点

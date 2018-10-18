@@ -53,7 +53,7 @@ class Cron extends Controller
     public function grabStockLists()
     {
         set_time_limit(0);
-        if(checkStockTradeTime()){
+        if(checkStockTradeDate() && input("get.bCJALo") == "system"){
             $_arrays = [];
             $_jsTextIndex = 0;
             $_jsTextArrays = [];

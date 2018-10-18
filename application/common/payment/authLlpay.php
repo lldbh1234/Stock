@@ -13,7 +13,7 @@ class authLlpay
     protected $returnUrl;
     public function __construct()
     {
-        $this->config = config("llpay.llpay_wap_zj58_config");
+        $this->config = config("llpay.llpay_wap_new58_config");
         $this->notifyUrl = url("index/Notify/authLLpay", "", true, true);
         $this->returnUrl = url("index/Index/index", "", true, true);
     }
