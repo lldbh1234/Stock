@@ -37,6 +37,7 @@ class authLlpay
             "url_return" => $this->returnUrl,
             "card_no" => $card['bank_card'],
             "acct_name" => $card['bank_user'],
+            "pay_type"  => "P",
             "id_no" => $card['id_card'],
             "no_agree" => "",
             "risk_item" => addslashes(json_encode($risk, JSON_UNESCAPED_UNICODE))
