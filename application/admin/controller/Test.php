@@ -35,10 +35,10 @@ class Test extends Controller
 
     public function test($order_id = null)
     {
-        /*header("Content-type:text/html;charset=utf-8");
+        header("Content-type:text/html;charset=utf-8");
         $withdrawData = [
             "tradeNo" => createStrategySn(),
-            "amount" => 8,
+            "amount" => 100,
             "createAt" => time(),
             "name" => "梁健",
             "card" => "6217004220033901731",
@@ -46,7 +46,7 @@ class Test extends Controller
         dump($withdrawData);
         $response = (new paymentLLpay())->payment($withdrawData);
         dump($response);
-        exit;*/
+        exit;
         /*
         $nickname = cf('nickname_prefix', config("nickname_prefix"));
         $_logic = new \app\admin\logic\UserLogic();
