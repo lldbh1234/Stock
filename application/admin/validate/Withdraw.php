@@ -31,6 +31,7 @@ class Withdraw extends Validate
 
     public function checkDateTime($value)
     {
+        return true;
         if(date('w') == 0){
             return false;
         }
@@ -64,7 +65,7 @@ class Withdraw extends Validate
         }else{
             return "您已到达今日提现次数上限，请明日在试！";
         }*/
-        $_logic = new AdminLogic();
+        /*$_logic = new AdminLogic();
         $adminId = isLogin();
         $todayCount = $_logic->proxyTodayWithdrawAmount($adminId);
         if($todayCount + $value <= 500000){
@@ -72,7 +73,11 @@ class Withdraw extends Validate
             return $admin['total_fee'] >= $value;
         }else{
             return "您已超出每日提现上限50万，请明日在试！";
-        }
+        }*/
+        $_logic = new AdminLogic();
+        $adminId = isLogin();
+        $admin = $_logic->adminById($adminId);
+        return $admin['total_fee'] >= $value;
     }
 
     protected function checkCard($value)
