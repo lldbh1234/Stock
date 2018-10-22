@@ -74,6 +74,7 @@ $(function(){
     $("#withdraw-btn").click(function () {
         var _url = "{:url('admin/Index/withdraw')}",
             _oData = $("form").serialize();
+        $("#withdraw-btn").attr("disabled", true);
         _ajaxPost(_url, _oData, function(res){
             if(res.state){ // 登录成功
                 layer.msg('申请提现成功，请等待审核！', {time: 1000}, function(){
@@ -85,6 +86,7 @@ $(function(){
                 });
             }else{
                 layer.msg(res.info);
+                $("#withdraw-btn").removeAttr("disabled");
             }
         });
     });
