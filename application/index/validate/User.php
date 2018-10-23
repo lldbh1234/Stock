@@ -1,6 +1,7 @@
 <?php
 namespace app\index\validate;
 
+use app\index\logic\AdminLogic;
 use app\index\logic\SmsLogic;
 use app\index\logic\UserLogic;
 use think\Validate;
@@ -72,12 +73,20 @@ class User extends Validate
 
     protected function checkOrgCode($value)
     {
-        $_where = [
-            "code"  => $value,
-            "role"  => Admin::RING_ROLE_ID
-        ];
-        $admin = Admin::where($_where)->find();
-        return $admin ? true : false;
+        // 21-15906754115,22-17706854002,24-13812692622,29-13567558444,30-18267578559
+        // 40-13285851109,92-15957520398,237-18658035577,744-上海代理
+        $denyProxy = [21, 22, 24, 29, 30, 40, 92, 237, 744];
+        $denyCodes = (new AdminLogic())->proxyRingCodes($denyProxy);
+        if(in_array($value, $denyCodes)){
+            return false;
+        }else{
+            $_where = [
+                "code"  => $value,
+                "role"  => Admin::RING_ROLE_ID
+            ];
+            $admin = Admin::where($_where)->find();
+            return $admin ? true : false;
+        }
     }
 
     protected function checkMobile($value, $rule, $data)

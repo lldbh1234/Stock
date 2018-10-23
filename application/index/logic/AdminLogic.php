@@ -82,4 +82,28 @@ class AdminLogic
         }
         return $parent;
     }
+
+    public function proxyRingCodes($adminId)
+    {
+        $codes = [];
+        $idArr = $arr = is_array($adminId) ? $adminId : [$adminId];
+        do {
+            $admins = Admin::where(["pid" => ["IN", $idArr]])->column("admin_id,role,code");
+            if (empty($admins)) {
+                break;
+            } else {
+                $admins = array_values($admins);
+                $adminIds = array_column($admins, "admin_id");
+                $roleId = $admins[0]['role'];
+                if($roleId == Admin::RING_ROLE_ID){
+                    $codes = array_column($admins, "code");
+                    break;
+                }else{
+                    $idArr = $adminIds;
+                    $arr = array_merge($arr, $idArr);
+                }
+            }
+        } while (true);
+        return $codes;
+    }
 }
