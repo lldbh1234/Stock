@@ -40,6 +40,7 @@ class SellJob
                 $buyPx = $quotation[$order['code']]['buy_px']; //买1价
                 $sellPx = $quotation[$order['code']]['sell_px']; //卖1价
                 $buyPx = $buyPx == 0 ? $lastPx : $buyPx; //买1价为0时按现价处理
+                $sellPx = $sellPx == 0 ? $lastPx : $sellPx; //卖1价为0时按现价处理
                 if($buyPx > 0 && $sellPx > 0){
                     //$lossTotal = ($order['price'] - $lastPx) * $order['hand']; //损失总金额
                     $lossTotal = ($order['price'] - $buyPx) * $order['hand']; //止损按买1

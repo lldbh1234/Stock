@@ -69,14 +69,14 @@ class Test extends Controller
             }
         }*/
         //exit();
-        $job = new DeferJob();
+        /*$job = new DeferJob();
         $res = $job->handle($order_id);
         dump($res);
-        exit;
-        $order = (new UserLogic())->userOrderById('3146', '37606', 3);
+        exit;*/
+        $order = (new UserLogic())->userOrderById('4574', '47148', 3);
         $order = reset($order);
         if($order){
-            $order['buy_px'] = 14.18; //买1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
+            $order['buy_px'] = 54.22; //买1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
             $res = (new UserLogic())->userOrderSelling($order);
             dump($res);
         }else{
