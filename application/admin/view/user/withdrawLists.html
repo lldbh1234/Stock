@@ -13,24 +13,37 @@
 </nav>
 <div class="page-container">
     <form action="" method="get">
-    <div class="text-c">
-        <input type="text" class="input-text" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
-        <input type="text" class="input-text" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
-
-        <span class="select-box" style="width:70px;height: 31px;">
-            <select class="select" name="state" size="1">
-                <option value="">状态</option>
-                <option value="0" {if condition="isset($search.state) AND $search.state heq '0'"}selected{/if}>待审核</option>
-                <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>代付中</option>
-                <option value="2" {if condition="isset($search.state) AND $search.state heq '2'"}selected{/if}>已到账</option>
-                <option value="-1" {if condition="isset($search.state) AND $search.state heq '-1'"}selected{/if}>已拒绝</option>
-            </select>
-        </span>
-        <input type="text" class="input-text radius" style="width:170px;" placeholder="申请开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
-        <input type="text" class="input-text radius" style="width:170px;" placeholder="申请结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
-        <button type="submit" class="btn btn-success" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
-        <button type="button" class="btn btn-success" id="today-btn">今日流水</button>
-    </div>
+        <div class="text-l">
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="登录名" name="username" value="{$search.username|default=''}">
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="手机号" name="mobile" value="{$search.mobile|default=''}">
+            {eq name="tableCols.settle" value="1"}
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="结算中心" name="settle" value="{$search.settle|default=''}">
+            {/eq}
+            {eq name="tableCols.operate" value="1"}
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="运营中心" name="operate" value="{$search.operate|default=''}">
+            {/eq}
+            {eq name="tableCols.member" value="1"}
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="微会员" name="member" value="{$search.member|default=''}">
+            {/eq}
+            {eq name="tableCols.ring" value="1"}
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="微圈" name="ring" value="{$search.ring|default=''}">
+            {/eq}
+        </div>
+        <div class="text-l mt-5">
+            <span class="select-box" style="width:70px;height: 31px;">
+                <select class="select" name="state" size="1">
+                    <option value="">状态</option>
+                    <option value="0" {if condition="isset($search.state) AND $search.state heq '0'"}selected{/if}>待审核</option>
+                    <option value="1" {if condition="isset($search.state) AND $search.state heq '1'"}selected{/if}>代付中</option>
+                    <option value="2" {if condition="isset($search.state) AND $search.state heq '2'"}selected{/if}>已到账</option>
+                    <option value="-1" {if condition="isset($search.state) AND $search.state heq '-1'"}selected{/if}>已拒绝</option>
+                </select>
+            </span>
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="申请开始时间" name="begin" value="{$search.begin|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})"> -
+            <input type="text" class="input-text radius" style="width:170px;" placeholder="申请结束时间" name="end" value="{$search.end|default=''}" onclick="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm'})">
+            <button type="submit" class="btn btn-success" id="search-btn" name=""><i class="Hui-iconfont Hui-iconfont-search2"></i>搜索</button>
+            <button type="button" class="btn btn-success" id="today-btn">今日流水</button>
+        </div>
     </form>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">

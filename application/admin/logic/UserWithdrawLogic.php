@@ -51,6 +51,49 @@ class UserWithdrawLogic
             }
         }
 
+        // 结算中心
+        if(isset($filter['settle']) && !empty($filter['settle'])){
+            $_where = [
+                "username" => trim($filter['settle']),
+                "role" => Admin::SETTLE_ROLE_ID
+            ];
+            $settleId = Admin::where($_where)->value("admin_id");
+            $ringIds = Admin::childrenAdminIds($settleId);
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 运营中心
+        if(isset($filter['operate']) && !empty($filter['operate'])){
+            $_where = [
+                "username" => trim($filter['operate']),
+                "role" => Admin::OPERATE_ROLE_ID
+            ];
+            $operateId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($operateId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微会员
+        if(isset($filter['member']) && !empty($filter['member'])){
+            $_where = [
+                "username" => trim($filter['member']),
+                "role" => Admin::MEMBER_ROLE_ID
+            ];
+            $memberId = Admin::where($_where)->value("admin_id");
+            $tempRingIds = Admin::childrenAdminIds($memberId);
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+        // 微圈
+        if(isset($filter['ring']) && !empty($filter['ring'])){
+            $_where = [
+                "username" => trim($filter['ring']),
+                "role" => Admin::RING_ROLE_ID
+            ];
+            $tempRingIds = Admin::where($_where)->column("admin_id");
+            $ringIds = isset($ringIds) ? array_intersect($ringIds, $tempRingIds) : $tempRingIds;
+            $hasWhere["admin_id"] = ["IN", $ringIds];
+        }
+
         $pageSize = $pageSize ? : config("page_size");
         $totalAmount = UserWithdraw::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("amount");
         $totalActual = UserWithdraw::hasWhere("hasOneUser", $hasWhere)->where($where)->sum("actual");
