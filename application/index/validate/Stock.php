@@ -89,7 +89,27 @@ class Stock extends Validate
 
     protected function checkTradeTime($value, $rule, $data)
     {
-        return checkStockTradeTime();
+        //return checkStockTradeTime();
+        if(date('w') == 0){
+            return false;
+        }
+        if(date('w') == 6){
+            return false;
+        }
+        if(date('G') < 9 || (date('G') == 9 && date('i') < 30)){
+            return false;
+        }
+        if(((date('G') == 11 && date('i') > 30) || date('G') > 11) && date('G') < 13){
+            return false;
+        }
+        if(date('G') >= 15 || (date('G') == 14 &&  date('i') >= 57)){
+            return false;
+        }
+        $holiday = explode(',', cf("holiday", ""));
+        if(in_array(date("Y-m-d"), $holiday)){
+            return false;
+        }
+        return true;
     }
 
     protected function checkMode($value, $rule, $data)
