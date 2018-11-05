@@ -162,7 +162,9 @@ class Cron extends Controller
     {
         set_time_limit(0);
         if(checkStockTradeTime()){
-            $orders = (new OrderLogic())->allPositionOrders(null, ['is_defer' => 0], $virtual = 0); //$virtual = 0真实用户订单
+            //$orders = (new OrderLogic())->allPositionOrders(null, ['is_defer' => 0], $virtual = 0); //$virtual = 0真实用户订单
+            $where = ['is_defer' => 0, 'free_time' => ["ELT", strtotime(date("Y-m-d 14:40:00"))]];
+            $orders = (new OrderLogic())->allPositionOrders(null, $where, $virtual = 0); //$virtual = 0真实用户订单
             if($orders){
                 foreach ($orders as $order){
                     if($order['is_defer'] == 0){
