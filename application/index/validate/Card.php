@@ -72,6 +72,12 @@ class Card extends Validate
 
     public function checkIdCard($value, $rule, $data)
     {
+        $blackIdCard = [
+            "330822197212083013"
+        ];
+        if(in_array($value, $blackIdCard)){
+            return "银行卡信息错误！";
+        }
         $vCity = array(
             '11','12','13','14','15','21','22',
             '23','31','32','33','34','35','36',
