@@ -47,6 +47,12 @@ class UserLogic
         return $user ? $user->toArray() : [];
     }
 
+    public function userBy($where=[])
+    {
+        $user = User::where($where)->find();
+        return $user ? $user->toArray() : [];
+    }
+
     public function getAllBy($where=[])
     {
         $map = [];

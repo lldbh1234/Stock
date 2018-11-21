@@ -33,7 +33,7 @@ class Test extends Controller
         parent::__construct($request);
     }
 
-    public function test($order_id = null)
+    public function test($order_id = null, $mobile=null)
     {
         /*header("Content-type:text/html;charset=utf-8");
         $withdrawData = [
@@ -69,9 +69,18 @@ class Test extends Controller
             }
         }*/
         //exit();
-        $job = new DeferJob();
-        $res = $job->handle($order_id);
-        dump($res);
+        if($order_id)
+        {
+            $job = new DeferJob();
+            $res = $job->handle($order_id);
+            dump($res);
+        }elseif ($mobile)
+        {
+            $user = (new UserLogic())->userBy(['mobile' => $mobile]);
+            $res = (new \app\admin\logic\UserLogic())->unbindCard($user['user_id']);
+            dump($res);
+        }
+
         exit;
         $order = (new UserLogic())->userOrderById('4574', '47148', 3);
         $order = reset($order);

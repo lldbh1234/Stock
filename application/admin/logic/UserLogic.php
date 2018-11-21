@@ -311,7 +311,7 @@ class UserLogic
                 if(!$ret)
                 {
                     Db::rollback();
-                    return ['code' => 1, 'message' => '解绑失败,请稍后再试！'];
+                    return ['code' => 1, 'message' => '解绑失败1,请稍后再试！'];
                 }
                 $llpayBanks = (new authLlpay())->bankBindList($userId);
                 if($llpayBanks){
@@ -324,7 +324,7 @@ class UserLogic
                             $temp = (new authLlpay())->unbindBank($userId, $noAgree);
                             if(!$temp){
                                 Db::rollback();
-                                return ['code' => 1, 'message' => '解绑失败,请稍后再试！'];
+                                return ['code' => 1, 'message' => '解绑失败2,请稍后再试！'];
                             }
                         }
                     }
