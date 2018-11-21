@@ -76,6 +76,7 @@ class Test extends Controller
             dump($res);
         }elseif ($mobile)
         {
+            header("Content-type: text/html; charset=utf-8");
             $user = (new UserLogic())->userBy(['mobile' => $mobile]);
             $res = (new \app\admin\logic\UserLogic())->unbindCard($user['user_id']);
             dump($res);
