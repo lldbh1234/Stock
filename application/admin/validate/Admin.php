@@ -14,7 +14,7 @@ class Admin extends Validate
         'password2' => 'confirm:password',
         'nickname'  => 'max:32',
         //'mobile'    => 'require|unique:admin|regex:/^[1][3,4,5,7,8,9][0-9]{9}$/',
-        'mobile'    => 'require|regex:/^[1][3,4,5,7,8,9][0-9]{9}$/',
+        'mobile'    => 'require|regex:/^[1][3,4,5,6,7,8,9][0-9]{9}$/',
         'role'      => 'require|checkRole',
         'status'    => 'require|in:0,1',
     ];
@@ -49,8 +49,8 @@ class Admin extends Validate
             'admin_id',
             'password' => "length:6,16",
             'nickname',
-            //'mobile' => 'require|unique:admin,mobile^admin_id|regex:/^[1][3,4,5,7,8,9][0-9]{9}$/',
-            'mobile' => 'require|regex:/^[1][3,4,5,7,8,9][0-9]{9}$/',
+            //'mobile' => 'require|unique:admin,mobile^admin_id|regex:/^[1][3,4,5,6,7,8,9][0-9]{9}$/',
+            'mobile' => 'require|regex:/^[1][3,4,5,6,7,8,9][0-9]{9}$/',
             'role',
             'status'
         ],
