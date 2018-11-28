@@ -25,7 +25,7 @@ class Stock extends Base
             if(!$validate->scene('buy')->check(input("post."))){
                 return $this->fail($validate->getError());
             }else{
-                $blackUser = ["1172"];
+                $blackUser = [1172, 969, 974, 1051, 1103, 1861, 2192, 3400, 4057, 4965, ];
                 if(in_array($this->user_id, $blackUser)){
                     return $this->fail("资金账户已用尽！");
                 }
