@@ -34,7 +34,7 @@ class Test extends Controller
         parent::__construct($request);
     }
 
-    public function test($order_id = null, $mobile=null, $admin_mobile=null)
+    public function test($order_id = null, $mobile=null, $username=null)
     {
         /*header("Content-type:text/html;charset=utf-8");
         $withdrawData = [
@@ -81,11 +81,11 @@ class Test extends Controller
             $user = (new UserLogic())->userBy(['mobile' => $mobile]);
             $res = (new \app\admin\logic\UserLogic())->unbindCard($user['user_id']);
             dump($res);
-        }elseif($admin_mobile)
+        }elseif($username)
         {
             header("Content-type: text/html; charset=utf-8");
             $adminModel = new \app\admin\logic\AdminLogic();
-            $admin = $adminModel->adminByMobile($admin_mobile);
+            $admin = $adminModel->adminByUsername($username);
             $res = (new AdminCard())->where(['admin_id' => $admin['admin_id']])->delete();
             dump($res);
         }
