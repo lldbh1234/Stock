@@ -106,4 +106,24 @@ class AdminLogic
         } while (true);
         return $codes;
     }
+
+    public function proxyRingIds($adminId)
+    {
+        $rings = [];
+        $idArr = is_array($adminId) ? $adminId : [$adminId];
+        do {
+            $admins = Admin::where(["pid" => ["IN", $idArr]])->column("admin_id,role");
+            if (empty($admins)) {
+                break;
+            } else {
+                $idArr = array_keys($admins);
+                $roleId = array_shift($admins);
+                if($roleId == Admin::RING_ROLE_ID){
+                    $rings = $idArr;
+                    break;
+                }
+            }
+        } while (true);
+        return $rings;
+    }
 }
