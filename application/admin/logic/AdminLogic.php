@@ -381,6 +381,11 @@ class AdminLogic
         $ids = is_array($id) ? implode(",", $id) : $id;
         return Admin::destroy($ids);
     }
+    public function adminByMobile($mobile)
+    {
+        $admin = Admin::where(['mobile' => $mobile])->find();
+        return $admin ? $admin->toArray() : [];
+    }
 
     //是否代理商
     public function isProxy($roleId){
