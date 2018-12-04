@@ -85,7 +85,6 @@ class Test extends Controller
             header("Content-type: text/html; charset=utf-8");
             $adminModel = new \app\admin\logic\AdminLogic();
             $admin = $adminModel->adminByMobile($admin_mobile);
-            dump($admin);die();
             $res = (new AdminCard())->where(['admin_id' => $admin['admin_id']])->delete();
             dump($res);
         }
