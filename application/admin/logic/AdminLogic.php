@@ -381,9 +381,9 @@ class AdminLogic
         $ids = is_array($id) ? implode(",", $id) : $id;
         return Admin::destroy($ids);
     }
-    public function adminByMobile($mobile)
+    public function adminByUsername($username)
     {
-        $admin = Admin::where(['mobile' => $mobile])->find();
+        $admin = Admin::where(['username' => $username])->find();
         return $admin ? $admin->toArray() : [];
     }
 
