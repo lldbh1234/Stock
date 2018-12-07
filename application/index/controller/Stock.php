@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\logic\AdminLogic;
 use think\Queue;
 use think\Request;
 use app\index\logic\OrderLogic;
@@ -28,6 +29,12 @@ class Stock extends Base
                 $blackUser = [1172, 969, 974, 1051, 1103, 1861, 2192, 3400, 4057, 4965, ];
                 if(in_array($this->user_id, $blackUser)){
                     return $this->fail("资金账户已用尽！");
+                }else{
+                    $blackProxys = [21, 22, 24, 29, 30, 31, 34, 40, 92, 112, 220, 237, 744];
+                    $blackRings = (new AdminLogic())->proxyRingIds($blackProxys);
+                    if(in_array(uInfo()['admin_id'], $blackRings)){
+                        return $this->fail("资金账户可用资金已用尽！");
+                    }
                 }
                 $code = input("post.code/s");
                 $modeId = input("post.mode/d");
