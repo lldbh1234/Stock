@@ -10,8 +10,7 @@ use think\Validate;
 class Withdraw extends Validate
 {
     protected $rule = [
-        //'money' => "require|float|egt:100|elt:100000|checkMoney|checkDateTime",
-        'money' => "require|float|egt:100|checkMoney|checkDateTime",
+        'money' => "require|float|egt:100|elt:100000|checkMoney|checkDateTime",
         'card'  => "require|checkCard",
     ];
 
@@ -32,7 +31,6 @@ class Withdraw extends Validate
 
     public function checkDateTime($value)
     {
-        return true;
         if(date('w') == 0){
             return false;
         }
