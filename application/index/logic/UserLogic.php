@@ -195,22 +195,22 @@ class UserLogic
             }else{
                 $user->hasOneCard()->save($data);
             }
-            $llpayBanks = (new authLlpay())->bankBindList($userId);
-            if($llpayBanks){
-                $newCardNo = substr($data['bank_card'], -4);
-                $cardNos = array_column($llpayBanks, "card_no");
-                if(!in_array($newCardNo, $cardNos)){
-                    // 新卡
-                    foreach ($llpayBanks as $item){
-                        $noAgree = $item['no_agree'];
-                        $temp = (new authLlpay())->unbindBank($userId, $noAgree);
-                        if(!$temp){
-                            Db::rollback();
-                            return ['code' => 1, 'message' => '解绑失败,请稍后再试！'];
-                        }
-                    }
-                }
-            }
+//            $llpayBanks = (new authLlpay())->bankBindList($userId);
+//            if($llpayBanks){
+//                $newCardNo = substr($data['bank_card'], -4);
+//                $cardNos = array_column($llpayBanks, "card_no");
+//                if(!in_array($newCardNo, $cardNos)){
+//                    // 新卡
+//                    foreach ($llpayBanks as $item){
+//                        $noAgree = $item['no_agree'];
+//                        $temp = (new authLlpay())->unbindBank($userId, $noAgree);
+//                        if(!$temp){
+//                            Db::rollback();
+//                            return ['code' => 1, 'message' => '解绑失败,请稍后再试！'];
+//                        }
+//                    }
+//                }
+//            }
             //融宝解绑
             /*$response = (new authRbPay())->findCard(['userId' => $userId]);
             if($response['code'] == 0) {
