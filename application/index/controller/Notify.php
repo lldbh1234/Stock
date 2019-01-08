@@ -3,7 +3,9 @@ namespace app\index\controller;
 
 use app\common\payment\authRbPay;
 use app\common\payment\huifuPay;
+use app\common\payment\paymentFuiou;
 use app\common\payment\paymentLLpay;
+use app\common\payment\xyFuiouPay;
 use app\index\logic\AdminWithdrawLogic;
 use app\index\logic\WithdrawLogic;
 use think\Controller;
@@ -190,6 +192,109 @@ class Notify extends Controller
             $response['date123'] = date('Y-m-d H:i:s');
             @file_put_contents("./pay_rongbao.log", json_decode($response).PHP_EOL, FILE_APPEND);
             die("fail");
+        }
+    }
+    // 富友协议支付回调
+    public function fuiouXyNotify()
+    {
+        header("Content-Type:text/html;charset=utf-8");
+        $html = file_get_contents('php://input');
+        file_put_contents("./fuiou.log", $html . "\r\n", FILE_APPEND);
+        parse_str($html, $response);
+        if($response){
+            $obj = new xyFuiouPay();
+            $sign = $obj->checkSignature($response);
+            if($sign){
+                if($response['RESPONSECODE'] == "0000"){
+                    $_rechargeLogic = new RechargeLogic();
+                    $order = $_rechargeLogic->orderByTradeNo($response['MCHNTORDERID'], 0);
+                    if($order){
+                        // 有该笔充值订单
+                        $res = $_rechargeLogic->rechargeComplete($response['MCHNTORDERID'], $order['amount'], $order['user_id'], $response['ORDERID']);
+                        if(!$res){
+                            json([])->code(200);
+                            @file_put_contents("./fuiou.log", "SUCCESS\r\n", FILE_APPEND);
+                        }else{
+                            json([])->code(500);
+                            @file_put_contents("./fuiou.log", "ORDER CHANGE ERROR\r\n", FILE_APPEND);
+                        }
+                    }else{
+                        json([])->code(404);
+                        @file_put_contents("./fuiou.log", "ORDER NOT EXIST\r\n", FILE_APPEND);
+                    }
+                }else{
+                    json([])->code(401);
+                    @file_put_contents("./fuiou.log", "PAYMENT FAILED\r\n", FILE_APPEND);
+                }
+            }else{
+                json([])->code(401);
+                @file_put_contents("./fuiou.log", "SIGN ERROR\r\n", FILE_APPEND);
+            }
+        }else{
+            json([])->code(204);
+            @file_put_contents("./fuiou.log", "DATA EMPTY\r\n", FILE_APPEND);
+        }
+    }
+
+    public function fuiouPayment()
+    {
+        header("Content-Type:text/html;charset=utf-8");
+        $html = file_get_contents('php://input');
+        parse_str($html, $response);
+        @file_put_contents("./fuiou_payment.log", json_encode($response) . "\r\n", FILE_APPEND);
+        if($response){
+            $payment = new paymentFuiou();
+            $sign = $payment->checkSignature($response);
+            if($sign){
+                if($response['state'] == '1'){
+                    // 支付成功
+                    $orderIndex = substr($response['orderno'], -1);
+                    $orderSn = substr($response['orderno'], 0, -1);
+                    if($orderIndex == "A"){
+                        @file_put_contents("./fuiou_payment.log", "USER ORDER\r\n", FILE_APPEND);
+                        // 用户出金
+                        $_withdrawLogic = new WithdrawLogic();
+                        $order = $_withdrawLogic->orderByTradeNo($orderSn, 1);
+                        if($order){
+                            $data = ["state" => 2];
+                            $res = $_withdrawLogic->updateByTradeNo($orderSn, $data);
+                            if(!$res){
+                                @file_put_contents("./fuiou_payment.log", "CHANGE FAILED\r\n", FILE_APPEND);
+                                die("1");
+                            }
+                            @file_put_contents("./fuiou_payment.log", "SUCCESS\r\n", FILE_APPEND);
+                        }
+                        die("1");
+                    }elseif($orderIndex == "B"){
+                        @file_put_contents("./fuiou_payment.log", "PROXY ORDER\r\n", FILE_APPEND);
+                        // 代理商出金
+                        $_withdrawLogic = new AdminWithdrawLogic();
+                        $order = $_withdrawLogic->orderByTradeNo($orderSn, 1);
+                        if($order){
+                            $data = ["state" => 2];
+                            $res = $_withdrawLogic->updateByTradeNo($orderSn, $data);
+                            if(!$res){
+                                @file_put_contents("./fuiou_payment.log", "CHANGE FAILED\r\n", FILE_APPEND);
+                                die("1");
+                            }
+                            @file_put_contents("./fuiou_payment.log", "SUCCESS\r\n", FILE_APPEND);
+                        }
+                        die("1");
+                    }else{
+                        @file_put_contents("./fuiou_payment.log", "ORDER ERROR\r\n", FILE_APPEND);
+                        die("0");
+                    }
+                }else{
+                    @file_put_contents("./fuiou_payment.log", "PAYMENT FAILED\r\n", FILE_APPEND);
+                    die("1");
+                }
+            }else{
+                @file_put_contents("./fuiou_payment.log", "SIGN ERROR\r\n", FILE_APPEND);
+                die("0");
+            }
+        }else{
+            @file_put_contents("./fuiou_payment.log", "DATA EMPTY\r\n", FILE_APPEND);
+            die("0");
         }
     }
 }

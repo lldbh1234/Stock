@@ -4,6 +4,7 @@ namespace app\admin\logic;
 use app\admin\model\Admin;
 use app\admin\model\User;
 use app\admin\model\UserWithdraw;
+use app\common\payment\paymentFuiou;
 use app\common\payment\paymentLLpay;
 use think\Db;
 
@@ -124,6 +125,22 @@ class UserWithdrawLogic
                 // 审核通过
                 // 代付接口
                 $remark = json_decode($withdraw->remark, true);
+                /*富有代付
+                $tradeNo = $withdraw->out_sn . "A"; // A用户出金标识
+                $response = (new paymentFuiou())->payment($tradeNo, $withdraw->actual, $remark);
+                if($response->ret == "000000" || $response->ret == "AAAAAA"){
+                    $data = [
+                        "id" => $id,
+                        "state" => $state,
+                        "update_by" => isLogin()
+                    ];
+                    UserWithdraw::update($data);
+                }else{
+                    // 代付申请失败
+                    Db::rollback();
+                    return [false, "代付平台错误：{$response->memo}！"];
+                }
+                */
                 $withdrawData = [
                     "tradeNo" => $withdraw->out_sn,
                     "amount" => $withdraw->actual,

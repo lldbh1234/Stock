@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\payment\authLlpay;
 use app\common\payment\authRbPay;
 use app\common\payment\huifuPay;
+use app\common\payment\xyFuiouPay;
 use app\index\logic\OrderLogic;
 use app\index\logic\RechargeLogic;
 use app\index\logic\RegionLogic;
@@ -167,7 +168,6 @@ class User extends Base
     {
         if(request()->isPost()){
             header("Content-type: text/html; charset=utf-8");
-            return request()->isAjax() ? $this->fail("通道维护中！") : "通道维护中！";
             $validate = \think\Loader::validate('Recharge');
             if(!$validate->scene('do')->check(input("post."))){
                 return $this->fail($validate->getError());
@@ -180,6 +180,8 @@ class User extends Base
                     $way = 3; //支付通道，3-汇付天下
                 }elseif ($type == 3){
                     $way = 4; //支付通道，4-融宝支付
+                }elseif ($type == 5){
+                    $way = 6; //支付通道 6-富友支付（协议支付）
                 }else{
                     return $this->fail("请选择支付通道！");
                 }
@@ -231,6 +233,12 @@ class User extends Base
                         ];
                         $response = (new authRbPay())->payForm($parameter);
                         echo $response;
+                        exit;
+                    }elseif($way == 6){
+                        //富友支付（协议支付）
+                        $user = $this->_logic->userIncCard($this->user_id);
+                        $html = (new xyFuiouPay())->getHtml($orderSn, $this->user_id, $amount, $user['has_one_card']);
+                        echo $html;
                         exit;
                     }
                 }else{

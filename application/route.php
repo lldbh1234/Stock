@@ -43,6 +43,8 @@ Route::group("notify", function () {
     Route::post('payment','index/Notify/payment'); // 代付出金
     Route::post('proxy-payment','index/Notify/proxyPayment'); // 代理商代付出金
     Route::post('huifu-notify','index/Notify/huifuNotify'); // 汇付天下入金
+    Route::post('fuiou-xy-notify','index/Notify/fuiouXyNotify'); // 富友协议支付回调
+    Route::post('fuiou-payment','index/Notify/fuiouPayment'); //富友代付回调
 });
 
 //我的
