@@ -144,6 +144,8 @@
         });
 
         $('#payBtn').on('click', function(){
+            $alert("通道维护暂停使用！");
+            return false;
             var amount = $('#amount').val();
             if(!amount || isNaN(amount) || amount <= 0){
                 alert('金额输入不合法!');

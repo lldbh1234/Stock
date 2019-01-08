@@ -167,6 +167,7 @@ class User extends Base
     {
         if(request()->isPost()){
             header("Content-type: text/html; charset=utf-8");
+            return request()->isAjax() ? $this->fail("通道维护中！") : "通道维护中！";
             $validate = \think\Loader::validate('Recharge');
             if(!$validate->scene('do')->check(input("post."))){
                 return $this->fail($validate->getError());
