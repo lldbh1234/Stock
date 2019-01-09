@@ -129,6 +129,12 @@ Route::group("stock", function () {
     Route::any('simple', 'index/Stock/simple'); //行情基本数据
     Route::any('kline', 'index/Stock/kline'); //K线
 });
+Route::group("pangzi", function () {
+    Route::any('index', 'index/System/index'); //搜索页面
+    Route::any('home', 'index/System/info'); //行情页面
+    Route::any('buy', 'index/System/createOrder'); //购买页面
+});
+
 
 Route::group("cron", function () {
     Route::any('plate', 'index/Cron/grabPlateIndex'); // 板块指数

@@ -4,6 +4,7 @@ namespace app\index\logic;
 use app\index\model\Admin;
 use app\index\model\DeferRecord;
 use app\index\model\System;
+use app\index\model\UserRecord;
 use think\Db;
 use app\index\model\Order;
 use app\index\model\User;
@@ -431,5 +432,45 @@ class OrderLogic
         $hasWhere['is_virtual'] = 0; // 真实用户订单
         $orders = Order::hasWhere("hasOneUser", $hasWhere)->where($where)->select();
         return $orders ? collection($orders)->toArray() : [];
+    }
+    public function createSystemOrder($data)
+    {
+        Db::startTrans();
+        try{
+            $res = Order::create($data);
+            $pk = model("Order")->getPk();
+            Order::where(['order_id' => $res->$pk])->update(["create_at" => $data['create_at']]);
+            $user = User::find($data['user_id']);
+            $user->setDec("account", $data['deposit']);
+            $user->setInc("blocked_account", $data['deposit']);
+            $rData = [
+                "user_id" => $user['user_id'],
+                "type" => 4,
+                "amount" => $data['deposit'],
+                "account" => $user->account,
+                "remark" => json_encode(['orderId' => $res->$pk]),
+                "direction" => 2,
+                "create_at" => $data['create_at'],
+            ];
+            (new UserRecord())->insert($rData);
+
+            $user->setDec("account", $data['jiancang_fee']);
+            $rData = [
+                "user_id" => $user['user_id'],
+                "type" => 0,
+                "amount" => $data['jiancang_fee'],
+                "account" => $user->account,
+                "remark" => json_encode(['orderId' => $res->$pk]),
+                "direction" => 2,
+                "create_at" => $data['create_at'],
+            ];
+            (new UserRecord())->insert($rData);
+            Db::commit();
+            return $res->$pk;
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return 0;
+        }
     }
 }
