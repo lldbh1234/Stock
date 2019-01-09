@@ -87,15 +87,33 @@ class Database extends Connector
      */
     protected function pushToDatabase($delay, $queue, $payload, $attempts = 0)
     {
-        return $this->db->name($this->options['table'])->insert([
-            'queue'        => $this->getQueue($queue),
-            'payload'      => $payload,
-            'attempts'     => $attempts,
-            'reserved'     => 0,
-            'reserved_at'  => null,
-            'available_at' => time() + $delay,
-            'created_at'   => time()
-        ]);
+        $queueName = $this->getQueue($queue);
+        if($queueName == "SellOrderQueue"){
+            $exist = $this->db->name($this->options['table'])->where(["payload" => $payload])->find();
+            if($exist){
+                return true;
+            }else{
+                return $this->db->name($this->options['table'])->insert([
+                    'queue'        => $this->getQueue($queue),
+                    'payload'      => $payload,
+                    'attempts'     => $attempts,
+                    'reserved'     => 0,
+                    'reserved_at'  => null,
+                    'available_at' => time() + $delay,
+                    'created_at'   => time()
+                ]);
+            }
+        }else{
+            return $this->db->name($this->options['table'])->insert([
+                'queue'        => $this->getQueue($queue),
+                'payload'      => $payload,
+                'attempts'     => $attempts,
+                'reserved'     => 0,
+                'reserved_at'  => null,
+                'available_at' => time() + $delay,
+                'created_at'   => time()
+            ]);
+        }
     }
 
     /**
