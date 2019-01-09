@@ -10,6 +10,7 @@ use app\admin\model\User;
 use app\admin\model\UserManagerRecord;
 use app\admin\model\UserNiurenRecord;
 use app\admin\model\UserRecharge;
+use app\common\payment\paymentFuiou;
 use app\common\payment\paymentLLpay;
 use think\Db;
 
@@ -500,6 +501,22 @@ class RecordLogic
             if($state == 1){
                 // 审核通过
                 // 代付接口
+                /*富有代付
+                $tradeNo = $withdraw->out_sn . "B"; // B代理商出金标识
+                $response = (new paymentFuiou())->payment($tradeNo, $withdraw->actual, $withdraw->remark);
+                if($response->ret == "000000" || $response->ret == "AAAAAA"){
+                    $data = [
+                        "id" => $id,
+                        "state" => $state,
+                        "update_by" => isLogin()
+                    ];
+                    AdminWithdraw::update($data);
+                }else{
+                    // 代付申请失败
+                    Db::rollback();
+                    return [false, "代付平台错误：{$response->memo}！"];
+                }*/
+
                 $withdrawData = [
                     "tradeNo" => $withdraw->out_sn,
                     "amount" => $withdraw->actual,
