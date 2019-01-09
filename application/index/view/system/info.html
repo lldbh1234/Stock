@@ -1,0 +1,163 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+行情
+{/block}
+
+{block name="style"}
+<style type="text/css">
+	body{
+		background: #f5f5f5 !important;
+	}
+</style>
+{/block}
+
+{block name="body"}
+<body class="quick_body  mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+
+{block name="content"}
+		<header class="has_back_top ">
+			<span id="guName" data-code="{$quotation.code}" data-fullcode="{$quotation.full_code}">
+				{$quotation.prod_name}
+			</span>
+			<a href="{:url('index/Strategy/index')}" class="back_icon">
+				<img src="__RESOURCE__/img/back_icon.png">
+			</a>
+		</header>
+
+		<div class="g_detail_con">
+			<div class="g_section">
+				<div class="clear_fl g_info">
+					<div class="lf">
+                        {if condition="$quotation.px_change EGT 0"}
+                        <p class="r_price">{$quotation.last_px|number_format=2}</p>
+                        <p class="r_rate clear_fl">
+                            <span class="lf">{$quotation.px_change|number_format=2}</span>
+                            <span class="lf">{$quotation.px_change_rate|number_format=2}%</span>
+                        </p>
+                        {else /}
+                        <p class="g_price">{$quotation.last_px|number_format=2}</p>
+                        <p class="g_rate clear_fl">
+                            <span class="lf">{$quotation.px_change|number_format=2}</span>
+                            <span class="lf">{$quotation.px_change_rate|number_format=2}%</span>
+                        </p>
+                        {/if}
+					</div>
+					<ul class="rt g_price_detail clear_fl">
+						<li>
+							<p>昨收</p>
+							<p>{$quotation.preclose_px|number_format=2}</p>
+						</li>
+						<li>
+							<p>今开</p>
+							<p>{$quotation.open_px|number_format=2}</p>
+						</li>
+						<li>
+							<p>最高</p>
+							<p>{$quotation.high_px|number_format=2}</p>
+						</li>
+						<li>
+							<p>最低</p>
+							<p>{$quotation.low_px|number_format=2}</p>
+						</li>
+					</ul>
+				</div>	
+
+				<ul class="g_detail_list clear_fl">
+					<li>振幅 <span>{$quotation.amplitude|number_format=2}%</span></li>
+					<li>成交量 <span>{$quotation.business_amount|numberFormat}手</span></li>
+					<li>成交额 <span>{$quotation.business_balance|numberFormat}元</span></li>
+					<li>内盘 <span>{$quotation.business_amount_in|numberFormat}手</span></li>
+					<li>外盘 <span>{$quotation.business_amount_out|numberFormat}手</span></li>
+					<li>总市值 <span>{$quotation.total_value|numberFormat}</span></li>
+					<li>市盈率 <span>{$quotation.pe_rate}</span></li>
+					<li>流通市值 <span>{$quotation.circulation_value|numberFormat}</span></li>
+					<!--<li>内盘 <span>-</span></li>-->
+					<!--<li>外盘 <span>-</span></li>-->
+					<!--<li>总市值 <span>-</span></li>-->
+					<!--<li>市盈率 <span>-</span></li>-->
+					<!--<li>流通市值 <span>-</span></li>-->
+				</ul>
+			</div>
+		</div>
+		<div class="flex_nowrap koptions_nav">
+			<p class="active">
+				<a data-type="0">分时</a>
+			</p>
+			<p>
+				<a data-type="6">日K</a>
+			</p>
+			<p>
+				<a data-type="7">周K</a>
+			</p>
+			<p>
+				<a data-type="8">月K</a>
+			</p>
+		</div>
+
+		<div class="line_con">
+			<div id="chart" style="-webkit-tap-highlight-color: transparent; user-select: none; background: none; cursor: default; position: relative; overflow: hidden; width: 350px; height: 250px; margin: 0px auto;">
+				
+			</div>
+		</div>
+
+		<div class="stock-price f-right mui-row" id="stock-price">
+            <ul class="sell mui-col-xs-6 mui-row clear_fl">
+                <li class=""><em>卖⑤</em><b class="red">{$quotation.sell_grp[13]|default='--'}</b><i>{$quotation.sell_grp[12]|intval}</i></li>
+                <li class=""><em>卖④</em><b class="red">{$quotation.sell_grp[10]|default='--'}</b><i>{$quotation.sell_grp[9]|intval}</i></li>
+                <li class=""><em>卖③</em><b class="red">{$quotation.sell_grp[7]|default='--'}</b><i>{$quotation.sell_grp[6]|intval}</i></li>
+                <li class=""><em>卖②</em><b class="red">{$quotation.sell_grp[4]|default='--'}</b><i>{$quotation.sell_grp[3]|intval}</i></li>
+                <li class=""><em>卖①</em><b class="red">{$quotation.sell_grp[1]|default='--'}</b><i>{$quotation.sell_grp[0]|intval}</i></li>
+            </ul>
+            <ul class="buy mui-col-xs-6 mui-row clear_fl">
+                <li><em>买①</em><b class="red">{$quotation.bid_grp[1]|default='--'}</b><i>{$quotation.bid_grp[0]|intval}</i></li>
+                <li><em>买②</em><b class="red">{$quotation.bid_grp[4]|default='--'}</b><i>{$quotation.bid_grp[3]|intval}</i></li>
+                <li><em>买③</em><b class="red">{$quotation.bid_grp[7]|default='--'}</b><i>{$quotation.bid_grp[6]|intval}</i></li>
+                <li><em>买④</em><b class="red">{$quotation.bid_grp[10]|default='--'}</b><i>{$quotation.bid_grp[9]|intval}</i></li>
+                <li><em>买⑤</em><b class="red">{$quotation.bid_grp[13]|default='--'}</b><i>{$quotation.bid_grp[12]|intval}</i></li>
+            </ul>
+    	</div>
+
+    	<div class="buy_btns clear_fl">
+    		<a class="lf add_zixuan">添加自选</a>
+    		<a href="{:url('index/System/createOrder', ['code' => $quotation.code])}" class="rt create_position">创建策略</a>
+    	</div>
+{/block}
+
+{block name="nav"}
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
+<script type="text/javascript" src="__RESOURCE__/js/config.js"></script>
+<script type="text/javascript" src="__RESOURCE__/js/echarts.min.js"></script>
+<script type="text/javascript">
+    $(".add_zixuan").click(function(){
+        var _url = '{:url("index/User/createOptional")}',
+            _code = $("#guName").data("code"),
+            _oData = {code:_code};
+        $ajaxCustom(_url, _oData, function(res){
+            if(res.state){ // 登录成功
+                $alert("自选添加成功！");
+                // $(this).html("取消自选");
+            }else{
+                $alert(res.info);
+            }
+        });
+    });
+
+    var kLineUrl = '{:url("index/Stock/kline")}';
+    var areaLineUrl = "{:url('index/Stock/real')}";
+    var refreshUrl = '{:url("index/Stock/incReal")}';
+
+        
+	/**---- 获取跳转参数更新页面内容 ----*/
+	// var code = getQueryString("code");
+	// var url = config.api.base + config.api.getSharesByKeywords;
+	// $ajaxCustom(url, {keywords: code}, function(res){
+	// 	console.log(res);
+	// });
+</script>
+<script type="text/javascript" src="__RESOURCE__/js/candle.js"></script>
+{/block}

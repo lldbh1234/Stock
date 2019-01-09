@@ -1,0 +1,473 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+策略
+{/block}
+
+{block name="style"}
+<style type="text/css">
+    body{
+        background: #f5f5f5!important;
+    }
+    .zixuan_list{
+        margin-bottom: 70px;
+    }
+    .green{
+        font-size: 13px;
+    }
+    .remove_btn, .add_h_btn {
+        width: 10%!important;
+        float: left;
+    }
+    .search_h_list span:nth-child(1) {
+        width: 50%;
+        text-align: left;
+        font-size: 13px;
+        color: #333;
+    }
+    * {
+        -webkit-user-select: auto!important;
+    }
+    .search_con input {
+        width: 100%;
+        height: 46px;
+        line-height: 46px;
+        padding-left: 40px;
+        background-size: 20px 20px;
+        border: none;
+        border-radius: 3px;
+        font-size: 16px;
+        color: #333;
+        padding-right: 30px;
+    }
+    body{
+        padding-bottom: 50px;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<body>
+{/block}
+
+{block name="content"}
+    <!--<header class="strategy_top">-->
+        <!--<p>-->
+            <!--<a href="javascript:void(0);" class="active">策略</a>-->
+            <!--<a href="{:url('index/Order/position')}">策略持仓</a>-->
+        <!--</p>-->
+    <!--</header>-->
+    <div class="search_con">
+        <input styel="-webkit-user-select:auto" id="searchInput" placeholder="请输入股票代码/名称"/>
+    </div>
+    <div class="search_content_box">
+        <div class="search_history">
+            <h1 class="search_h_title clear_fl">
+                搜索历史
+                <span class="rt clear_btn">清空</span>
+            </h1>
+            <ul class="search_h_list">
+                <!-- <li>
+                    <a  class="flex_nowrap" href="hangqing.html?code=600179">
+                        <span>招商银行 600179</span>
+                        <span class="red">28.17</span>
+                        <span class="red">+8.17%</span>
+                        <span class="add_h_btn"><img src="__RESOURCE__/img/add_btn.png"></span>
+                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>
+                    </a> -->
+                </li>
+            </ul>
+        </div>
+        <div class="search_history hot_recommend" style="margin-top: 8px;">
+            <h1 class="search_h_title clear_fl">热点强势股</h1>
+            <ul class="recommend_list flex_nowrap">
+                {volist name="hots" id="item"}
+                <li data-code="{$item.code}" data-fullcode="{$item.full_code}" class="fresh{$item.code} hotItems">
+                    <a href="{:url('index/System/createOrder', ['code' => $item.code])}">
+                        <p class="shares_name">{$item.name}</p>
+                        <p class="shares_code">{$item.code}</p>
+                        <p class="shares_price {egt name='item.px_change' value='0'}red{/egt}">{$item.last_px}</p>
+                        <p class="shares_detail">
+                            <span class="{egt name='item.px_change' value='0'}red{else /}green{/egt}">{$item.px_change}</span>
+                            <span class="{egt name='item.px_change' value='0'}red{else /}green{/egt}">{$item.px_change_rate}%</span>
+                        </p>
+                    </a>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+{/block}
+
+{block name="nav"}
+    <nav class="ml_tab mui-bar mui-bar-tab">
+        <a class="mui-tab-item" href="{:url('index/Index/index')}">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="{:url('index/User/optional')}">
+            <span class="mui-icon mui-icon-zixuan"></span>
+            <span class="mui-tab-label">自选</span>
+        </a>
+        <a class="mui-tab-item center_item" href="{:url('index/Ai/index')}">
+            <span class="mui-icon mui-icon-celue"></span>
+            <span class="mui-tab-label">AI智能策略</span>
+        </a>
+        <a class="mui-tab-item mui-active" href="javascript:void(0);">
+            <span class="mui-icon mui-icon-jingu"></span>
+            <span class="mui-tab-label">策略</span>
+        </a>
+        <a class="mui-tab-item" href="{:url('index/User/index')}">
+            <span class="mui-icon mui-icon-my"></span>
+            <span class="mui-tab-label">我的</span>
+        </a>
+    </nav>
+{/block}
+
+{block name="script"}
+    <script type="text/javascript" src="__STATIC__/js/stock.js"></script>
+    <script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
+    <script type="text/javascript">
+/**
+ * 判断当前时间是否在9:30-11:30, 13:00-15:00（交易时间）
+ */
+function isTradingTime(){
+    var date = new Date();
+    //判断是不是周末
+    var dt=date.getDay();
+    if(dt=='6'||dt=='7'){
+        return false;
+    }
+    //判断当前时间是否在9:30-11:30, 13:00-15:00
+    var h = date.getHours();
+    var mi = date.getMinutes();
+    var s = date.getSeconds();
+    if(h < 10){
+        h = "0" + h;
+    }
+    if(mi < 10){
+        mi = "0"+ mi;
+    }
+    if(s < 10){
+        s = "0" + s;
+    }
+    var curTime = h + ":" + mi + ":" + s;
+//  console.log(curTime);
+    if( curTime >= "09:30:00" && curTime <= "11:30:00" || curTime >= "13:00:00" && curTime <= "15:00:00" ){
+        return true;
+    }
+    return false;
+}
+
+
+
+        var refreshTimer = null; //刷新搜索结果
+        var refreshTimer1 = null; //刷新搜索历史
+        mui.init({
+            swipeBack: true //启用右滑关闭功能
+        })
+        //选项卡
+         mui('body').on('tap', 'a', function() {
+            var data_href = this.getAttribute("data-href");
+            var href = this.getAttribute("href");
+            var url=data_href;
+            if(!url||url==''){
+                url=href;
+            }
+            window.location.href = url;
+         });
+
+
+
+         $("#searchInput").keyup(function(){
+            var val = $(this).val();
+            displayItems(val);
+        });
+        var searchCon = "";
+        function displayItems(items) {
+            var code = new Array();
+            var html = "";
+            if (items==''){ //搜索结果为空， 置空列表
+                html=searchCon;
+                $(".search_content_box").html( html );
+                if(refreshTimer){
+                    clearInterval(refreshTimer);
+                    refreshTimer = null;
+                }
+                refreshTimer1 = setInterval(refreshPrice1,3000);
+            }else{
+                var j = 0;
+                for (var i = 0; i < stocks.length; i++) {
+                    var reg = new RegExp('^' + items + '.*$', 'im');
+                    if (reg.test(stocks[i][0]) || reg.test(stocks[i][1]) || reg.test(stocks[i][2]) || reg.test(stocks[i][3])) {
+                        if(j < 15){
+                            code.push( stocks[i][3] );
+                            j++;
+                        }else{
+                            break;
+                        }
+                    }
+                }
+
+                if(code.length == 0){
+                    var html = '<ul><li class="no_more"></li><li style="text-align:center;font-size:12px;color:#999;background:transparent;border:none;">暂无搜索结果</li></ul>';
+                    $(".search_content_box").html( html );
+                }
+
+                if(refreshTimer1){
+                    clearInterval(refreshTimer1);
+                    refreshTimer1 = null;
+                }
+
+
+                code = code.join(",");
+                var _url = "{:url('index/Stock/simple')}",
+                    _oData = {code: code};
+                    sinaAjax(code, function(res){ 
+                        if(res.state){ // 登录成功
+                            for( var key in res.data ){
+                                var rate = parseFloat(res.data[key].px_change_rate);
+                                var className = "";
+                                if(rate >= 0){
+                                    className = "red"
+                                }else{
+                                    className = "green"
+                                }
+                                html += '<li class="list_header flex_nowrap">\
+                                    <div style="width: 15%; display: none;" class="mui-input-row mui-checkbox mui-left select_btn">\
+                                        <label></label>\
+                                        <input name="checkbox" value="Item 1" type="checkbox">\
+                                    </div>\
+                                    <div style="width:80%" class="flex_nowrap" href="/system/home.html?code='+ res.data[key].code +'">\
+                                        <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span data-code="'+ res.data[key].fullCode +'" data-fullcode="'+ res.data[key].full_code +'">' + res.data[key].code + '</span></span>\
+                                        <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
+                                        <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
+                                        \
+                                    </div>\
+                                    <span style="width:20%">\
+                                        <span href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</span>\
+                                    </span>\
+                                </li>';
+                            }
+
+                            $(".search_content_box").html( "<ul class='zixuan_list'></ul>" );
+                            $(".zixuan_list").html(html);
+                            refreshTimer = setInterval(refreshPrice,3000);
+                        }else{
+                            // $alert(res.info);
+                        }
+                });
+            }
+        }
+
+        $(function(){
+            searchCon = $(".search_content_box").html();
+            var storage = window.localStorage;
+            var searchHistory = storage.searchHistory;
+            var _url = "{:url('index/Stock/simple')}",
+                    _oData = {code: searchHistory};
+            sinaAjax(searchHistory , function(res){
+                if(res.state){ // 登录成功
+                    var html = "";
+                    var array = searchHistory.split(",");
+                    for( var i in array){
+                        var key = i;
+                        var rate = parseFloat(res.data[key].px_change_rate);
+                        var className = "";
+                        if(rate >= 0){
+                            className = "red"
+                        }else{
+                            className = "green"
+                        }
+                        html += '<li data-code="'+ res.data[key].code +'" data-fullcode="'+ res.data[key].fullCode +'" class="clear_fl fresh'+ res.data[key].code +'">\
+                    <a style="width:80%"  class="flex_nowrap lf" href="/system/home.html?code='+ res.data[key].code +'">\
+                        <span>'+res.data[key].prod_name+' '+ res.data[key].code +'</span>\
+                        <span class="'+ className +'">' + res.data[key].last_px + '</span>\
+                        <span class="'+ className +'">' + res.data[key].px_change_rate + '%</span>\
+                        </a>\
+                        <span class="add_h_btn"><img  src="__RESOURCE__/img/add_btn.png"></span>\
+                        <span class="remove_btn"><img class="rt" src="__RESOURCE__/img/remove_btn.png"></span>\
+                </li>';
+                    }
+
+                    $(".search_h_list").html(html);
+                    searchCon = $(".search_content_box").html();
+                }else{
+                    // $alert(res.info);
+                }
+            });
+
+            refreshTimer1 = setInterval(refreshPrice1,3000);
+        });
+
+
+        $("body").on("click", ".add_h_btn", function(){
+            var _url = '{:url("index/User/createOptional")}',
+            _code = $(this).parents("li").data("code"),
+            _oData = {code:_code};
+            $ajaxCustom(_url, _oData, function(res){
+                if(res.state){ // 登录成功
+                    $alert("自选添加成功！");
+                    // $(this).html("取消自选");
+                }else{
+                    $alert(res.info);
+                }
+            });
+        });
+
+
+        $("body").on("click", ".remove_btn", function(){
+            var _code = $(this).parents("li").data("fullcode") + "";
+            var storage = window.localStorage;
+            var searchHistory = storage.searchHistory.split(",");
+            var index = searchHistory.indexOf(_code);
+            if (index > -1) {
+                searchHistory.splice(index, 1);
+            }
+            searchHistory = searchHistory.join(",");
+            storage.searchHistory = searchHistory;
+            $(this).parents("li").remove();
+        });
+
+
+        $("body").on("click", ".clear_btn", function(e){
+            e.preventDefault();
+            var storage = window.localStorage;
+            storage.searchHistory = "";
+            $(".search_h_list").empty();
+        });
+
+        //实时更新
+        refreshTimer =setInterval(refreshPrice,4000);
+        function refreshPrice(){
+            if( !isTradingTime() ){
+                return false;
+            }
+            var code = new Array();
+            var fullcode = new Array();
+
+            if( $(".zixuan_list li").length > 0 ){
+                var html='';
+                $(".zixuan_list li").each(function(){
+                    var _code = $(this).find(".zi_name").find("span+span").html();
+                    var _fullcode = $(this).find(".zi_name").find("span+span").attr("data-code");
+
+                    code.push( _code );
+                    fullcode.push( _fullcode );
+                });
+
+                code = code.join(",");
+                fullcode = fullcode.join(",");
+
+                var _url = "{:url('index/Stock/simple')}",
+                    _oData = {code: code};
+
+                sinaAjax(fullcode, function(res){
+                    if(res.state){ // 登录成功
+                        if( $(".edit_btn").hasClass("active") ){
+                            return false;
+                        }
+                        for( var key in res.data ){
+                            var rate = parseFloat(res.data[key].px_change_rate);
+                            var className = "";
+                            if(rate >= 0){
+                                className = "red"
+                            }else{
+                                className = "green"
+                            }
+                            html += '<li class="list_header flex_nowrap">\
+                                        <div style="width: 15%; display: none;" class="mui-input-row mui-checkbox mui-left select_btn">\
+                                            <label></label>\
+                                            <input name="checkbox" value="Item 1" type="checkbox">\
+                                        </div>\
+                                        <a style="width:80%" class="flex_nowrap" href="/system/home.html?code='+ res.data[key].code +'">\
+                                            <span class="zi_name" style="width:80%;padding-left: 18px;"> <span>'+ res.data[key].prod_name +'</span><span data-code="' + res.data[key].fullCode + '">' + res.data[key].code + '</span></span>\
+                                            <span style="width:40%" class="' + className + '">' + res.data[key].last_px + '</span>\
+                                            <span style="width:40%" class="' + className + '">' + res.data[key].px_change_rate + '%</span>\
+                                            \
+                                        </a>\
+                                        <span style="width:20%">\
+                                            <a href="" class="mui-btn mui-btn-success mui-btn-outlined">创建策略</a>\
+                                        </span>\
+                                    </li>';
+                        }
+                        $(".zixuan_list").html( html );
+                    }else{
+                        // $alert(res.info);
+                    }
+                });
+            }
+        }
+
+        function refreshPrice1(){
+            if( !isTradingTime() ){
+                return false;
+            }
+            var _code = new Array();
+            $(".search_h_list li").each(function(){
+                _code.push( $(this).data("fullcode") );
+            });
+            $(".recommend_list li").each(function(){
+                _code.push( $(this).data("fullcode") );
+            });
+
+            _code = _code.join(",");
+            var _url = "{:url('index/Stock/simple')}",
+                _oData = {code: _code};
+            sinaAjax(_code , function(res){
+                if(res.state){ 
+                    for( var key in res.data ){
+                        var itemData = res.data[key];
+                        var boxContext = $(".aibox" + itemData.code);
+                        var className = "green";
+                        if( parseFloat(itemData.px_change) > 0 ){
+                            className = "red";
+                        }
+                        if( $(".fresh" + itemData.code).hasClass("hotItems") ){
+                            var context = $(".fresh" + itemData.code);
+                            context.find(".shares_price").removeClass("red").addClass(className).html(itemData.last_px );
+                            context.find(".shares_detail span:nth-child(1)").html(itemData.px_change).removeClass("red").addClass(className);
+                            context.find(".shares_detail span:nth-child(2)").html(itemData.px_change_rate + "%").removeClass("red").addClass(className);
+                        }else{
+                            var context = $(".fresh" + itemData.code);
+                            context.find("a span+span+span").html(itemData.px_change_rate + "%").removeClass("red").removeClass("green").addClass(className);
+                            context.find(".a span+span").removeClass("red").removeClass("green").addClass(className).html(itemData.last_px );
+
+                        }
+                    }
+                }else{
+                    // $alert(res.info);
+                }
+            });
+        }
+
+
+        //搜索历史
+        $(".search_content_box").on("click", ".zixuan_list li", function(){
+            var code = $(this).find(".zi_name span+span").attr("data-code");
+            var _code = $(this).find(".zi_name span+span").html();
+
+            var storage = window.localStorage;
+            if( storage.searchHistory ){
+                var searchHistory = storage.searchHistory;
+                searchHistory = searchHistory.split(",");
+                var index = searchHistory.indexOf(code);
+                if (index > -1) {
+                    searchHistory.splice(index, 1);
+                }
+                if( searchHistory.length >= 10 ){
+                    searchHistory.splice(8, searchHistory.length - 9);
+                }
+                searchHistory.unshift( code );
+                searchHistory = searchHistory.join(",");
+                storage.searchHistory = searchHistory;
+            }else{
+                storage.searchHistory = code;
+            }
+            window.location.href = "/system/buy.html?code=" + _code;
+        });
+
+
+    </script>
+{/block}

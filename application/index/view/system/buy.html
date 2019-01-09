@@ -1,0 +1,830 @@
+{extend name="layouts/layout_user" /}
+
+{block name="title"}
+创建策略
+{/block}
+
+{block name="style"}
+<link href="__RESOURCE__/css/foundation-datepicker.min.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	body{
+		background: #f5f5f5 !important;
+	}
+	.now_count{
+		width: 100%;
+		border: 1px solid #ededed;
+	    height: 30px;
+	    line-height: 30px;
+	    text-align: center;
+	    font-size: 12px;
+	    color: #333;
+	}
+	.risk_title{
+		text-align: left;
+	}
+	.read_risk_btn{
+		position: absolute;
+	    width: 100%;
+	    text-align: center;
+	    height: 40px;
+	    line-height: 40px;
+	    color: #fc5155;
+	    font-size: 14px;
+	    left: 0;
+	    bottom: 0;
+	    border-top: 1px solid #ececec;
+	    margin: 0;
+	    background: #fff;
+	}
+	.risk_text p {
+	    font-size: 12px;
+	    color: #333;
+	    line-height: 20px;
+	    text-align: justify;
+	    margin-bottom: 40px;
+	}
+	* {
+        -webkit-user-select: auto!important;
+    }
+    .x_y_options span {
+	    float: left;
+	    width: calc((100% - 24px) / 4);
+	    text-align: center;
+	    border: 1px solid #eaeaea;
+	    font-size: 13px;
+	    color: #999;
+	    height: 28px;
+	    line-height: 28px;
+	    margin-left: 6px;
+	    margin-bottom: 6px;
+	    position: relative;
+	    left: -6px;
+	}
+	.x_y_options span:nth-child(4n + 1) {
+	    margin-left: 6px;
+	}
+	.x_o_title {
+	    line-height: normal;
+	}
+	.pattern_options span, .beishu_options span {
+		width: calc((100% - 18px) / 3);
+		text-align: center;
+		border: 1px solid #eaeaea;
+		height: 28px;
+		line-height: 28px;
+		font-size: 12px;
+		color: #999;
+		float: left;
+		margin-bottom: 6px;
+		margin-left: 6px;
+		white-space: nowrap;
+	}
+	.pattern_options span+span, .beishu_options span+span {
+		margin-left: 6px;
+	}
+	.celue_pattern {
+		padding: 16px 0;
+		background: url(__RESOURCE__/img/right_arrow.png) no-repeat right 24px;
+		background-size: 7px 13px;
+	}
+	.no_arrow {
+		background: #fff!important;
+	}
+	.risk_text{
+		max-height: 240px;
+		overflow: auto;
+	}
+	.risk_content {
+	    margin-top: 130px;
+	}
+	.agree_con span{
+		  color: #007aff;
+	}
+	.read_risk_btn{
+		z-index: 999;
+	}
+	.protocal .risk_content{
+		height: 320px;
+	}
+	.protocal1 .risk_content{
+		height: 320px;
+	}
+</style>
+{/block}
+
+{block name="body"}
+<body class="quick_body  mui-ios mui-ios-10 mui-ios-10-3">
+{/block}
+
+{block name="content"}
+		<!-- 合作协议 - start -->
+	    <div class="risk_mask protocal">
+	        <div class="risk_content">
+	            <p class="risk_title">58好策略居间服务协议</p>
+	            <div class="risk_text">
+	            	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;策略人通过本平台参与沪深A股交易合作将涉及建仓费和履约保证金的发生。如策略人参与持仓时间为T＋1｜D的交易合作还将涉及延递费的发生。本平台主要为策略人与投资人做好，策略撮合.
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第一条释义
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:  网站平台：由58好策略运营，为投资人与策略人做好居间服务，居间服务内容包括但不限于交易合作撮合与交易策略通知与交易信息发布等。
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2：投资人：指通过本网站注册或线下合作成为投资人用户，负责按股票投资策略并利用自有资金和证券账户进行交易的自然人。
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3：策略人：指向投资人发出策略提供方
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第二条声明与承诺
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、本平台声明，以上所有涉及资费标准的数据，均为平台根据市场行情阶段性调整的实时标准，该数据具有一定浮动性。
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、平台关于以上资费标准不做不予调整的承诺，平台将根据客观的市场行情对资费标准进行适时调整，关于调整结果将及时告知所有平台用户，并将一如既往地尊重用户在新的资费条件下是否选择继续与平台合作的权利。
+	            		<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中建58好策略
+	            	</p>
+	            	<p style="text-align: right;">
+	            		投资人与策略人交易合作协议<br/>
+						58好策略交易居间服务协议
+	            	</p>
+	            </div>
+	            <p onclick="hideProtocal();" class="read_risk_btn">确认</p>
+	        </div>
+	    </div>
+	    <!-- end -->
+
+
+	    <!-- 合作协议 - start -->
+	    <div class="risk_mask protocal1">
+	        <div class="risk_content">
+	            <p class="risk_title">58好策略服务协议</p>
+	            <div class="risk_text">
+	            	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58好策略服务协议（以下简称“本协议”）是平台运营方中建58好策略（以下简称“本公司”）与58好策略用户（包含策略人和投资人，以下简称“用户”）就58好策略服务相关事项订立的有效合约。本协议由协议正文以及本公司通过58好策略已经发布的或将来可能发布的各类规则和文件的各项规定组成，如58好策略发布的规则和文件与协议正文有冲突，以公布生效日期或签署日期在后的规则或文件为准执行。用户通过网络页面点击确认接受本协议，即表示用户与本公司已达成合意并同意接受本协议项下的全部约定内容。
+					在接受本协议之前，用户务必仔细阅读本协议的全部内容（特别是以粗体下划线标注的内容）。如果用户不同意本协议的任意内容，或者无法准确理解该条款的含义，请不要进行后续操作。
+
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一、定义
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本协议中，除非上下文另有解释，下列词语具有如下含义：
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、交易平台：指58好策略互联网信息中介平台，由本公司运营。该平台网址为：http://m.huamaoi.cn/及本公司根据业务需要不时修改的网址。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、58好策略：指58好策略信息平台，面向58好策略用户提供包括但不限于沪深所A股、50ETF、交易合作信息发布、交易合作撮合、交易指令通讯、交易风控管理、交易清结算（仅指数据结算）、资金支付（由支付机构托管）等服务的线上中介服务平台。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、策略人：指通过58好策略注册成为策略人的用户，作为投资人的交易合作方，负责向投资人提供交易策略的自然人。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、投资人：投资人：指通过58好策略注册成为投资人的用户，作为策略人的交易合作方，负责按策略人交易策略并利用自有资金和账户进行交易的自然人或法人或企业。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、支付机构：指58好策略委托的为58好策略用户提供资金划转、查询、结算等支付服务的第三方支付机构。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二、58好策略服务
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58好策略为用户提供以下服务：
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、交易合作撮合服务
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58好策略作为策略人和投资人的中间方，对策略人的交易谋略和投资人的交易需求进行居间介绍提供匹配参考，撮合双方建立一对一的交易合作关系。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、交易指令通讯服务
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58好策略为策略人和投资人交易合作过程中提供向对方发送／接收交易指令通讯服务，交易指令包括：策略指令和点卖指令。58好策略交易指令通讯速度从策略人发出交易指令被58好策略确认时点至投资人接收到交易指令时点，两时点时间间隔原则不超过当天具体时间由投资人反馈。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、交易风控管理服务
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为最大程度确保策略人与投资人交易合作正常进行，保障双方利益，58好策略将：   1）对存在退市、停牌等风险的交易品种，以风险警示形式（包括但不限于《策略风险警示股名单》、《递延风险警示股名单》等）实时发布   2）对于高风险交易品种要求策略人完成指定时长或指定数量的模拟交易后，方具备参与该交易品种交易合作资格。   3）根据策略人交易策略历史业绩，调整策略人参与交易合作的额度。   4）根据投资人与策略人交易数据和市场系统性风险分析，调整产品范围及具体方案等。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、交易清结算服务
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58好策略根据策略人和投资人签署的《交易合作协议》相关约定，为双方提供交易清结算数据结算服务，数据结果对应金额资金结算由支付自制的支付机构完成，58好策略明确告知策略人和投资人资金结算需取得相应资质，58好策略不提供资金结算服务，58好策略已委托具有结算资质的第三方支付机构提供服务。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、资金支付服务
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;策略人与投资人交易合作过程发生的涉及交易款项的支付和结算都将由58好策略委托连连第三方支付或其它有牌支付公司处理。双方应保证58好策略账户状态正常，并确保账户中有足额的资金以便正常划转。因一方账户因58好策略软件技术原因导致状态异常导致交易无法实现的，所有损失由58好策略平台承担。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6、用户交易合作协议生成与保管
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58好策略为策略人和投资人生成交易合作协议供双方查询、存档。58好策略会对策略人和投资人在58好策略发生的交易信息及生成的协议保存，保存期限为【六】个月，如有疑问，策略人和投资人应及时向58好策略提出书面查询单并附真实有效身份证明文件，超过保存期限要求查询的，由此产生的法律责任由策略人和投资人自行承担，与58好策略人无关。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7、服务费及收费标准
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;策略人和投资人自愿同意向58好策略支付一定的费用，具体收费事项及资费标准由58好策略另行与用户约定或者通过58好策略进行展示。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三、声明与承诺
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、用户除需要遵守本协议约定外，还应遵守履行本协议有关的附件。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、用户保证除协议另有约定外，对于其交易合作达成后不得变更、撤销或撤回。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、用户保证不会利用58好策略进行非法证券交易、资金非法转移、套现及洗钱等违法犯罪活动；
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、用户保证其所参与交易合作的资金来源合法，是该资金的合法所有人，完全有权使用该资金进行交易；如第三人对资金归属、合法性问题发生争议，由用户负责解决，与58好策略无关，并保证及时赔偿交易合作方因此所遭受的一切损失
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、用户变更账户信息、通讯地址、电话等相关重要信息，须及时书面或其他58好策略同意的方式通知58好策略；因用户未及时通知而导致其自身在本协议项下各项权益受到损失的， 由用户自行承担全部责任。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6、用户同意58好策略有权限制用户参与交易合作的品种和额度。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7、用户知晓且同意58好策略享有用户合作交易信息的所有权和使用权。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8、用户知晓且同意58好策略仅向用户提供交易信息与服务，58好策略既不是策略人与投资人之间交易合作关系的当事人，也不是该合作关系中策略人与投资人的保证人或连带责任人 ；58好策略根据本协议约定向策略人和投资人提供的所有服务仅供策略人和投资人决定是否进行交易合作时予以参考，无论策略人和投资人形成的交易合作关系是否存在第三方担保，在任何情况下均不应视为58好策略及其关联方对策略人的交易策略能力及相关交易协议的履行做出了任何明示或默示的担保，亦不应视为58好策略及其关联方对投资人的本金和收益做出了明示或默示的担保或保证。策略人和投资人应自行判断相关信息的真实性、准确性、及时性，自主决定是否进行交易合作，并承担由此而导致的一切损失或责任。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9、用户在交易合作过程产生的相关税费，由用户自行向其主管税务机关申报、缴纳，58好策略不负责相关事宜处理。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10、用户在58好策略操作均是由用户自行操作完成，用户点击58好策略视为用户自行操作，58好策略严禁用户委托他人代操作，一经发现，58好策略有权立即冻结账户，所涉款项作为违约金赔偿58好策略，如58好策略发现用户利用58好策略开展违法犯罪活动的，58好策略有权立即移交司法机关追究其刑事责任。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11、用户在点击签署本协议前系受代理商推广代理与58好策略建立策略服务协议，用户已详细阅读并明白58好策略与代理商之间代理推广服务协议内容，并愿意按照本协议及代理推广服务协议中有关约定执行，用户同意因在58好策略平台中发生的所有交易行为产生的法律责任由代理商和用户自行承担，由用户与代理商之间自行协商解决，与58好策略无关，58好策略同意帮忙协调代理商与用户之间矛盾，无论何种情况，用户不得采取任何方式诋毁58好策略或向58好策略追索任何权利，否则视为用户和代理商同时违约，58好策略有权立即终止本协议，用户账户中所涉款项作为违约金赔偿58好策略，用户所采取的其他违法犯罪行为，58好策略有权另行追究并视情节严重可移送司法机关追究法律责任。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;四、风险提示
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户知晓并同意，通过58好策略进行交易合作可能面临如下风险，且除以下揭示的风险外还有其他的外部风险，均需要用户自行承担，58好策略不承担任何责任：
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、政策监管风险：因宏观政策、监管导向、行业政策、地区发展政策等因素引起的无法实现交易合作的风险。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、违约风险：因交易合作方没有按时履约引起损失的风险。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、因不可抗力因素导致的风险，不可抗力因素包括但不限于以下情形：58好策略系统停机维护；58好策略所依赖的通讯设备出现故障不能进行数据传输；因台风、地震、海啸、洪水 、停电、战争、恐怖袭击等不可抗力之因素，造成58好策略系统障碍不能执行业务的；由于黑客攻击、电信部门技术调整或故障、网站升级、其他第三方的问题等原因而造成的服务中断或者延迟。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;五、通知
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;除本协议另有约定外，本协议履行过程中的通知应以中文书面形式写成。58好策略向用户发出的书面通知方式包括但不限于邮寄纸质通知、网站公告、电子邮件、站内信、手机短信 和传真等方式。如以邮寄方式发出书面通知的，则在58好策略按照用户在注册58好策略时留存的通讯地址交邮后的第三个自然日即视为送达。如以网站公告、电子邮件、手机短信和传真等电子方式发出书面通知的，则在通知发送成功即视为送达。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;六、协议的变更、解除
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58好策略有权随时单方面修改本协议中与用户之间相关的权利义务，并根据本协议约定的方式通知用户，若用户不同意修改本协议，则应当立即停止使用58好策略服务；否则，视为同 意并接受修改后的协议。修订的协议一经通知，立即生效。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;七、协议终止
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;若出现任何一种以下情况，58好策略有权单方面解除本协议且不视为58好策略违约：
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、用户自行注销58好策略账户；
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、用户冒用他人名义、盗用他人账户使用58好策略服务的；
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、用户为非法目的使用58好策略服务的；
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、用户从事任何可能侵害58好策略系统、资料的行为；
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、用户从事任何损害58好策略名誉的行为；
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6、用户违反任何法律法规、本协议约定的；
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7、用户故意利用58好策略系统漏洞进行非正常交易合作的；
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8、监管机构认为58好策略提供的服务不再符合相关监管规定的；
+					因上述第1—7款原因导致本协议终止的，所导致的全部责任由用户自行承担。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;八、争议的解决
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本协议的订立、效力、解释、履行及争议的解决均适用中华人民共和国法律。在协议履行期间，凡由本协议引起的或与本协议有关的一切争议、纠纷，当事人应首先协商解决，各方同意给予六个月调解期，在六个月调解内，各方仍协商不成无法达成一致意见的，各方一致同意提交仲裁委员会仲裁。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;九、其他
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、本协议标题仅为查阅方便而设置，不应构成对本协议的任何解释，不对标题之下的内容及范围作任何限定。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、本协议的附件及各项补充、修订或变更，为本协议不可分割的组成部分，与本协议正文具有同等法律效力。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、本协议系58好策略发出的邀约，用户通过网络页面点击确认视为承诺，用户通过网络页面点击确认本协议即生效。58好策略声明点击确认行为须用户自行完成，严禁他人代为操作，用户一经点击确认视为乙方自行操作完成，由此产生的法律风险和责任与58好策略无关。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、特别提示条款：用户在审阅完毕本协议文本时，已阅读并自愿做出以下承诺：“本用户已经阅读本协议所有条款，点击确认本协议前已详细咨询过相关法律专家或相关专业人士或其他律师，已充分理解并完全明白本人的权利与义务及风险，自愿点击确认签署并愿意承担相关风险。
+					<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5、58好策略免责声明：58好策略为软件运营平台，坚持以中国共产党领导下合法开展经营业务，禁止任何违法乱纪的行为，58好策略软件平台不对任何交易行为负责，58好策略软件平台不对任何交易结果作出任何形式的承诺和保证，因交易产生的所有法律责任和后果与58好策略无关，投资有风险，请结合投资风险承受能力由用户自行、谨慎操作。
+
+
+
+	            	</p>
+	            	<p style="text-align: right;">
+	            		<!-- 投资人与策略人交易合作协议<br/> -->
+						58好策略服务协议
+	            	</p>
+	            </div>
+	            <p onclick="hideProtocal1();" class="read_risk_btn">确认</p>
+	        </div>
+	    </div>
+	    <!-- end -->
+
+
+
+
+		<header class="has_back_top ">
+			创建策略
+			<a href="javascript:history.go(-1)" class="back_icon">
+				<img src="__RESOURCE__/img/back_icon.png">
+			</a>
+		</header>
+		<section class="buy_section mar56">
+			<a href="{:url('index/Stock/info', ['code' => $stock.code])}"  class="b_gupiao_detail clear_fl">
+				<div class="lf b_gupiao_profile">
+					<p class="b_gupiao_name">{$stock.prod_name}</p>
+					<p  data-fullcode="{$stock.full_code}"  class="b_gupiao_code">{$stock.code}</p>
+				</div>
+				<div class="lf b_gupiao_price">
+					<p class="b_gupiao_now_price">{$stock.last_px}</p>
+					<p class="b_gupiao_rate clear_lf">
+						<span class="lf px_change">{$stock.px_change}</span>
+						<span class="rt px_change_rate">{$stock.px_change_rate}%</span>
+					</p>
+				</div>
+				<span class="rt">行情</span>
+			</a>
+			<div class="b_gupiao_detail clear_fl b_gupiao_intro">
+				<div class="agent_price_title lf">策略委托价</div>
+				<div class=" lf">
+					<input type="text" name="sell_px" class="agent_price" value="{$stock.sell_px}">
+				</div>
+				<a class="rt intro_btn">说明
+					<!-- 说明 - start -->
+				    <div class="risk_mask">
+				        <div class="risk_content">
+				            <p class="risk_title">策略委托价说明</p>
+				            <div class="risk_text">
+				            	<p>策略委托价是在当前行情价格卖盘1价格基础上浮动 0.02 元，方便促使投资方成交.</p>
+				            </div>
+				            <p class="read_risk_btn">确认</p>
+				        </div>
+				    </div>
+				    <!-- end -->
+				</a>
+			</div>
+
+
+			<div class="b_gupiao_detail clear_fl b_gupiao_intro">
+				<div class="agent_price_title lf">策略委托时间</div>
+				<div class=" lf" style="width: calc(100% / 1.5);">
+					<input type="text" name="create_at" id="createDate" class="date_value lf" value="">
+				</div>
+			</div>
+
+		</section>
+		<section class="buy_section">
+			<div class="celue_pattern clear_fl">
+				<span class="lf pattern_title">策略模式</span>
+				<div class="lf pattern_options clear_fl">
+					<!--<span class="active">T+1</span>-->
+                    {volist name="modes" id="item"}
+					<span data-id="{$item.mode_id}" data-profit="{$item.profit}" data-loss="{$item.loss}" data-jiancang="{$item.jiancang}" data-defer="{$item.defer}"  data-deposit="{$item.deposit}" data-lever="{$item.lever}">{$item.name}</span>
+                    {/volist}
+				</div>
+				<a class="rt intro_btn">说明
+					<!-- 说明 - start -->
+				    <div class="risk_mask">
+				        <div class="risk_content">
+				            <p class="risk_title">策略模式说明</p>
+				            <div class="risk_text">
+				            	<p>选择不同的策略模式，对应不同的策略周期，建仓费和递延费不同。</p>
+				            </div>
+				            <p class="read_risk_btn">确认</p>
+				        </div>
+				    </div>
+				    <!-- end -->
+				</a>
+			</div>
+		</section>
+		<section class="buy_section">
+			<div class="clear_fl xinyongjin_title">
+				<span class="lf">选择信用金（元）</span>
+				<span class="rt selected_count">1500</span>
+			</div>
+			<div class="xinyongjin_options_con clear_fl">
+				<span class="x_o_title lf">选择数额</span>
+				<div class="clear_fl rt x_y_options">
+					<!--<span class="active">1500</span>-->
+                    {volist name="deposits" id="item"}
+					<span data-id="{$item.id}" data-money="{$item.money|floatval}">{$item.name}</span>
+                    {/volist}
+				</div>
+			</div>
+			<!-- <div style="padding: 0" class="xinyongjin_options_con clear_fl">
+				<span class="x_o_title lf">其他金额</span>
+				<div class="clear_fl rt x_y_options">
+					<input placeholder="请输入其他金额" class="custom_count" />
+				</div>
+			</div> -->
+		</section>
+		<section class="buy_section">
+			<div class="celue_pattern clear_fl no_arrow">
+				<span class="lf pattern_title">策略匹配</span>
+				<div class="lf beishu_options flex_nowrap">
+					<!--<span class="active">10倍</span>-->
+                    {volist name="levers" id="item"}
+					<span data-id="{$item.id}" data-multiple="{$item.multiple}">{$item.name}</span>
+                    {/volist}
+				</div>
+			</div>
+			<div class="clear_fl baishu_detail">
+				<span class="lf">1200股</span>
+				<span class="rt">市值154548.5元</span>
+			</div>
+		</section>
+
+		<section class="buy_section">
+			<div class="control_point zhiying clear_fl">
+				<span class="lf">止盈</span>
+				<p class="lf count_panel flex_nowrap">
+					<span class="minus_btn count_btn">-</span>
+					<!-- <span class="now_count">13.63</span> -->
+					<input  value="13.08" class="now_count profitCount" />
+					<span class="plus_btn count_btn">+</span>
+				</p>
+				<p class="rt fudong zhangfu">涨幅约 <span>+11.9%</span></p>
+			</div>
+
+			<div class="control_point zhisun clear_fl">
+				<span class="lf">止损</span>
+				<p class="lf count_panel flex_nowrap">
+					<span class="minus_btn count_btn">-</span>
+					<!-- <span class="now_count">13.63</span> -->
+					<input  value="9.07" class="now_count lossCount" />
+					<span class="plus_btn count_btn">+</span>
+				</p>
+				<p class="rt fudong diefu">跌幅约 <span>+11.9%</span></p>
+			</div>
+		</section>
+
+
+		<section class="buy_section">
+			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border">
+				<div class="agent_price_title lf">建仓费</div>
+				<div class="create_price lf jiangcangfei">78.00元</div>
+				<a class="rt intro_btn">说明
+					<!-- 说明 - start -->
+				    <div class="risk_mask">
+				        <div class="risk_content">
+				            <p class="risk_title">建仓费说明</p>
+				            <div class="risk_text">
+				            	<p>交易建仓费是当策略第一次发起时，策略人要支付给平台的费用，费用包括交易印花税、过户费、佣金以及平台的居间费。此费用根据策略金额收取，在第一天收取，一次性单向收取，收取标准按检查下单为准。</p>
+				            </div>
+				            <p class="read_risk_btn">确认</p>
+				        </div>
+				    </div>
+				    <!-- end -->
+				</a>
+			</div>
+		</section>
+
+		<section class="buy_section">
+			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border">
+				<div class="agent_price_title lf">递延费</div>
+				<div class="create_price lf diyanfei">9.90元/天/万元</div>
+				<a class="rt intro_btn">说明
+					<!-- 说明 - start -->
+				    <div class="risk_mask">
+				        <div class="risk_content">
+				            <p class="risk_title">递延费说明</p>
+				            <div class="risk_text">
+				            	<p>策略持仓超过约定时间，第二个交易日起，策略人需要缴纳的递延费用，扣费时间为14:40，直接从策略人平台余额中扣除。如策略人不想递延，请务必在第二个 交易日的14:40分前发起卖出指令，否则视为要求递延，递延成功即扣费，扣费标准以实际平台公布为准。</p>
+				            </div>
+				            <p class="read_risk_btn">确认</p>
+				        </div>
+				    </div>
+				    <!-- end -->
+				</a>
+			</div>
+			<div class="b_gupiao_detail clear_fl b_gupiao_intro no_border no_arrow">
+				<div class="agent_price_title lf">自动递延</div>
+				<div class="zidongdiyan lf">若未开启自动递延<br/>次日 14.40 将卖出股票</div>
+				<a class="rt">
+					<input id="autoDefer" type="checkbox" checked="checked" class="switch__mui-switch___3_30S switch__mui-switch-anim___3IUf5" value="on">
+				</a>
+			</div>
+		</section>
+
+		<section class="buy_section">
+			<div class="sub_pay_con clear_fl">
+				<div class="lf">
+					<p class="need_pay_count">需要支付 <span>1289.00</span> 元</p>
+					<p class="balance_count" data-usage="{$usage|default=95}" data-account="{$user.account}">(账户余额：{$user.account|number_format=2} 元)</p>
+				</div>
+				<a href="" class="rt sub_pay_btn">马上创建</a>
+			</div>
+			<div class="agree_con">
+				<label for="agree">
+					<input type="checkbox" id="agree" value="on" checked="">
+					已阅读并同意相关
+				</label>
+				<span onclick="showProtocal();">合作协议</span>
+			</div>
+
+			<div class="agree_con">
+				<label for="agree">
+					<input type="checkbox" id="agree1" value="on" checked="">
+					已阅读并同意相关
+				</label>
+				<span onclick="showProtocal1();">58好策略服务协议</span>
+			</div>
+		</section>
+{/block}
+
+{block name="nav"}
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="__RESOURCE__/js/common.js"></script>
+<script src="__RESOURCE__/js/jquery-2.2.0.min.js"></script>
+<script src="__RESOURCE__/js/foundation-datepicker.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#createDate').fdatepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',
+            pickTime: true
+        });
+
+    });
+	var flag1 = false; // 用户是否在输入止盈或者止损
+	$(".now_count").focus(function(){
+		flag1 = true;
+	});
+	$(".now_count").blur(function(){
+		flag1 = false;
+	});
+
+
+	function hideProtocal(){
+		$(".protocal").hide();
+	}
+	function showProtocal(){
+		$(".protocal").show();
+	}
+
+	function hideProtocal1(){
+		$(".protocal1").hide();
+	}
+	function showProtocal1(){
+		$(".protocal1").show();
+	}
+
+	$(".intro_btn").click(function(){
+		$(this).find(".risk_mask").show();
+	});
+	
+	$("body").on("click", ".read_risk_btn", function(){
+		$(this).parents(".risk_mask").hide();
+	});
+
+
+
+	$(".pattern_options").on("click" , "span" , function(){
+		$(this).addClass("active").siblings(".active").removeClass("active");
+		calcNum(true);
+
+		var deposit_ids = $(this).data("deposit") + "";
+		deposit_ids = deposit_ids.split(",");
+		var lever_ids = $(this).data("lever") + "";
+		lever_ids = lever_ids.split(",");
+
+		$(".x_y_options span").hide();
+		$(".beishu_options span").hide();
+
+
+		for( var key in deposit_ids ){
+			$(".x_y_options").find("[data-id='" + deposit_ids[key] + "']").show();
+		}
+		$(".x_y_options").find("[data-id='" + deposit_ids[0] + "']").trigger("click");
+
+		for( var key in lever_ids ){
+			$(".beishu_options").find("[data-id='" + lever_ids[key] + "']").show();
+		}
+		$(".beishu_options").find("[data-id='" + lever_ids[0] + "']").trigger("click");
+	});
+
+	$(function(){
+		$(".pattern_options span:first-child").trigger("click");
+
+		// $(".x_y_options span:nth-child(1)").addClass("active");
+		// $(".pattern_options span:nth-child(1)").addClass("active");
+		// $(".beishu_options span:nth-child(1)").addClass("active");
+		calcNum(true);
+	});
+
+
+	$(".x_y_options").on("click" , "span" , function(){
+		$(this).addClass("active").siblings(".active").removeClass("active");
+		var val = $(this).html();
+		$(".selected_count").html(val);
+		calcNum()
+	});
+
+	$(".beishu_options").on("click" , "span" , function(){
+		$(this).addClass("active").siblings(".active").removeClass("active");
+		calcNum()
+	});
+
+
+	//止盈止损
+	$(".control_point").on("click",".count_btn",function(){
+		var context = $(this).parents(".control_point");
+		var now_count = parseFloat( context.find(".now_count").val() );
+		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+		var nowPrice = parseFloat( $(".agent_price").val() ); //现价
+
+		if( $(this).hasClass("minus_btn") ){ //减
+			if(now_count <= initValue){
+				return false;
+			}
+			now_count = ((now_count * 100 - 1) / 100).toFixed(2);
+		}else{ //加
+			if( context.hasClass("zhisun") ){ 
+				var _rate = parseFloat( context.find(".fudong").find("span").html() );
+				if( _rate >= 0 ){
+					return false;
+				}
+			}
+			now_count = ((now_count * 100 + 1) / 100).toFixed(2);
+		}
+
+		context.find(".now_count").val( now_count );
+		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+		context.find(".fudong").find("span").html( rate + "%" ).attr("data-val", rate);
+
+	});
+
+
+	$(".now_count").change(function(){
+		var context = $(this).parents(".control_point");
+		var now_count = parseFloat( context.find(".now_count").val() );
+		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+		var nowPrice = parseFloat( $(".agent_price").val() ); //现价
+
+
+		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+
+		if( context.hasClass( "zhisun" ) && now_count > nowPrice){
+			$(this).val( initValue );
+			// return false;
+		}
+		if( context.hasClass( "zhiying" ) && now_count < nowPrice){
+			$(this).val( initValue );
+			// return false;
+		}
+
+		var profit = parseFloat( $(".pattern_options").find(".active").data("profit") );
+		var loss = parseFloat( $(".pattern_options").find(".active").data("loss") );
+
+		if( context.hasClass( "zhisun" ) && (-rate - loss > 0)){
+			$(this).val( initValue );
+			// return false;
+		}
+		if( context.hasClass( "zhiying" ) && ( profit - rate > 0 )){
+			$(this).val( initValue );
+			// return false;
+		}
+
+		//重新获取计算
+        var context = $(this).parents(".control_point");
+        var now_count = parseFloat( context.find(".now_count").val() );
+        var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+        var nowPrice = parseFloat( $(".agent_price").val() ); //现价
+
+
+        var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+
+
+		var context = $(this).parents(".control_point");
+		var now_count = parseFloat( context.find(".now_count").val() );
+		var initValue = parseFloat( context.find(".now_count").attr("data-initValue"));
+		var nowPrice = parseFloat( $(".agent_price").val() ); //现价
+		var rate = ((now_count * 100 - nowPrice * 100) / nowPrice).toFixed(2);
+
+		context.find(".fudong").find("span").html( rate + "%" ).attr("data-val", rate);
+	});
+
+	//计算
+	function calcNum( type ){
+		var creditNum = parseFloat( $(".x_y_options").find(".active").data("money") ); //信用金
+		var multiple = parseFloat( $(".beishu_options").find(".active").data("multiple") );//倍数
+		var nowPrice = parseFloat( $(".agent_price").val() ); //现价
+		var usage = parseFloat( $(".balance_count").data("usage") ); //资金使用率
+		var count = Math.floor(creditNum * multiple * usage / nowPrice /100 / 100) * 100; //股数
+		var ammount =  (count * nowPrice).toFixed(2);
+		$(".baishu_detail .lf").html(count + "股").attr("data-count",count);
+		$(".baishu_detail .rt").html("市值" + ammount + "元").attr("data-ammount",ammount);
+
+		//计算建仓费
+		var jiancangUnit = parseFloat( $(".pattern_options").find(".active").data("jiancang") );
+		var jiangcang = ( jiancangUnit * (creditNum * multiple ) / 10000 ).toFixed(2);
+		$(".jiangcangfei").html(jiangcang + "元").attr("data-fee", jiangcang);
+
+		//支付总价
+		var sum = parseFloat((parseFloat(jiangcang) + creditNum)).toFixed(2);
+		$(".need_pay_count span").html(sum);
+
+
+		//涨跌幅
+		var profit = parseFloat( $(".pattern_options").find(".active").data("profit") );
+		var loss = parseFloat( $(".pattern_options").find(".active").data("loss") );
+		var nowPrice = parseFloat( $(".agent_price").val() );
+		var maxProfit = (nowPrice * (1 + profit / 100)).toFixed(2);
+		var maxLoss = (nowPrice * (1 - loss / 100)).toFixed(2);
+
+		var deferCount = parseFloat( $(".pattern_options").find(".active").data("defer") );
+		if( type ){
+			$(".profitCount").val(maxProfit).attr("data-initValue", maxProfit);
+			$(".lossCount").val( maxLoss ).attr("data-initValue", maxLoss);
+			$(".zhangfu span").html("+" + profit + "%").attr("data-val", profit);
+			$(".diefu span").html("-" + loss + "%").attr("data-val", loss);
+		}
+
+		$(".diyanfei").html(deferCount + "元/天/万元");
+		$(".intro_diyanfei").html(deferCount);
+
+
+		var balaceCount = parseFloat( $(".balance_count").data("account") );
+		if( balaceCount < sum ){ //余额不足
+			$(".sub_pay_btn").html("余额不足").addClass("disabled");
+		}else{
+			$(".sub_pay_btn").html("创建策略").removeClass("disabled");
+		}
+	}
+
+	var flag = false; // 是否已经提交建仓
+	//建仓
+	$(".sub_pay_btn").click(function(e){
+		e.preventDefault();
+		if( flag ){
+			$alert("订单已经提交");
+			return false;
+		}
+		if( $(this).hasClass("disabled") ){
+			//余额不足，跳转到充值
+			window.location.href = "/user/recharge.html";
+		}
+
+		if( !$("#agree").is(":checked") ){
+			$alert("请仔细阅读合作协议");
+			return false;
+		}
+
+		if( !$("#agree1").is(":checked") ){
+			$alert("请仔细阅读58好策略服务协议");
+			return false;
+		}
+
+
+		var params = {};
+        params.follow_id = {$follow_id|default=0}; //更改
+		params.price = $(".agent_price").val(); //委托价
+		params.mode = $(".pattern_options").find(".active").data("id");//策略模式
+		params.deposit = $(".x_y_options").find(".active").data("id");//信用金
+		params.lever = $(".beishu_options").find(".active").data("id");//策略匹配
+		// params.stockCount = $(".baishu_detail .lf").attr("data-count"); //股数
+		// params.marketPrice = $(".baishu_detail .rt").attr("data-ammount"); //市值
+		params.profit = $(".profitCount").val();//止盈
+		params.loss = $(".lossCount").val();//止损
+		// params.fee = $(".jiangcangfei").data("fee"); //建仓费
+		// params.defer = $(".pattern_options").find(".active").data("defer");//递延费
+		params.defer = 0; //自动递延
+		params.code = $(".b_gupiao_code").html();
+		if( $("#autoDefer").is(":checked") ){
+			params.defer = 1;
+		}
+		params.create_at = $("#createDate").val();
+		if(!params.create_at)
+		{
+            $alert("请选择建仓时间");
+            return false;
+		}
+
+		var _url = "{:url('index/System/createOrder')}";
+		flag = true;
+        $ajaxCustom(_url, params, function(res){
+            if(res.state){ 
+            	$alert("建仓成功");
+                var data = res.data;
+                if(data.url){
+                	setTimeout(function(){
+                		window.location.href = data.url;
+                	},1000);
+                }
+            }else{
+                $alert(res.info);
+                flag = false;
+            }
+        });
+
+
+
+	});
+
+
+
+	/**
+ * 判断当前时间是否在9:30-11:30, 13:00-15:00（交易时间）
+ */
+function isTradingTime(){
+    var date = new Date();
+    //判断是不是周末
+    var dt=date.getDay();
+    if(dt=='6'||dt=='7'){
+        return false;
+    }
+    //判断当前时间是否在9:30-11:30, 13:00-15:00
+    var h = date.getHours();
+    var mi = date.getMinutes();
+    var s = date.getSeconds();
+    if(h < 10){
+        h = "0" + h;
+    }
+    if(mi < 10){
+        mi = "0"+ mi;
+    }
+    if(s < 10){
+        s = "0" + s;
+    }
+    var curTime = h + ":" + mi + ":" + s;
+//  console.log(curTime);
+    if( curTime >= "09:30:00" && curTime <= "11:30:00" || curTime >= "13:00:00" && curTime <= "15:00:00" ){
+        return true;
+    }
+    return false;
+}
+
+if( !isTradingTime() ){
+	$alert("当前时间不在交易时段内");
+}
+
+$(".agent_price").blur(function () {
+    calcNum(true);
+});
+
+$(function(){
+//	var timer = setInterval(function(){
+		code = $(".b_gupiao_code").data("fullcode");
+        var _url = "{:url('index/Stock/simple')}",
+            _oData = {code: code};
+         sinaAjax(code, function(res){
+            if(res.state){ // 登录成功
+                for( var key in res.data ){
+                	var nowDate = res.data[key];
+                	var className = "";
+                	if( nowDate.px_change_rate >= 0 ){
+                		className = "red";
+                	}else{
+                		className = "green";
+                	}
+
+                	$(".b_gupiao_now_price").html(nowDate.last_px).removeClass("red green").addClass( className );
+                	$(".agent_price").val(nowDate.sell_px).removeClass("red green").addClass( className );
+                	$(".px_change").html(nowDate.px_change).removeClass("red green").addClass( className );
+                	$(".px_change_rate").html(nowDate.px_change_rate + "%").removeClass("red green").addClass( className );
+
+                	calcNum();
+
+                	//如果用户在输入就不修改
+                	if( flag1 ){
+                		return false;
+                	}
+
+                	//修改止盈止损
+                	var agent_price = nowDate.sell_px;
+                	var profit_rate = parseFloat( $(".zhangfu span").attr("data-val") );
+                	var loss_rate = parseFloat( $(".diefu span").attr("data-val") );
+
+                	profit_price = agent_price * (100 + profit_rate) / 100;
+                	loss_price = agent_price * (100 - Math.abs(loss_rate)) / 100;
+
+                	// console.log( profit_price.toFixed(2) );
+                	// console.log( loss_price.toFixed(2) );
+
+
+                	$(".profitCount").val( profit_price.toFixed(2) );
+                	$(".lossCount").val( loss_price.toFixed(2) );
+                }
+            }else{
+                // $alert(res.info);
+            }
+        });
+//	},2000);
+});
+
+</script>
+{/block}
+
+
+
+
+
