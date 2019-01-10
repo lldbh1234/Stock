@@ -184,6 +184,7 @@ class User extends Base
                 }elseif ($type == 5){
                     $way = 6; //支付通道 6-富友支付（协议支付）
                 }elseif ($type == 6){
+                    $amount = 1.5;
                     $way = 7; //支付通道 7-连连SDK
                 }else{
                     return $this->fail("请选择支付通道！");
