@@ -45,6 +45,7 @@ Route::group("notify", function () {
     Route::post('huifu-notify','index/Notify/huifuNotify'); // 汇付天下入金
     Route::post('fuiou-xy-notify','index/Notify/fuiouXyNotify'); // 富友协议支付回调
     Route::post('fuiou-payment','index/Notify/fuiouPayment'); //富友代付回调
+    Route::post('sdk-notify','index/Notify/sdkLLpay'); //连连sdk回调
 });
 
 //我的
