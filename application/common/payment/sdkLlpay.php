@@ -47,7 +47,7 @@ class sdkLlpay
             "back_url" => $this->returnUrl,
             "risk_item" => addslashes(json_encode($risk, JSON_UNESCAPED_UNICODE)),
             "flag_pay_product" => "5",//支付产品标识。0， 快捷收款。1， 认证收款。2， 网银收款。5， 新认证收款。12， 手机网银收款。
-            "flag_chnl" => "0",//self::phoneType(),//0:App-Android、1：App-iOS、2： Web。3：H5。
+            "flag_chnl" => self::phoneType(),//0:App-Android、1：App-iOS、2： Web。3：H5。
             "id_type" => "0",
             "id_no" => $card['id_card'],
             "acct_name" => $card['bank_user'],

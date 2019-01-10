@@ -288,18 +288,7 @@ class User extends Base
         $redirect = url("index/User/modifyCard", ["callback" => base64_encode($callback)]);
         $this->assign("bind", $bind);
         $this->assign("redirect", $redirect);
-        $this->assign("phoneType", self::phoneType());
         return view();
-    }
-    public function phoneType()
-    {
-        $flag_chnl = "-1";//0:App-Android、1：App-iOS、2： Web。3：H5。
-        if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')||strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
-            $flag_chnl = "1";
-        }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
-            $flag_chnl = "0";
-        }
-        return $flag_chnl;
     }
 
     public function withdraw()
