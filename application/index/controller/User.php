@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\payment\authLlpay;
 use app\common\payment\authRbPay;
 use app\common\payment\huifuPay;
+use app\common\payment\sdkLlpay;
 use app\common\payment\xyFuiouPay;
 use app\index\logic\OrderLogic;
 use app\index\logic\RechargeLogic;
@@ -182,6 +183,8 @@ class User extends Base
                     $way = 4; //支付通道，4-融宝支付
                 }elseif ($type == 5){
                     $way = 6; //支付通道 6-富友支付（协议支付）
+                }elseif ($type == 6){
+                    $way = 7; //支付通道 7-连连SDK
                 }else{
                     return $this->fail("请选择支付通道！");
                 }
@@ -240,6 +243,38 @@ class User extends Base
                         $html = (new xyFuiouPay())->getHtml($orderSn, $this->user_id, $amount, $user['has_one_card']);
                         echo $html;
                         exit;
+                    }elseif($way == 7){
+                        //连连SDk
+                        $user = $this->_logic->userIncCard($this->user_id);
+                        if($user['has_one_card']) {
+                            // 请求支付
+                            $card = $user['has_one_card'];
+
+                            $risk = [
+                                "frms_ware_category" => "2026",
+                                "user_info_mercht_userno" => $this->user_id,
+                                "user_info_bind_phone"  => $user['mobile'],
+                                "user_info_dt_register" => date("YmdHis", $user['create_at']),
+                                "goods_name"    => "58好策略余额充值",
+                                "user_info_full_name" => $card['bank_user'],
+                                "user_info_id_type" => "0",
+                                "user_info_id_no" => $card['id_card'],
+                                "user_info_identify_state" => "1",
+                                "user_info_identify_type" => "1"
+                            ];
+
+                            $data = (new sdkLlpay())->getSign($this->user_id, $orderSn, $amount, $card, $risk);
+                            $data = json_decode($data, true);
+                            $response = (new sdkLlpay())->getSdkParam($data);
+                            if($response['code'] == '0') {
+                                header("Location:" . $response['ret']['gateway_url']);
+                                exit();
+                            }
+                            file_put_contents('./llsdk.log', json_encode($response['ret']).PHP_EOL, FILE_APPEND);
+                            echo $response['ret']['ret_msg'];
+                        }else{
+                            return $this->fail("请先绑定银行卡！");
+                        }
                     }
                 }else{
                     return $this->fail("充值订单创建失败！");
