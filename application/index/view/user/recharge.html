@@ -63,7 +63,7 @@
 					<a class="btn_money">50000</a>
 				</div>
 			</div>
-			<input type="hidden" id="amount" name="amount" value="1000">
+			<input type="hidden" id="amount" name="amount" value="10">
 			<input type="hidden" id="type" name="type" value="1">
 		</div>
 			<div class="boxflex1">
@@ -86,15 +86,19 @@
 					<!--<span>快捷支付2(支持多卡种)</span>-->
 					<!--<img src="__RESOURCE__/img/notseleted.png" alt="" style="float:right;" class="check-payone checkPay">-->
 				<!--</div>-->
-				<div class="boxflex1 paystyle checkImg2" style="border-top:0;" data-type="5">
-					<img src="__RESOURCE__/img/pay.png" style="width: 20px;">
-					<span>快捷支付</span>
-					<img src="__RESOURCE__/img/seleted.png" alt="" style="float:right;" class="check-payone checkPay">
-				</div>
+
+
+
+				<!---->
+				<!--<div class="boxflex1 paystyle checkImg2" style="border-top:0;" data-type="5">-->
+					<!--<img src="__RESOURCE__/img/pay.png" style="width: 20px;">-->
+					<!--<span>快捷支付</span>-->
+					<!--<img src="__RESOURCE__/img/seleted.png" alt="" style="float:right;" class="check-payone checkPay">-->
+				<!--</div>-->
 				<div class="boxflex1 paystyle checkImg2" style="border-top:0;" data-type="6">
 					<img src="__RESOURCE__/img/pay.png" style="width: 20px;">
 					<span>快捷支付1[APP内支付]</span>
-					<img src="__RESOURCE__/img/notseleted.png" alt="" style="float:right;" class="check-payone checkPay">
+					<img src="__RESOURCE__/img/seleted.png" alt="" style="float:right;" class="check-payone checkPay">
 				</div>
 			</div>
 			<div class="recharge-btn" id="payBtn">立即充值</div>
@@ -137,17 +141,17 @@
             var _this = $(this);
             if( isNaN(amount) ){
                 $.alert("充值金额必须为数字", function(){
-                    _this.val(10);
-                    $('#amount').val(10);
-                    val = 10;
+                    _this.val(1);
+                    $('#amount').val(1);
+                    val = 1;
                     $(".real_count").html(val);
                 });
             }
-            if(amount < 10){
-                $.alert("充值金额不小于10元", function(){
-                    _this.val(10);
-                    $('#amount').val(10);
-                    val = 10;
+            if(amount < 1){
+                $.alert("充值金额不小于1元", function(){
+                    _this.val(1);
+                    $('#amount').val(1);
+                    val = 1;
                     $(".real_count").html(val);
                 });
             }
