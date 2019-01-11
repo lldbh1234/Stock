@@ -19,7 +19,8 @@ class OrderLogic
         $lists = Order::hasWhere("hasOneUser", $hasWhere)
                     ->with(["hasOneUser" => ["hasOneParent", "hasOneAdmin" => ["hasOneParent"]], "belongsToMode"])
                     ->where($where)
-                    ->order("order_id DESC")
+//                    ->order("order_id DESC")
+                    ->order("create_at DESC")
                     ->paginate($pageSize);
         $records = $lists->toArray();
         $defer = [1 => '是', 0 => '否'];
@@ -117,7 +118,8 @@ class OrderLogic
         $lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser", "hasOneOperator", "belongsToMode"])
             ->where($where)
-            ->order("order_id DESC")
+            //->order("order_id DESC")
+            ->order("create_at DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         $records = $lists->toArray();
         $state = [1 => '委托建仓', 2 => '平仓', 3 => '持仓', 4 => '委托平仓', 5 => '作废'];
@@ -468,7 +470,8 @@ class OrderLogic
         $lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser", "belongsToMode"])
             ->where($where)
-            ->order("order_id DESC")
+//            ->order("order_id DESC")
+            ->order("create_at DESC")
             ->paginate($pageSize, false, ['query'=>request()->param()]);
         $records = $lists->toArray();
         $forceType = [1 => '爆仓', 2 => '止盈止损', 3 => '非自动递延', 4 => '余额不足'];
@@ -928,7 +931,9 @@ class OrderLogic
         $_lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser", "hasOneOperator", "belongsToMode","hasOneUser.hasOneAdmin"])
             ->where($where)
-            ->order("order_id DESC")->select();
+//            ->order("order_id DESC")
+            ->order("create_at DESC")
+            ->select();
 //            ->paginate(100, false, ['query'=>request()->param()]);
         $lists = collection($_lists)->toArray();
 
@@ -1051,7 +1056,8 @@ class OrderLogic
         $_lists = Order::hasWhere("hasOneUser", $hasWhere)
             ->with(["hasOneUser", "hasOneOperator", "belongsToMode","hasOneUser.hasOneAdmin"])
             ->where($where)
-            ->order("order_id DESC")
+//            ->order("order_id DESC")
+            ->order("create_at DESC")
             ->select();
         $lists = collection($_lists)->toArray();
         return compact("lists");
