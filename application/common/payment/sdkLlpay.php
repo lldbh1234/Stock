@@ -90,7 +90,7 @@ class sdkLlpay
     }
     public function phoneType()
     {
-        $flag_chnl = "-1";//0:App-Android、1：App-iOS、2： Web。3：H5。
+        $flag_chnl = "0";//0:App-Android、1：App-iOS、2： Web。3：H5。
         if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')||strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
             $flag_chnl = "1";
         }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
