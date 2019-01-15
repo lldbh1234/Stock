@@ -266,6 +266,7 @@ class User extends Base
                             $data = (new sdkLlpay())->getSign($this->user_id, $orderSn, $amount, $card, $risk);
                             $data = json_decode($data, true);
                             $response = (new sdkLlpay())->getSdkParam($data);
+                            file_put_contents('./llsdk-error.log', json_encode(array_merge($response, ['user_id' => $this->user_id, 'orderSn' => $orderSn])).PHP_EOL, FILE_APPEND);
                             if($response['code'] == '0') {
                                 header("Location:" . $response['ret']['gateway_url']);
                                 exit();
