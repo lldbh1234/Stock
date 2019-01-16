@@ -83,10 +83,10 @@ class System extends Base
                 while(true){
                     $quotation = $this->_logic->quotationBySina($code);
                     if(isset($quotation[$code])){
-                        $last_px = $price;//$quotation[$code]['last_px'];
-                        $sell_px = $quotation[$code]['sell_px'];
-                        $sell_px = $sell_px > 0 ? $sell_px : $last_px; // 卖1如果没拿到，用现价建仓
-                        $price = $last_px - $sell_px > 0.02 ? $sell_px + 0.02 : $sell_px; //卖1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
+                        //$last_px = $price;//$quotation[$code]['last_px'];
+                        //$sell_px = $quotation[$code]['sell_px'];
+                        //$sell_px = $sell_px > 0 ? $sell_px : $last_px; // 卖1如果没拿到，用现价建仓
+                        //$price = $last_px - $sell_px > 0.02 ? $sell_px + 0.02 : $sell_px; //卖1如果比股票报价低，超过0.02 就上浮，反之不上调，等值也不上调
                         $stock = $this->_logic->stockByCode($code);
                         $mode = (new ModeLogic())->modeIncPluginsById($modeId);
                         $deposit = (new DepositLogic())->depositById($depositId);
@@ -129,6 +129,7 @@ class System extends Base
                                     "is_hedging" => 0, // 持仓单默认未对冲
                                     "create_at" => $create_at,
                                 ];
+//                                dump($order);die();
                                 $orderId = (new OrderLogic())->createSystemOrder($order);
 
                                 if($orderId > 0){
