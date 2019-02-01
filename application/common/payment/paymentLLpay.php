@@ -14,7 +14,7 @@ class paymentLLpay
     protected $notifyUrl;
     public function __construct()
     {
-        $this->config = config("llpay.llpay_wap_hcl_config");
+        $this->config = config("llpay.llpay_wap_new58_config");
         $this->notifyUrl = url("index/Notify/payment", "", true, "m.sxxishang.com");
     }
 
