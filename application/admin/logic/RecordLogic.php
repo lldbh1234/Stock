@@ -501,7 +501,7 @@ class RecordLogic
             if($state == 1){
                 // 审核通过
                 // 代付接口
-                //富有代付
+                /*富有代付
                 $tradeNo = $withdraw->out_sn . "B"; // B代理商出金标识
                 $response = (new paymentFuiou())->payment($tradeNo, $withdraw->actual, $withdraw->remark);
                 if($response->ret == "000000" || $response->ret == "AAAAAA"){
@@ -515,8 +515,8 @@ class RecordLogic
                     // 代付申请失败
                     Db::rollback();
                     return [false, "代付平台错误：{$response->memo}！"];
-                }
-                /*
+                }*/
+
                 $withdrawData = [
                     "tradeNo" => $withdraw->out_sn,
                     "amount" => $withdraw->actual,
@@ -541,7 +541,6 @@ class RecordLogic
                     Db::rollback();
                     return [false, "代付平台错误：{$response['ret_msg']}！"];
                 }
-                */
             }elseif($state == -1){
                 // 审核拒绝
                 // 订单状态更改

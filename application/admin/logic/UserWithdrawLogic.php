@@ -125,7 +125,7 @@ class UserWithdrawLogic
                 // 审核通过
                 // 代付接口
                 $remark = json_decode($withdraw->remark, true);
-                //
+                /*富有代付
                 $tradeNo = $withdraw->out_sn . "A"; // A用户出金标识
                 $response = (new paymentFuiou())->payment($tradeNo, $withdraw->actual, $remark);
                 if($response->ret == "000000" || $response->ret == "AAAAAA"){
@@ -140,7 +140,7 @@ class UserWithdrawLogic
                     Db::rollback();
                     return [false, "代付平台错误：{$response->memo}！"];
                 }
-                /*
+                */
                 $withdrawData = [
                     "tradeNo" => $withdraw->out_sn,
                     "amount" => $withdraw->actual,
@@ -164,7 +164,6 @@ class UserWithdrawLogic
                     Db::rollback();
                     return [false, "代付平台错误：{$response['ret_msg']}！"];
                 }
-                */
             }elseif($state == -1){
                 // 审核拒绝
                 // 订单状态更改
