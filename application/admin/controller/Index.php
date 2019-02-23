@@ -121,7 +121,9 @@ class Index extends Base
                     "bank" => $admin['has_one_card']['bank_name'],
                     "card" => $admin['has_one_card']['bank_card'],
                     "name" => $admin['has_one_card']['bank_user'],
-                    //"addr" => $admin['has_one_card']['bank_address'],
+                    "city" => $admin['has_one_card']['bank_city'],
+                    "addr" => $admin['has_one_card']['bank_address'],
+                    "mobile" => $admin['has_one_card']['bank_mobile'],
                 ];
                 $withdrawId = $_adminLogic->createAdminWithdraw($this->adminId, $money, $remark);
                 if($withdrawId > 0){
