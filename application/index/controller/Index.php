@@ -49,7 +49,8 @@ class Index extends Base
             return $b['strategy_yield'] - $a['strategy_yield'];
         })->slice(0,5)->toArray();*/
         // 最牛达人 modify by liang
-        $bestUserList = $orderLogic->allYieldOrders();
+        //$bestUserList = $orderLogic->allYieldOrders();
+        $bestUserList = [];
 
         $followIds = $userFollowLogic->getFollowIdByUid($this->user_id);
         // 最优持仓
