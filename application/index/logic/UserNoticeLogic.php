@@ -12,6 +12,7 @@ class UserNoticeLogic
     }
     public function getAllBy($where=[])
     {
+        return [];
         $lists = UserNotice::where($where)->order(['read' => 'asc', 'id' => 'desc'])->select();
         return collection($lists)->toArray();
     }

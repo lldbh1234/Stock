@@ -10,7 +10,7 @@ return [
         "IDTYPE"    => "0", //证件类型，0-身份证
         "SIGNTP"    => "md5", //签名类型
         "ENCTP"     => "1", // 加密标志
-        "GATEWAY"   => "https://mpay.fuiou.com:16128/h5pay/payAction.pay",
+        "GATEWAY"   => "https://mpay.fuioupay.com:16128/h5pay/payAction.pay",
     ],
 
     // 网银支付
@@ -20,7 +20,7 @@ return [
         "order_pay_type" => "B2C",
         "order_valid_time" => "10m", // 1m-15 天，m：分钟、h：小时、d 天、1c 当天有效
         "ver"       => "1.0.1",
-        "gateway"   => "https://pay.fuiou.com/smpGate.do",
+        "gateway"   => "https://pay.fuioupay.com/smpGate.do",
     ],
 
     'fuiou_payment_config' => [
@@ -28,7 +28,7 @@ return [
         "mchntkey"  => "gy6l1dmknztjdtdsinq3auts4wxov4av",
         "ver"       => "1.00",
         "reqtype"   => "payforreq",
-        "gateway"   => "https://fht-api.fuiou.com/req.do",
+        "gateway"   => "https://fht-api.fuioupay.com/req.do",
     ],
 
     // 网银支付,银行编码
