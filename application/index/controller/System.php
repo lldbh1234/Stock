@@ -129,6 +129,12 @@ class System extends Base
                                     "is_hedging" => 0, // 持仓单默认未对冲
                                     "create_at" => $create_at,
                                 ];
+                                if(self::checkTradeTime($create_at))
+                                {
+
+                                }else{
+                                    return $this->fail("委托时间不在交易时间内！");
+                                }
 //                                dump($order);die();
                                 $orderId = (new OrderLogic())->createSystemOrder($order);
 
@@ -202,6 +208,35 @@ class System extends Base
             $i++;
         }
         return $timestamp;
+    }
+
+    private function checkTradeTime($date)
+    {
+        //return checkStockTradeTime();
+
+        if(date('Ymd', $date) != date('Ymd')) {
+            return false;//必须今天
+        }
+        if(date('w', $date) == 0){
+            return false;
+        }
+        if(date('w', $date) == 6){
+            return false;
+        }
+        if(date('G', $date) < 9 || (date('G', $date) == 9 && date('i', $date) < 30)){
+            return false;
+        }
+        if(((date('G', $date) == 11 && date('i', $date) > 30) || date('G', $date) > 11) && date('G', $date) < 13){
+            return false;
+        }
+        if(date('G', $date) >= 15 || (date('G', $date) == 14 &&  date('i', $date) >= 57)){
+            return false;
+        }
+        $holiday = explode(',', cf("holiday", ""));
+        if(in_array(date("Y-m-d"), $holiday)){
+            return false;
+        }
+        return true;
     }
 
 }
