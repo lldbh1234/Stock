@@ -32,7 +32,12 @@ class BestOrderJob
     {
         $order = (new OrderLogic())->orderById($orderId);
         if($order['state'] == 3){
+            $i = 0;
             while (true){
+                if($i >= 3){
+                    return true;
+                    break;
+                }
                 $quotation = (new StockLogic())->quotationBySina($order['code']);
                 if(isset($quotation[$order['code']])){
                     $last_px = $quotation[$order['code']]['last_px']; //现价
@@ -56,6 +61,7 @@ class BestOrderJob
                     return $res ? true : false;
                     break;
                 }else{
+                    $i++;
                     continue;
                 }
             }
